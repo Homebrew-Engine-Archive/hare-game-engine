@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<Object store="0" class="OptionSet" version="0">
+    <lang class="String" value="xml" />
+    <lexer class="s32" value="5" />
+    <colours class="object_array" number="14">
+        <item0 store="0" class="OptionColour" version="0">
+            <name class="String" value="Default" />
+            <value class="s32" value="0" />
+            <fore class="String" value="RGB(0,0,0)" />
+            <back class="String" value="RGB(255,255,255)" />
+            <bold class="u8" value="0" />
+            <italics class="u8" value="0" />
+            <underlined class="u8" value="0" />
+        </item0>
+        <item1 store="0" class="OptionColour" version="0">
+            <name class="String" value="Tag" />
+            <value class="s32" value="1" />
+            <fore class="String" value="RGB(128,0,128)" />
+            <back class="String" value="RGB(255,255,255)" />
+            <bold class="u8" value="0" />
+            <italics class="u8" value="0" />
+            <underlined class="u8" value="0" />
+        </item1>
+        <item2 store="0" class="OptionColour" version="0">
+            <name class="String" value="Tag" />
+            <value class="s32" value="2" />
+            <fore class="String" value="RGB(128,0,128)" />
+            <back class="String" value="RGB(255,255,255)" />
+            <bold class="u8" value="0" />
+            <italics class="u8" value="0" />
+            <underlined class="u8" value="0" />
+        </item2>
+        <item3 store="0" class="OptionColour" version="0">
+            <name class="String" value="Attribute name" />
+            <value class="s32" value="3" />
+            <fore class="String" value="RGB(0,0,0)" />
+            <back class="String" value="RGB(255,255,255)" />
+            <bold class="u8" value="0" />
+            <italics class="u8" value="0" />
+            <underlined class="u8" value="0" />
+        </item3>
+        <item4 store="0" class="OptionColour" version="0">
+            <name class="String" value="Attribute name" />
+            <value class="s32" value="4" />
+            <fore class="String" value="RGB(0,0,0)" />
+            <back class="String" value="RGB(255,255,255)" />
+            <bold class="u8" value="0" />
+            <italics class="u8" value="0" />
+            <underlined class="u8" value="0" />
+        </item4>
+        <item5 store="0" class="OptionColour" version="0">
+            <name class="String" value="Attribute value" />
+            <value class="s32" value="5" />
+            <fore class="String" value="RGB(0,0,255)" />
+            <back class="String" value="RGB(255,255,255)" />
+            <bold class="u8" value="0" />
+            <italics class="u8" value="0" />
+            <underlined class="u8" value="0" />
+        </item5>
+        <item6 store="0" class="OptionColour" version="0">
+            <name class="String" value="Attribute value" />
+            <value class="s32" value="6" />
+            <fore class="String" value="RGB(0,0,255)" />
+            <back class="String" value="RGB(255,255,255)" />
+            <bold class="u8" value="0" />
+            <italics class="u8" value="0" />
+            <underlined class="u8" value="0" />
+        </item6>
+        <item7 store="0" class="OptionColour" version="0">
+            <name class="String" value="Attribute value" />
+            <value class="s32" value="7" />
+            <fore class="String" value="RGB(0,0,255)" />
+            <back class="String" value="RGB(255,255,255)" />
+            <bold class="u8" value="0" />
+            <italics class="u8" value="0" />
+            <underlined class="u8" value="0" />
+        </item7>
+        <item8 store="0" class="OptionColour" version="0">
+            <name class="String" value="Attribute value" />
+            <value class="s32" value="8" />
+            <fore class="String" value="RGB(0,0,255)" />
+            <back class="String" value="RGB(255,255,255)" />
+            <bold class="u8" value="0" />
+            <italics class="u8" value="0" />
+            <underlined class="u8" value="0" />
+        </item8>
+        <item9 store="0" class="OptionColour" version="0">
+            <name class="String" value="Comment" />
+            <value class="s32" value="9" />
+            <fore class="String" value="RGB(0,128,0)" />
+            <back class="String" value="RGB(255,255,255)" />
+            <bold class="u8" value="0" />
+            <italics class="u8" value="0" />
+            <underlined class="u8" value="0" />
+        </item9>
+        <item10 store="0" class="OptionColour" version="0">
+            <name class="String" value="Entity" />
+            <value class="s32" value="10" />
+            <fore class="String" value="RGB(255,69,0)" />
+            <back class="String" value="RGB(255,255,255)" />
+            <bold class="u8" value="0" />
+            <italics class="u8" value="0" />
+            <underlined class="u8" value="0" />
+        </item10>
+        <item11 store="0" class="OptionColour" version="0">
+            <name class="String" value="XML Start" />
+            <value class="s32" value="12" />
+            <fore class="String" value="RGB(128,0,128)" />
+            <back class="String" value="RGB(255,255,255)" />
+            <bold class="u8" value="0" />
+            <italics class="u8" value="0" />
+            <underlined class="u8" value="0" />
+        </item11>
+        <item12 store="0" class="OptionColour" version="0">
+            <name class="String" value="XML End" />
+            <value class="s32" value="13" />
+            <fore class="String" value="RGB(128,0,128)" />
+            <back class="String" value="RGB(255,255,255)" />
+            <bold class="u8" value="0" />
+            <italics class="u8" value="0" />
+            <underlined class="u8" value="0" />
+        </item12>
+        <item13 store="0" class="OptionColour" version="0">
+            <name class="String" value="CDATA Section" />
+            <value class="s32" value="17" />
+            <fore class="String" value="RGB(0,0,0)" />
+            <back class="String" value="RGB(255,255,255)" />
+            <bold class="u8" value="0" />
+            <italics class="u8" value="1" />
+            <underlined class="u8" value="0" />
+        </item13>
+    </colours>
+    <keywords class="meta_array" number="0" />
+    <fileMasks class="meta_array" number="1">
+        <item0 class="String" value="*.xml" />
+    </fileMasks>
+    <sampleCode class="String" value="" />
+</Object>

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="graphics" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="graphics">
+				<Option output="../../lib/libgraphics" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../../lib" />
+				<Option type="3" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add directory="../../include" />
+			<Add directory="../../include/graphics" />
+		</Compiler>
+		<Unit filename="../../graphics/Codec.cpp" />
+		<Unit filename="../../graphics/D3DRenderTexture.cpp" />
+		<Unit filename="../../graphics/DataHolder.cpp" />
+		<Unit filename="../../graphics/DevILImageCodec.cpp" />
+		<Unit filename="../../graphics/GraphicsUtil.cpp" />
+		<Unit filename="../../graphics/Image.cpp" />
+		<Unit filename="../../graphics/ImageCodec.cpp" />
+		<Unit filename="../../graphics/ImageCodecManager.cpp" />
+		<Unit filename="../../graphics/Line.cpp" />
+		<Unit filename="../../graphics/Material.cpp" />
+		<Unit filename="../../graphics/PCH.cpp" />
+		<Unit filename="../../graphics/PixelFormat.cpp" />
+		<Unit filename="../../graphics/Quad.cpp" />
+		<Unit filename="../../graphics/RenderOperation.cpp" />
+		<Unit filename="../../graphics/RenderSystem.cpp" />
+		<Unit filename="../../graphics/RenderTarget.cpp" />
+		<Unit filename="../../graphics/RenderTexture.cpp" />
+		<Unit filename="../../graphics/RenderWindow.cpp" />
+		<Unit filename="../../graphics/SceneManager.cpp" />
+		<Unit filename="../../graphics/Shader.cpp" />
+		<Unit filename="../../graphics/SimpleSprite.cpp" />
+		<Unit filename="../../graphics/Sprite.cpp" />
+		<Unit filename="../../graphics/SystemManager.cpp" />
+		<Unit filename="../../graphics/Texture.cpp" />
+		<Unit filename="../../graphics/Triple.cpp" />
+		<Unit filename="../../include/graphics/2PassScale.h" />
+		<Unit filename="../../include/graphics/Codec.h" />
+		<Unit filename="../../include/graphics/D3DRenderTexture.h" />
+		<Unit filename="../../include/graphics/DataHolder.h" />
+		<Unit filename="../../include/graphics/DevILImageCodec.h" />
+		<Unit filename="../../include/graphics/Filters.h" />
+		<Unit filename="../../include/graphics/Graphics.h" />
+		<Unit filename="../../include/graphics/GraphicsPrerequisites.h" />
+		<Unit filename="../../include/graphics/GraphicsUtil.h" />
+		<Unit filename="../../include/graphics/HareGraphicsType.h" />
+		<Unit filename="../../include/graphics/Image.h" />
+		<Unit filename="../../include/graphics/ImageCodec.h" />
+		<Unit filename="../../include/graphics/ImageCodecManager.h" />
+		<Unit filename="../../include/graphics/Line.h" />
+		<Unit filename="../../include/graphics/Material.h" />
+		<Unit filename="../../include/graphics/PCH.h" />
+		<Unit filename="../../include/graphics/PixelFormat.h" />
+		<Unit filename="../../include/graphics/Quad.h" />
+		<Unit filename="../../include/graphics/RenderOperation.h" />
+		<Unit filename="../../include/graphics/RenderSystem.h" />
+		<Unit filename="../../include/graphics/RenderTarget.h" />
+		<Unit filename="../../include/graphics/RenderTexture.h" />
+		<Unit filename="../../include/graphics/RenderWindow.h" />
+		<Unit filename="../../include/graphics/SceneManager.h" />
+		<Unit filename="../../include/graphics/Shader.h" />
+		<Unit filename="../../include/graphics/SimpleSprite.h" />
+		<Unit filename="../../include/graphics/Sprite.h" />
+		<Unit filename="../../include/graphics/SystemManager.h" />
+		<Unit filename="../../include/graphics/Texture.h" />
+		<Unit filename="../../include/graphics/Triple.h" />
+		<Extensions>
+			<code_completion />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

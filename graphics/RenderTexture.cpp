@@ -1,0 +1,6 @@
+
+
+namespace hare_graphics
+{
+
+}

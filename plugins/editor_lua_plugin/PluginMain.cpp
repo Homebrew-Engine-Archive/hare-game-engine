@@ -1,0 +1,24 @@
+//***************************************************************
+//  File:    PluginMain.cpp
+//  Data:    01/17/2009
+//  Author:  littlesome (littlesome@live.cn)
+//-------------------------------------------------------------
+//  
+//-------------------------------------------------------------
+//  This file is part of Hare2D Game Engine.
+//  Copyright (C) All Rights Reserved
+//***************************************************************
+// 
+//***************************************************************
+#include "PCH.h"
+#include "editor/EditorPlugin.h"
+#include "LuaDebuggerPlugin.h"
+
+using namespace hare_editor;
+
+static const PluginInfo luaDebugger = {
+    wxT("LuaDebugger"), 
+    wxT("LuaDebugger"),
+    wxT("This is a plugin for lua") };
+
+PluginRegistrant<LuaDebugger> regLuaDebugger(luaDebugger);

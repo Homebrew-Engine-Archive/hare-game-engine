@@ -1,0 +1,3 @@
+_EXE_ICON_  ICON    "editor.ico"
+
+WXCURSOR_RIGHT_ARROW    CURSOR  DISCARDABLE     "rightarr.cur"

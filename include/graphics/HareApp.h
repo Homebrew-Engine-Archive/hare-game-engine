@@ -1,0 +1,47 @@
+#ifndef HAREAPP
+#define HAREAPP
+
+#include "GraphicsPrerequisites.h"
+#include "RenderWindow.h"
+#include "SystemManager.h"
+
+namespace hare_graphics
+{
+	class SystemManager;
+	class SceneManager;
+	class Texture;
+
+
+	class GRAPHICS_API HareApp : public Singleton<HareApp>
+	{
+		HARE_DECLARE_SINGLETON(HareApp)
+	public:
+		HareApp();
+
+		~HareApp();
+
+		void setGraphicsSystem(SystemManager* systemManager);
+
+		void loadPlugin(const String& moduleName);
+
+		void freePlugin();
+
+		RenderWindow* createRenderWindow(const WindowParams& params);
+
+		SceneManager* createSceneManager();
+
+		Texture* createTexture();
+
+		void hareRun();
+
+		void hareRunFrame();
+	private:
+		DynamicLibrary* plugin;
+		SystemManager* graphicsSystemManager;
+	};
+
+	GRAPHICS_API HareApp* getHareApp();
+
+}
+
+#endif

@@ -1,0 +1,145 @@
+#include "core/Core.h"
+#include "graphics/Graphics.h"
+using namespace hare_graphics;
+
+//#include "LuaDebugger.h"
+
+#if defined(_DEBUG)
+#	define  CRTDBG_MAP_ALLOC
+#	include <stdlib.h>
+#	include <crtdbg.h>
+#endif
+
+extern "C" 
+{
+    #include <lua.h>
+    #include <lauxlib.h>
+    #include <lualib.h>
+
+    int luaopen_hare(lua_State *L);
+}
+
+int init_handle = 0;
+int quit_handle = 0;
+
+void main_loop(lua_State *L)
+{
+    lua_rawgeti(L, LUA_REGISTRYINDEX, init_handle);
+    lua_call(L, 0, 0);
+
+    getHareApp()->hareRun();
+
+    lua_rawgeti(L, LUA_REGISTRYINDEX, quit_handle);
+    lua_call(L, 0, 0);
+}
+
+bool load_scripts(const String& game, lua_State *L)
+{
+    FileSystem* fs = FileSystem::getSingletonPtr();
+    String fileName = game + "/script.lua";
+    FileHandle fh = fs->openFile(fileName, FM_Read);
+    if (!fh)
+        return false;
+    int size = fs->size(fh);
+    if (size <= 0) 
+    {
+        fs->closeFile(fh);
+        return false;
+    }
+    char* buffer = new char[size];
+    fs->readFile(fh, buffer, size, 1);
+    int status = luaL_loadbuffer(L, buffer, size, fileName.c_str());
+    status = lua_pcall(L, 0, LUA_MULTRET, 0);
+    delete [] buffer;
+
+    lua_getglobal(L, "init");
+    init_handle = luaL_ref(L, LUA_REGISTRYINDEX);
+
+    lua_getglobal(L, "quit");
+    quit_handle = luaL_ref(L, LUA_REGISTRYINDEX);
+
+    return true;
+}
+
+int main(int argc, char *argv[])
+{
+#if defined(_DEBUG)
+    _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+    //_CrtSetBreakAlloc(3648);
+#endif
+    core_init(argv[0]);
+    CmdLineParser cmdLine(argc, argv);
+
+    lua_State *L = lua_open();  /* create state */
+    if (L == NULL) {
+        return EXIT_FAILURE;
+    }
+	luaL_openlibs(L);
+
+    luaopen_hare(L);
+
+    // load all plugins
+    ConfigFile plugin;
+    plugin.load("plugin.cfg");
+    String pluginDir = plugin.getSetting("PluginDir");
+    StringVector plugins = plugin.getMultiSetting("Plugin");
+    for (size_t i = 0; i < plugins.size(); ++i)
+    {
+        getHareApp()->loadPlugin(pluginDir + plugins[i]);
+    }
+
+    // load all resources
+    ConfigFile resource;
+    resource.load("resource.cfg");
+
+    String writeDir = resource.getSetting("WriteDir");
+    String scriptDir = resource.getSetting("ScriptDir");
+    StringVector searchPaths = resource.getMultiSetting("SearchPath");
+
+    FileSystem* fs = FileSystem::getSingletonPtr();
+    fs->setWriteDir(writeDir);
+    fs->addSearchPath(scriptDir);
+    for (size_t i = 0; i < searchPaths.size(); ++i)
+    {
+        fs->addSearchPath(searchPaths[i]);
+    }
+
+    //LuaDebugger* debugger = 0;
+    String debug = cmdLine.getOptionValue("debug");
+    if (!debug.empty())
+    {
+        StringVector cmds = StringUtil::split(debug, ":");
+        if (cmds.size() == 2)
+        {
+            String addr = cmds[0];
+            int port = -1;
+            StringConverter::parse(cmds[1], port);
+            //debugger = new LuaDebugger(L, addr, port);
+        }
+    }
+
+    String game = cmdLine.getOptionValue("game");
+
+    if (load_scripts(game, L))
+    {
+        //if (debugger)
+        //    debugger->start();
+
+        main_loop(L);
+    }
+
+    //if (debugger)
+    //{
+    //    debugger->stop();
+    //    delete debugger;
+    //    debugger = 0;
+    //}
+
+    lua_close(L);
+
+	getHareApp()->freePlugin();
+
+    core_quit();
+
+	return EXIT_SUCCESS;
+}

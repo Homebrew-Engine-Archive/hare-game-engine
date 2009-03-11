@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<resource xmlns="http://www.wxwindows.org/wxxrc" version="2.3.0.1">
+	<object class="wxDialog" name="dlgFindReplace">
+		<title>Find Replace</title>
+		<centered>1</centered>
+		<size>510,220</size>
+		<style>wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER</style>
+		<object class="wxBoxSizer">
+			<orient>wxVERTICAL</orient>
+			<object class="sizeritem">
+				<object class="wxBoxSizer">
+					<object class="sizeritem">
+						<object class="wxBoxSizer">
+							<orient>wxVERTICAL</orient>
+							<object class="sizeritem">
+								<object class="wxBoxSizer">
+									<orient>wxVERTICAL</orient>
+									<object class="sizeritem">
+										<object class="wxStaticText" name="wxID_STATIC">
+											<label>&amp;Find text:</label>
+										</object>
+										<flag>wxTOP|wxLEFT|wxRIGHT|wxALIGN_LEFT|wxALIGN_TOP</flag>
+										<border>5</border>
+									</object>
+									<object class="sizeritem">
+										<object class="wxComboBox" name="idFindText">
+											<focused>1</focused>
+										</object>
+										<flag>wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+										<border>5</border>
+									</object>
+									<object class="sizeritem">
+										<object class="wxStaticText" name="ID_STATICTEXT">
+											<label>Re&amp;place with:</label>
+										</object>
+										<flag>wxLEFT|wxRIGHT|wxALIGN_LEFT|wxALIGN_TOP</flag>
+										<border>5</border>
+									</object>
+									<object class="sizeritem">
+										<object class="wxComboBox" name="idReplaceText" />
+										<flag>wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+										<border>5</border>
+									</object>
+								</object>
+								<flag>wxLEFT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+								<border>5</border>
+							</object>
+							<object class="sizeritem">
+								<object class="wxBoxSizer">
+									<object class="sizeritem">
+										<object class="wxStaticBoxSizer">
+											<label>Options</label>
+											<orient>wxVERTICAL</orient>
+											<object class="sizeritem">
+												<object class="wxCheckBox" name="idMatchCase">
+													<label>Match &amp;case</label>
+												</object>
+												<flag>wxALL|wxALIGN_LEFT|wxALIGN_TOP</flag>
+												<border>5</border>
+											</object>
+											<object class="sizeritem">
+												<object class="wxCheckBox" name="idMatchWhole">
+													<label>Match &amp;whole</label>
+												</object>
+												<flag>wxALL|wxALIGN_LEFT|wxALIGN_TOP</flag>
+												<border>5</border>
+											</object>
+											<object class="sizeritem">
+												<object class="wxCheckBox" name="idSearchUp">
+													<label>Search &amp;up</label>
+												</object>
+												<flag>wxALL|wxALIGN_LEFT|wxALIGN_TOP</flag>
+												<border>5</border>
+											</object>
+											<object class="sizeritem">
+												<object class="wxCheckBox" name="idRegularExpr">
+													<label>Regular &amp;expressions</label>
+												</object>
+												<flag>wxALL|wxALIGN_LEFT|wxALIGN_TOP</flag>
+												<border>5</border>
+											</object>
+										</object>
+										<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+										<border>8</border>
+										<option>1</option>
+									</object>
+									<object class="sizeritem">
+										<object class="wxRadioBox" name="ID_RADIOBOX">
+											<label>Find in</label>
+											<content>
+												<item>Current &amp;document</item>
+												<item>All &amp;open document</item>
+											</content>
+											<style>wxRA_SPECIFY_COLS</style>
+										</object>
+										<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+										<border>8</border>
+										<option>1</option>
+									</object>
+								</object>
+								<flag>wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+								<border>8</border>
+								<option>1</option>
+							</object>
+						</object>
+						<flag>wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+						<border>5</border>
+						<option>1</option>
+					</object>
+					<object class="sizeritem">
+						<object class="wxBoxSizer">
+							<orient>wxVERTICAL</orient>
+							<object class="sizeritem">
+								<object class="wxStaticText" name="ID_STATICTEXT1">
+									<label></label>
+								</object>
+								<flag>wxTOP|wxALIGN_LEFT|wxALIGN_TOP</flag>
+								<border>5</border>
+							</object>
+							<object class="sizeritem">
+								<object class="wxButton" name="wxID_OK">
+									<label>Find &amp;Next</label>
+									<default>1</default>
+								</object>
+								<flag>wxRIGHT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+								<border>5</border>
+							</object>
+							<object class="sizeritem">
+								<object class="wxButton" name="idReplace">
+									<label>&amp;Replace</label>
+								</object>
+								<flag>wxRIGHT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+								<border>5</border>
+							</object>
+							<object class="sizeritem">
+								<object class="wxButton" name="idReplaceAll">
+									<label>Replace&amp;All</label>
+								</object>
+								<flag>wxRIGHT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+								<border>5</border>
+							</object>
+							<object class="sizeritem">
+								<object class="wxButton" name="idMarkAll">
+									<label>&amp;Mark All</label>
+								</object>
+								<flag>wxRIGHT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+								<border>5</border>
+							</object>
+							<object class="sizeritem">
+								<object class="wxButton" name="wxID_CANCEL">
+									<label>Cancel</label>
+								</object>
+								<flag>wxRIGHT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+								<border>5</border>
+								<option>1</option>
+							</object>
+						</object>
+						<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxALIGN_RIGHT|wxALIGN_TOP</flag>
+						<border>5</border>
+					</object>
+				</object>
+				<flag>wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+				<border>5</border>
+				<option>1</option>
+			</object>
+		</object>
+	</object>
+</resource>

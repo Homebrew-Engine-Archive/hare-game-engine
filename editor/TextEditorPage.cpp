@@ -213,6 +213,14 @@ namespace hare_editor
         return isOK;
     }
 
+    void TextEditorPage::markLine(int marker, int line)
+    {
+        if (line == -1)
+            getControl()->MarkerDeleteAll(marker);
+        else
+            getControl()->MarkerAdd(line, marker);
+    }
+
     bool TextEditorPage::lineHasMarker(int marker, int line) const
     {
         if (line == -1)
@@ -452,6 +460,11 @@ namespace hare_editor
         getControl()->GotoLine(line + onScreen);
         getControl()->GotoLine(line);
         unfoldLine(line);
+    }
+
+    void TextEditorPage::setDebugLine(int line)
+    {
+        markLine(DEBUG_MARKER, line);
     }
 
     bool TextEditorPage::save()

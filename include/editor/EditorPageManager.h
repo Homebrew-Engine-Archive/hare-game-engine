@@ -37,6 +37,10 @@ namespace hare_editor
 
         bool setPageText(EditorPage* page, const wxString& text);
 
+        int getPageCount();
+
+        EditorPage* getPage(int index);
+
     private:
 
         wxFlatNotebook* notebook;

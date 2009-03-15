@@ -120,6 +120,12 @@
 				RelativePath="..\..\bindings\lua\hare_wrap.cxx">
 			</File>
 			<File
+				RelativePath="..\..\bindings\lua\LuaDebugData.cpp">
+			</File>
+			<File
+				RelativePath="..\..\bindings\lua\LuaDebugger.cpp">
+			</File>
+			<File
 				RelativePath="..\..\bindings\lua\main.cpp">
 			</File>
 		</Filter>

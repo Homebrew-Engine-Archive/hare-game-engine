@@ -40,6 +40,16 @@ namespace hare_editor
             }
         }
 
+        for (DockEventSinksMap::iterator mit = dockEventSinks.begin(); mit != dockEventSinks.end(); ++mit)
+        {
+            DockEventSinksArray::iterator it = mit->second.begin();
+            while (mit->second.size())
+            {
+                delete (*(mit->second.begin()));
+                mit->second.erase(mit->second.begin());
+            }
+        }
+
         appShuttingDown = true;
 
         ExplorerManager::free();
@@ -109,15 +119,36 @@ namespace hare_editor
         return true;
     }
 
+    bool Manager::processEvent(EditorDockEvent& event)
+    {
+        if (isAppShuttingDown())
+            return false;
+
+        DockEventSinksMap::iterator it = dockEventSinks.find(event.GetEventType());
+        if (it != dockEventSinks.end())
+        {
+            DockEventSinksArray::iterator ite = it->second.begin();
+            for (; ite != it->second.end(); ++ite)
+            {
+                (*ite)->call(event);
+            }
+        }
+        return true;
+    }
+
     void Manager::registerEvent(wxEventType eventType, IEventHandlerBase<EditorEvent>* handler)
     {
         eventSinks[eventType].push_back(handler);
     }
 
+    void Manager::registerEvent(wxEventType eventType, IEventHandlerBase<EditorDockEvent>* handler)
+    {
+        dockEventSinks[eventType].push_back(handler);
+    }
+
     void Manager::removeAllEventSinksFor(void* owner)
     {
-        EventSinksMap::iterator mit = eventSinks.begin();
-        for (; mit != eventSinks.end(); ++mit)
+        for (EventSinksMap::iterator mit = eventSinks.begin(); mit != eventSinks.end(); ++mit)
         {
             EventSinksArray::iterator it = mit->second.begin();
             bool endIsInvalid = false;
@@ -126,6 +157,24 @@ namespace hare_editor
                 if ((*it) && (*it)->getClass() == owner)
                 {
                     EventSinksArray::iterator it2 = it++;
+                    endIsInvalid = it == mit->second.end();
+                    delete (*it2);
+                    mit->second.erase(it2);
+                }
+                else
+                    ++it;
+            }
+        }
+
+        for (DockEventSinksMap::iterator mit = dockEventSinks.begin(); mit != dockEventSinks.end(); ++mit)
+        {
+            DockEventSinksArray::iterator it = mit->second.begin();
+            bool endIsInvalid = false;
+            while (!endIsInvalid && it != mit->second.end())
+            {
+                if ((*it) && (*it)->getClass() == owner)
+                {
+                    DockEventSinksArray::iterator it2 = it++;
                     endIsInvalid = it == mit->second.end();
                     delete (*it2);
                     mit->second.erase(it2);

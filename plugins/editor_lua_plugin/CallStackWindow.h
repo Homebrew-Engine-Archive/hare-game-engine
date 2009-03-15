@@ -13,24 +13,27 @@
 #ifndef CALLSTACKWINDOW_H
 #define CALLSTACKWINDOW_H
 
-//class LuaCallStackWindow : public wxPanel
-//{
-//public:
-//    LuaCallStackWindow(wxWindow* parent, LuaDebugger* dbg);
-//    virtual ~LuaCallStackWindow();
-//
-//    void Clear();
-//    void AddFrame(const StackFrame& frame);
-//protected:
-//    void OnListRightClick(wxListEvent& event);
-//    void OnJump(wxCommandEvent& event);
-//    void OnDblClick(wxListEvent& event);
-//    void OnSave(wxCommandEvent& event);
-//    void OnSwitchFrame(wxCommandEvent& event);
-//
-//    LuaDebugger* debugger;
-//private:
-//    DECLARE_EVENT_TABLE();
-//};
+#include <wx/xrc/xmlres.h>
+
+class LuaDebugger;
+
+class LuaCallStackWindow : public wxPanel
+{
+public:
+    LuaCallStackWindow(wxWindow* parent, LuaDebugger* dbg);
+   ~LuaCallStackWindow();
+
+    void clear();
+    void setCallStackData(LuaDebugData* data);
+    bool isReallyShown();
+
+protected:
+    void onDbClick(wxListEvent& event);
+
+    LuaDebugger* debugger;
+    LuaDebugData::Ptr callStackData;
+private:
+    DECLARE_EVENT_TABLE();
+};
 
 #endif

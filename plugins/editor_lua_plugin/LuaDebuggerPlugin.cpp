@@ -12,8 +12,6 @@
 //***************************************************************
 #include "PCH.h"
 #include "LuaDebuggerPlugin.h"
-#include "../../bindings/lua/LuaDebugDefines.h"
-#include "../../bindings/lua/SocketHelper.h"
 #include <wx/xrc/xmlres.h>
 #include <wx/aui/aui.h>
 
@@ -24,12 +22,55 @@ int idLuaDebugStepIn = XRCID("idLuaDebugStepIn");
 int idLuaDebugStepOver = XRCID("idLuaDebugStepOver");
 int idLuaDebugStepOut = XRCID("idLuaDebugStepOut");
 
+DEFINE_EVENT_TYPE(wxEVT_LUA_DEBUGGER_DEBUGGEE_CONNECTED)
+DEFINE_EVENT_TYPE(wxEVT_LUA_DEBUGGER_DEBUGGEE_DISCONNECTED)
+DEFINE_EVENT_TYPE(wxEVT_LUA_DEBUGGER_BREAK)
+DEFINE_EVENT_TYPE(wxEVT_LUA_DEBUGGER_PRINT)
+DEFINE_EVENT_TYPE(wxEVT_LUA_DEBUGGER_ERROR)
+DEFINE_EVENT_TYPE(wxEVT_LUA_DEBUGGER_EXIT)
+DEFINE_EVENT_TYPE(wxEVT_LUA_DEBUGGER_STACK_ENUM)
+DEFINE_EVENT_TYPE(wxEVT_LUA_DEBUGGER_STACK_ENTRY_ENUM)
+DEFINE_EVENT_TYPE(wxEVT_LUA_DEBUGGER_TABLE_ENUM)
+DEFINE_EVENT_TYPE(wxEVT_LUA_DEBUGGER_EVALUATE_EXPR)
+
+#define wxLuaDebuggerEventHandler(func) \
+    (wxObjectEventFunction)(wxEventFunction)wxStaticCastEvent(wxLuaDebuggerEventFunction, &func)
+
+#define EVT_LUA_DEBUGGER_BREAK(id, fn) DECLARE_EVENT_TABLE_ENTRY(wxEVT_LUA_DEBUGGER_BREAK, id, -1, wxLuaDebuggerEventHandler(fn), (wxObject*)NULL),
+#define EVT_LUA_DEBUGGER_PRINT(id, fn) DECLARE_EVENT_TABLE_ENTRY(wxEVT_LUA_DEBUGGER_PRINT, id, -1, wxLuaDebuggerEventHandler(fn), (wxObject*)NULL),
+#define EVT_LUA_DEBUGGER_ERROR(id, fn) DECLARE_EVENT_TABLE_ENTRY(wxEVT_LUA_DEBUGGER_ERROR, id, -1, wxLuaDebuggerEventHandler(fn), (wxObject*)NULL),
+#define EVT_LUA_DEBUGGER_EXIT(id, fn) DECLARE_EVENT_TABLE_ENTRY(wxEVT_LUA_DEBUGGER_EXIT, id, -1, wxLuaDebuggerEventHandler(fn), (wxObject*)NULL),
+#define EVT_LUA_DEBUGGER_STACK_ENUM(id, fn) DECLARE_EVENT_TABLE_ENTRY(wxEVT_LUA_DEBUGGER_STACK_ENUM, id, -1, wxLuaDebuggerEventHandler(fn), (wxObject*)NULL),
+#define EVT_LUA_DEBUGGER_STACK_ENTRY_ENUM(id, fn) DECLARE_EVENT_TABLE_ENTRY(wxEVT_LUA_DEBUGGER_STACK_ENTRY_ENUM, id, -1, wxLuaDebuggerEventHandler(fn), (wxObject*)NULL),
+#define EVT_LUA_DEBUGGER_TABLE_ENUM(id, fn) DECLARE_EVENT_TABLE_ENTRY(wxEVT_LUA_DEBUGGER_TABLE_ENUM, id, -1, wxLuaDebuggerEventHandler(fn), (wxObject*)NULL),
+#define EVT_LUA_DEBUGGER_EVALUATE_EXPR(id, fn) DECLARE_EVENT_TABLE_ENTRY(wxEVT_LUA_DEBUGGER_EVALUATE_EXPR, id, -1, wxLuaDebuggerEventHandler(fn), (wxObject*)NULL),
+
+BEGIN_EVENT_TABLE(LuaDebugger, DebuggerPlugin)
+    EVT_UPDATE_UI(idLuaDebugStart, LuaDebugger::onMenuUpdateUI)
+    EVT_UPDATE_UI(idLuaDebugPause, LuaDebugger::onMenuUpdateUI)
+    EVT_UPDATE_UI(idLuaDebugStop, LuaDebugger::onMenuUpdateUI)
+    EVT_UPDATE_UI(idLuaDebugStepIn, LuaDebugger::onMenuUpdateUI)
+    EVT_UPDATE_UI(idLuaDebugStepOver, LuaDebugger::onMenuUpdateUI)
+    EVT_UPDATE_UI(idLuaDebugStepOut, LuaDebugger::onMenuUpdateUI)
+
+    EVT_MENU(idLuaDebugStart, LuaDebugger::onLuaDebugStart)
+    EVT_MENU(idLuaDebugPause, LuaDebugger::onLuaDebugPause)
+    EVT_MENU(idLuaDebugStop, LuaDebugger::onLuaDebugStop)
+    EVT_MENU(idLuaDebugStepIn, LuaDebugger::onLuaDebugStepIn)
+    EVT_MENU(idLuaDebugStepOver, LuaDebugger::onLuaDebugStepOver)
+    EVT_MENU(idLuaDebugStepOut, LuaDebugger::onLuaDebugStepOut)
+
+    EVT_LUA_DEBUGGER_BREAK(wxID_ANY, LuaDebugger::onLuaDebugBreak)
+    EVT_LUA_DEBUGGER_STACK_ENUM(wxID_ANY, LuaDebugger::onLuaDebugStackEnum)
+
+END_EVENT_TABLE()
+
 // ------------------------------------------------------------------------
 //   LuaDebuggerProcess
 // ------------------------------------------------------------------------
 void LuaDebuggerProcess::OnTerminate(int pid, int status)
 {
-    // If this is being deleted from the destructor of LuaDebugger
+    // If this is being deleted from the onDetach of LuaDebugger
     //   it has already been NULLed so don't send event.
     if (debugger && debugger->debuggeeProcess)
     {
@@ -43,6 +84,25 @@ void LuaDebuggerProcess::OnTerminate(int pid, int status)
 
     delete this;
 }
+
+// ------------------------------------------------------------------------
+//   LuaDebuggerEvent
+// ------------------------------------------------------------------------
+IMPLEMENT_DYNAMIC_CLASS(LuaDebuggerEvent, wxEvent)
+
+LuaDebuggerEvent::LuaDebuggerEvent(const LuaDebuggerEvent& event)
+ : wxEvent(event), lineNumber(event.lineNumber), fileName(event.fileName), 
+   strMessage(event.strMessage), debugData(event.debugData)
+{
+}
+
+LuaDebuggerEvent::LuaDebuggerEvent(wxEventType eventType,
+    wxObject* eventObject, int line, const String &file)
+ : wxEvent(0, eventType), lineNumber(line), fileName(file)
+{
+    SetEventObject(eventObject);
+}
+
 // ------------------------------------------------------------------------
 //   LuaDebugger
 // ------------------------------------------------------------------------
@@ -50,7 +110,8 @@ wxString LuaDebugger::debugCmd;
 wxString LuaDebugger::hostName;
 
 LuaDebugger::LuaDebugger()
- : portNumber(9981), debuggeeProcess(NULL), debuggeePID(-1)
+ : portNumber(9981), debuggeeProcess(NULL), debuggeePID(-1), serverSocket(0),
+   thread(0), acceptedSocket(0), callStackWindow(0), watchWindow(0)
 {
     if (hostName.IsEmpty())
     {
@@ -60,6 +121,50 @@ LuaDebugger::LuaDebugger()
 
 LuaDebugger::~LuaDebugger()
 {
+}
+
+void LuaDebugger::onAttach()
+{
+    callStackWindow = new LuaCallStackWindow(Manager::getInstancePtr()->getAppWindow(), this);
+
+    {
+        EditorDockEvent event(editorEVT_ADD_DOCK_WINDOW);
+        event.info.Name(wxT("CallStackPane")).Caption(_("Call Stack")).Float().BestSize(150, 150)
+            .FloatingSize(450, 150).MinSize(150, 150);
+        event.window = callStackWindow;
+        Manager::getInstancePtr()->processEvent(event);
+    }
+
+    {
+        EditorDockEvent event(editorEVT_ADD_DOCK_WINDOW);
+        watchWindow = new LuaWatchWindow(Manager::getInstancePtr()->getAppWindow(), this);
+        event.info.Name(wxT("WatchPane")).Caption(_("Watch")).Float().BestSize(150, 150)
+            .FloatingSize(450, 150).MinSize(150, 150);
+        event.window = watchWindow;
+        Manager::getInstancePtr()->processEvent(event);
+    }
+}
+
+void LuaDebugger::onDetach(bool isShutDown)
+{
+    EditorDockEvent event(editorEVT_DEL_DOCK_WINDOW);
+    event.window = callStackWindow;
+    Manager::getInstancePtr()->processEvent(event);
+    event.window = watchWindow;
+    Manager::getInstancePtr()->processEvent(event);
+
+    callStackWindow->Destroy();
+    callStackWindow = 0;
+
+    watchWindow->Destroy();
+    watchWindow = 0;
+
+    stopDebugger();
+
+    // IMPORTANT!!! wxExecute post a message to the message queue, 
+    // MUST process it before exit. 3-15-2009 lituo
+    while (wxTheApp->Pending() && wxTheApp->Dispatch());
+    
     // we don't delete the the process, we kill it and its OnTerminate deletes it
     if ((debuggeeProcess != NULL) && (debuggeePID > 0) &&
         wxProcess::Exists(debuggeePID))
@@ -68,6 +173,8 @@ LuaDebugger::~LuaDebugger()
         debuggeeProcess = NULL;
         wxProcess::Kill(debuggeePID, wxSIGKILL, wxKILL_CHILDREN);
     }
+
+    while (wxTheApp->Pending() && wxTheApp->Dispatch()); 
 }
 
 bool LuaDebugger::buildMenuBar(wxMenuBar* menuBar)
@@ -101,16 +208,77 @@ bool LuaDebugger::buildToolBar(wxAuiToolBar* toolBar)
 
 void LuaDebugger::OnEndDebugeeProcess(wxProcessEvent& event)
 {
-    // The process's OnTerminate will null debuggeeProcess,
-    // but if in destructor it's already NULL and don't send event.
     if (debuggeeProcess != NULL)
     {
-        //wxLuaDebuggerEvent debugEvent(wxEVT_WXLUA_DEBUGGER_EXIT, this);
-        //debugEvent.SetMessage(wxString::Format(wxT("Process (%d) ended with exit code : %d"), event.GetPid(), event.GetExitCode()));
-        //wxPostEvent(this, debugEvent);
+        // the LuaDebuggerProcess is terminated, stop the debugger
+        stopDebugger();
     }
 
     event.Skip();
+}
+
+void LuaDebugger::onMenuUpdateUI(wxUpdateUIEvent& event)
+{
+    if (Manager::isAppShuttingDown())
+    {
+        event.Skip();
+        return;
+    }
+
+    bool debugging = false;
+
+    if (debuggeeProcess != NULL)
+        debugging = true;
+
+    int id = event.GetId();
+
+    if (id == idLuaDebugStart)
+        event.Enable(!debugging);
+    else
+        event.Enable(debugging);
+ }
+
+void LuaDebugger::onLuaDebugStart(wxCommandEvent& event)
+{
+    start();
+}
+
+void LuaDebugger::onLuaDebugPause(wxCommandEvent& event)
+{
+    breakExec();
+}
+
+void LuaDebugger::onLuaDebugStop(wxCommandEvent& event)
+{
+    stopDebugger();
+}
+
+void LuaDebugger::onLuaDebugStepIn(wxCommandEvent& event)
+{
+    step();
+}
+
+void LuaDebugger::onLuaDebugStepOver(wxCommandEvent& event)
+{
+    stepOver();
+}
+
+void LuaDebugger::onLuaDebugStepOut(wxCommandEvent& event)
+{
+    stepOut();
+}
+
+bool LuaDebugger::start()
+{
+    setDebugCmd(wxT("hare_lua -game sample"));
+    
+    if (!startDebugger())
+        return false;
+    
+    if (startDebuggee() > 0)
+        return true;
+
+    return false;
 }
 
 bool LuaDebugger::step()
@@ -200,7 +368,8 @@ long LuaDebugger::startDebuggee()
 {
     if (debuggeeProcess == NULL)
     {
-        debuggeeProcess = new LuaDebuggerProcess(this, ID_LUA_DEBUGGEE_PROCESS);
+        // Note : the LuaDebugger is not the event handler for process end event
+        debuggeeProcess = new LuaDebuggerProcess(this);
         wxString command = wxString::Format(wxT("%s -debug %s:%u"),
             getDebugCmd().c_str(),
             getHostName().c_str(),
@@ -402,7 +571,6 @@ void LuaDebugger::threadFunction()
         //wxPostEvent(this, debugEvent);
     }
 }
-
 int LuaDebugger::handleDebuggeeEvent(int event_type)
 {
     wxCHECK_MSG(getSocket(), event_type, wxT("Invalid socket"));
@@ -419,8 +587,8 @@ int LuaDebugger::handleDebuggeeEvent(int event_type)
                 SocketHelper::readInt(getSocket(), lineNumber),
                 wxT("Debugger LUA_DEBUGGEE_EVENT_BREAK")))
             {
-                //wxLuaDebuggerEvent debugEvent(wxEVT_WXLUA_DEBUGGER_BREAK, this, lineNumber, fileName);
-                //SendEvent(debugEvent);
+                LuaDebuggerEvent debugEvent(wxEVT_LUA_DEBUGGER_BREAK, this, lineNumber, fileName);
+                AddPendingEvent(debugEvent);
             }
             else 
                 return -1;
@@ -435,9 +603,9 @@ int LuaDebugger::handleDebuggeeEvent(int event_type)
                 SocketHelper::readString(getSocket(), strMessage),
                 wxT("Debugger LUADEBUGGEE_EVENT_PRINT")))
             {
-                //wxLuaDebuggerEvent debugEvent(wxEVT_WXLUA_DEBUGGER_PRINT, this);
-                //debugEvent.SetMessage(strMessage);
-                //SendEvent(debugEvent);
+                LuaDebuggerEvent debugEvent(wxEVT_LUA_DEBUGGER_PRINT, this);
+                debugEvent.strMessage = strMessage;
+                AddPendingEvent(debugEvent);
             }
             else return -1;
 
@@ -451,9 +619,9 @@ int LuaDebugger::handleDebuggeeEvent(int event_type)
                 SocketHelper::readString(getSocket(), strMessage),
                 wxT("Debugger LUA_DEBUGGEE_EVENT_ERROR")))
             {
-                //wxLuaDebuggerEvent debugEvent(wxEVT_WXLUA_DEBUGGER_ERROR, this);
-                //debugEvent.SetMessage(strMessage);
-                //SendEvent(debugEvent);
+                LuaDebuggerEvent debugEvent(wxEVT_LUA_DEBUGGER_ERROR, this);
+                debugEvent.strMessage = strMessage;
+                AddPendingEvent(debugEvent);
             }
             else return -1;
 
@@ -467,17 +635,17 @@ int LuaDebugger::handleDebuggeeEvent(int event_type)
         }
     case LUA_DEBUGGEE_EVENT_STACK_ENUM:
         {
-            /*wxLuaDebugData debugData(true);
+            Object* debugData = 0;
 
-            if (CheckSocketRead(
-                GetSocketBase()->ReadDebugData(debugData),
+            if (checkSocketRead(
+                SocketHelper::readObject(getSocket(), debugData),
                 wxT("Debugger LUA_DEBUGGEE_EVENT_STACK_ENUM")))
             {
-                wxLuaDebuggerEvent debugEvent(wxEVT_WXLUA_DEBUGGER_STACK_ENUM, this);
-                debugEvent.SetDebugData(-1, debugData);
-                SendEvent(debugEvent);
+                LuaDebuggerEvent debugEvent(wxEVT_LUA_DEBUGGER_STACK_ENUM, this);
+                debugEvent.debugData = (LuaDebugData*)debugData;
+                AddPendingEvent(debugEvent);
             }
-            else return -1;*/
+            else return -1;
 
             break;
         }
@@ -633,3 +801,44 @@ wxString LuaDebugger::getSocketErrorMsg()
 
     return wxString::FromUTF8(s.c_str());
 }
+
+void LuaDebugger::syncEditor(const String& fileName, int lineNumber)
+{
+    Project* project = Manager::getInstancePtr()->getExplorerManager()->getProjectExplorer()->getActiveProject();
+    ProjectFile* pf = project ? project->findFile(fileName) : 0;
+    
+    EditorPageManager* em = Manager::getInstancePtr()->getEditorPageManager();
+    for (int i = 0; i < em->getPageCount(); ++i)
+    {
+        EditorPage* ep = em->getPage(i);
+        if (wxIsKindOf(ep, TextEditorPage))
+        {
+            TextEditorPage* tep = (TextEditorPage*)ep;
+            tep->setDebugLine(-1);
+        }
+    }
+
+    String file = "scripts/" + fileName;
+    TextEditorPage* page = em->openInTextEditor(wxString::FromUTF8(file.c_str()));
+    if (page)
+    {
+        if (pf && !page->getProjectFile())
+            page->setProjectFile(pf);
+        page->gotoLine(lineNumber);
+        page->setDebugLine(lineNumber);
+    }
+}
+
+void LuaDebugger::onLuaDebugBreak(LuaDebuggerEvent& event)
+{
+    syncEditor(event.fileName, event.lineNumber);
+
+    if (callStackWindow->isReallyShown())
+        enumerateStack();
+}
+
+void LuaDebugger::onLuaDebugStackEnum(LuaDebuggerEvent& event)
+{
+    callStackWindow->setCallStackData(event.debugData);
+}
+

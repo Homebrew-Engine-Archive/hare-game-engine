@@ -64,6 +64,10 @@ int idEditFind = XRCID("idEditFind");
 int idEditFindInFile = XRCID("idEditFindInFile");
 int idEditGoto = XRCID("idEditGoto");
 
+int idDebugStart = XRCID("idDebugStart");
+
+int idMainToolbarChoice = wxNewId();
+
 // add more IDs here
 
 BEGIN_EVENT_TABLE(EditorFrame, wxFrame)
@@ -102,8 +106,10 @@ BEGIN_EVENT_TABLE(EditorFrame, wxFrame)
     EVT_MENU(idEditFind, EditorFrame::onEditFind)
     EVT_MENU(idEditFindInFile, EditorFrame::onEditFindInFile)
     EVT_MENU(idEditGoto, EditorFrame::onEditGoto)
-
+    EVT_MENU(idDebugStart, EditorFrame::onDebugStart)
+    
     EVT_AUITOOLBAR_TOOL_DROPDOWN(idFileNew, EditorFrame::onToolbarDropDownCreate)
+    EVT_AUITOOLBAR_TOOL_DROPDOWN(idDebugStart, EditorFrame::onToolbarDropDownDebug)
 END_EVENT_TABLE()
 
 EditorFrame::EditorFrame(wxFrame *frame, const wxString& title)
@@ -146,7 +152,9 @@ EditorFrame::EditorFrame(wxFrame *frame, const wxString& title)
     createIDE();
 
     wxString dir = wxString::FromUTF8(scriptDir.c_str());
-    Manager::getInstancePtr()->getExplorerManager()->getProjectExplorer()->loadProject(dir);
+    Manager::getInstancePtr()->getExplorerManager()->getProjectExplorer()->loadWorkspace(dir);
+
+    //wxChoice* choice = (wxChoice*)mainToolBar->FindControl(idMainToolbarChoice);
 
     wxString layout = Manager::getInstancePtr()->getConfigManager()->getAppConfigFile()->getLayout();
 
@@ -156,7 +164,6 @@ EditorFrame::EditorFrame(wxFrame *frame, const wxString& title)
 
 EditorFrame::~EditorFrame()
 {
-    wxFlatNotebook::CleanUp();
 }
 
 void EditorFrame::registerEvents()
@@ -167,6 +174,11 @@ void EditorFrame::registerEvents()
         new TEventHandler<EditorFrame, EditorEvent>(this, &EditorFrame::onEditorUpdateUI));
     pm->registerEvent(editorEVT_PLUGIN_ATTACHED,
         new TEventHandler<EditorFrame, EditorEvent>(this, &EditorFrame::onPluginAttached));
+
+    pm->registerEvent(editorEVT_ADD_DOCK_WINDOW,
+        new TEventHandler<EditorFrame, EditorDockEvent>(this, &EditorFrame::onAddDockWindow));
+    pm->registerEvent(editorEVT_DEL_DOCK_WINDOW,
+        new TEventHandler<EditorFrame, EditorDockEvent>(this, &EditorFrame::onDelDockWindow));
 }
 
 void EditorFrame::createIDE()
@@ -250,6 +262,12 @@ void EditorFrame::createToolBar()
     mainToolBar->AddTool(idEditFind, _("Find"), bmp, _("Find"));
     bmp.LoadFile(fullPath + wxT("find_in_file.png"), wxBITMAP_TYPE_PNG);
     mainToolBar->AddTool(idEditFindInFile, _("FineInFile"), bmp, _("FineInFile"));
+    mainToolBar->AddSeparator();
+    bmp.LoadFile(fullPath + wxT("start.png"), wxBITMAP_TYPE_PNG);
+    mainToolBar->AddTool(idDebugStart, _("Start"), bmp, _("Start"));
+    mainToolBar->SetToolDropDown(idDebugStart, true);
+
+    mainToolBar->AddControl(new wxChoice(mainToolBar, idMainToolbarChoice));
 
     mainToolBar->Realize();
     mainToolBar->SetInitialSize();
@@ -358,6 +376,27 @@ void EditorFrame::onPluginAttached(EditorEvent& event)
     }
 }
 
+void EditorFrame::onAddDockWindow(EditorDockEvent& event)
+{
+    if (Manager::isAppShuttingDown())
+        return;
+
+    if (event.window)
+    {
+        layoutManager.AddPane(event.window, event.info);
+        layoutManager.Update();
+    }
+}
+
+void EditorFrame::onDelDockWindow(EditorDockEvent& event)
+{
+    if (event.window)
+    {
+        layoutManager.DetachPane(event.window);
+        layoutManager.Update();
+    }
+}
+
 void EditorFrame::onFileMenuUpdateUI(wxUpdateUIEvent& event)
 {
 
@@ -445,6 +484,25 @@ void EditorFrame::onToolbarDropDownCreate(wxAuiToolBarEvent& event)
     }
 }
 
+void EditorFrame::onToolbarDropDownDebug(wxAuiToolBarEvent& event)
+{
+    if (event.IsDropDownClicked())
+    {
+        wxAuiToolBar* tb = static_cast<wxAuiToolBar*>(event.GetEventObject());
+
+        tb->SetToolSticky(event.GetId(), true);
+
+        wxRect rect = tb->GetToolRect(event.GetId());
+        wxPoint pt = tb->ClientToScreen(rect.GetBottomLeft());
+
+        wxMenu menuPopup;
+        // PopupMenu
+
+        // make sure the button is "un-stuck"
+        tb->SetToolSticky(event.GetId(), false);
+    }
+}
+
 void EditorFrame::onEraseBackground(wxEraseEvent& event)
 {
     // for flicker-free display
@@ -479,7 +537,7 @@ void EditorFrame::onApplicationClose(wxCloseEvent& event)
     if (!layout.IsEmpty())
         Manager::getInstancePtr()->getConfigManager()->getAppConfigFile()->setLayout(layout);
 
-    Manager::getInstancePtr()->getExplorerManager()->getProjectExplorer()->saveProject();
+    Manager::getInstancePtr()->getExplorerManager()->getProjectExplorer()->saveWorkspace();
 
     Hide();
 
@@ -488,6 +546,8 @@ void EditorFrame::onApplicationClose(wxCloseEvent& event)
     layoutManager.UnInit();
 
     Manager::free();
+    wxFlatNotebook::CleanUp();
+    
     Destroy();
 }
 
@@ -588,6 +648,26 @@ void EditorFrame::onEditFindInFile(wxCommandEvent& event)
 void EditorFrame::onEditGoto(wxCommandEvent& event)
 {
 
+}
+void EditorFrame::onDebugStart(wxCommandEvent& event)
+{
+    Manager* man = Manager::getInstancePtr();
+    ProjectExplorer* pe = man->getExplorerManager()->getProjectExplorer();
+    Project* prj = pe->getActiveProject();
+    if (prj)
+    {
+        prj->debuggerName = "LuaDebugger";
+
+        if (!prj->debuggerName.empty())
+        {
+            EditorPlugin* plugin = man->getPluginManager()->findPluginByName(wxString::FromUTF8(prj->debuggerName.c_str()));
+            if (plugin && plugin->getType() == EPT_Debugger)
+            {
+                DebuggerPlugin* debugger = (DebuggerPlugin*)plugin;
+                debugger->start();
+            }
+        }
+    }
 }
 void EditorFrame::_doOpenFile()
 {

@@ -19,8 +19,8 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\ext\wxWidgets\lib\vc_dll\mswud;..\..\ext\wxWidgets\include;..\..\include"
-				PreprocessorDefinitions="WIN32;_USRDLL;DLL_EXPORTS;WXUSINGDLL;__WXDEBUG__;__WXMSW__;_DEBUG"
+				AdditionalIncludeDirectories="..\..\ext\wxWidgets\lib\vc_dll\mswud;..\..\ext\wxWidgets\include;..\..\include;..\..\ext\lua\src;..\..\include\editor\wxTreeListCtrl\include"
+				PreprocessorDefinitions="WIN32;_USRDLL;DLL_EXPORTS;WXUSINGDLL;__WXDEBUG__;__WXMSW__;_DEBUG;WXUSINGDLL_TL"
 				MinimalRebuild="TRUE"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -33,10 +33,10 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="core_d.lib editor_d.lib wxexpatd.lib wxjpegd.lib wxmsw28ud.lib wxpngd.lib wxregexud.lib wxtiffd.lib wxzlibd.lib winmm.lib comctl32.lib rpcrt4.lib wsock32.lib odbc32.lib oleacc.lib"
+				AdditionalDependencies="core_d.lib editor_d.lib wxexpatd.lib wxjpegd.lib wxmsw28ud.lib wxpngd.lib wxregexud.lib wxtiffd.lib wxzlibd.lib winmm.lib comctl32.lib rpcrt4.lib wsock32.lib odbc32.lib oleacc.lib lua51.lib"
 				OutputFile="$(OutDir)/editor_lua.plugin"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="..\..\lib;..\..\ext\wxWidgets\lib\vc_dll"
+				AdditionalLibraryDirectories="..\..\lib;..\..\ext\wxWidgets\lib\vc_dll;..\..\ext\lua\src"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="$(OutDir)/editor_lua_plugin.pdb"
 				SubSystem="2"
@@ -162,6 +162,28 @@
 			Name="Resource Files"
 			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx"
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}">
+		</Filter>
+		<Filter
+			Name="Common"
+			Filter="">
+			<File
+				RelativePath="..\..\bindings\lua\LuaDebugData.cpp">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\bindings\lua\LuaDebugData.h">
+			</File>
+			<File
+				RelativePath="..\..\bindings\lua\LuaDebugDefines.h">
+			</File>
+			<File
+				RelativePath="..\..\bindings\lua\SocketHelper.h">
+			</File>
 		</Filter>
 	</Files>
 	<Globals>

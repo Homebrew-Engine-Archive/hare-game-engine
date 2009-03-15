@@ -7,12 +7,13 @@ using namespace hare_core;
 
 extern "C" 
 {
-    #include <lua.h>
-    #include <lauxlib.h>
-    #include <lualib.h>
+#include <lua.h>
+#include <lauxlib.h>
+#include <lualib.h>
 }
 
 #include "LuaDebugDefines.h"
+#include "LuaDebugData.h"
 
 class LuaDebugger : public Singleton<LuaDebugger>
 {
@@ -75,8 +76,6 @@ protected:
 
     BreakPointSet breakPoints;
     CriticalSection breakPointsCS;
-
-    DebugReference debugRefs;
 
 protected:
     bool handleDebuggerCmd(int cmd);

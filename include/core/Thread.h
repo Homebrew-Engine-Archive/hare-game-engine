@@ -143,55 +143,57 @@ namespace hare_core
 
     enum ThreadError
     {
-
+        THREAD_NO_ERROR = 0,
+        THREAD_NO_RESOURCE,
+        THREAD_RUNNING,
+        THREAD_NOT_RUNNING,
+        THREAD_ERROR,
     };
+
+    class ThreadData;
 
     class CORE_API Thread
     {
-    //public:
-    //    static Thread* currentThread();
-    //    static bool isMainThread();
-    //    static void yield();
-    //    static void sleep(u32 milliseconds);
-    //    static int getCPUCount();
-    //    static int getCurrentId();
-    //    static bool setConcurrency(int level);
+    public:
+        //static Thread* currentThread();
+        //static bool isMainThread();
+        //static void yield();
+        //static void sleep(u32 milliseconds);
+        //static int getCPUCount();
+        //static int getCurrentId();
+        //static bool setConcurrency(int level);
 
-    //public:
-    //    ThreadError create(u32 stackSize = 0);
-    //    ThreadError run();
+    public:
+        typedef void* ExitCode;
 
-    //    //ThreadError delete(ExitCode *rc = (ExitCode *)NULL);
+        Thread();
+        virtual ~Thread();
 
-    //    //ExitCode Wait();
+        ThreadError create(u32 stackSize = 0);
+        ThreadError run();
 
-    //    ThreadError kill();
-    //    ThreadError pause();
-    //    ThreadError resume();
+        ExitCode waitExit();
 
-    //    void setPriority(u32 prio);
-    //    u32 getPriority() const;
+        ThreadError kill();
+        ThreadError pause();
+        ThreadError resume();
 
-    //    bool isAlive() const;
-    //    bool isRunning() const;
-    //    bool isPaused() const;
-    //    bool isDetached() const;
+        bool isAlive() const;
+        bool isRunning() const;
+        bool isPaused() const;
+        int getId() const;
 
-    //    int getId() const;
+        virtual bool testDestroy();
 
-    //    virtual void onExit()
-    //    {
-    //    }
+    public:
+        virtual void* entry() = 0;
+        virtual void onExit()
+        {
+        }
 
-    //    virtual bool testDestroy();
-
-    //    Thread();
-    //    virtual ~Thread();
-
-    //protected:
-    //    //void exit(ExitCode exitcode = 0);
-    //    virtual void* entry() = 0;
-
-    //private:
+    private:
+        friend class ThreadData;
+        ThreadData* privateData;
+        CriticalSection cs;
     };
 }

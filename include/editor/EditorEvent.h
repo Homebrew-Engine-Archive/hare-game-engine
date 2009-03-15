@@ -14,6 +14,7 @@
 #define EDITOREVENT_H
 
 #include "EditorPrerequisites.h"
+#include <wx/aui/aui.h>
 
 namespace hare_editor
 {
@@ -37,7 +38,31 @@ namespace hare_editor
 
         EditorPage* editorPage;
         EditorPlugin* plugin;
+        Project* project;
         DECLARE_DYNAMIC_CLASS(EditorEvent)
+    };
+
+    class EDITOR_API EditorDockEvent : public wxCommandEvent
+    {
+    public:
+        EditorDockEvent(wxEventType commandType = wxEVT_NULL, int id = 0)
+            : wxCommandEvent(commandType, id), window(0)
+        {
+        }
+
+        EditorDockEvent(const EditorDockEvent& rhs)
+            : wxCommandEvent(rhs), window(rhs.window), info(rhs.info)
+        {
+        }
+
+        virtual wxEvent *Clone() const 
+        { 
+            return new EditorDockEvent(*this); 
+        }
+
+        wxWindow* window;
+        wxAuiPaneInfo info;
+        DECLARE_DYNAMIC_CLASS(EditorDockEvent)
     };
 
     typedef void (wxEvtHandler::*EditorEventFunction)(EditorEvent&);
@@ -45,6 +70,11 @@ namespace hare_editor
     extern EDITOR_API const wxEventType editorEVT_EDITOR_UPDATE_UI;
     extern EDITOR_API const wxEventType editorEVT_PLUGIN_ATTACHED;
     extern EDITOR_API const wxEventType editorEVT_PLUGIN_DETACHED;
+    extern EDITOR_API const wxEventType editorEVT_PROJECT_ACTIVED;
+
+    extern EDITOR_API const wxEventType editorEVT_ADD_DOCK_WINDOW;
+    extern EDITOR_API const wxEventType editorEVT_DEL_DOCK_WINDOW;
+
 }
 
 #endif

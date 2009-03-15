@@ -40,10 +40,12 @@ namespace hare_editor
         bool saveAs();
 
         void gotoLine(int line);
+        void setDebugLine(int line);
 
         void foldLine(int line);
         void unfoldLine(int line);
 
+        void markLine(int marker, int line);
         bool lineHasMarker(int marker, int line) const;
         void toggleMarker(int marker, int line);
 

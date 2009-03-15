@@ -13,24 +13,23 @@
 #ifndef WATCHWINDOW_H
 #define WATCHWINDOW_H
 
-//class LuaWatchWindow : public wxPanel
-//{
-//public:
-//    LuaCallStackWindow(wxWindow* parent, LuaDebugger* dbg);
-//    virtual ~LuaCallStackWindow();
-//
-//    void Clear();
-//    void AddFrame(const StackFrame& frame);
-//protected:
-//    void OnListRightClick(wxListEvent& event);
-//    void OnJump(wxCommandEvent& event);
-//    void OnDblClick(wxListEvent& event);
-//    void OnSave(wxCommandEvent& event);
-//    void OnSwitchFrame(wxCommandEvent& event);
-//
-//    LuaDebugger* debugger;
-//private:
-//    DECLARE_EVENT_TABLE();
-//};
+#include <wx/xrc/xmlres.h>
+
+class LuaDebugger;
+class wxTreeListCtrl;
+
+class LuaWatchWindow : public wxPanel
+{
+public:
+    LuaWatchWindow(wxWindow* parent, LuaDebugger* dbg);
+    virtual ~LuaWatchWindow();
+
+protected:
+    LuaDebugger* debugger;
+    wxTreeListCtrl* treeList;
+    wxTreeItemId root;
+private:
+    DECLARE_EVENT_TABLE();
+};
 
 #endif

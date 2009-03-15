@@ -20,7 +20,7 @@ class EditorFrame: public wxFrame
 {
 public:
     EditorFrame(wxFrame *frame, const wxString& title);
-    ~EditorFrame();
+   ~EditorFrame();
 private:
     wxAuiManager layoutManager;
     wxAuiToolBar* mainToolBar;
@@ -39,6 +39,7 @@ public:
     void onEraseBackground(wxEraseEvent& event);
     void onSize(wxSizeEvent& event);
     void onApplicationClose(wxCloseEvent& event);
+    // file menu
     void onFileNew(wxCommandEvent& event);
     void onFileOpen(wxCommandEvent& event);
     void onFileReopenProject(wxCommandEvent& event);
@@ -48,7 +49,7 @@ public:
     void onFileSave(wxCommandEvent& event);
     void onFileSaveAll(wxCommandEvent& event);
     void onFileQuit(wxCommandEvent& event);
-
+    // edit menu
     void onEditUndo(wxCommandEvent& event);
     void onEditRedo(wxCommandEvent& event);
     void onEditCut(wxCommandEvent& event);
@@ -59,14 +60,21 @@ public:
     void onEditFindInFile(wxCommandEvent& event);
     void onEditGoto(wxCommandEvent& event);
 
+    void onDebugStart(wxCommandEvent& event);
+
     bool onDropFiles(wxCoord x, wxCoord y, const wxArrayString& filenames);
 
     void onToolbarDropDownCreate(wxAuiToolBarEvent& event);
+    void onToolbarDropDownDebug(wxAuiToolBarEvent& event);
+    
     void onFileMenuUpdateUI(wxUpdateUIEvent& event);
     void onEditMenuUpdateUI(wxUpdateUIEvent& event);
 
     void onEditorUpdateUI(EditorEvent& event);
     void onPluginAttached(EditorEvent& event);
+
+    void onAddDockWindow(EditorDockEvent& event);
+    void onDelDockWindow(EditorDockEvent& event);
 
 private:
     void _doOpenFile();

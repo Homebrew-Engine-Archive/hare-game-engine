@@ -23,6 +23,8 @@ namespace hare_editor
     public:
         DebuggerPlugin();
         virtual ~DebuggerPlugin();
+    public:
+        virtual bool start() = 0;
     };
 
 }

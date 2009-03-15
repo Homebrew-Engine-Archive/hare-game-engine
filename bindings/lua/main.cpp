@@ -2,7 +2,7 @@
 #include "graphics/Graphics.h"
 using namespace hare_graphics;
 
-//#include "LuaDebugger.h"
+#include "LuaDebugger.h"
 
 #if defined(_DEBUG)
 #	define  CRTDBG_MAP_ALLOC
@@ -104,7 +104,7 @@ int main(int argc, char *argv[])
         fs->addSearchPath(searchPaths[i]);
     }
 
-    //LuaDebugger* debugger = 0;
+    LuaDebugger* debugger = 0;
     String debug = cmdLine.getOptionValue("debug");
     if (!debug.empty())
     {
@@ -114,26 +114,26 @@ int main(int argc, char *argv[])
             String addr = cmds[0];
             int port = -1;
             StringConverter::parse(cmds[1], port);
-            //debugger = new LuaDebugger(L, addr, port);
+            debugger = new LuaDebugger(L, addr, port);
         }
     }
 
     String game = cmdLine.getOptionValue("game");
 
+    if (debugger)
+        debugger->start();
+
     if (load_scripts(game, L))
     {
-        //if (debugger)
-        //    debugger->start();
-
         main_loop(L);
     }
 
-    //if (debugger)
-    //{
-    //    debugger->stop();
-    //    delete debugger;
-    //    debugger = 0;
-    //}
+    if (debugger)
+    {
+        debugger->stop();
+        delete debugger;
+        debugger = 0;
+    }
 
     lua_close(L);
 

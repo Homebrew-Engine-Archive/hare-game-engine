@@ -125,6 +125,9 @@ bool LuaDebugger::start()
         }
         
         runCondition.wait();
+        
+        running = true;
+
         return true;
     }
 
@@ -182,10 +185,11 @@ void LuaDebugger::threadFunction()
     }
     else
     {
+        printf("%s\n", socket.getLastErrorMsg().c_str());
         return;
     }
 
-    while (threadRunning)
+    while (threadRunning && !debugThread->testDestroy() && !resetRequested)
     {
         unsigned char debugCommand = 0;
         if (!SocketHelper::readCmd(&socket, debugCommand) ||
@@ -315,12 +319,13 @@ bool LuaDebugger::addBreakPoint(const String &fileName, int lineNumber)
 {
     CriticalSectionLocker locker(breakPointsCS);
     breakPoints.insert(toBreakPoint(fileName, lineNumber));
+    return true;
 }
 
 bool LuaDebugger::removeBreakPoint(const String &fileName, int lineNumber)
 {
     CriticalSectionLocker locker(breakPointsCS);
-    return breakPoints.erase(toBreakPoint(fileName, lineNumber)) > 0;    
+    return breakPoints.erase(toBreakPoint(fileName, lineNumber)) > 0;  
 }
 
 bool LuaDebugger::clearAllBreakPoints()
@@ -418,7 +423,7 @@ bool LuaDebugger::enumerateStackEntry(int stackRef)
     LuaDebugData debugData;
 
     enterLuaCriticalSection();
-    debugData.enumerateStackEntry(state, stackRef, debugRefs);
+    debugData.enumerateStackEntry(state, stackRef);
     leaveLuaCriticalSection();
 
     return notifyStackEntryEnumeration(stackRef, debugData);
@@ -429,7 +434,7 @@ bool LuaDebugger::enumerateTable(int tableRef, int index, long itemNode)
     LuaDebugData debugData;
 
     enterLuaCriticalSection();
-    debugData.enumerateTable(state, tableRef, index, debugRefs);
+    debugData.enumerateTable(state, tableRef, index);
     leaveLuaCriticalSection();
 
     return notifyTableEnumeration(itemNode, debugData);

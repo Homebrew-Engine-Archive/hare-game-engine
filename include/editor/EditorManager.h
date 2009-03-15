@@ -63,8 +63,10 @@ namespace hare_editor
         PluginManager* getPluginManager() const;
 
         bool processEvent(EditorEvent& event);
+        bool processEvent(EditorDockEvent& event);
 
         void registerEvent(wxEventType eventType, IEventHandlerBase<EditorEvent>* handler);
+        void registerEvent(wxEventType eventType, IEventHandlerBase<EditorDockEvent>* handler);
 
         void removeAllEventSinksFor(void* owner);
 
@@ -78,6 +80,10 @@ namespace hare_editor
         typedef std::map<wxEventType, EventSinksArray> EventSinksMap;
 
         EventSinksMap eventSinks;
+
+        typedef std::vector<IEventHandlerBase<EditorDockEvent>*> DockEventSinksArray;
+        typedef std::map<wxEventType, DockEventSinksArray> DockEventSinksMap;
+        DockEventSinksMap dockEventSinks;
 
     private:
         Manager();

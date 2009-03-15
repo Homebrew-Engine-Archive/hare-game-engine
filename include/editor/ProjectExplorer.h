@@ -20,43 +20,45 @@
 
 namespace hare_editor
 {
-    class ScriptPackage : public Object
+    class EDITOR_API Project : public Object
     {
-        HARE_DECLARE_DYNAMIC_CLASS(ScriptPackage)
+        HARE_DECLARE_DYNAMIC_CLASS(Project)
     public:
         bool positionBreakPoints();
         ProjectFile* findFile(const String& name);
 
-        String packageName;
+        String projectName;
+        String debuggerName;
         ProjectFile::List files;
+
+        wxTreeItemId treeNode;
     };
 
-    class Project : public Object
+    class EDITOR_API Workspace : public Object
     {
-        HARE_DECLARE_DYNAMIC_CLASS(Project)
+        HARE_DECLARE_DYNAMIC_CLASS(Workspace)
     public:
-        ScriptPackage::List packages;
+        Project::List projects;
 
-        ScriptPackage* findPackage(const String& name);
-    };
+        String activeProject;
 
-    class TreeItemData : public wxTreeItemData
-    {
-    public:
-        TreeItemData(ProjectFile* pf) : file(pf) {}
-        ProjectFile *file;
+        Project* findProject(const String& name);
     };
 
     class EDITOR_API ProjectExplorer : public wxPanel
     {
     public:
         ProjectExplorer(wxWindow *parent);
-        ~ProjectExplorer();
+       ~ProjectExplorer();
 
-        bool loadProject(const wxString& dir);
-        void saveProject();
+        bool loadWorkspace(const wxString& dir);
+        void saveWorkspace();
 
         void updateProjectFiles();
+
+        void setProjectActive(Project* project);
+
+        Project* getActiveProject();
 
     private:
         void createImageList();
@@ -65,10 +67,14 @@ namespace hare_editor
 
     private:
         wxTreeCtrl* projectTree;
+        
         wxImageList* imageList;
+
         wxTreeItemId root;
 
-        Project::Ptr project;
+        Workspace::Ptr workspace;
+
+        Project* activeProject;
 
         DECLARE_EVENT_TABLE()
     };

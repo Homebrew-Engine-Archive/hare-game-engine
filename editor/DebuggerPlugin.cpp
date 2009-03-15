@@ -17,6 +17,7 @@ namespace hare_editor
 {
     DebuggerPlugin::DebuggerPlugin()
     {
+        type = EPT_Debugger;
     }
 
     DebuggerPlugin::~DebuggerPlugin()

@@ -101,4 +101,15 @@ namespace hare_editor
 
         return editor;
     }
+
+    int EditorPageManager::getPageCount()
+    {
+        return notebook->GetPageCount();
+    }
+
+    EditorPage* EditorPageManager::getPage(int index)
+    {
+        return (EditorPage*)notebook->GetPage(index);
+    }
+
 }

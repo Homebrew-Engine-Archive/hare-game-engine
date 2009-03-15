@@ -15,6 +15,9 @@
 
 #if HARE_PLATFORM == HARE_PLATFORM_WIN32
 #include <windows.h>
+#include <process.h>
+typedef unsigned THREAD_RETVAL;
+#define THREAD_CALLCONV __stdcall
 #endif
 
 namespace hare_core
@@ -176,6 +179,194 @@ namespace hare_core
         }
 
         return SEMA_NO_ERROR;
+    }
+
+    //---------------------------------------------------------------------
+    enum ThreadState
+    {
+        STATE_NEW,          // didn't start execution yet (=> RUNNING)
+        STATE_RUNNING,      // thread is running (=> PAUSED, CANCELED)
+        STATE_PAUSED,       // thread is temporarily suspended (=> RUNNING)
+        STATE_CANCELED,     // thread should terminate a.s.a.p. (=> EXITED)
+        STATE_EXITED        // thread is terminating
+    };
+
+    class ThreadData
+    {
+    public:
+        ThreadData() : handle(0), state(STATE_NEW), id(0)
+        {
+        }
+
+        static THREAD_RETVAL THREAD_CALLCONV threadEntry(void* param)
+        {
+            Thread* thread = (Thread*)param;
+
+            DWORD exitCode = (DWORD)thread->entry();
+
+            thread->onExit();
+
+            CriticalSectionLocker lock(thread->cs);
+            thread->privateData->state = STATE_EXITED;
+
+            return exitCode;
+        }
+
+    public:    
+        HANDLE handle;
+        ThreadState state;
+        u32 id;
+    };
+
+    Thread::Thread()
+    {
+        privateData = new ThreadData();
+    }
+
+    Thread::~Thread()
+    {
+        delete privateData;
+        privateData = 0;
+    }
+
+    ThreadError Thread::create(u32 stackSize)
+    { 
+        CriticalSectionLocker lock(cs);
+
+        privateData->handle = (HANDLE)_beginthreadex(NULL, stackSize, ThreadData::threadEntry, this, 
+            CREATE_SUSPENDED, (u32*)&privateData->id);
+
+        if (!privateData->handle)
+            return THREAD_NO_RESOURCE;
+
+        return THREAD_NO_ERROR; 
+    }
+
+    ThreadError Thread::run()
+    { 
+        CriticalSectionLocker lock(cs);
+
+        if (privateData->state != STATE_NEW)
+        {
+            return THREAD_RUNNING;
+        }
+
+        return resume(); 
+    }
+
+    ThreadError Thread::kill()
+    {
+        if (!isRunning())
+            return THREAD_NOT_RUNNING;
+
+        if (!TerminateThread(privateData->handle, (DWORD)-1))
+        {
+            return THREAD_ERROR;
+        }
+
+        CloseHandle(privateData->handle);
+        privateData->handle = 0;
+        privateData->state = STATE_EXITED;
+
+        return THREAD_NO_ERROR;
+    }
+
+    ThreadError Thread::pause()
+    {
+        CriticalSectionLocker lock(cs);
+
+        DWORD num = SuspendThread(privateData->handle);
+        if (num == (DWORD)-1)
+        {
+            return THREAD_ERROR;
+        }
+
+        privateData->state = STATE_PAUSED;
+
+        return THREAD_NO_ERROR;
+    }
+    
+    ThreadError Thread::resume()
+    {
+        CriticalSectionLocker lock(cs);
+
+        DWORD num = ResumeThread(privateData->handle);
+        if (num == (DWORD)-1)
+        {
+            return THREAD_ERROR;
+        }
+
+        if (privateData->state != STATE_EXITED)
+        {
+            privateData->state = STATE_RUNNING;
+        }
+
+        return THREAD_NO_ERROR;
+    }
+
+    bool Thread::isAlive() const
+    {
+        CriticalSectionLocker lock((CriticalSection&)cs);
+        
+        return privateData->state == STATE_RUNNING || privateData->state == STATE_PAUSED;
+    }
+
+    bool Thread::isRunning() const
+    {
+        CriticalSectionLocker lock((CriticalSection&)cs);
+
+        return privateData->state == STATE_RUNNING;
+    }
+
+    bool Thread::isPaused() const
+    {
+        CriticalSectionLocker lock((CriticalSection&)cs);
+
+        return privateData->state == STATE_PAUSED;
+    }
+
+    int Thread::getId() const
+    {
+        CriticalSectionLocker lock((CriticalSection&)cs);
+
+        return privateData->id;
+    }
+
+    Thread::ExitCode Thread::waitExit() 
+    { 
+        ExitCode exitCode = (ExitCode)-1;
+
+        if (privateData->state == STATE_PAUSED || privateData->state == STATE_NEW)
+        {
+            resume();
+        }
+
+        privateData->state = STATE_CANCELED;
+
+        WaitForSingleObject(privateData->handle, INFINITE);
+
+        for (;;)
+        {
+            if (!GetExitCodeThread(privateData->handle, (LPDWORD)&exitCode))
+            {
+                exitCode = (ExitCode)-1;
+                break;
+            }
+
+            if ((DWORD)exitCode != STILL_ACTIVE)
+                break;
+
+            Sleep(1);
+        }
+
+        return exitCode; 
+    }
+
+    bool Thread::testDestroy()
+    {
+        CriticalSectionLocker lock(cs);
+
+        return privateData->state == STATE_CANCELED;
     }
 
 #endif

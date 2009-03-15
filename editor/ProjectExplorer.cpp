@@ -23,7 +23,14 @@
 
 namespace hare_editor
 {
-    ProjectFile* ScriptPackage::findFile(const String& name)
+    class TreeItemData : public wxTreeItemData
+    {
+    public:
+        TreeItemData(ProjectFile* pf) : file(pf) {}
+        ProjectFile *file;
+    };
+
+    ProjectFile* Project::findFile(const String& name)
     {
         ProjectFile::List::iterator it = files.begin();
         for (; it != files.end(); ++it)
@@ -35,27 +42,29 @@ namespace hare_editor
         return 0;
     }
 
-    ScriptPackage* Project::findPackage(const String& name)
+    Project* Workspace::findProject(const String& name)
     {
-        ScriptPackage::List::iterator it = packages.begin();
-        for (; it != packages.end(); ++it)
+        Project::List::iterator it = projects.begin();
+        for (; it != projects.end(); ++it)
         {
-            if ((*it)->packageName == name)
+            if ((*it)->projectName == name)
                 return *it;
         }
 
         return 0;
     }
 
-    HARE_IMPLEMENT_DYNAMIC_CLASS(ScriptPackage, Object, 0)
+    HARE_IMPLEMENT_DYNAMIC_CLASS(Project, Object, 0)
     {
-        HARE_META(packageName, String)
+        HARE_META(projectName, String)
+        HARE_META(debuggerName, String)
         HARE_OBJ_LIST(files, ProjectFile)
     }
 
-    HARE_IMPLEMENT_DYNAMIC_CLASS(Project, Object, 0)
+    HARE_IMPLEMENT_DYNAMIC_CLASS(Workspace, Object, 0)
     {
-        HARE_OBJ_LIST(packages, ScriptPackage)
+        HARE_OBJ_LIST(projects, Project)
+        HARE_META(activeProject, String)
     }
 
     int idProjectExplorer = wxNewId();
@@ -65,7 +74,7 @@ namespace hare_editor
     END_EVENT_TABLE()
 
     ProjectExplorer::ProjectExplorer(wxWindow *parent)
-        : wxPanel(parent), imageList(0)
+        : wxPanel(parent), imageList(0), activeProject(0)
     {
         wxBoxSizer* sizer = new wxBoxSizer(wxVERTICAL);
 
@@ -94,22 +103,22 @@ namespace hare_editor
         }
     }
 
-    bool ProjectExplorer::loadProject(const wxString& dir)
+    bool ProjectExplorer::loadWorkspace(const wxString& dir)
     {
         wxDir d(dir);
         if (!d.IsOpened())
             return false;
 
-        project = new Project;
+        workspace = new Workspace;
 
         wxString dirName;
         bool dirOk = d.GetFirst(&dirName, wxEmptyString, wxDIR_DIRS);
         while (dirOk)
         {
-            String pkgName = dirName.ToUTF8().data();
-            ScriptPackage* pkg = new ScriptPackage;
-            pkg->packageName = pkgName;
-            project->packages.push_back(pkg);
+            String prjName = dirName.ToUTF8().data();
+            Project* prj = new Project;
+            prj->projectName = prjName;
+            workspace->projects.push_back(prj);
 
             wxDir f(dir + dirName);
             wxString fileName;
@@ -118,28 +127,28 @@ namespace hare_editor
             {
                 ProjectFile* file = new ProjectFile;
                 file->fileName = fileName.ToUTF8().data();
-                pkg->files.push_back(file);
+                prj->files.push_back(file);
                 ok = f.GetNext(&fileName);
             }
 
             dirOk = d.GetNext(&dirName);
         }
 
-        Project::Ptr savedProject = (Project*)Object::loadFromXml("project.xml");
-        if (savedProject)
+        Workspace::Ptr savedWorkspace = (Workspace*)Object::loadFromXml("workspace.xml");
+        if (savedWorkspace)
         {
-            ScriptPackage::List::iterator it0 = savedProject->packages.begin();
-            for (; it0 != savedProject->packages.end(); ++it0)
+            Project::List::iterator it0 = savedWorkspace->projects.begin();
+            for (; it0 != savedWorkspace->projects.end(); ++it0)
             {
-                ScriptPackage* savedPackage = *it0;
-                ScriptPackage* package = project->findPackage(savedPackage->packageName);
-                if (package)
+                Project* savedPrj = *it0;
+                Project* prj = workspace->findProject(savedPrj->projectName);
+                if (prj)
                 {
-                    ProjectFile::List::iterator it1 = savedPackage->files.begin();
-                    for (; it1 != savedPackage->files.end(); ++it1)
+                    ProjectFile::List::iterator it1 = savedPrj->files.begin();
+                    for (; it1 != savedPrj->files.end(); ++it1)
                     {
                         ProjectFile* savedFile = *it1;
-                        ProjectFile* file = package->findFile(savedFile->fileName);
+                        ProjectFile* file = prj->findFile(savedFile->fileName);
                         if (file)
                             *file = *savedFile;
                     }
@@ -150,16 +159,17 @@ namespace hare_editor
         typedef std::map<int, ProjectFile*> open_files_map;
         open_files_map open_files;
 
-        ScriptPackage::List::iterator it0 = project->packages.begin();
-        for (; it0 != project->packages.end(); ++it0)
+        Project::List::iterator it0 = workspace->projects.begin();
+        for (; it0 != workspace->projects.end(); ++it0)
         {
-            ScriptPackage* pkg = *it0;
-            wxString packageName = wxString::FromUTF8(pkg->packageName.c_str());
-            ProjectFile::List::iterator it1 = pkg->files.begin();
-            wxTreeItemId treeId = projectTree->AppendItem(root, packageName, 1, 1);
-            for (; it1 != pkg->files.end(); ++it1)
+            Project* prj = *it0;
+            wxString projectName = wxString::FromUTF8(prj->projectName.c_str());
+            ProjectFile::List::iterator it1 = prj->files.begin();
+            wxTreeItemId treeId = projectTree->AppendItem(root, projectName, 1, 1);
+            prj->treeNode = treeId;
+            for (; it1 != prj->files.end(); ++it1)
             {
-                wxString dirName = dir + packageName + wxT("/");
+                wxString dirName = dir + projectName + wxT("/");
                 wxString fileName = wxString::FromUTF8((*it1)->fileName.c_str());
                 (*it1)->fname = wxFileName(dirName + fileName);
                 (*it1)->fname.Normalize();
@@ -182,17 +192,24 @@ namespace hare_editor
         //wxFlatNotebook* noteBook = Manager::getInstancePtr()->getEditorPageManager()->getNotebook();
         //noteBook->SetSelection(project->activePage);
 
+        if (workspace->projects.size() > 0)
+        {
+            if (workspace->activeProject.empty())
+                workspace->activeProject = (*workspace->projects.begin())->projectName;
+            setProjectActive(workspace->findProject(workspace->activeProject));
+        }
+
         projectTree->Expand(root);
 
         return true;
     }
 
-    void ProjectExplorer::saveProject()
+    void ProjectExplorer::saveWorkspace()
     {
-        if (project)
+        if (workspace)
         {
             updateProjectFiles();
-            project->saveToXml("project.xml");
+            workspace->saveToXml("workspace.xml");
         }
     }
 
@@ -246,6 +263,28 @@ namespace hare_editor
         }
     }
 
+    void ProjectExplorer::setProjectActive(Project* project)
+    {
+        if (activeProject == project)
+            return;
+
+        if (activeProject)
+            projectTree->SetItemBold(activeProject->treeNode, false);
+
+        activeProject = project;
+
+        projectTree->SetItemBold(activeProject->treeNode, true);
+        projectTree->EnsureVisible(activeProject->treeNode);
+
+        EditorEvent event(editorEVT_PROJECT_ACTIVED);
+        event.project = activeProject;
+        Manager::getInstancePtr()->processEvent(event);
+    }
+
+    Project* ProjectExplorer::getActiveProject()
+    {
+        return activeProject;
+    }
 
     ProjectExplorer::~ProjectExplorer()
     {

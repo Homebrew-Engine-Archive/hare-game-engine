@@ -3,8 +3,6 @@
 
 #define INIT_LUA_DEBUG { 0, 0, 0, 0, 0, 0, 0, 0, 0, {0}, 0 }
 
-typedef std::vector<int> DebugReference;
-
 enum LuaDebuggeeEventType
 {
     LUA_DEBUGGEE_EVENT_NONE = 0,

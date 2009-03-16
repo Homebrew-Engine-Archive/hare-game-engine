@@ -29,4 +29,22 @@ namespace hare_editor
         : editorOpen(false), editorPos(0), editorTopLine(0), editorTabPos(0)
     {
     }
+
+    bool ProjectFile::addBreakPoint(int line)
+    {
+        if (std::find(breakPoints.begin(), breakPoints.end(), line) == breakPoints.end())
+            breakPoints.push_back(line);
+
+        return true;
+    }
+
+    bool ProjectFile::removeBreakPoint(int line)
+    {
+        std::vector<s32>::iterator it = std::find(breakPoints.begin(), breakPoints.end(), line);
+
+        if (it != breakPoints.end())
+            breakPoints.erase(it);
+
+        return true;
+    }
 }

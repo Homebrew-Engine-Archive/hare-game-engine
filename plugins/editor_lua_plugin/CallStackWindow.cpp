@@ -1,6 +1,6 @@
 #include "PCH.h"
 #include "CallStackWindow.h"
-#include "LuaDebuggerPlugin.h"
+#include "LuaDebugger.h"
 
 BEGIN_EVENT_TABLE(LuaCallStackWindow, wxPanel)
     EVT_LIST_ITEM_ACTIVATED(XRCID("lstLuaCallStack"), LuaCallStackWindow::onDbClick)
@@ -24,7 +24,7 @@ void LuaCallStackWindow::clear()
     lst->Freeze();
     lst->DeleteAllItems();
     lst->InsertColumn(0, wxT(" "), wxLIST_FORMAT_RIGHT, 20);
-    lst->InsertColumn(1, _("Name"), wxLIST_FORMAT_LEFT, 200);
+    lst->InsertColumn(1, _("Name"), wxLIST_FORMAT_LEFT, 300);
     lst->Thaw();
 }
 
@@ -63,6 +63,9 @@ void LuaCallStackWindow::onDbClick(wxListEvent& event)
 
     if (index >=0 && index < (int)callStackData->items.size())
     {
+        // stack level changed
+        debugger->setCurrStackLevel(index);
+
         String fileName = callStackData->items[index]->itemSource;
         String fileLine = callStackData->items[index]->itemValue;
         if (!fileName.empty() && !fileLine.empty())
@@ -85,3 +88,4 @@ bool LuaCallStackWindow::isReallyShown()
     }
     return false;
 }
+

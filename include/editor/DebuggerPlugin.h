@@ -25,6 +25,8 @@ namespace hare_editor
         virtual ~DebuggerPlugin();
     public:
         virtual bool start() = 0;
+        virtual bool addBreakPoint(const String &fileName, int lineNumber) = 0;
+        virtual bool removeBreakPoint(const String &fileName, int lineNumber) = 0;
     };
 
 }

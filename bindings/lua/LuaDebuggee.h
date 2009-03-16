@@ -15,11 +15,11 @@ extern "C"
 #include "LuaDebugDefines.h"
 #include "LuaDebugData.h"
 
-class LuaDebugger : public Singleton<LuaDebugger>
+class LuaDebuggee : public Singleton<LuaDebuggee>
 {
 public:
-    LuaDebugger(lua_State* L, const String& server, int port);
-   ~LuaDebugger();
+    LuaDebuggee(lua_State* L, const String& server, int port);
+   ~LuaDebuggee();
 
     bool start();
     void stop();
@@ -28,11 +28,11 @@ public:
     class LuaThread : public Thread
     {
     public:
-        LuaThread(LuaDebugger *dbg) : debugger(dbg) {}
+        LuaThread(LuaDebuggee *dbg) : debuggee(dbg) {}
     protected:
         virtual void* entry();
 
-        LuaDebugger *debugger;
+        LuaDebuggee *debuggee;
     };
 
     void threadFunction();
@@ -109,6 +109,7 @@ protected:
     bool enumerateStack();
     bool enumerateStackEntry(int stackRef);
     bool enumerateTable(int tableRef, int index, long itemNode);
+    bool evaluateExpr(int stackRef, const String& expr);
 
     bool notifyBreak(const String &fileName, int lineNumber);
     bool notifyPrint(const String &errorMsg);
@@ -117,6 +118,7 @@ protected:
     bool notifyStackEnumeration(LuaDebugData& debugData);
     bool notifyStackEntryEnumeration(int stackRef, LuaDebugData& debugData);
     bool notifyTableEnumeration(long itemNode, LuaDebugData& debugData);
+    bool notifyEvaluateExpr(LuaDebugData& debugData);
 };
 
 #endif

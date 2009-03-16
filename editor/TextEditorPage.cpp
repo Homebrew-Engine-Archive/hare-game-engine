@@ -16,6 +16,10 @@
 #include "EditorManager.h"
 #include "ConfigManager.h"
 #include "EditorPageManager.h"
+#include "ExplorerManager.h"
+#include "ProjectExplorer.h"
+#include "PluginManager.h"
+#include "DebuggerPlugin.h"
 #include "TextEditorStyle.h"
 #include <wx/filename.h>
 #include <wx/file.h>
@@ -194,7 +198,7 @@ namespace hare_editor
                 int lineYpix = event.GetPosition();
                 int line = getControl()->LineFromPosition(lineYpix);
 
-                toggleMarker(BREAKPOINT_MARKER, line);
+                toggleBreakPoint(line);
                 break;
             }
         case MARGIN_FOLDING:
@@ -206,6 +210,40 @@ namespace hare_editor
                 break;
             }
         }
+    }
+
+    void TextEditorPage::toggleBreakPoint(int line)
+    {
+        bool exist = lineHasMarker(BREAKPOINT_MARKER, line);
+
+        if (projectFile)
+        {
+            if (exist)
+                projectFile->removeBreakPoint(line);
+            else
+                projectFile->addBreakPoint(line);
+
+            Manager* man = Manager::getInstancePtr();
+            ProjectExplorer* pe = man->getExplorerManager()->getProjectExplorer();
+            Project* prj = pe->getActiveProject();
+            if (prj)
+            {
+                if (!prj->debuggerName.empty())
+                {
+                    EditorPlugin* plugin = man->getPluginManager()->findPluginByName(wxString::FromUTF8(prj->debuggerName.c_str()));
+                    if (plugin && plugin->getType() == EPT_Debugger)
+                    {
+                        DebuggerPlugin* debugger = (DebuggerPlugin*)plugin;
+                        if (exist)
+                            debugger->removeBreakPoint(prj->projectName + "/" + projectFile->fileName, line);
+                        else
+                            debugger->addBreakPoint(prj->projectName + "/" + projectFile->fileName, line);
+                    }
+                }
+            }
+        }
+
+        toggleMarker(BREAKPOINT_MARKER, line);
     }
 
     bool TextEditorPage::getIsOK() const

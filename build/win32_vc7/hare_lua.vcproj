@@ -123,7 +123,7 @@
 				RelativePath="..\..\bindings\lua\LuaDebugData.cpp">
 			</File>
 			<File
-				RelativePath="..\..\bindings\lua\LuaDebugger.cpp">
+				RelativePath="..\..\bindings\lua\LuaDebuggee.cpp">
 			</File>
 			<File
 				RelativePath="..\..\bindings\lua\main.cpp">
@@ -140,7 +140,7 @@
 				RelativePath="..\..\bindings\lua\LuaDebugDefines.h">
 			</File>
 			<File
-				RelativePath="..\..\bindings\lua\LuaDebugger.h">
+				RelativePath="..\..\bindings\lua\LuaDebuggee.h">
 			</File>
 			<File
 				RelativePath="..\..\bindings\lua\LuaSceneListener.h">

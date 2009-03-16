@@ -1,31 +1,31 @@
-#include "LuaDebugger.h"
+#include "LuaDebuggee.h"
 #include "SocketHelper.h"
 
 #define MAX_SOCKET_CONNECT_TIMEOUT  200
 
-LuaDebugger::LuaDebugger(lua_State* L, const String& server, int port)
+LuaDebuggee::LuaDebuggee(lua_State* L, const String& server, int port)
 : state(L), serverName(server), portNumber(port), connected(false), debugThread(0),
   debugCondition(debugMutex), forceBreak(false), resetRequested(false), running(false),
   stopped(false), framesUntilBreak(0), runCondition(runMutex)
 {
-    lua_sethook(L, LuaDebugger::luaDebugHook, LUA_MASKCALL | LUA_MASKLINE | LUA_MASKRET, 0);
+    lua_sethook(L, LuaDebuggee::luaDebugHook, LUA_MASKCALL | LUA_MASKLINE | LUA_MASKRET, 0);
 
     enterLuaCriticalSection();
 }
 
-LuaDebugger::~LuaDebugger()
+LuaDebuggee::~LuaDebuggee()
 {
     leaveLuaCriticalSection();
 }
 
-void LuaDebugger::luaDebugHook(lua_State *L, lua_Debug *debug)
+void LuaDebuggee::luaDebugHook(lua_State *L, lua_Debug *debug)
 {
-    LuaDebugger* debugger = LuaDebugger::getSingletonPtr();
-    if (debugger)
-        debugger->debugHook(debug->event);
+    LuaDebuggee* debuggee = LuaDebuggee::getSingletonPtr();
+    if (debuggee)
+        debuggee->debugHook(debug->event);
 }
 
-bool LuaDebugger::debugHook(int event)
+bool LuaDebuggee::debugHook(int event)
 {
     bool wait = false;
     stopped = true;
@@ -107,7 +107,7 @@ bool LuaDebugger::debugHook(int event)
     return wait;
 }
 
-bool LuaDebugger::start()
+bool LuaDebuggee::start()
 {
     // create socket thread (connect to debug server and wait for debug command)
    
@@ -134,7 +134,7 @@ bool LuaDebugger::start()
     return false;
 }
 
-void LuaDebugger::stop()
+void LuaDebuggee::stop()
 {
     // close socket and kill thread
 
@@ -151,7 +151,7 @@ void LuaDebugger::stop()
         debugThread->waitExit();
 }
 
-bool LuaDebugger::isConnected(bool wait) const
+bool LuaDebuggee::isConnected(bool wait) const
 {
     if (connected || !wait) return connected;
 
@@ -167,14 +167,14 @@ bool LuaDebugger::isConnected(bool wait) const
 // -----------------------------------------------------------------
 //  Socket & thread
 // -----------------------------------------------------------------
-void* LuaDebugger::LuaThread::entry()
+void* LuaDebuggee::LuaThread::entry()
 {
-    debugger->threadFunction();
+    debuggee->threadFunction();
 
     return 0;
 }
 
-void LuaDebugger::threadFunction()
+void LuaDebuggee::threadFunction()
 {
     bool threadRunning = false;
 
@@ -200,7 +200,7 @@ void LuaDebugger::threadFunction()
     }
 }
 
-bool LuaDebugger::handleDebuggerCmd(int cmd)
+bool LuaDebuggee::handleDebuggerCmd(int cmd)
 {
     bool ret = false;
 
@@ -298,44 +298,55 @@ bool LuaDebugger::handleDebuggerCmd(int cmd)
             ret = reset();
             break;
         }
+    case LUA_DEBUGGER_CMD_EVALUATE_EXPR:
+        {
+            int stackRef = 0;
+            String expr;
+            if (SocketHelper::readInt(&socket, stackRef) &&
+                SocketHelper::readString(&socket, expr))
+            {
+                ret = evaluateExpr(stackRef, expr);
+            }
+            break;
+        }
     }
 
     return ret;
 }
 // -----------------------------------------------------------------
 
-String LuaDebugger::toBreakPoint(const String &fileName, int lineNumber) const
+String LuaDebuggee::toBreakPoint(const String &fileName, int lineNumber) const
 {
     return StringUtil::format("%d:%s", lineNumber, fileName.c_str());
 }
 
-bool LuaDebugger::hasBreakPoint(const String &fileName, int lineNumber)
+bool LuaDebuggee::hasBreakPoint(const String &fileName, int lineNumber)
 {
     CriticalSectionLocker locker(breakPointsCS);
     return breakPoints.find(toBreakPoint(fileName, lineNumber)) != breakPoints.end();
 }
 
-bool LuaDebugger::addBreakPoint(const String &fileName, int lineNumber)
+bool LuaDebuggee::addBreakPoint(const String &fileName, int lineNumber)
 {
     CriticalSectionLocker locker(breakPointsCS);
     breakPoints.insert(toBreakPoint(fileName, lineNumber));
     return true;
 }
 
-bool LuaDebugger::removeBreakPoint(const String &fileName, int lineNumber)
+bool LuaDebuggee::removeBreakPoint(const String &fileName, int lineNumber)
 {
     CriticalSectionLocker locker(breakPointsCS);
     return breakPoints.erase(toBreakPoint(fileName, lineNumber)) > 0;  
 }
 
-bool LuaDebugger::clearAllBreakPoints()
+bool LuaDebuggee::clearAllBreakPoints()
 {
     CriticalSectionLocker locker(breakPointsCS);
     breakPoints.clear();
     return true;
 }
 
-bool LuaDebugger::step()
+bool LuaDebuggee::step()
 {
     nextOperation = DEBUG_STEP;
     
@@ -347,7 +358,7 @@ bool LuaDebugger::step()
     return true;
 
 }
-bool LuaDebugger::stepOver()
+bool LuaDebuggee::stepOver()
 {
     framesUntilBreak = 0;
     nextOperation = DEBUG_STEPOVER;
@@ -360,7 +371,7 @@ bool LuaDebugger::stepOver()
     return true;
 }
 
-bool LuaDebugger::stepOut()
+bool LuaDebuggee::stepOut()
 {
     framesUntilBreak = 1;
     nextOperation = DEBUG_STEPOVER;
@@ -373,7 +384,7 @@ bool LuaDebugger::stepOut()
     return true;
 }
 
-bool LuaDebugger::continueExec()
+bool LuaDebuggee::continueExec()
 {
     nextOperation = DEBUG_GO;
 
@@ -385,14 +396,14 @@ bool LuaDebugger::continueExec()
     return true;
 }
 
-bool LuaDebugger::breakExec()
+bool LuaDebuggee::breakExec()
 {
     forceBreak = true;
     return true;
 
 }
 
-bool LuaDebugger::reset()
+bool LuaDebuggee::reset()
 {
     notifyExit();
 
@@ -407,7 +418,7 @@ bool LuaDebugger::reset()
     return true;
 }
 
-bool LuaDebugger::enumerateStack()
+bool LuaDebuggee::enumerateStack()
 {
     LuaDebugData debugData;
 
@@ -418,7 +429,7 @@ bool LuaDebugger::enumerateStack()
     return notifyStackEnumeration(debugData);
 }
 
-bool LuaDebugger::enumerateStackEntry(int stackRef)
+bool LuaDebuggee::enumerateStackEntry(int stackRef)
 {
     LuaDebugData debugData;
 
@@ -429,7 +440,7 @@ bool LuaDebugger::enumerateStackEntry(int stackRef)
     return notifyStackEntryEnumeration(stackRef, debugData);
 }
 
-bool LuaDebugger::enumerateTable(int tableRef, int index, long itemNode)
+bool LuaDebuggee::enumerateTable(int tableRef, int index, long itemNode)
 {
     LuaDebugData debugData;
 
@@ -440,8 +451,19 @@ bool LuaDebugger::enumerateTable(int tableRef, int index, long itemNode)
     return notifyTableEnumeration(itemNode, debugData);
 }
 
+bool LuaDebuggee::evaluateExpr(int stackRef, const String& expr)
+{
+    LuaDebugData debugData;
+
+    enterLuaCriticalSection();
+    debugData.evaluateExpr(state, stackRef, expr);
+    leaveLuaCriticalSection();
+    
+    return notifyEvaluateExpr(debugData);
+}
+
 // ------------------------------------------------------------------------
-bool LuaDebugger::notifyBreak(const String &fileName, int lineNumber)
+bool LuaDebuggee::notifyBreak(const String &fileName, int lineNumber)
 {
     return isConnected() && !resetRequested &&
         SocketHelper::writeCmd(&socket, LUA_DEBUGGEE_EVENT_BREAK) &&
@@ -449,34 +471,34 @@ bool LuaDebugger::notifyBreak(const String &fileName, int lineNumber)
         SocketHelper::writeInt(&socket, lineNumber);
 }
 
-bool LuaDebugger::notifyPrint(const String &errorMsg)
+bool LuaDebuggee::notifyPrint(const String &errorMsg)
 {
     return isConnected() && 
         SocketHelper::writeCmd(&socket, LUA_DEBUGGEE_EVENT_PRINT) &&
         SocketHelper::writeString(&socket, errorMsg);
 }
 
-bool LuaDebugger::notifyError(const String &errorMsg)
+bool LuaDebuggee::notifyError(const String &errorMsg)
 {
     return isConnected() && 
         SocketHelper::writeCmd(&socket, LUA_DEBUGGEE_EVENT_ERROR) &&
         SocketHelper::writeString(&socket, errorMsg);
 }
 
-bool LuaDebugger::notifyExit()
+bool LuaDebuggee::notifyExit()
 {
     return isConnected() &&
         SocketHelper::writeCmd(&socket, LUA_DEBUGGEE_EVENT_EXIT);
 }
 
-bool LuaDebugger::notifyStackEnumeration(LuaDebugData& debugData)
+bool LuaDebuggee::notifyStackEnumeration(LuaDebugData& debugData)
 {
     return isConnected() &&
         SocketHelper::writeCmd(&socket, LUA_DEBUGGEE_EVENT_STACK_ENUM) &&
         SocketHelper::writeObject(&socket, &debugData);
 }
 
-bool LuaDebugger::notifyStackEntryEnumeration(int stackRef, LuaDebugData& debugData)
+bool LuaDebuggee::notifyStackEntryEnumeration(int stackRef, LuaDebugData& debugData)
 {
     return isConnected() &&
         SocketHelper::writeCmd(&socket, LUA_DEBUGGEE_EVENT_STACK_ENTRY_ENUM) &&
@@ -484,10 +506,17 @@ bool LuaDebugger::notifyStackEntryEnumeration(int stackRef, LuaDebugData& debugD
         SocketHelper::writeObject(&socket, &debugData);
 }
 
-bool LuaDebugger::notifyTableEnumeration(long itemNode, LuaDebugData& debugData)
+bool LuaDebuggee::notifyTableEnumeration(long itemNode, LuaDebugData& debugData)
 {
     return isConnected() &&
         SocketHelper::writeCmd(&socket, LUA_DEBUGGEE_EVENT_TABLE_ENUM) &&
         SocketHelper::writeLong(&socket, itemNode) &&
+        SocketHelper::writeObject(&socket, &debugData);
+}
+
+bool LuaDebuggee::notifyEvaluateExpr(LuaDebugData& debugData)
+{
+    return isConnected() &&
+        SocketHelper::writeCmd(&socket, LUA_DEBUGGEE_EVENT_EVALUATE_EXPR) &&
         SocketHelper::writeObject(&socket, &debugData);
 }

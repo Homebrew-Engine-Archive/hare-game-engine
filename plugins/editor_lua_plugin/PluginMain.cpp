@@ -12,7 +12,7 @@
 //***************************************************************
 #include "PCH.h"
 #include "editor/EditorPlugin.h"
-#include "LuaDebuggerPlugin.h"
+#include "LuaDebugger.h"
 
 using namespace hare_editor;
 

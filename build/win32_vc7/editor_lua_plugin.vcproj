@@ -122,7 +122,7 @@
 				RelativePath="..\..\plugins\editor_lua_plugin\CallStackWindow.cpp">
 			</File>
 			<File
-				RelativePath="..\..\plugins\editor_lua_plugin\LuaDebuggerPlugin.cpp">
+				RelativePath="..\..\plugins\editor_lua_plugin\LuaDebugger.cpp">
 			</File>
 			<File
 				RelativePath="..\..\plugins\editor_lua_plugin\PCH.cpp">
@@ -149,7 +149,7 @@
 				RelativePath="..\..\plugins\editor_lua_plugin\CallStackWindow.h">
 			</File>
 			<File
-				RelativePath="..\..\plugins\editor_lua_plugin\LuaDebuggerPlugin.h">
+				RelativePath="..\..\plugins\editor_lua_plugin\LuaDebugger.h">
 			</File>
 			<File
 				RelativePath="..\..\plugins\editor_lua_plugin\PCH.h">

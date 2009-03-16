@@ -10,6 +10,10 @@
 // Licence:     wxWindows
 /////////////////////////////////////////////////////////////////////////////
 
+//////////////////////////////////////////////////////////////////////////
+// modified by littlesome@live.cn 3/16/2009
+//////////////////////////////////////////////////////////////////////////
+
 // ===========================================================================
 // declarations
 // ===========================================================================
@@ -980,7 +984,7 @@ wxEditTextCtrl::wxEditTextCtrl (wxWindow *parent,
                                 int style,
                                 const wxValidator& validator,
                                 const wxString &name)
-    : wxTextCtrl (parent, id, value, pos, size, style | wxSIMPLE_BORDER, validator, name)
+    : wxTextCtrl (parent, id, value, pos, size, style | wxSIMPLE_BORDER | wxTE_PROCESS_ENTER, validator, name)
 {
     m_res = res;
     m_accept = accept;
@@ -1035,6 +1039,19 @@ void wxEditTextCtrl::OnChar( wxKeyEvent &event )
         EndEdit(true);  // cancelled
         return;
     }
+
+    //--------------------------------------------------------------
+    wxSize parentSize = m_owner->GetSize();
+    wxPoint myPos = GetPosition();
+    wxSize mySize = GetSize();
+    int sx, sy;
+    GetTextExtent(GetValue() + _T("M"), &sx, &sy);
+    sx += 4;
+    if (myPos.x + sx > parentSize.x) sx = parentSize.x - myPos.x;
+    if (mySize.x > sx) sx = mySize.x;
+    SetSize(sx, -1);
+    //--------------------------------------------------------------
+
     event.Skip();
 }
 
@@ -1046,15 +1063,19 @@ void wxEditTextCtrl::OnKeyUp( wxKeyEvent &event )
         return;
     }
 
+    //--------------------------------------------------------------
+    // moved to wxEditTextCtrl::OnChar
+    //--------------------------------------------------------------
     // auto-grow the textctrl:
-    wxSize parentSize = m_owner->GetSize();
-    wxPoint myPos = GetPosition();
-    wxSize mySize = GetSize();
-    int sx, sy;
-    GetTextExtent(GetValue() + _T("M"), &sx, &sy);
-    if (myPos.x + sx > parentSize.x) sx = parentSize.x - myPos.x;
-    if (mySize.x > sx) sx = mySize.x;
-    SetSize(sx, -1);
+    //wxSize parentSize = m_owner->GetSize();
+    //wxPoint myPos = GetPosition();
+    //wxSize mySize = GetSize();
+    //int sx, sy;
+    //GetTextExtent(GetValue() + _T("M"), &sx, &sy);
+    //if (myPos.x + sx > parentSize.x) sx = parentSize.x - myPos.x;
+    //if (mySize.x > sx) sx = mySize.x;
+    //SetSize(sx, -1);
+    //--------------------------------------------------------------
 
     event.Skip();
 }

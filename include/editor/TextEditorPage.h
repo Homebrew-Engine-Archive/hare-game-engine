@@ -49,6 +49,8 @@ namespace hare_editor
         bool lineHasMarker(int marker, int line) const;
         void toggleMarker(int marker, int line);
 
+        void toggleBreakPoint(int line);
+
         virtual void undo();
         virtual void redo();
         virtual void cut();

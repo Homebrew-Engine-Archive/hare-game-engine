@@ -51,6 +51,7 @@ public:
     void enumerateStack(lua_State* L);
     void enumerateStackEntry(lua_State* L, int stackFrame);
     void enumerateTable(lua_State* L, int tableRef, int index);
+    void evaluateExpr(lua_State* L, int stackRef, const String& expr);
 
 private:
     int getTypeValue(lua_State* L, int stack_idx, int* type, String& value);

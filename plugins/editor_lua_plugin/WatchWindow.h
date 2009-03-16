@@ -24,11 +24,20 @@ public:
     LuaWatchWindow(wxWindow* parent, LuaDebugger* dbg);
     virtual ~LuaWatchWindow();
 
+    void addEmptyRow();
+    void updateWatchData(LuaDebugData* debugData);
+    void redraw();
+    bool isReallyShown();
+
 protected:
     LuaDebugger* debugger;
     wxTreeListCtrl* treeList;
     wxTreeItemId root;
+
 private:
+    void onTreeKeyDown(wxTreeEvent& event);
+    void onTreeEndLabelEdit(wxTreeEvent& event);
+
     DECLARE_EVENT_TABLE();
 };
 

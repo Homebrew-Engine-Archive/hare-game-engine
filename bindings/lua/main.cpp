@@ -2,7 +2,7 @@
 #include "graphics/Graphics.h"
 using namespace hare_graphics;
 
-#include "LuaDebugger.h"
+#include "LuaDebuggee.h"
 
 #if defined(_DEBUG)
 #	define  CRTDBG_MAP_ALLOC
@@ -19,11 +19,14 @@ extern "C"
     int luaopen_hare(lua_State *L);
 }
 
-int init_handle = 0;
-int quit_handle = 0;
+int init_handle = -1;
+int quit_handle = -1;
 
 void main_loop(lua_State *L)
 {
+    if (init_handle < 0 || quit_handle < 0)
+        return;
+
     lua_rawgeti(L, LUA_REGISTRYINDEX, init_handle);
     lua_call(L, 0, 0);
 
@@ -104,7 +107,7 @@ int main(int argc, char *argv[])
         fs->addSearchPath(searchPaths[i]);
     }
 
-    LuaDebugger* debugger = 0;
+    LuaDebuggee* debuggee = 0;
     String debug = cmdLine.getOptionValue("debug");
     if (!debug.empty())
     {
@@ -114,25 +117,25 @@ int main(int argc, char *argv[])
             String addr = cmds[0];
             int port = -1;
             StringConverter::parse(cmds[1], port);
-            debugger = new LuaDebugger(L, addr, port);
+            debuggee = new LuaDebuggee(L, addr, port);
         }
     }
 
     String game = cmdLine.getOptionValue("game");
 
-    if (debugger)
-        debugger->start();
+    if (debuggee)
+        debuggee->start();
 
     if (load_scripts(game, L))
     {
         main_loop(L);
     }
 
-    if (debugger)
+    if (debuggee)
     {
-        debugger->stop();
-        delete debugger;
-        debugger = 0;
+        debuggee->stop();
+        delete debuggee;
+        debuggee = 0;
     }
 
     lua_close(L);

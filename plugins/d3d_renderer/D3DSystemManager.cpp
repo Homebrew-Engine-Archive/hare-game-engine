@@ -64,7 +64,15 @@ namespace hare_d3d
 
 	void D3DSystemManager::hareRunFrame()
 	{
-		HRESULT hr = static_cast<D3DRenderSystem*>(RenderSystem::getSingletonPtr())->getD3DDevice()->TestCooperativeLevel();
+        D3DRenderSystem* d3drs = static_cast<D3DRenderSystem*>(RenderSystem::getSingletonPtr());
+        if (!d3drs)
+            return;
+        
+        LPDIRECT3DDEVICE9 d3ddev = d3drs->getD3DDevice();
+        if (!d3ddev)
+            return;
+		
+        HRESULT hr = d3ddev->TestCooperativeLevel();
 		if (hr == D3DERR_DEVICELOST){
 			return;
 		}else if (hr == D3DERR_DEVICENOTRESET){

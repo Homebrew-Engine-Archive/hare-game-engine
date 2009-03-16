@@ -70,7 +70,8 @@ void LuaDebugData::enumerateStackEntry(lua_State* L, int stackFrame)
 
             lua_pop(L, 1); // remove variable value
 
-            items.push_back(new LuaDebugItem(name, LUA_TNONE, value, valueType, source, LUA_NOREF, 0, LUA_DEBUGITEM_STACKFRAME));
+            items.push_back(new LuaDebugItem(name, LUA_TNONE, value, valueType, 
+                source, LUA_NOREF, 0, LUA_DEBUGITEM_STACKFRAME));
 
             name = lua_getlocal(L, &luaDebug, ++stack_idx);
         }
@@ -80,6 +81,87 @@ void LuaDebugData::enumerateStackEntry(lua_State* L, int stackFrame)
 void LuaDebugData::enumerateTable(lua_State* L, int tableRef, int index)
 {
 
+}
+
+
+static void coverGlobals(lua_State* L, int stackRef)
+{
+    lua_newtable(L);  // save there globals covered by locals
+
+    lua_Debug luaDebug = INIT_LUA_DEBUG;
+    if (lua_getstack (L, stackRef, &luaDebug))
+    {
+        int i = 1;
+        const char *name = 0;
+        while ((name = lua_getlocal(L, &luaDebug, i++)) != NULL) { /* SAVE lvalue */
+            lua_pushstring(L, name);	/* SAVE lvalue name */						
+            lua_pushvalue(L, -1);	/* SAVE lvalue name name */
+            lua_pushvalue(L, -1);	/* SAVE lvalue name name name */
+            lua_insert(L, -4);		/* SAVE name lvalue name name */
+            lua_rawget(L, LUA_GLOBALSINDEX);	/* SAVE name lvalue name gvalue */
+            lua_rawset(L, -5);	// save global value in local table
+            /* SAVE name lvalue */
+            lua_rawset(L, LUA_GLOBALSINDEX); /* SAVE */
+        }
+    }
+}
+
+static void restoreGlobals(lua_State* L)
+{
+    // there is table of covered globals on top
+
+    lua_pushnil(L);  /* first key */
+    /* SAVE nil */
+    while (lua_next(L, -2))		/* SAVE key value */
+    {
+        lua_pushvalue(L, -2);   /* SAVE key value key */
+        lua_insert(L, -2);      /* SAVE key key value */
+
+        lua_rawset(L, LUA_GLOBALSINDEX);	// restore global
+        /* SAVE key */
+    }
+
+    lua_pop(L, 1); // pop table of covered globals;
+}
+
+void LuaDebugData::evaluateExpr(lua_State* L, int stackRef, const String& expr)
+{
+    String exprExec = "return " + expr;
+    String value;
+    int valueType = LUA_TNONE;
+
+    coverGlobals(L, stackRef);
+
+    int top = lua_gettop(L);
+
+    const char* code = exprExec.c_str();
+
+    int status = luaL_loadbuffer(L, code, strlen(code), code);
+    if (status)
+    {
+        const char* szErr = luaL_checkstring(L, -1);
+        const char* szErr2 = strstr(szErr, ": ");
+        value = szErr2 ? (szErr2 + 2) : szErr;
+    }
+    else
+    {
+        status = lua_pcall(L, 0, LUA_MULTRET, 0);  /* call main */
+        if (status)
+        {
+            const char* szErr = luaL_checkstring(L, -1);
+            const char* szErr2 = strstr(szErr, ": ");
+            value = szErr2 ? (szErr2 + 2) : szErr;
+        }
+        else
+            getTypeValue(L, -1, &valueType, value);
+    }
+
+    items.push_back(new LuaDebugItem(expr, LUA_TNONE, 
+        value, valueType, StringUtil::EMPTY, LUA_NOREF, 0, LUA_DEBUGITEM_NONE));
+
+    lua_settop(L, top);
+
+    restoreGlobals(L);
 }
 
 int LuaDebugData::getTypeValue(lua_State* L, int stack_idx, int* type, String& value)

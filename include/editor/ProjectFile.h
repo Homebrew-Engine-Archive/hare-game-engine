@@ -25,7 +25,8 @@ namespace hare_editor
     public:
         ProjectFile();
 
-        bool positionBreakPoints();
+        bool addBreakPoint(int line);
+        bool removeBreakPoint(int line);
 
     public:
         String fileName;

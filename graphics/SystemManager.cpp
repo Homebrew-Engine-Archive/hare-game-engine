@@ -2,7 +2,7 @@
 #include "SystemManager.h"
 #include "SceneManager.h"
 #include "RenderSystem.h"
-
+#include "Canvas.h"
 
 namespace hare_graphics
 {
@@ -11,7 +11,7 @@ namespace hare_graphics
 	SystemManager::SystemManager()
 		:pPrimaryWindow(NULL)
 	{
-
+		canvas = new Canvas;
 	}
 
 	SystemManager::~SystemManager()
@@ -21,6 +21,7 @@ namespace hare_graphics
 			delete *it;
 		}
 		sceneManagerList.clear();
+		delete canvas;
 	}
 
 	SceneManager* SystemManager::createSceneManager()

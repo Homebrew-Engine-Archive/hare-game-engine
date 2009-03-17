@@ -34,6 +34,7 @@ namespace hare_graphics
 
 		m_data = new u8[size];
 		m_size = size;
+		memset(m_data, 0, m_size);
 	}
 
 	void DataHolder::clear()

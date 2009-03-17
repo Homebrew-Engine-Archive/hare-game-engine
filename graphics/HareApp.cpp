@@ -2,13 +2,13 @@
 #include "HareApp.h"
 #include "DevILImageCodec.h"
 #include "SceneManager.h"
+#include "TextManager.h"
+#include "Canvas.h"
 
 
 namespace hare_graphics
 {		
 	HareApp hareApp;
-
-	typedef void (*DLL_START_PLUGIN)(void);
 
 	HARE_IMPLEMENT_SINGLETON(HareApp)
 
@@ -16,11 +16,23 @@ namespace hare_graphics
 		:graphicsSystemManager(NULL)
 		,plugin(NULL)
 	{
-		DevILImageCodec::startUp();
+
 	}
 
 	HareApp::~HareApp()
 	{
+
+	}
+
+	void HareApp::startUp()
+	{
+		DevILImageCodec::startUp();
+		textManager = new TextManager();
+	}
+
+	void HareApp::shutDown()
+	{
+		delete textManager;
         DevILImageCodec::shutDown();
 	}
 

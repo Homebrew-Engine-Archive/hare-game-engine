@@ -30,33 +30,33 @@ namespace hare_graphics
 
 
 
+		//tex = RenderSystem::getSingletonPtr()->createTexture();
+		//tex->createFromFile("haha.png");
+		//texMtrl = new TextureMtrl;
+		//texMtrl->setTexture(tex);
+		//animModUnit = new AnimModUnit;
+		//animModUnit->frameTime = 1;
+		//animModUnit->setSubMtrl(texMtrl);
+		//animModMtrl->addFrame(animModUnit);
+
 		tex = RenderSystem::getSingletonPtr()->createTexture();
-		tex->createFromFile("haha.png");
+		tex->createFromFile(filename);
 		texMtrl = new TextureMtrl;
 		texMtrl->setTexture(tex);
+
+		//pannerMtrl = new PannerMod;
+		//pannerMtrl->direction.x = 0.1f;
+		//pannerMtrl->direction.y = 0.1f;
+		//pannerMtrl->speed = 1.f;
+		//pannerMtrl->setSubMtrl(texMtrl);
+
+		//scaleMtrl = new ScalerMod;
+		//scaleMtrl->scale.y = 0.5f;
+		//scaleMtrl->setSubMtrl(pannerMtrl);
+
 		animModUnit = new AnimModUnit;
 		animModUnit->frameTime = 1;
 		animModUnit->setSubMtrl(texMtrl);
-		animModMtrl->addFrame(animModUnit);
-
-		tex = RenderSystem::getSingletonPtr()->createTexture();
-		tex->createFromFile("logo.png");
-		texMtrl = new TextureMtrl;
-		texMtrl->setTexture(tex);
-
-		pannerMtrl = new PannerMod;
-		pannerMtrl->direction.x = 0.1f;
-		pannerMtrl->direction.y = 0.1f;
-		pannerMtrl->speed = 1.f;
-		pannerMtrl->setSubMtrl(texMtrl);
-
-		scaleMtrl = new ScalerMod;
-		scaleMtrl->scale.y = 0.5f;
-		scaleMtrl->setSubMtrl(pannerMtrl);
-
-		animModUnit = new AnimModUnit;
-		animModUnit->frameTime = 1;
-		animModUnit->setSubMtrl(scaleMtrl);
 		animModMtrl->addFrame(animModUnit);
 
 		shader->setMaterial(animModMtrl);
@@ -75,10 +75,6 @@ namespace hare_graphics
 	void SimpleSprite::renderScene()
 	{
 		RenderSystem::getSingletonPtr()->render(&quad);
-
-		getCanvas()->drawLine(0,0, 800, 600, 0xffffffff, 1);
-
-		getCanvas()->drawRect(50, 50, 600, 500, 0xff00ff00, 0.5f);
 	}
 
 	void SimpleSprite::endScene()

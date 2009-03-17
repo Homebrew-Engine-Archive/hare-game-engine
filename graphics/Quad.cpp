@@ -84,7 +84,7 @@ namespace hare_graphics
 		buffer[0].diffuse = buffer[1].diffuse = 
 		buffer[2].diffuse = buffer[3].diffuse = -1;
 	}
-	void Quad::setTextureUVMap(f32 ul, f32 ur, f32 vt, f32 vb)
+	void Quad::setTextureUVMap(f32 ul, f32 vt, f32 ur, f32 vb)
 	{
 		buffer[0].u = ul;	
 		buffer[0].v = vt;		
@@ -94,6 +94,18 @@ namespace hare_graphics
 		buffer[2].v = vb;
 		buffer[3].u = ur;
 		buffer[3].v = vt;
+	}
+
+	void Quad::setTextureUVMap(const Rect<f32>& rc)
+	{
+		buffer[0].u = rc.minX;	
+		buffer[0].v = rc.minY;		
+		buffer[1].u = rc.minX;		
+		buffer[1].v = rc.maxY;		
+		buffer[2].u = rc.maxX;		
+		buffer[2].v = rc.maxY;
+		buffer[3].u = rc.maxX;
+		buffer[3].v = rc.minY;	
 	}
 
 	void Quad::setDepth(f32 z)

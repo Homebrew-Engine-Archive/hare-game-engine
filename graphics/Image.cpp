@@ -59,7 +59,6 @@ namespace hare_graphics
 		DataHolder input;
 		/*文件系统打开文件将数据读进input
 		*/
-		using namespace hare_core;
 		FileSystem* fs = getFileSystem();
 		FileHandle fh = fs->openFile(fileName, FM_Read);
 

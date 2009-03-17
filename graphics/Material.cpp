@@ -69,6 +69,7 @@ namespace hare_graphics
 		textureStage.wrapModeU = TextureStage::WM_Wrap;
 		textureStage.wrapModeV = TextureStage::WM_Wrap;
 		textureStage.lodSet = TextureStage::LS_Interface;
+		frameMove();
 	}
 
 	TextureMtrl::~TextureMtrl()
@@ -79,8 +80,8 @@ namespace hare_graphics
 	void TextureMtrl::frameMove()
 	{
 		uleft = 0; 
-		uright= 0; 
-		vtop  = 1;
+		uright= 1; 
+		vtop  = 0;
 		vbottom = 1;
 	}
 

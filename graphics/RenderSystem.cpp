@@ -10,12 +10,12 @@ namespace hare_graphics
 		:curRenderTarget(NULL)
 		,curRenderWindow(NULL)
 	{
-		
+
 	}
 
 	RenderSystem::~RenderSystem()
 	{
-		
+
 	}
 
 	void RenderSystem::setRenderTarget(RenderTarget* target)

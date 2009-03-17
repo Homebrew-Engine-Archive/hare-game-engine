@@ -67,6 +67,7 @@ namespace hare_graphics
 		switch(hpf)
 		{
 		case HPF_A8R8G8B8: return 4;
+		case HPF_BYTE_LA: return 2;
 		default:assert(false);
 		}
 		return 0;

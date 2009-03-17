@@ -16,7 +16,7 @@ namespace hare_graphics
 	}
 
 
-	void Texture::createRenderToTex(u32 w, u32 h)
+	void Texture::createRenderToTex(u32 w, u32 h, HarePixelFormat format, bool isRenderable)
 	{
 		size = 0;
 		width = w;	//转换成2的幂次方
@@ -24,10 +24,12 @@ namespace hare_graphics
 		projectionWidth = (f32)w;//默认设置投影宽度
 		projectionHeight= (f32)h;//默认设置投影高度
 		fileName = "";
+		texPixelFormat = format;//动态纹理像素格式
 
 		//顺序不可以改变 
 		release();//释放上一次的资源 bIsRenderable = true; 放在此句话的后面是确保正确释放上一次的资源
-		bIsRenderable = true;
+		bIsRenderable = isRenderable; //如果不是renderable则使用系统托管的内存
+		bFromImage    = false;  
 		reCreate();
 	}
 
@@ -42,6 +44,7 @@ namespace hare_graphics
 		//顺序不可以改变 
 		release();//释放上一次的资源 bIsRenderable = false; 放在此句话的后面是确保正确释放上一次的资源
 		bIsRenderable = false;
+		bFromImage    = true; 
 		reCreate();
 	}
 

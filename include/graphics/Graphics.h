@@ -27,6 +27,8 @@ using namespace hare_core;
 #include "SimpleSprite.h"
 #include "SceneListener.h"
 #include "Canvas.h"
+#include "Font.h"
+#include "TextManager.h"
 
 
 #endif

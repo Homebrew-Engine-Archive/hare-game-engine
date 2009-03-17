@@ -27,7 +27,7 @@ namespace hare_graphics
 
 		virtual ~Texture();
 
-        void createRenderToTex(u32 w, u32 h);
+        void createRenderToTex(u32 w, u32 h, HarePixelFormat format, bool isRenderable = false);
         void createFromFile(const String& filename);     
 		
 		void setProjectionSize(f32 w, f32 h);
@@ -66,10 +66,13 @@ namespace hare_graphics
 		u32 height;
         u32 size;
 
+		HarePixelFormat texPixelFormat;
+
 		f32 projectionWidth;
 		f32 projectionHeight;
 
         bool bIsRenderable;
+		bool bFromImage;
 
     };
 

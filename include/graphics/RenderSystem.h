@@ -13,6 +13,7 @@ namespace hare_graphics
 	class Texture;
 	class RenderOperation;
 
+
 	class GRAPHICS_API RenderSystem : public Singleton<RenderSystem>
 	{
 		HARE_DECLARE_SINGLETON(RenderSystem)

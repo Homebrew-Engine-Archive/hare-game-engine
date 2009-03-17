@@ -13,7 +13,7 @@ namespace hare_graphics
 	class SceneManager;
 	class RenderSystem;
 	class Texture;
-
+	class Canvas;
 
 
 	class GRAPHICS_API SystemManager : public Singleton<SystemManager>
@@ -47,7 +47,7 @@ namespace hare_graphics
 		SecondaryWindowList secondaryWindowList;
 
 		RenderSystem* renderSystem;
-
+		Canvas*       canvas;
 	};
 }
 

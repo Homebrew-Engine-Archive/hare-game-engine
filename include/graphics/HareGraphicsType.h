@@ -6,6 +6,7 @@ namespace hare_graphics
 	enum HarePixelFormat
 	{
 		HPF_UnKnow,
+		HPF_BYTE_LA, //×ÖÌåÓÃ
 		HPF_A8R8G8B8,
 		HPF_Count,
 	};

@@ -4,6 +4,7 @@
 namespace hare_graphics
 {
 	class Shader;
+	class Font;
 
 	class GRAPHICS_API Canvas : public Singleton<Canvas>
 	{
@@ -22,6 +23,9 @@ namespace hare_graphics
 
 		void drawImage(const Rect<int>& rect, Shader* shader, float rot = 0.f, f32 z = 0.f);
 
+		void setFont(Font* f);
+	private:
+		Font* font;
 	};
 
 	GRAPHICS_API Canvas* getCanvas();

@@ -10,6 +10,7 @@ namespace hare_graphics
 	class SystemManager;
 	class SceneManager;
 	class Texture;
+	class TextManager;
 
 
 	class GRAPHICS_API HareApp : public Singleton<HareApp>
@@ -19,6 +20,12 @@ namespace hare_graphics
 		HareApp();
 
 		~HareApp();
+
+		//first loadplugin
+		//second startUp
+		void startUp();
+
+		void shutDown();
 
 		void setGraphicsSystem(SystemManager* systemManager);
 
@@ -38,6 +45,7 @@ namespace hare_graphics
 	private:
 		DynamicLibrary* plugin;
 		SystemManager* graphicsSystemManager;
+		TextManager* textManager;
 	};
 
 	GRAPHICS_API HareApp* getHareApp();

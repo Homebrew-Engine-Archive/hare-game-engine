@@ -19,7 +19,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../../include;../../include/graphics;../../ext/devil/include"
+				AdditionalIncludeDirectories="../../include;../../include/graphics;../../ext/devil/include;../../ext/freetype/include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;GRAPHICS_EXPORTS"
 				MinimalRebuild="TRUE"
 				BasicRuntimeChecks="3"
@@ -33,10 +33,10 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="core_d.lib DevIL.lib ILU.lib ILUT.lib"
+				AdditionalDependencies="core_d.lib DevIL.lib ILU.lib ILUT.lib freetype238_D.lib"
 				OutputFile="$(OutDir)/graphics_d.dll"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="../../lib;../../ext/devil/lib"
+				AdditionalLibraryDirectories="../../lib;../../ext/devil/lib;../../ext/freetype/lib"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="$(OutDir)/graphics.pdb"
 				SubSystem="2"
@@ -317,6 +317,27 @@
 			</File>
 			<File
 				RelativePath="..\..\include\graphics\SceneListener.h">
+			</File>
+		</Filter>
+		<Filter
+			Name="TextSystem"
+			Filter="">
+			<File
+				RelativePath="..\..\graphics\Font.cpp">
+			</File>
+			<File
+				RelativePath="..\..\include\graphics\Font.h">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\graphics\TextManager.cpp">
+			</File>
+			<File
+				RelativePath="..\..\include\graphics\TextManager.h">
 			</File>
 		</Filter>
 		<File

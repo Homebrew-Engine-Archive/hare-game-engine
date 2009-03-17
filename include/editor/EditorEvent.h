@@ -27,7 +27,8 @@ namespace hare_editor
         }
 
         EditorEvent(const EditorEvent& rhs)
-            : wxCommandEvent(rhs), editorPage(rhs.editorPage), plugin(rhs.plugin)
+            : wxCommandEvent(rhs), editorPage(rhs.editorPage), 
+            plugin(rhs.plugin), strData(rhs.strData)
         {
         }
 
@@ -39,6 +40,7 @@ namespace hare_editor
         EditorPage* editorPage;
         EditorPlugin* plugin;
         Project* project;
+        wxString strData;
         DECLARE_DYNAMIC_CLASS(EditorEvent)
     };
 
@@ -67,10 +69,13 @@ namespace hare_editor
 
     typedef void (wxEvtHandler::*EditorEventFunction)(EditorEvent&);
 
+    extern EDITOR_API const wxEventType editorEVT_APP_BEFORE_SHUTDOWN;
     extern EDITOR_API const wxEventType editorEVT_EDITOR_UPDATE_UI;
     extern EDITOR_API const wxEventType editorEVT_PLUGIN_ATTACHED;
     extern EDITOR_API const wxEventType editorEVT_PLUGIN_DETACHED;
     extern EDITOR_API const wxEventType editorEVT_PROJECT_ACTIVED;
+    extern EDITOR_API const wxEventType editorEVT_LAYOUT_SWITCH;
+    extern EDITOR_API const wxEventType editorEVT_LAYOUT_QUERY;
 
     extern EDITOR_API const wxEventType editorEVT_ADD_DOCK_WINDOW;
     extern EDITOR_API const wxEventType editorEVT_DEL_DOCK_WINDOW;

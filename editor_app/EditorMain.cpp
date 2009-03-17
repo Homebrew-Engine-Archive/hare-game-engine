@@ -174,6 +174,10 @@ void EditorFrame::registerEvents()
         new TEventHandler<EditorFrame, EditorEvent>(this, &EditorFrame::onEditorUpdateUI));
     pm->registerEvent(editorEVT_PLUGIN_ATTACHED,
         new TEventHandler<EditorFrame, EditorEvent>(this, &EditorFrame::onPluginAttached));
+    pm->registerEvent(editorEVT_LAYOUT_SWITCH,
+        new TEventHandler<EditorFrame, EditorEvent>(this, &EditorFrame::onLayoutSwitch));
+    pm->registerEvent(editorEVT_LAYOUT_QUERY,
+        new TEventHandler<EditorFrame, EditorEvent>(this, &EditorFrame::onLayoutQuery));
 
     pm->registerEvent(editorEVT_ADD_DOCK_WINDOW,
         new TEventHandler<EditorFrame, EditorDockEvent>(this, &EditorFrame::onAddDockWindow));
@@ -376,6 +380,16 @@ void EditorFrame::onPluginAttached(EditorEvent& event)
     }
 }
 
+void EditorFrame::onLayoutSwitch(EditorEvent& event)
+{
+    layoutManager.LoadPerspective(event.strData);
+}
+
+void EditorFrame::onLayoutQuery(EditorEvent& event)
+{
+    event.strData = layoutManager.SavePerspective();
+}
+
 void EditorFrame::onAddDockWindow(EditorDockEvent& event)
 {
     if (Manager::isAppShuttingDown())
@@ -533,19 +547,16 @@ void EditorFrame::onSize(wxSizeEvent& event)
 
 void EditorFrame::onApplicationClose(wxCloseEvent& event)
 {
+    EditorEvent evt(editorEVT_APP_BEFORE_SHUTDOWN);
+    Manager::getInstancePtr()->processEvent(evt);
+
     wxString layout = layoutManager.SavePerspective();
     if (!layout.IsEmpty())
         Manager::getInstancePtr()->getConfigManager()->getAppConfigFile()->setLayout(layout);
 
     Manager::getInstancePtr()->getExplorerManager()->getProjectExplorer()->saveWorkspace();
 
-    Hide();
-
-    layoutManager.DetachPane(Manager::getInstancePtr()->getExplorerManager()->getNotebook());
-    layoutManager.DetachPane(Manager::getInstancePtr()->getEditorPageManager()->getNotebook());
-    layoutManager.UnInit();
-
-    Manager::free();
+    Manager::shutdown();
     wxFlatNotebook::CleanUp();
     
     Destroy();

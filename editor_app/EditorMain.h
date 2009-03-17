@@ -72,6 +72,8 @@ public:
 
     void onEditorUpdateUI(EditorEvent& event);
     void onPluginAttached(EditorEvent& event);
+    void onLayoutSwitch(EditorEvent& event);
+    void onLayoutQuery(EditorEvent& event);
 
     void onAddDockWindow(EditorDockEvent& event);
     void onDelDockWindow(EditorDockEvent& event);

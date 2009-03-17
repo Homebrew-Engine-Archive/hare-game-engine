@@ -12,7 +12,7 @@
                 <help>Open a file</help>
             </object>
             <object class="wxMenuItem" name="idFileClose">
-                <label>&amp;Close</label> 
+                <label>&amp;Close</label>
                 <bitmap>close.png</bitmap>
                 <help>Close the active file</help>
             </object>
@@ -48,13 +48,13 @@
         <object class="wxMenu" name="menu_edit">
             <label>&amp;Edit</label>
             <object class="wxMenuItem" name="idEditUndo">
-                <label>&amp;Undo</label> 
+                <label>&amp;Undo</label>
                 <bitmap>undo.png</bitmap>
                 <accel>Ctrl-Z</accel>
                 <help>Undo the last editing operation</help>
             </object>
             <object class="wxMenuItem" name="idEditRedo">
-                <label>&amp;Redo</label> 
+                <label>&amp;Redo</label>
                 <bitmap>redo.png</bitmap>
                 <accel>Ctrl-Y</accel>
                 <help>Redo the last editing operation</help>
@@ -80,13 +80,13 @@
             </object>
             <object class="separator" />
             <object class="wxMenuItem" name="idEditSelectAll">
-				<label>&amp;Select all</label> 
+				<label>&amp;Select all</label>
 				<accel>Ctrl-A</accel>
 				<help>Save all modified files</help>
 			</object>
 			<object class="separator" />
 			<object class="wxMenuItem" name="idEditFind">
-				<label>&amp;Find ...</label> 
+				<label>&amp;Find ...</label>
 				<accel>Ctrl-F</accel>
 				<help>Find or replace text</help>
 				<bitmap>find.png</bitmap>
@@ -98,7 +98,7 @@
 				<bitmap>find_in_file.png</bitmap>
 			</object>
 			<object class="wxMenuItem" name="idEditGoto">
-				<label>&amp;Goto...</label> 
+				<label>&amp;Goto...</label>
 				<accel>Ctrl-G</accel>
 				<help>Goto line</help>
 				<bitmap>goto.png</bitmap>
@@ -143,7 +143,7 @@
             </object>
             <object class="separator" />
             <object class="wxMenuItem" name="idViewFullScreen">
-                <label>F&amp;ull Screen</label> 
+                <label>F&amp;ull Screen</label>
                 <accel>Shift-Alt-Enter</accel>
                 <help>Switch to FullScreen view</help>
                 <checkable>1</checkable>

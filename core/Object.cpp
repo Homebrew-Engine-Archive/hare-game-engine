@@ -133,11 +133,6 @@ namespace hare_core
                 else
                     obj = loadFromBin(url);
             }
-            else
-            {
-                HARE_EXCEPT(Exception::ERR_FILE_NOT_FOUND, 
-                    "Cannot open file : " + url, "Object::importObject()");
-            }
         }
 
         return obj;

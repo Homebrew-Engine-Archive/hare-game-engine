@@ -102,15 +102,9 @@ namespace hare_editor
 
     ConfigManager::ConfigManager()
     {
-        try 
-        {
-            appConfigFile = (AppConfigFile*)Object::importObject("app_config.xml");
-        }
-        catch(...)
-        {
+        appConfigFile = (AppConfigFile*)Object::importObject("app_config.xml");
+        if (!appConfigFile)
             appConfigFile = new AppConfigFile;
-            appConfigFile->saveToXml("app_config.xml");
-        }
     }
 
     ConfigManager::~ConfigManager()

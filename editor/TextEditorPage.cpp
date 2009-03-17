@@ -634,6 +634,11 @@ namespace hare_editor
             getControl()->ScrollToLine(projectFile->editorTopLine);
             getControl()->ScrollToColumn(0);
 
+            for (size_t i = 0; i < projectFile->breakPoints.size(); ++i)
+            {
+                markLine(BREAKPOINT_MARKER, projectFile->breakPoints[i]);
+            }
+
             projectFile->editorOpen = true;
             fileName = projectFile->fname.GetFullPath();
             shortName = projectFile->fname.GetFullName();

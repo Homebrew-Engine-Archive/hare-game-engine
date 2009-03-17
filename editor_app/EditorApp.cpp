@@ -97,6 +97,8 @@ bool EditorApp::OnInit()
 
 int EditorApp::OnExit()
 {
+    Manager::free();
+
     core_quit();
 
     return wxApp::OnExit();

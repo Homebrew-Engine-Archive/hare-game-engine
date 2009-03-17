@@ -49,7 +49,10 @@ namespace hare_editor
                 mit->second.erase(mit->second.begin());
             }
         }
+    }
 
+    void Manager::shutdown()
+    {
         appShuttingDown = true;
 
         ExplorerManager::free();

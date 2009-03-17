@@ -64,8 +64,8 @@ namespace hare_editor
             FNfreePlugin fnfreePlugin, FNgetVersion fngetVersion);
 
     private:
-        bool loadPlugin(const wxString& fileName);
         void unloadAllPlugins();
+        bool loadPlugin(const wxString& fileName);
         void unloadPlugin(PluginElement* elem);
 
         bool attachPlugin(EditorPlugin* plugin);

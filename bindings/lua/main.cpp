@@ -68,7 +68,7 @@ int main(int argc, char *argv[])
 {
 #if defined(_DEBUG)
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
-    //_CrtSetBreakAlloc(3648);
+    //_CrtSetBreakAlloc();
 #endif
     core_init(argv[0]);
     CmdLineParser cmdLine(argc, argv);
@@ -108,6 +108,9 @@ int main(int argc, char *argv[])
     }
 
     LuaDebuggee* debuggee = 0;
+	getHareApp()->startUp();
+
+    //LuaDebugger* debugger = 0;
     String debug = cmdLine.getOptionValue("debug");
     if (!debug.empty())
     {
@@ -139,6 +142,8 @@ int main(int argc, char *argv[])
     }
 
     lua_close(L);
+
+	getHareApp()->shutDown();
 
 	getHareApp()->freePlugin();
 

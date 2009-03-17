@@ -158,6 +158,8 @@ public:
 
 HareApp* getHareApp();	
 
+class Font;
+
 class Canvas
 {
 public:
@@ -165,7 +167,16 @@ public:
 	void drawRect(int l, int t, int r, int b, u32 color, f32 z = 0.f);
 	void drawText(int x, int y, const String& text);
 	void drawImage(int x, int y, Shader* shader, f32 z = 0.f);
-	
+	void setFont(Font* f);
 };
 
 Canvas* getCanvas();
+
+class TextManager
+{
+public:
+	Font* createFont(const String& name, f32 size);
+	void  destroyFont(Font* f);
+};
+
+TextManager* getTextManager();

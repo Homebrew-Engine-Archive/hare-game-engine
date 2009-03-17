@@ -47,7 +47,7 @@ namespace hare_d3d
 		if (FAILED(hr))
 			assert(false);
 
-		sur->Release();
+		SAFE_RELEASE(sur);
 
 		D3DRenderSystem::getSingletonPtr()->clear();
 
@@ -122,6 +122,8 @@ namespace hare_d3d
 		if (FAILED(hr))
 			assert(false);
 
+		SAFE_RELEASE(sur);
+
 	}
 
 	void D3DTexture::download(Image &img, const Rect<int>* rc)
@@ -155,37 +157,44 @@ namespace hare_d3d
 
 	bool D3DTexture::doCreate()
 	{
-		if (bIsRenderable){
+	
+		if (!bFromImage){
+			if (D3DTypeConverter::toD3DFormat(texPixelFormat) == D3DFMT_UNKNOWN)
+				return false;
+
 			if (FAILED(pD3DDevice->CreateTexture(//此函数必须调整width，height为2的幂次方否则创建失败 在调用createRenderToTex函数时长宽已经被调整过了
 				width,
 				height,
 				1,						//minimap级别1
-				D3DUSAGE_RENDERTARGET,	//不能用D3DUSAGE_DYNAMIC 它需要显卡支持，D3DUSAGE_DYNAMIC说明可以lock但是再用D3DPOOL_DEFAULT说明纹理会在agp中创建
-				D3DFMT_A8R8G8B8,		//我们的格式
-				D3DPOOL_DEFAULT,
+				bIsRenderable ? D3DUSAGE_RENDERTARGET : 0,	//不能用D3DUSAGE_DYNAMIC 它需要显卡支持，D3DUSAGE_DYNAMIC说明可以lock但是再用D3DPOOL_DEFAULT说明纹理会在agp中创建
+				D3DTypeConverter::toD3DFormat(texPixelFormat),		//我们的格式
+				bIsRenderable ? D3DPOOL_DEFAULT : D3DPOOL_MANAGED,
 				&d3dTexture,
 				NULL))){
 				return false;
 			}
 
-			D3DRenderWindow* curWindow = (D3DRenderWindow*)static_cast<D3DRenderSystem*>(RenderSystem::getSingletonPtr())->getCurRenderWindow();
-			D3DPRESENT_PARAMETERS*	curWindowD3Dpp = curWindow->getPresentationParameters();
-			const D3DMULTISAMPLE_TYPE MultiSample = D3DMULTISAMPLE_NONE;
-			const DWORD MultisampleQuality = 0;
-			const bool Discard = TRUE;
+			if (bIsRenderable){
+				D3DRenderWindow* curWindow = (D3DRenderWindow*)static_cast<D3DRenderSystem*>(RenderSystem::getSingletonPtr())->getCurRenderWindow();
+				D3DPRESENT_PARAMETERS*	curWindowD3Dpp = curWindow->getPresentationParameters();
+				const D3DMULTISAMPLE_TYPE MultiSample = D3DMULTISAMPLE_NONE;
+				const DWORD MultisampleQuality = 0;
+				const bool Discard = TRUE;
 
-			if (FAILED(pD3DDevice->CreateDepthStencilSurface(
-				width,
-				height,
-				curWindowD3Dpp->AutoDepthStencilFormat,
-				MultiSample,
-				MultisampleQuality,
-				Discard,
-				&pDepthStencilSurface,
-				NULL
-				))){
-				return false;
+				if (FAILED(pD3DDevice->CreateDepthStencilSurface(
+					width,
+					height,
+					curWindowD3Dpp->AutoDepthStencilFormat,
+					MultiSample,
+					MultisampleQuality,
+					Discard,
+					&pDepthStencilSurface,
+					NULL
+					))){
+						return false;
+				}				
 			}
+
 			 
 		}else{
 			Image img;

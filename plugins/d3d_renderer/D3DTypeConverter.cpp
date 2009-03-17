@@ -108,10 +108,14 @@ namespace hare_d3d
 		D3DFORMAT d3dfmt;
 		switch(hpf)
 		{
+		case HPF_BYTE_LA:
+			d3dfmt = D3DFMT_A8L8;//假设小地址结尾
+			break;
 		case HPF_A8R8G8B8:
 			d3dfmt = D3DFMT_A8R8G8B8;
 			break;
 		default:
+			d3dfmt = D3DFMT_UNKNOWN;
 			assert(false);
 		}
 		return d3dfmt;

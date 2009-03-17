@@ -1,6 +1,6 @@
 sprite1 = nil
 sprite2 = nil
-sceneListen = nil
+sceneListen = nil 
 --shader = nil
 
 
@@ -8,8 +8,8 @@ sceneListen = nil
 
 function beginScene()
     --sprite:move(1,1)
-    t = hare.getTimer()
-    print("fps"..tostring(t:getFPS()))
+    --t = hare.getTimer()
+    --print("fps"..tostring(t:getFPS()))
 end
 
 function renderScene()
@@ -17,8 +17,8 @@ function renderScene()
 	--canvas:drawImage(500, 600, shader)
 	canvas:drawRect(50, 50, 100, 100, 0xffff0000)
 	canvas:drawLine(0,0, 800, 600, 0xffffffff, 1)
-	canvas:drawRect(50, 50, 600, 500, 0xff00ff00, 0.5)
-	canvas:drawText(0,0,'日')
+	canvas:drawRect(50, 50, 600, 500, 0xff00ff00, 0.5) 
+	canvas:drawText(0,0,'日你大爷 fuck A')
 end
 
 function endScene()
@@ -47,6 +47,8 @@ function init()
     listener:setRenderSceneListenFun(renderScene)
     listener:setEndSceneListenFun(endScene)
     s:setSceneListener(listener)
+     
+
     
     p = hare.WindowParams()
     p.hwnd = 0
@@ -57,17 +59,23 @@ function init()
     w = hareApp:createRenderWindow(p)
     s = hareApp:createSceneManager()
     w:setSceneManager(s)
-		s:addSprite(sprite2)
-    
+	s:addSprite(sprite2)   
+		
+	tm = hare.getTextManager() 
+	f = tm:createFont("MSYH.TTF", 16) 
+	canvas = hare.getCanvas()		
+	canvas:setFont(f)
+
+		                             
     --tex = hareApp:createTexture()
     --tex:createFromFile("logo.png")
     --texMtrl = hare.TextureMtrl()
     --texMtrl:setTexture(tex)
     --shader = hare.SimpleShader()
-    --shader:setMaterial(texMtrl)
+    --shader:setMaterial(texMtrl) 
 end
 
 function quit()
     sprite1 = nil
-    sprite2 = nil
+    sprite2 = nil 
 end

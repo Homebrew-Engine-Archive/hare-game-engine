@@ -57,6 +57,19 @@ namespace hare_graphics
 				max_width = face->glyph->bitmap.width;		
 		}
 
+		ch = L'A';
+		for (wchar_t count = ch; count < ch + 63; ++count){
+			ftResult = FT_Load_Char( face, count, FT_LOAD_RENDER);
+			if (ftResult)
+				continue;
+
+			if (face->glyph->bitmap.rows > max_height)
+				max_height = face->glyph->bitmap.rows;
+
+			if (face->glyph->bitmap.width > max_width)
+				max_width = face->glyph->bitmap.width;		
+		}
+
 		//×î´ó×Ö·û¿í¶È
 		maxCharWidth = max(max_width, max_height);
 

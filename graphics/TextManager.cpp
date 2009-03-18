@@ -11,7 +11,7 @@ namespace hare_graphics
 	
 	TextManager::TextManager()
 		:fontResolution(100)
-		,fontCacheSize(20)
+		,fontCacheSize(100)
 	{
 
 	}

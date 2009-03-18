@@ -50,18 +50,24 @@ namespace hare_graphics
 		Shader::Ptr shader = new SimpleShader;
 		TextureMtrl::Ptr texMtrl = new TextureMtrl;
 
-		f32 layout_x = 0;
+		f32 layout_x = x;
+		f32 layout_y = 0;
 		for (u32 count = 0; count < wstr.size(); ++count){
 			CharGlyph charGlyph = font->getCharGlyph(wstr[count]);
+
+			layout_x += charGlyph.bear_left;
+			layout_y = y - charGlyph.baselineX;
+
 			texMtrl->setTexture(charGlyph.texGlyph);
 			shader->setMaterial(texMtrl);
 
 			Quad quad;
 			quad.setShader(shader);
-			quad.moveTo(x + layout_x, y);
-			f32 w = (charGlyph.recGlyph.maxX - charGlyph.recGlyph.minX) * charGlyph.texGlyph->getWidth();
-			layout_x += w;
-			quad.setWidth(w);
+			quad.moveTo(layout_x, layout_y);
+
+			layout_x += charGlyph.bear_advanceX - charGlyph.bear_left;
+
+			quad.setWidth((charGlyph.recGlyph.maxX - charGlyph.recGlyph.minX) * charGlyph.texGlyph->getWidth());
 			quad.setHeight((charGlyph.recGlyph.maxY - charGlyph.recGlyph.minY) * charGlyph.texGlyph->getHeight());
 			texMtrl->setUV(charGlyph.recGlyph.minX, charGlyph.recGlyph.minY, charGlyph.recGlyph.maxX, charGlyph.recGlyph.maxY);
 			RenderSystem::getSingletonPtr()->render(&quad);			

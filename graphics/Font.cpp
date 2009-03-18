@@ -2,7 +2,7 @@
 #include "Font.h"
 #include "SystemManager.h"
 
-#define PER_WIDTH (26.6f * 2)
+#define PER_WIDTH 64
 #define CODEPOINT_QUAD L'A' + 63
 
 namespace hare_graphics
@@ -41,28 +41,22 @@ namespace hare_graphics
 		if (ftResult)
 			HARE_EXCEPT(Exception::ERR_INTERNAL_ERROR, "Could not set char size!", "Font::Font FT_Set_Char_Size");
 
-		int max_height = 0, max_width = 0, max_baseline_top = 0, max_baseline_bottom = 0;
+		int max_height = 0, max_width = 0;
 		
 		//随即抽取几个中文字符选出最大的宽度和空隙
 		wchar_t ch = L'赢';
 		for (wchar_t count = ch - 50; count < ch + 50; ++count){
-			assert(0 == FT_Load_Char( face, count, FT_LOAD_RENDER));
+			ftResult = FT_Load_Char( face, count, FT_LOAD_RENDER);
+			if (ftResult)
+				continue;
 
-			if (face->glyph->metrics.horiBearingY + face->glyph->metrics.vertBearingY > max_baseline_top)
-				max_baseline_top = face->glyph->metrics.horiBearingY + face->glyph->metrics.vertBearingY;
+			if (face->glyph->bitmap.rows > max_height)
+				max_height = face->glyph->bitmap.rows;
 
-			if (face->glyph->metrics.vertAdvance - (face->glyph->metrics.horiBearingY + face->glyph->metrics.vertBearingY) > max_baseline_bottom)
-				max_baseline_bottom = face->glyph->metrics.vertAdvance - (face->glyph->metrics.horiBearingY + face->glyph->metrics.vertBearingY);
-
-			if (face->glyph->metrics.horiAdvance > max_width)
-				max_width = face->glyph->metrics.horiAdvance;		
+			if (face->glyph->bitmap.width > max_width)
+				max_width = face->glyph->bitmap.width;		
 		}
 
-		baseline = max_baseline_top;
-
-		max_height = (max_baseline_top + max_baseline_bottom) / PER_WIDTH;
-
-		max_width /= PER_WIDTH;
 		//最大字符宽度
 		maxCharWidth = max(max_width, max_height);
 
@@ -94,15 +88,23 @@ namespace hare_graphics
 
 		std::deque<CachedChar>::iterator it = cacheCharQueue.begin();
 		for (;it < cacheCharQueue.end(); ++it){
-			const CachedChar& tmpCacheChar = (*it);
+			CachedChar tmpCacheChar = (*it);
 			if (tmpCacheChar.codePoint == codePoint){
+
+				charGlyph.baselineX     = tmpCacheChar.baselineX;
+				charGlyph.bear_left     = tmpCacheChar.bear_left;
+				charGlyph.bear_advanceX = tmpCacheChar.bear_advanceX;
+				charGlyph.baselineY     = tmpCacheChar.baselineY;
+				charGlyph.bear_top      = tmpCacheChar.bear_top;
+				charGlyph.bear_advanceY = tmpCacheChar.bear_advanceY;
+
 				charGlyph.recGlyph = tmpCacheChar.recGlyph;
 				charGlyph.texGlyph = texCache;
 
 				//move the char to deque's front
-				cacheCharQueue.push_front(tmpCacheChar);
-
 				cacheCharQueue.erase(it);
+
+				cacheCharQueue.push_front(tmpCacheChar);
 
 				return charGlyph;
 			}		
@@ -115,6 +117,14 @@ namespace hare_graphics
 		}
 
 		const CachedChar& tmpCacheChar = cacheCharQueue.front();
+
+		charGlyph.baselineX     = tmpCacheChar.baselineX;
+		charGlyph.bear_left     = tmpCacheChar.bear_left;
+		charGlyph.bear_advanceX = tmpCacheChar.bear_advanceX;
+		charGlyph.baselineY     = tmpCacheChar.baselineY;
+		charGlyph.bear_top      = tmpCacheChar.bear_top;
+		charGlyph.bear_advanceY = tmpCacheChar.bear_advanceY;
+
 		charGlyph.recGlyph = tmpCacheChar.recGlyph;
 		charGlyph.texGlyph = texCache;
 		
@@ -164,17 +174,16 @@ namespace hare_graphics
 
 		texCache->upload(clearImg, willBeFillCachedPos.x, willBeFillCachedPos.y);
 
-		f32 left_bear = 0;
-
-		f32 right_boundary = 0;
-
-		f32 top_bear = 0;
-
 		u8* buffer = face->glyph->bitmap.buffer;
+
+		int char_width = 0;
+		int char_height = 0;
 
 		if (!buffer){//char glyph space
 			
-			right_boundary = (f32)(face->glyph->metrics.horiAdvance) / PER_WIDTH;
+			char_height = maxCharWidth;
+
+			char_width  = face->glyph->metrics.horiAdvance / PER_WIDTH;
 		
 		}else{
 			Image img;
@@ -193,14 +202,12 @@ namespace hare_graphics
 				}
 			}
 
-			left_bear = (face->glyph->metrics.horiBearingX > 0 ? face->glyph->metrics.horiBearingX : 0) / PER_WIDTH;
+			char_width = face->glyph->bitmap.width;
 
-			right_boundary = (f32)(face->glyph->metrics.horiAdvance) / PER_WIDTH;
-
-			top_bear  = (baseline - ((face->glyph->metrics.horiBearingY > 0 ? face->glyph->metrics.horiBearingY : 0))) / PER_WIDTH;
+			char_height= face->glyph->bitmap.rows;
 
 			//upload char glyph
-			texCache->upload(img, willBeFillCachedPos.x + left_bear, willBeFillCachedPos.y + top_bear);
+			texCache->upload(img, willBeFillCachedPos.x, willBeFillCachedPos.y);
 		}
 
 		if (cacheCharQueue.size() == cacheBufferSize){
@@ -210,8 +217,14 @@ namespace hare_graphics
 		willBeFillCachedPos.codePoint = codePoint;
 		willBeFillCachedPos.recGlyph.minX = (f32)(willBeFillCachedPos.x) / (f32)texCache->getWidth();
 		willBeFillCachedPos.recGlyph.minY = (f32)(willBeFillCachedPos.y) / (f32)texCache->getHeight();
-		willBeFillCachedPos.recGlyph.maxX = (f32)(willBeFillCachedPos.x + right_boundary) / (f32)texCache->getWidth();
-		willBeFillCachedPos.recGlyph.maxY = (f32)(willBeFillCachedPos.y + maxCharWidth) / (f32)texCache->getHeight();
+		willBeFillCachedPos.recGlyph.maxX = (f32)(willBeFillCachedPos.x + char_width)  / (f32)texCache->getWidth();
+		willBeFillCachedPos.recGlyph.maxY = (f32)(willBeFillCachedPos.y + char_height) / (f32)texCache->getHeight();
+		willBeFillCachedPos.baselineX = (f32)(face->glyph->metrics.horiBearingY)    / PER_WIDTH;
+		willBeFillCachedPos.bear_left = (f32)(face->glyph->metrics.horiBearingX)    / PER_WIDTH;
+		willBeFillCachedPos.bear_advanceX = (f32)(face->glyph->metrics.horiAdvance) / PER_WIDTH;
+		willBeFillCachedPos.baselineY = (f32)(face->glyph->metrics.vertBearingX)    / PER_WIDTH;
+		willBeFillCachedPos.bear_top = (f32)(face->glyph->metrics.vertBearingY)     / PER_WIDTH;
+		willBeFillCachedPos.bear_advanceY = (f32)(face->glyph->metrics.vertAdvance) / PER_WIDTH;
 
 		//将 新加入的到cache的字放到队列的首位
 		cacheCharQueue.push_front(willBeFillCachedPos);

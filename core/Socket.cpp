@@ -155,11 +155,14 @@ namespace hare_core
             return false;
         }
 
-        unsigned long address_l = ::inet_addr(addr.c_str());
-        if (address_l != INADDR_NONE)
-            host = ::gethostbyaddr((const char*)&address_l, 4, AF_INET);
-        else
-            host = ::gethostbyname(addr.c_str());
+        host = ::gethostbyname(addr.c_str());
+
+        if (host == NULL)
+        {
+            unsigned long address_l = ::inet_addr(addr.c_str());
+            if (address_l != INADDR_NONE)
+                host = ::gethostbyaddr((const char*)&address_l, 4, AF_INET);
+        }
 
         if (host == NULL)
         {

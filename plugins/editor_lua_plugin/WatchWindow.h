@@ -29,6 +29,8 @@ public:
     void redraw();
     bool isReallyShown();
 
+    void onDropText(const wxString& text);
+
 protected:
     LuaDebugger* debugger;
     wxTreeListCtrl* treeList;

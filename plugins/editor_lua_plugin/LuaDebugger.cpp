@@ -346,9 +346,10 @@ bool LuaDebugger::start()
         switchToDebugLayout();
 
         if (!config->isRemoteDebug())
-            ret = startDebuggee() > 0; 
+            ret = startDebuggee() > 0;
 
         startCmd = StartCmd_Go;
+        state = Debugger_Wait;
     }
     else if (state == Debugger_Breaked)
     {
@@ -360,29 +361,49 @@ bool LuaDebugger::start()
 
 bool LuaDebugger::step()
 {
-   bool ret = checkSocketConnected(true, wxT("Debugger Step")) && checkSocketWrite(
-        SocketHelper::writeCmd(getSocket(), LUA_DEBUGGER_CMD_DEBUG_STEP),
-        wxT("Debugger Step"));
+    bool ret = false;
 
-   if (ret) 
-   {
-       state = Debugger_Running;
-       startCmd = StartCmd_StepIn;
-   }
+    if (state == Debugger_Stoped)
+    {
+        ret = start();
+        startCmd = StartCmd_StepIn;
+    }
+    else
+    {   
+        ret = checkSocketConnected(true, wxT("Debugger Step")) && checkSocketWrite(
+            SocketHelper::writeCmd(getSocket(), LUA_DEBUGGER_CMD_DEBUG_STEP),
+            wxT("Debugger Step"));
+        
+        if (ret) 
+        {
+            clearEditorDebugMark();
+            state = Debugger_Running;
+        }
+    }
 
    return ret;
 }
 
 bool LuaDebugger::stepOver()
 {
-    bool ret = checkSocketConnected(true, wxT("Debugger StepOver")) && checkSocketWrite(
-        SocketHelper::writeCmd(getSocket(), LUA_DEBUGGER_CMD_DEBUG_STEPOVER),
-        wxT("Debugger StepOver"));
- 
-    if (ret) 
+    bool ret = false;
+
+    if (state == Debugger_Stoped)
     {
-        state = Debugger_Running;
+        ret = start();
         startCmd = StartCmd_StepOver;
+    }
+    else
+    {
+        ret = checkSocketConnected(true, wxT("Debugger StepOver")) && checkSocketWrite(
+            SocketHelper::writeCmd(getSocket(), LUA_DEBUGGER_CMD_DEBUG_STEPOVER),
+            wxT("Debugger StepOver"));
+
+        if (ret) 
+        {
+            clearEditorDebugMark();
+            state = Debugger_Running;
+        }
     }
 
     return ret;
@@ -395,7 +416,11 @@ bool LuaDebugger::stepOut()
         wxT("Debugger StepOut"));
     
     if (ret)
+    {
+        clearEditorDebugMark();
+
         state = Debugger_Running;
+    }
 
     return ret;
 }
@@ -407,8 +432,12 @@ bool LuaDebugger::continueExec()
         wxT("Debugger Continue"));
 
     if (ret)
+    {
+        clearEditorDebugMark();
+
         state = Debugger_Running;
-    
+    }
+
     return ret;
 }
 
@@ -428,6 +457,9 @@ bool LuaDebugger::reset()
 
 bool LuaDebugger::enumerateStack()
 {
+    if (state != Debugger_Breaked)
+        return false;
+
     return checkSocketConnected(true, wxT("Debugger EnumerateStack")) && checkSocketWrite(
         SocketHelper::writeCmd(getSocket(), LUA_DEBUGGER_CMD_ENUMERATE_STACK),
         wxT("Debugger EnumerateStack"));
@@ -435,6 +467,9 @@ bool LuaDebugger::enumerateStack()
 
 bool LuaDebugger::enumerateStackEntry(int stackEntry)
 {
+    if (state != Debugger_Breaked)
+        return false;
+
     return checkSocketConnected(true, wxT("Debugger EnumerateStackEntry")) && checkSocketWrite(
         SocketHelper::writeCmd(getSocket(), LUA_DEBUGGER_CMD_ENUMERATE_STACK_ENTRY) &&
         SocketHelper::writeInt(getSocket(), stackEntry),
@@ -443,6 +478,9 @@ bool LuaDebugger::enumerateStackEntry(int stackEntry)
 
 bool LuaDebugger::enumerateTable(int tableRef, int index, long itemNode)
 {
+    if (state != Debugger_Breaked)
+        return false;
+
     return checkSocketConnected(true, wxT("Debugger EnumerateTable")) && checkSocketWrite(
         SocketHelper::writeCmd(getSocket(), LUA_DEBUGGER_CMD_ENUMERATE_TABLE_REF) &&
         SocketHelper::writeInt(getSocket(), tableRef) &&
@@ -451,15 +489,11 @@ bool LuaDebugger::enumerateTable(int tableRef, int index, long itemNode)
         wxT("Debugger EnumerateTable"));
 }
 
-bool LuaDebugger::clearDebugReferences()
-{
-    return checkSocketConnected(true, wxT("Debugger ClearDebugReferences")) && checkSocketWrite(
-        SocketHelper::writeCmd(getSocket(), LUA_DEBUGGER_CMD_CLEAR_DEBUG_REFERENCES),
-        wxT("Debugger ClearDebugReferences"));
-}
-
 bool LuaDebugger::evaluateExpr(int stackRef, const String &strExpression)
 {
+    if (state != Debugger_Breaked)
+        return false;
+
     return checkSocketConnected(true, wxT("Debugger EvaluateExpr")) && checkSocketWrite(
         SocketHelper::writeCmd(getSocket(), LUA_DEBUGGER_CMD_EVALUATE_EXPR) &&
         SocketHelper::writeInt(getSocket(), stackRef) &&
@@ -603,8 +637,8 @@ bool LuaDebugger::stopDebugger()
     }
 
     // One of the above two operations terminates the thread. Wait for it to stop.
-    if ((thread != NULL) && thread->IsRunning())
-        thread->Wait();
+    while ((thread != NULL) && thread->IsRunning())
+        wxMilliSleep(100);
 
     delete thread;
     thread = NULL;
@@ -758,8 +792,8 @@ int LuaDebugger::handleDebuggeeEvent(int event_type)
         }
     case LUA_DEBUGGEE_EVENT_EXIT:
         {
-            LuaDebuggerEvent debugEvent(wxEVT_LUA_DEBUGGER_EXIT, this);
-            wxPostEvent(this, debugEvent);
+            //LuaDebuggerEvent debugEvent(wxEVT_LUA_DEBUGGER_EXIT, this);
+            //wxPostEvent(this, debugEvent);
             break;
         }
     case LUA_DEBUGGEE_EVENT_STACK_ENUM:
@@ -974,6 +1008,8 @@ void LuaDebugger::onLuaDebugDebuggeeConnected(LuaDebuggerEvent& event)
         }
     }
 
+    state = Debugger_Running;
+
     // start command
     if (startCmd == StartCmd_Go)
         continueExec();
@@ -1002,6 +1038,8 @@ void LuaDebugger::onLuaDebugExit(LuaDebuggerEvent& event)
 void LuaDebugger::onLuaDebugBreak(LuaDebuggerEvent& event)
 {
     state = Debugger_Breaked;
+
+    setCurrStackLevel(0);
 
     syncEditor(event.fileName, event.lineNumber);
 

@@ -121,12 +121,12 @@ public:
     bool continueExec();
     bool breakExec();
     bool reset();
+    bool clearAllBreakPoints();
+
     bool enumerateStack();
     bool enumerateStackEntry(int stackEntry);
     bool enumerateTable(int tableRef, int index, long itemNode);
-    bool clearDebugReferences();
     bool evaluateExpr(int stackRef, const String &strExpression);
-    bool clearAllBreakPoints();
 
     virtual wxString getSocketErrorMsg();
 

@@ -31,17 +31,19 @@ void LuaDebugData::enumerateStack(lua_State* L)
             if ((stackFrame == 0) || (currentLine != -1))
             {
                 String name;
+                String lineStr;
                 String source = luaDebug.source;
 
-                if (currentLine == -1)
-                    currentLine = 0;
-
                 if (luaDebug.name != NULL)
-                    name = StringUtil::format("function %s line %d", luaDebug.name, currentLine);
-                else
-                    name = StringUtil::format("line %d", currentLine);
+                    name = StringUtil::format("function %s ", luaDebug.name);
 
-                String lineStr = StringConverter::toString(currentLine - 1);
+                if (currentLine < 0)
+                    name += "line <unknown>";
+                else
+                {
+                    name += StringUtil::format("line %d", currentLine);
+                    lineStr = StringConverter::toString(currentLine - 1);
+                }
 
                 items.push_back(new LuaDebugItem(name, LUA_TNONE, lineStr, 
                     LUA_TNONE, source, LUA_NOREF, stackFrame, LUA_DEBUGITEM_CALLSTACK));

@@ -1,11 +1,28 @@
 #include "PCH.h"
 #include "WatchWindow.h"
 #include "LuaDebugger.h"
+#include <wx/dnd.h>
 #include <wx/treelistctrl.h>
 
 static const wxChar* LUA_TYPE_NAME[] = {
     wxT("nil"), wxT("boolean"), wxT("lightuserdata"), wxT("number"), wxT("string"),
     wxT("table"), wxT("function"), wxT("userdata"), wxT("thread")
+};
+
+class TextDropTarget : public wxTextDropTarget
+{
+public:
+    TextDropTarget(LuaWatchWindow *pOwner) { owner = pOwner; }
+
+    virtual bool OnDropText(wxCoord x, wxCoord y, const wxString& text)
+    {
+        owner->onDropText(text);
+
+        return false;
+    }
+
+private:
+    LuaWatchWindow *owner;
 };
 
 BEGIN_EVENT_TABLE(LuaWatchWindow, wxPanel)
@@ -29,6 +46,8 @@ LuaWatchWindow::LuaWatchWindow(wxWindow* parent, LuaDebugger* dbg)
     treeList->AddColumn(_("Value"), 200);
     treeList->AddColumn(_("Type"));
 
+    SetDropTarget(new TextDropTarget(this));
+
     root = treeList->AddRoot(wxEmptyString);
 
     addEmptyRow();
@@ -41,6 +60,16 @@ LuaWatchWindow::~LuaWatchWindow()
 void LuaWatchWindow::addEmptyRow()
 {
     treeList->AppendItem(root, wxEmptyString);
+}
+
+void LuaWatchWindow::onDropText(const wxString& text)
+{
+    if (text.IsEmpty())
+        return;
+
+    treeList->InsertItem(root, 0, text);
+
+    debugger->evaluateExpr(debugger->getCurrStackLevel(), text.ToUTF8().data());
 }
 
 void LuaWatchWindow::onTreeKeyDown(wxTreeEvent& event)
@@ -111,6 +140,7 @@ void LuaWatchWindow::updateWatchData(LuaDebugData* debugData)
 
             if (text == wxString::FromUTF8(debugData->items[0]->itemKey.c_str()))
             {
+                treeList->DeleteChildren(child);
                 treeList->SetItemText(child, 1, wxString::FromUTF8(debugData->items[0]->itemValue.c_str()));
 
                 if (debugData->items[0]->itemValueType >= 0 &&
@@ -133,6 +163,10 @@ void LuaWatchWindow::redraw()
     wxTreeItemId child = treeList->GetFirstChild(root, cookie);
     while (child.IsOk())
     {
+        treeList->DeleteChildren(child);
+        treeList->SetItemText(child, 1, wxEmptyString);
+        treeList->SetItemText(child, 2, wxEmptyString);
+
         wxString text = treeList->GetItemText(child, 0);
 
         if (!text.IsEmpty())

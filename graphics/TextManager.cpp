@@ -27,7 +27,7 @@ namespace hare_graphics
 
 	Font* TextManager::createFont(const String& name, f32 size)
 	{
-		Font* font
+		Font* font;
 		try{
 			font = new Font(name, size, fontResolution, fontCacheSize);
 			fontList.push_back(font);

@@ -3743,6 +3743,7 @@ bool wxTreeListMainWindow::GetBoundingRect (const wxTreeItemId& itemId, wxRect& 
 void wxTreeListMainWindow::EditLabel (const wxTreeItemId& item, int column) {
     if (!item.IsOk()) return;
     if (!((column >= 0) && (column < GetColumnCount()))) return;
+    if (!m_owner->GetHeaderWindow()->GetColumn(column).IsEditable()) return;
 
     m_editItem = (wxTreeListItem*) item.m_pItem;
 
@@ -4754,7 +4755,11 @@ bool wxTreeListCtrl::GetBoundingRect(const wxTreeItemId& item, wxRect& rect,
 { return m_main_win->GetBoundingRect(item, rect, textOnly); }
 
 void wxTreeListCtrl::EditLabel (const wxTreeItemId& item, int column)
-{ m_main_win->EditLabel (item, column); }
+{ 
+    if (!GetColumn(column).IsEditable())
+        return;
+    m_main_win->EditLabel (item, column); 
+}
 
 int wxTreeListCtrl::OnCompareItems(const wxTreeItemId& item1,
                                    const wxTreeItemId& item2)

@@ -87,7 +87,7 @@ namespace hare_core
         va_start(list, formats);
 
         //@FIXME
-        static char buff[4097];
+        char buff[4097];
         vsprintf(buff, formats, list);
         va_end(list);
 

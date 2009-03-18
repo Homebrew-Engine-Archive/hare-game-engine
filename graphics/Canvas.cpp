@@ -67,15 +67,15 @@ namespace hare_graphics
 			RenderSystem::getSingletonPtr()->render(&quad);			
 		}
 
-		//CharGlyph charGlyph = font->getCharGlyph(wstr[0]);
+		CharGlyph charGlyph = font->getCharGlyph(wstr[0]);
 
-		//Quad quad2;
-		//quad2.setShader(shader);
-		//quad2.moveTo(150,150);
-		//quad2.setWidth(charGlyph.texGlyph->getWidth());
-		//quad2.setHeight(charGlyph.texGlyph->getHeight());
-		//texMtrl->setUV(0,0,1,1);
-		//RenderSystem::getSingletonPtr()->render(&quad2);	
+		Quad quad2;
+		quad2.setShader(shader);
+		quad2.moveTo(150,150);
+		quad2.setWidth(charGlyph.texGlyph->getWidth());
+		quad2.setHeight(charGlyph.texGlyph->getHeight());
+		texMtrl->setUV(0,0,1,1);
+		RenderSystem::getSingletonPtr()->render(&quad2);	
 
 	}
 

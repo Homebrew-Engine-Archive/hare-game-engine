@@ -52,7 +52,10 @@ bool LuaDebuggee::debugHook(int event)
         else
         {
             if (notifyBreak(fileName, lineNumber))
+            {
+                forceBreak = false;
                 wait = true;
+            }
         }
     }
     else
@@ -63,8 +66,7 @@ bool LuaDebuggee::debugHook(int event)
         }
         else if ((event == LUA_HOOKRET) || (event == LUA_HOOKTAILRET))
         {
-            if (framesUntilBreak > 0)
-                framesUntilBreak--;
+            framesUntilBreak--;
         }
         else if (event == LUA_HOOKLINE)
         {

@@ -12,6 +12,15 @@ namespace hare_graphics
 {
 	struct CharGlyph
 	{
+		f32 baselineX;
+		f32 bear_left;
+		f32 bear_advanceX;
+
+		f32 baselineY;
+		f32 bear_top;
+		f32 bear_advanceY;
+
+
 		Rect<f32> recGlyph;
 		Texture::Ptr texGlyph;
 	};
@@ -25,6 +34,14 @@ namespace hare_graphics
 			int y;
 			Rect<f32> recGlyph;
 			u32 codePoint;
+
+			f32 baselineX;
+			f32 bear_left;
+			f32 bear_advanceX;
+
+			f32 baselineY;
+			f32 bear_top;
+			f32 bear_advanceY;
 
 			CachedChar()
 				:x(0),y(0)
@@ -74,7 +91,6 @@ namespace hare_graphics
 		CachedChar willBeFillCachedPos;//添加一个字模时在纹理中的位置 初始化的位置是(0,0)
 		CharGlyph charGlyph;
 
-		int baseline;//字符的基线
 	};
 }
 

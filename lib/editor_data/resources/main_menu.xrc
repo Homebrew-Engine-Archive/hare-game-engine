@@ -122,7 +122,6 @@
                 <label>&amp;Explorer</label>
                 <accel>Ctrl-Alt-E</accel>
                 <help>Show/hide explorer</help>
-                <checkable>1</checkable>
                 <enabled>1</enabled>
             </object>
 			<object class="separator" />
@@ -131,22 +130,21 @@
                 <object class="wxMenuItem" name="idViewToolMain">
                     <label>&amp;Main Toolbar</label>
                     <help>Show/hide main toolbar</help>
-                    <checkable>1</checkable>
                     <enabled>1</enabled>
                 </object>
                 <object class="wxMenuItem" name="idViewToolFullScreen">
                     <label>&amp;Full Screen Toolbar</label>
                     <help>Show/hide full screen toolbar</help>
-                    <checkable>1</checkable>
                     <enabled>1</enabled>
                 </object>
+                <object class="separator" />
             </object>
             <object class="separator" />
             <object class="wxMenuItem" name="idViewFullScreen">
                 <label>F&amp;ull Screen</label>
+                <bitmap>full_screen.png</bitmap>
                 <accel>Shift-Alt-Enter</accel>
                 <help>Switch to FullScreen view</help>
-                <checkable>1</checkable>
                 <enabled>1</enabled>
             </object>
         </object>

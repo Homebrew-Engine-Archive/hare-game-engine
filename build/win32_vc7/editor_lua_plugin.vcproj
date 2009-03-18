@@ -125,6 +125,9 @@
 				RelativePath="..\..\plugins\editor_lua_plugin\LuaDebugger.cpp">
 			</File>
 			<File
+				RelativePath="..\..\plugins\editor_lua_plugin\OutputWindow.cpp">
+			</File>
+			<File
 				RelativePath="..\..\plugins\editor_lua_plugin\PCH.cpp">
 				<FileConfiguration
 					Name="Debug|Win32">
@@ -150,6 +153,9 @@
 			</File>
 			<File
 				RelativePath="..\..\plugins\editor_lua_plugin\LuaDebugger.h">
+			</File>
+			<File
+				RelativePath="..\..\plugins\editor_lua_plugin\OutputWindow.h">
 			</File>
 			<File
 				RelativePath="..\..\plugins\editor_lua_plugin\PCH.h">

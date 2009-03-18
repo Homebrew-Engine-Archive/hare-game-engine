@@ -64,9 +64,16 @@ int idEditFind = XRCID("idEditFind");
 int idEditFindInFile = XRCID("idEditFindInFile");
 int idEditGoto = XRCID("idEditGoto");
 
+int idViewExplorer = XRCID("idViewExplorer");
+int idViewToolMain = XRCID("idViewToolMain");
+int idViewToolbars = XRCID("idViewToolbars");
+int idViewToolFullScreen = XRCID("idViewToolFullScreen");
+
+int idViewFullScreen = XRCID("idViewFullScreen");
+
 int idDebugStart = XRCID("idDebugStart");
 
-int idMainToolbarChoice = wxNewId();
+int idMainToolbarChoice = wxNewId();    // select the active project
 
 // add more IDs here
 
@@ -108,6 +115,12 @@ BEGIN_EVENT_TABLE(EditorFrame, wxFrame)
     EVT_MENU(idEditGoto, EditorFrame::onEditGoto)
     EVT_MENU(idDebugStart, EditorFrame::onDebugStart)
     
+    EVT_MENU(idViewToolMain, EditorFrame::onShowToolBar)
+    EVT_MENU(idViewExplorer, EditorFrame::onShowToolBar)
+    EVT_MENU(idViewToolFullScreen, EditorFrame::onShowToolBar)
+
+    EVT_MENU(idViewFullScreen, EditorFrame::onToggleFullScreen)
+
     EVT_AUITOOLBAR_TOOL_DROPDOWN(idFileNew, EditorFrame::onToolbarDropDownCreate)
     EVT_AUITOOLBAR_TOOL_DROPDOWN(idDebugStart, EditorFrame::onToolbarDropDownDebug)
 END_EVENT_TABLE()
@@ -154,8 +167,6 @@ EditorFrame::EditorFrame(wxFrame *frame, const wxString& title)
     wxString dir = wxString::FromUTF8(scriptDir.c_str());
     Manager::getInstancePtr()->getExplorerManager()->getProjectExplorer()->loadWorkspace(dir);
 
-    //wxChoice* choice = (wxChoice*)mainToolBar->FindControl(idMainToolbarChoice);
-
     wxString layout = Manager::getInstancePtr()->getConfigManager()->getAppConfigFile()->getLayout();
 
     if (!layout.IsEmpty())
@@ -183,6 +194,8 @@ void EditorFrame::registerEvents()
         new TEventHandler<EditorFrame, EditorDockEvent>(this, &EditorFrame::onAddDockWindow));
     pm->registerEvent(editorEVT_DEL_DOCK_WINDOW,
         new TEventHandler<EditorFrame, EditorDockEvent>(this, &EditorFrame::onDelDockWindow));
+    pm->registerEvent(editorEVT_SHOW_DOCK_WINDOW,
+        new TEventHandler<EditorFrame, EditorDockEvent>(this, &EditorFrame::onShowDockWindow));
 }
 
 void EditorFrame::createIDE()
@@ -276,9 +289,18 @@ void EditorFrame::createToolBar()
     mainToolBar->Realize();
     mainToolBar->SetInitialSize();
 
-    // Toolbars
     layoutManager.AddPane(mainToolBar, wxAuiPaneInfo().Name(wxT("MainToolbar"))
-        .Caption(_("Main Toolbar")).ToolbarPane().Top().LeftDockable(false).RightDockable(false));
+        .Caption(wxT("Main Toolbar")).ToolbarPane().Top().LeftDockable(false).RightDockable(false));
+
+    bmp.LoadFile(fullPath + wxT("full_screen.png"), wxBITMAP_TYPE_PNG);
+    fullScreenToolBar = new wxAuiToolBar(this, wxID_ANY, wxDefaultPosition, wxSize(16, 16),
+        wxAUI_TB_DEFAULT_STYLE | wxAUI_TB_HORZ_TEXT);
+    fullScreenToolBar->AddTool(idViewFullScreen, _("Full Screen"), bmp, wxEmptyString, wxITEM_CHECK);
+    fullScreenToolBar->Realize();
+    fullScreenToolBar->SetInitialSize();
+
+    layoutManager.AddPane(fullScreenToolBar, wxAuiPaneInfo().Name(wxT("FullScreenToolbar"))
+        .Caption(wxT("FullScreen Toolbar")).ToolbarPane().Top().LeftDockable(false).RightDockable(false));
 
     layoutManager.Update();
 }
@@ -374,10 +396,60 @@ void EditorFrame::onPluginAttached(EditorEvent& event)
                 .LeftDockable(false).RightDockable(false));
 
             layoutManager.Update();
+
+            wxMenuBar* mbar = GetMenuBar();
+            wxMenuItem* item = mbar->FindItem(idViewToolbars, 0);
+            if (item)
+            {
+                wxMenu* menu = item->GetSubMenu();
+                if (menu)
+                {
+                    wxString name = info->title + _(" Toolbar");
+                    if (wxNOT_FOUND == menu->FindItem(name))
+                    {
+                        int newId = wxNewId();
+                        wxMenuItem* newItem = menu->Append(newId, name, wxEmptyString);
+                        Connect(newId, wxEVT_COMMAND_MENU_SELECTED,
+                            (wxObjectEventFunction)(wxEventFunction)(wxCommandEventFunction)&EditorFrame::onShowToolBar);
+                        pluginToolBars[newId] = toolBar;
+                    }
+                }
+            }
         }
         else
             delete toolBar;
     }
+}
+
+void EditorFrame::onShowToolBar(wxCommandEvent& event)
+{
+    wxWindow* win = 0;
+
+    if (event.GetId() == idViewExplorer)
+        win = Manager::getInstancePtr()->getExplorerManager()->getNotebook();
+    else if (event.GetId() == idViewToolMain)
+        win = mainToolBar;
+    else if (event.GetId() == idViewToolFullScreen)
+        win = fullScreenToolBar;
+    else
+    {
+       win = pluginToolBars[event.GetId()];
+    }
+
+    if (win)
+    {
+        layoutManager.GetPane(win).Show(true);
+        layoutManager.Update();
+    }
+}
+
+void EditorFrame::onToggleFullScreen(wxCommandEvent& event)
+{
+    ShowFullScreen(!IsFullScreen(), wxFULLSCREEN_NOTOOLBAR | wxFULLSCREEN_NOBORDER |
+        wxFULLSCREEN_NOCAPTION);
+
+    fullScreenToolBar->ToggleTool(idViewFullScreen, IsFullScreen());
+    fullScreenToolBar->Realize();
 }
 
 void EditorFrame::onLayoutSwitch(EditorEvent& event)
@@ -407,6 +479,15 @@ void EditorFrame::onDelDockWindow(EditorDockEvent& event)
     if (event.window)
     {
         layoutManager.DetachPane(event.window);
+        layoutManager.Update();
+    }
+}
+
+void EditorFrame::onShowDockWindow(EditorDockEvent& event)
+{
+    if (event.window)
+    {
+        layoutManager.GetPane(event.window).Show(event.show);
         layoutManager.Update();
     }
 }
@@ -555,6 +636,8 @@ void EditorFrame::onApplicationClose(wxCloseEvent& event)
         Manager::getInstancePtr()->getConfigManager()->getAppConfigFile()->setLayout(layout);
 
     Manager::getInstancePtr()->getExplorerManager()->getProjectExplorer()->saveWorkspace();
+
+    layoutManager.UnInit();
 
     Manager::shutdown();
     wxFlatNotebook::CleanUp();

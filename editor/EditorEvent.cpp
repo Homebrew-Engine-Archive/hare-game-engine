@@ -28,5 +28,6 @@ namespace hare_editor
 
     const wxEventType editorEVT_ADD_DOCK_WINDOW = wxNewEventType();
     const wxEventType editorEVT_DEL_DOCK_WINDOW = wxNewEventType();
+    const wxEventType editorEVT_SHOW_DOCK_WINDOW = wxNewEventType();
 }
 

@@ -16,6 +16,7 @@
 #include <wx/process.h>
 #include "CallStackWindow.h"
 #include "WatchWindow.h"
+#include "outputWindow.h"
 
 class LuaDebuggerProcess;
 class LuaDebuggerEvent;
@@ -149,6 +150,8 @@ public:
 
     LuaCallStackWindow* callStackWindow;
     LuaWatchWindow* watchWindow;
+    LuaOutputWindow* outputWindow;
+
     LuaDebuggerConfig::Ptr config;
     wxString previousLayout;
 
@@ -185,6 +188,7 @@ private:
     void onLuaDebugStepIn(wxCommandEvent& event);
     void onLuaDebugStepOver(wxCommandEvent& event);
     void onLuaDebugStepOut(wxCommandEvent& event);
+    void onLuaDebugShowWindow(wxCommandEvent& event);
 
     void onLuaDebugDebuggeeConnected(LuaDebuggerEvent& event);
     void onLuaDebugDebuggeeDisconnected(LuaDebuggerEvent& event);
@@ -192,6 +196,8 @@ private:
     void onLuaDebugStackEnum(LuaDebuggerEvent& event);
     void onLuaDebugEvaluateExpr(LuaDebuggerEvent& event);
     void onLuaDebugExit(LuaDebuggerEvent& event);
+    void onLuaDebugPrint(LuaDebuggerEvent& event);
+    void onLuaDebugError(LuaDebuggerEvent& event);
     
     void onAppBeforeShutdown(EditorEvent& event);
 

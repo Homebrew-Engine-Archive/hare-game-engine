@@ -10,6 +10,9 @@ LuaDebuggee::LuaDebuggee(lua_State* L, const String& server, int port)
 {
     lua_sethook(L, LuaDebuggee::luaDebugHook, LUA_MASKCALL | LUA_MASKLINE | LUA_MASKRET, 0);
 
+    lua_pushcfunction(L, luaPrint);
+    lua_setglobal(L, "print");
+
     enterLuaCriticalSection();
 }
 
@@ -23,6 +26,35 @@ void LuaDebuggee::luaDebugHook(lua_State *L, lua_Debug *debug)
     LuaDebuggee* debuggee = LuaDebuggee::getSingletonPtr();
     if (debuggee)
         debuggee->debugHook(debug->event);
+}
+
+int LuaDebuggee::luaPrint(lua_State *L)
+{
+    int idx;
+    String stream;
+    int n = lua_gettop(L);  /* number of arguments */
+    lua_getglobal(L, "tostring");
+    for (idx = 1; idx <= n;  idx++)
+    {
+        lua_pushvalue(L, -1);  /* function to be called */
+        lua_pushvalue(L, idx);   /* value to print */
+        lua_call(L, 1, 1);
+        String s = lua_tostring(L, -1);  /* get result */
+        if (s.empty())
+            return luaL_error(L, "`tostring' must return a string to `print'");
+        if (idx > 1)
+            stream.append("\t");
+        stream.append(s);
+        lua_pop(L, 1);  /* pop result */
+    }
+
+    stream.append("\n");
+
+    LuaDebuggee* debuggee = LuaDebuggee::getSingletonPtr();
+    if (debuggee)
+        debuggee->notifyPrint(stream);
+
+    return 0;
 }
 
 bool LuaDebuggee::debugHook(int event)

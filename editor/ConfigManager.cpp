@@ -37,7 +37,7 @@ namespace hare_editor
         : openFilePath("."), openFileFilters("*.*"), openFileFilterIndex(0), 
         font("0;-13;0;0;0;400;0;0;0;0;3;2;1;49;Courier New"),
         show_folds(true), fold_xml(true), fold_comments(true), fold_preprocessor(true),
-        fold_indicator(FI_Square)
+        fold_indicator(FI_Square), language("en_US")
     {
         defaultEncoding = wxLocale::GetSystemEncodingName().ToUTF8().data();
     }

@@ -3,17 +3,15 @@
     <projects class="object_list" number="2">
         <item0 store="0" class="Project" version="0">
             <projectName class="String" value="sample" />
-            <debuggerName class="String" value="LuaDebugger" />
+            <debuggerName class="String" value="" />
             <files class="object_list" number="1">
                 <item0 store="0" class="ProjectFile" version="0">
                     <fileName class="String" value="script.lua" />
                     <editorOpen class="bool" value="1" />
-                    <editorPos class="s32" value="175" />
-                    <editorTopLine class="s32" value="0" />
+                    <editorPos class="s32" value="513" />
+                    <editorTopLine class="s32" value="6" />
                     <editorTabPos class="s32" value="1" />
-                    <breakPoints class="meta_array" number="1">
-                        <item0 class="s32" value="10" />
-                    </breakPoints>
+                    <breakPoints class="meta_array" number="0" />
                 </item0>
             </files>
         </item0>
@@ -39,10 +37,10 @@
                 </item1>
                 <item2 store="0" class="ProjectFile" version="0">
                     <fileName class="String" value="echo.lua" />
-                    <editorOpen class="bool" value="1" />
+                    <editorOpen class="bool" value="0" />
                     <editorPos class="s32" value="0" />
                     <editorTopLine class="s32" value="0" />
-                    <editorTabPos class="s32" value="2" />
+                    <editorTabPos class="s32" value="0" />
                     <breakPoints class="meta_array" number="0" />
                 </item2>
                 <item3 store="0" class="ProjectFile" version="0">

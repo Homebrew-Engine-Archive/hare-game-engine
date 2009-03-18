@@ -48,12 +48,12 @@ namespace hare_editor
     {
     public:
         EditorDockEvent(wxEventType commandType = wxEVT_NULL, int id = 0)
-            : wxCommandEvent(commandType, id), window(0)
+            : wxCommandEvent(commandType, id), window(0), show(true)
         {
         }
 
         EditorDockEvent(const EditorDockEvent& rhs)
-            : wxCommandEvent(rhs), window(rhs.window), info(rhs.info)
+            : wxCommandEvent(rhs), window(rhs.window), info(rhs.info), show(rhs.show)
         {
         }
 
@@ -64,6 +64,7 @@ namespace hare_editor
 
         wxWindow* window;
         wxAuiPaneInfo info;
+        bool show;
         DECLARE_DYNAMIC_CLASS(EditorDockEvent)
     };
 
@@ -79,6 +80,7 @@ namespace hare_editor
 
     extern EDITOR_API const wxEventType editorEVT_ADD_DOCK_WINDOW;
     extern EDITOR_API const wxEventType editorEVT_DEL_DOCK_WINDOW;
+    extern EDITOR_API const wxEventType editorEVT_SHOW_DOCK_WINDOW;
 
 }
 

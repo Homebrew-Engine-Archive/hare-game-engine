@@ -83,6 +83,7 @@ protected:
     bool debugHook(int event);
 
     static void luaDebugHook(lua_State *L, lua_Debug *debug);
+    static int luaPrint(lua_State *L);
 
     bool isConnected(bool wait = true) const;
 

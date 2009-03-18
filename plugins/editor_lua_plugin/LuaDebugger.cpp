@@ -22,6 +22,10 @@ int idLuaDebugStepIn = XRCID("idLuaDebugStepIn");
 int idLuaDebugStepOver = XRCID("idLuaDebugStepOver");
 int idLuaDebugStepOut = XRCID("idLuaDebugStepOut");
 
+int idLuaDebugWatch = XRCID("idLuaDebugWatch");
+int idLuaDebugCallStack = XRCID("idLuaDebugCallStack");
+int idLuaDebugOutput = XRCID("idLuaDebugOutput");
+
 DEFINE_EVENT_TYPE(wxEVT_LUA_DEBUGGER_DEBUGGEE_CONNECTED)
 DEFINE_EVENT_TYPE(wxEVT_LUA_DEBUGGER_DEBUGGEE_DISCONNECTED)
 DEFINE_EVENT_TYPE(wxEVT_LUA_DEBUGGER_BREAK)
@@ -47,6 +51,9 @@ BEGIN_EVENT_TABLE(LuaDebugger, DebuggerPlugin)
     EVT_MENU(idLuaDebugStepIn, LuaDebugger::onLuaDebugStepIn)
     EVT_MENU(idLuaDebugStepOver, LuaDebugger::onLuaDebugStepOver)
     EVT_MENU(idLuaDebugStepOut, LuaDebugger::onLuaDebugStepOut)
+    EVT_MENU(idLuaDebugWatch, LuaDebugger::onLuaDebugShowWindow)
+    EVT_MENU(idLuaDebugCallStack, LuaDebugger::onLuaDebugShowWindow)
+    EVT_MENU(idLuaDebugOutput, LuaDebugger::onLuaDebugShowWindow)
 
     EVT_LUA_DEBUGGER_DEBUGGEE_CONNECTED(wxID_ANY, LuaDebugger::onLuaDebugDebuggeeConnected)
     EVT_LUA_DEBUGGER_DEBUGGEE_DISCONNECTED(wxID_ANY, LuaDebugger::onLuaDebugDebuggeeDisconnected)
@@ -54,6 +61,8 @@ BEGIN_EVENT_TABLE(LuaDebugger, DebuggerPlugin)
     EVT_LUA_DEBUGGER_BREAK(wxID_ANY, LuaDebugger::onLuaDebugBreak)
     EVT_LUA_DEBUGGER_STACK_ENUM(wxID_ANY, LuaDebugger::onLuaDebugStackEnum)
     EVT_LUA_DEBUGGER_EVALUATE_EXPR(wxID_ANY, LuaDebugger::onLuaDebugEvaluateExpr)
+    EVT_LUA_DEBUGGER_PRINT(wxID_ANY, LuaDebugger::onLuaDebugPrint)
+    EVT_LUA_DEBUGGER_ERROR(wxID_ANY, LuaDebugger::onLuaDebugError)
 
 END_EVENT_TABLE()
 
@@ -160,9 +169,8 @@ LuaDebuggerEvent::LuaDebuggerEvent(wxEventType eventType,
 //   LuaDebugger
 // ------------------------------------------------------------------------
 LuaDebugger::LuaDebugger()
- : debuggeeProcess(NULL), debuggeePID(-1), serverSocket(0),
-   thread(0), acceptedSocket(0), callStackWindow(0), watchWindow(0), 
-   currStackLevel(0), state(Debugger_Stoped)
+ : debuggeeProcess(NULL), debuggeePID(-1), serverSocket(0), thread(0), acceptedSocket(0), 
+   callStackWindow(0), watchWindow(0), outputWindow(0), currStackLevel(0), state(Debugger_Stoped)
 {
 }
 
@@ -188,6 +196,15 @@ void LuaDebugger::onAttach()
         event.info.Name(wxT("WatchPane")).Caption(_("Watch")).Float().BestSize(150, 150)
             .FloatingSize(450, 150).MinSize(150, 150).Hide();
         event.window = watchWindow;
+        Manager::getInstancePtr()->processEvent(event);
+    }
+
+    {
+        EditorDockEvent event(editorEVT_ADD_DOCK_WINDOW);
+        outputWindow = new LuaOutputWindow(Manager::getInstancePtr()->getAppWindow(), this);
+        event.info.Name(wxT("DebugOutputPane")).Caption(_("Debug Output")).Float().BestSize(150, 150)
+            .FloatingSize(450, 150).MinSize(150, 150).Hide();
+        event.window = outputWindow;
         Manager::getInstancePtr()->processEvent(event);
     }
 
@@ -229,12 +246,17 @@ void LuaDebugger::onDetach(bool isShutDown)
     Manager::getInstancePtr()->processEvent(event);
     event.window = watchWindow;
     Manager::getInstancePtr()->processEvent(event);
+    event.window = outputWindow;
+    Manager::getInstancePtr()->processEvent(event);
 
     callStackWindow->Destroy();
     callStackWindow = 0;
 
     watchWindow->Destroy();
     watchWindow = 0;
+
+    outputWindow->Destroy();
+    outputWindow = 0;
 }
 
 bool LuaDebugger::buildMenuBar(wxMenuBar* menuBar)
@@ -263,6 +285,14 @@ bool LuaDebugger::buildToolBar(wxAuiToolBar* toolBar)
     toolBar->AddTool(idLuaDebugStepOver, _("StepOver"), bmp, wxT("StepOver"));
     bmp.LoadFile(fullPath + wxT("step_out.png"), wxBITMAP_TYPE_PNG);
     toolBar->AddTool(idLuaDebugStepOut, _("StepOut"), bmp, wxT("StepOut"));
+    toolBar->AddSeparator();
+    bmp.LoadFile(fullPath + wxT("watch.png"), wxBITMAP_TYPE_PNG);
+    toolBar->AddTool(idLuaDebugWatch, _("Watch"), bmp, wxEmptyString);
+    bmp.LoadFile(fullPath + wxT("call_stack.png"), wxBITMAP_TYPE_PNG);
+    toolBar->AddTool(idLuaDebugCallStack, _("Call Stack"), bmp, wxEmptyString);
+    bmp.LoadFile(fullPath + wxT("output.png"), wxBITMAP_TYPE_PNG);
+    toolBar->AddTool(idLuaDebugOutput, _("Debug Output"), bmp, wxEmptyString);
+    
     return true;
 }
 
@@ -271,7 +301,7 @@ void LuaDebugger::OnEndDebugeeProcess(wxProcessEvent& event)
     if (debuggeeProcess != NULL)
     {
         LuaDebuggerEvent debugEvent(wxEVT_LUA_DEBUGGER_EXIT, this);
-        debugEvent.strMessage = StringUtil::format("Process (%d) ended with exit code : %d", event.GetPid(), event.GetExitCode());
+        debugEvent.strMessage = StringUtil::format("Process [%d] ended with exit code : %d\n", event.GetPid(), event.GetExitCode());
         wxPostEvent(this, debugEvent);
     }
 
@@ -334,6 +364,26 @@ void LuaDebugger::onLuaDebugStepOut(wxCommandEvent& event)
     stepOut();
 }
 
+void LuaDebugger::onLuaDebugShowWindow(wxCommandEvent& event)
+{
+    wxWindow* win = 0;
+
+    if (event.GetId() == idLuaDebugWatch)
+        win = watchWindow;
+    else if (event.GetId() == idLuaDebugCallStack)
+        win = callStackWindow;
+    else if (event.GetId() == idLuaDebugOutput)
+        win = outputWindow;
+
+    if (win)
+    {
+        EditorDockEvent evt(editorEVT_SHOW_DOCK_WINDOW);
+        evt.window = win;
+        evt.show = !win->IsShown();
+        Manager::getInstancePtr()->processEvent(evt);
+    }
+}
+
 bool LuaDebugger::start()
 {
     bool ret = false;
@@ -343,10 +393,21 @@ bool LuaDebugger::start()
         if (!startDebugger())
             return ret;
 
+        outputWindow->clear();
+
         switchToDebugLayout();
+
+        outputWindow->append(wxT("Debugger started, waiting for connection...\n"), Log_Info);
 
         if (!config->isRemoteDebug())
             ret = startDebuggee() > 0;
+        else
+        {
+            wxString cmd = wxString::Format(wxT("Remote debugging mode, start debuggee with '-debug %s:%d'\n"), 
+                config->getHostName().c_str(),
+                config->getPortNumber());
+            outputWindow->append(cmd, Log_Info);
+        }
 
         startCmd = StartCmd_Go;
         state = Debugger_Wait;
@@ -572,9 +633,9 @@ bool LuaDebugger::startDebugger()
     }
     else
     {
-        //wxLuaDebuggerEvent debugEvent(wxEVT_WXLUA_DEBUGGER_ERROR, this);
-        //debugEvent.SetMessage(m_serverSocket->GetErrorMsg(true));
-        //AddPendingEvent(debugEvent);
+        LuaDebuggerEvent debugEvent(wxEVT_LUA_DEBUGGER_ERROR, this);
+        debugEvent.strMessage = serverSocket->getErrorMsg(true);
+        AddPendingEvent(debugEvent);
 
         delete serverSocket;
         serverSocket = NULL;
@@ -601,9 +662,9 @@ bool LuaDebugger::stopDebugger()
     {
         if (!accSocket->shutdown(SD_BOTH))
         {
-            //wxLuaDebuggerEvent debugEvent(wxEVT_WXLUA_DEBUGGER_ERROR, this);
-            //debugEvent.SetMessage(acceptedSocket->GetErrorMsg(true));
-            //AddPendingEvent(debugEvent);
+            LuaDebuggerEvent debugEvent(wxEVT_LUA_DEBUGGER_ERROR, this);
+            debugEvent.strMessage = acceptedSocket->getErrorMsg(true);
+            AddPendingEvent(debugEvent);
         }
 
         wxMilliSleep(500);
@@ -626,9 +687,9 @@ bool LuaDebugger::stopDebugger()
         if (!closeSocket.connect(config->getHostName().ToUTF8().data(), config->getPortNumber()) ||
             !closeSocket.shutdown(SD_BOTH))
         {
-            //wxLuaDebuggerEvent debugEvent(wxEVT_WXLUA_DEBUGGER_ERROR, this);
-            //debugEvent.SetMessage(serverSocket->GetErrorMsg(true));
-            //AddPendingEvent(debugEvent);
+            LuaDebuggerEvent debugEvent(wxEVT_LUA_DEBUGGER_ERROR, this);
+            debugEvent.strMessage = serverSocket->getErrorMsg(true);
+            AddPendingEvent(debugEvent);
         }
 
         wxMilliSleep(100);
@@ -676,9 +737,9 @@ void LuaDebugger::threadFunction()
     acceptedSocket = serverSocket->accept();
     if (!acceptedSocket)
     {
-        //wxLuaDebuggerEvent debugEvent(wxEVT_WXLUA_DEBUGGER_ERROR, this);
-        //debugEvent.SetMessage(m_serverSocket->GetErrorMsg(true));
-        //AddPendingEvent(debugEvent);
+        LuaDebuggerEvent debugEvent(wxEVT_LUA_DEBUGGER_ERROR, this);
+        debugEvent.strMessage = serverSocket->getErrorMsg(true);
+        AddPendingEvent(debugEvent);
     }
     else
     {
@@ -792,8 +853,8 @@ int LuaDebugger::handleDebuggeeEvent(int event_type)
         }
     case LUA_DEBUGGEE_EVENT_EXIT:
         {
-            //LuaDebuggerEvent debugEvent(wxEVT_LUA_DEBUGGER_EXIT, this);
-            //wxPostEvent(this, debugEvent);
+            LuaDebuggerEvent debugEvent(wxEVT_LUA_DEBUGGER_EXIT, this);
+            wxPostEvent(this, debugEvent);
             break;
         }
     case LUA_DEBUGGEE_EVENT_STACK_ENUM:
@@ -878,7 +939,7 @@ bool LuaDebugger::checkSocketConnected(bool sendEvent, const wxString& msg)
         if (sendEvent)
         {
             LuaDebuggerEvent debugEvent(wxEVT_LUA_DEBUGGER_DEBUGGEE_DISCONNECTED, this);
-            debugEvent.strMessage = String("Debugger socket not created. ") + msg.ToUTF8().data();
+            debugEvent.strMessage = String("Debugger socket not created. ") + msg.ToUTF8().data() + "\n";
             AddPendingEvent(debugEvent);
         }
 
@@ -889,7 +950,7 @@ bool LuaDebugger::checkSocketConnected(bool sendEvent, const wxString& msg)
         if (sendEvent)
         {
             LuaDebuggerEvent debugEvent(wxEVT_LUA_DEBUGGER_DEBUGGEE_DISCONNECTED, this);
-            debugEvent.strMessage = String("Debugger socket not connected. ") + msg.ToUTF8().data();
+            debugEvent.strMessage = String("Debugger socket not connected. ") + msg.ToUTF8().data() + "\n";
             AddPendingEvent(debugEvent);
         }
 
@@ -995,6 +1056,8 @@ int LuaDebugger::getCurrStackLevel()
 
 void LuaDebugger::onLuaDebugDebuggeeConnected(LuaDebuggerEvent& event)
 {
+    outputWindow->append(wxT("Debuggee has connected, ready to debug.\n"), Log_Info);
+
     clearAllBreakPoints();
 
     Project* project = Manager::getInstancePtr()->getExplorerManager()->getProjectExplorer()->getActiveProject();
@@ -1021,11 +1084,13 @@ void LuaDebugger::onLuaDebugDebuggeeConnected(LuaDebuggerEvent& event)
 
 void LuaDebugger::onLuaDebugDebuggeeDisconnected(LuaDebuggerEvent& event)
 {
-
+    outputWindow->append(wxString::FromUTF8(event.strMessage.c_str()), Log_Error);
 }
 
 void LuaDebugger::onLuaDebugExit(LuaDebuggerEvent& event)
 {
+    outputWindow->append(wxString::FromUTF8(event.strMessage.c_str()), Log_Info);
+
     stopDebugger();
 
     state = Debugger_Stoped;
@@ -1050,6 +1115,16 @@ void LuaDebugger::onLuaDebugBreak(LuaDebuggerEvent& event)
         watchWindow->redraw();
 
     Manager::getInstancePtr()->getAppWindow()->Raise();
+}
+
+void LuaDebugger::onLuaDebugPrint(LuaDebuggerEvent& event)
+{
+    outputWindow->append(wxString::FromUTF8(event.strMessage.c_str()), Log_Print);
+}
+
+void LuaDebugger::onLuaDebugError(LuaDebuggerEvent& event)
+{
+    outputWindow->append(wxString::FromUTF8(event.strMessage.c_str()), Log_Error);
 }
 
 void LuaDebugger::onLuaDebugStackEnum(LuaDebuggerEvent& event)

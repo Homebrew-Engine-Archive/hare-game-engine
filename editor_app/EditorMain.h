@@ -16,6 +16,8 @@
 #include "editor/Editor.h"
 #include <wx/aui/aui.h>
 
+WX_DECLARE_HASH_MAP(int, wxAuiToolBar*, wxIntegerHash, wxIntegerEqual, PluginToolBarMap);
+
 class EditorFrame: public wxFrame
 {
 public:
@@ -24,7 +26,10 @@ public:
 private:
     wxAuiManager layoutManager;
     wxAuiToolBar* mainToolBar;
+    wxAuiToolBar* fullScreenToolBar;
     FindReplaceDialog* findReplaceDlg;
+
+    PluginToolBarMap pluginToolBars;
 
     void preLoadXRC();
 
@@ -62,6 +67,8 @@ public:
 
     void onDebugStart(wxCommandEvent& event);
 
+    void onShowToolBar(wxCommandEvent& event);
+    void onToggleFullScreen(wxCommandEvent& event);
     bool onDropFiles(wxCoord x, wxCoord y, const wxArrayString& filenames);
 
     void onToolbarDropDownCreate(wxAuiToolBarEvent& event);
@@ -77,6 +84,7 @@ public:
 
     void onAddDockWindow(EditorDockEvent& event);
     void onDelDockWindow(EditorDockEvent& event);
+    void onShowDockWindow(EditorDockEvent& event);
 
 private:
     void _doOpenFile();

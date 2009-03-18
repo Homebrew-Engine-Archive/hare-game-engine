@@ -177,6 +177,7 @@
     };
     
     Timer& getTimer();
+    f32 getTime();
 
     void core_init(char* argv0);
     void core_quit();

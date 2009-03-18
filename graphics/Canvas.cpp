@@ -52,26 +52,41 @@ namespace hare_graphics
 
 		f32 layout_x = x;
 		f32 layout_y = 0;
-		for (u32 count = 0; count < wstr.size(); ++count){
-			CharGlyph charGlyph = font->getCharGlyph(wstr[count]);
+		
+		for (u32 batchCount = 0; batchCount <= wstr.size() / font->getCacheBufferSize(); ++batchCount){
+			
+			u32 batchNum;
+			
+			if (batchCount == wstr.size() / font->getCacheBufferSize()){
+				batchNum = wstr.size() % font->getCacheBufferSize();
+			}else{
+				batchNum = font->getCacheBufferSize();
+			}
 
-			layout_x += charGlyph.bear_left;
-			layout_y = y - charGlyph.baselineX;
+			for (u32 count = batchCount * font->getCacheBufferSize(); count < batchCount * font->getCacheBufferSize() + batchNum; ++count){
+				CharGlyph charGlyph = font->getCharGlyph(wstr[count]);
 
-			texMtrl->setTexture(charGlyph.texGlyph);
-			shader->setMaterial(texMtrl);
+				layout_x += charGlyph.bear_left;
+				layout_y = y - charGlyph.baselineX;
 
-			Quad quad;
-			quad.setShader(shader);
-			quad.moveTo(layout_x, layout_y);
+				texMtrl->setTexture(charGlyph.texGlyph);
+				shader->setMaterial(texMtrl);
 
-			layout_x += charGlyph.bear_advanceX - charGlyph.bear_left;
+				Quad quad;
+				quad.setShader(shader);
+				quad.moveTo(layout_x, layout_y);
 
-			quad.setWidth((charGlyph.recGlyph.maxX - charGlyph.recGlyph.minX) * charGlyph.texGlyph->getWidth());
-			quad.setHeight((charGlyph.recGlyph.maxY - charGlyph.recGlyph.minY) * charGlyph.texGlyph->getHeight());
-			texMtrl->setUV(charGlyph.recGlyph.minX, charGlyph.recGlyph.minY, charGlyph.recGlyph.maxX, charGlyph.recGlyph.maxY);
-			RenderSystem::getSingletonPtr()->render(&quad);			
+				layout_x += charGlyph.bear_advanceX - charGlyph.bear_left;
+
+				quad.setWidth((charGlyph.recGlyph.maxX - charGlyph.recGlyph.minX) * charGlyph.texGlyph->getWidth());
+				quad.setHeight((charGlyph.recGlyph.maxY - charGlyph.recGlyph.minY) * charGlyph.texGlyph->getHeight());
+				texMtrl->setUV(charGlyph.recGlyph.minX, charGlyph.recGlyph.minY, charGlyph.recGlyph.maxX, charGlyph.recGlyph.maxY);
+				RenderSystem::getSingletonPtr()->render(&quad);		
+				RenderSystem::getSingletonPtr()->render();
+			}		
 		}
+
+
 
 		CharGlyph charGlyph = font->getCharGlyph(wstr[0]);
 

@@ -22,18 +22,34 @@ extern "C"
 int init_handle = -1;
 int quit_handle = -1;
 
+bool notify_error(lua_State *L)
+{
+    String err = luaL_checkstring(L, -1);
+    if (LuaDebuggee::getSingletonPtr())
+        return LuaDebuggee::getSingletonPtr()->notifyError(err + "\n");
+    else
+    {
+        fprintf(stderr, "%s\n", err.c_str());
+        return false;
+    }
+}
+
 void main_loop(lua_State *L)
 {
     if (init_handle < 0 || quit_handle < 0)
         return;
 
     lua_rawgeti(L, LUA_REGISTRYINDEX, init_handle);
-    lua_call(L, 0, 0);
+    int status = lua_pcall(L, 0, LUA_MULTRET, 0);
+    if (status)
+        notify_error(L);
 
     getHareApp()->hareRun();
 
     lua_rawgeti(L, LUA_REGISTRYINDEX, quit_handle);
-    lua_call(L, 0, 0);
+    status = lua_pcall(L, 0, LUA_MULTRET, 0);
+    if (status)
+        notify_error(L);
 }
 
 bool load_scripts(const String& game, lua_State *L)
@@ -52,7 +68,15 @@ bool load_scripts(const String& game, lua_State *L)
     char* buffer = new char[size];
     fs->readFile(fh, buffer, size, 1);
     int status = luaL_loadbuffer(L, buffer, size, fileName.c_str());
-    status = lua_pcall(L, 0, LUA_MULTRET, 0);
+    if (status)
+        notify_error(L);
+    else
+    {
+        status = lua_pcall(L, 0, LUA_MULTRET, 0);
+        if (status)
+            notify_error(L);
+    }
+
     delete [] buffer;
 
     lua_getglobal(L, "init");
@@ -64,14 +88,19 @@ bool load_scripts(const String& game, lua_State *L)
     return true;
 }
 
-int main(int argc, char *argv[])
-{
-#if defined(_DEBUG)
-    _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
-    //_CrtSetBreakAlloc();
+#if HARE_PLATFORM == HARE_PLATFORM_WIN32
+    INT WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR cmd, INT)
+    {
+        //_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+        //_CrtSetBreakAlloc();
+        core_init(NULL);
+        CmdLineParser cmdLine(cmd);
+#else
+    int main(int argc, char *argv[])
+    {
+        core_init(argv[0]);
+        CmdLineParser cmdLine(argc, argv);
 #endif
-    core_init(argv[0]);
-    CmdLineParser cmdLine(argc, argv);
 
     lua_State *L = lua_open();  /* create state */
     if (L == NULL) {

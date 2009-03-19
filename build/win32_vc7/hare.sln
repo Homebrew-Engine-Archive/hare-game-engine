@@ -13,11 +13,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "hare_lua", "hare_lua.vcproj
 		{B7DA67A0-0F8C-479A-A7BB-7EC5DCDCA017} = {B7DA67A0-0F8C-479A-A7BB-7EC5DCDCA017}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "editor_lua_plugin", "editor_lua_plugin.vcproj", "{4DA1AEDA-70D0-4EB5-BB57-F692C907B405}"
-	ProjectSection(ProjectDependencies) = postProject
-		{BC97E7F3-E37E-47A8-B4D1-705FD7FD61D0} = {BC97E7F3-E37E-47A8-B4D1-705FD7FD61D0}
-	EndProjectSection
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "graphics", "graphics.vcproj", "{FB59907C-A100-4146-A240-9FEA023F6BB6}"
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
@@ -30,6 +25,10 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dx9_renderer", "dx9_renderer.vcproj", "{CB44B9FC-742D-429A-B926-CCE744E2793B}"
 	ProjectSection(ProjectDependencies) = postProject
 		{FB59907C-A100-4146-A240-9FEA023F6BB6} = {FB59907C-A100-4146-A240-9FEA023F6BB6}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "lua_debugger", "lua_debugger.vcproj", "{4DA1AEDA-70D0-4EB5-BB57-F692C907B405}"
+	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
 Global
@@ -50,10 +49,6 @@ Global
 		{13AEF6EC-409F-44C1-8390-27E6E83E7A84}.Debug.Build.0 = Debug|Win32
 		{13AEF6EC-409F-44C1-8390-27E6E83E7A84}.Release.ActiveCfg = Release|Win32
 		{13AEF6EC-409F-44C1-8390-27E6E83E7A84}.Release.Build.0 = Release|Win32
-		{4DA1AEDA-70D0-4EB5-BB57-F692C907B405}.Debug.ActiveCfg = Debug|Win32
-		{4DA1AEDA-70D0-4EB5-BB57-F692C907B405}.Debug.Build.0 = Debug|Win32
-		{4DA1AEDA-70D0-4EB5-BB57-F692C907B405}.Release.ActiveCfg = Release|Win32
-		{4DA1AEDA-70D0-4EB5-BB57-F692C907B405}.Release.Build.0 = Release|Win32
 		{FB59907C-A100-4146-A240-9FEA023F6BB6}.Debug.ActiveCfg = Debug|Win32
 		{FB59907C-A100-4146-A240-9FEA023F6BB6}.Debug.Build.0 = Debug|Win32
 		{FB59907C-A100-4146-A240-9FEA023F6BB6}.Release.ActiveCfg = Release|Win32
@@ -66,6 +61,10 @@ Global
 		{CB44B9FC-742D-429A-B926-CCE744E2793B}.Debug.Build.0 = Debug|Win32
 		{CB44B9FC-742D-429A-B926-CCE744E2793B}.Release.ActiveCfg = Release|Win32
 		{CB44B9FC-742D-429A-B926-CCE744E2793B}.Release.Build.0 = Release|Win32
+		{4DA1AEDA-70D0-4EB5-BB57-F692C907B405}.Debug.ActiveCfg = Debug|Win32
+		{4DA1AEDA-70D0-4EB5-BB57-F692C907B405}.Debug.Build.0 = Debug|Win32
+		{4DA1AEDA-70D0-4EB5-BB57-F692C907B405}.Release.ActiveCfg = Release|Win32
+		{4DA1AEDA-70D0-4EB5-BB57-F692C907B405}.Release.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 	EndGlobalSection

@@ -13,6 +13,9 @@
 #include "PCH.h"
 #include "CmdLineParser.h"
 #include "StringUtil.h"
+#if HARE_PLATFORM == HARE_PLATFORM_WIN32
+#include <windows.h>
+#endif
 
 namespace hare_core
 {
@@ -24,6 +27,66 @@ namespace hare_core
     {
         parseCmdLine(argc, argv);
     }
+
+#if HARE_PLATFORM == HARE_PLATFORM_WIN32
+
+    CmdLineParser::CmdLineParser(char* cmd)
+    {
+        char* cmd_holder[_MAX_PATH] = { 0 };
+        char file_name[_MAX_PATH] = { 0 };
+
+        int argc = 1;
+        char** argv = cmd_holder;
+        char* arg = cmd;
+        int index;
+
+        while (arg[0] != 0) 
+        {
+            while (arg[0] != 0 && arg[0] == ' ') 
+            {
+                arg++;
+            }
+
+            if (arg[0] != 0) 
+            {
+                argc++;
+                while (arg[0] != 0 && arg[0] != ' ')
+                    arg++;
+            }
+        }    
+
+        // tokenize the arguments
+        arg = cmd;
+        index = 1;
+
+        while (arg[0] != 0) 
+        {
+            while (arg[0] != 0 && arg[0] == ' ')
+                arg++;
+
+            if (arg[0] != 0) 
+            {
+                argv[index] = arg;
+                index++;
+
+                while (arg[0] != 0 && arg[0] != ' ')
+                    arg++;
+
+                if (arg[0] != 0) 
+                {
+                    arg[0] = 0;    
+                    arg++;
+                }
+            }
+        }    
+
+        // put the program name into argv[0]
+        GetModuleFileName(NULL, file_name, _MAX_PATH);
+        argv[0] = file_name;
+
+        parseCmdLine(argc, argv);
+    }
+#endif
 
     void CmdLineParser::parseCmdLine(int argc, char* argv[])
     {

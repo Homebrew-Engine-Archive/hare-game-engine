@@ -23,6 +23,10 @@ namespace hare_core
         CmdLineParser();
         CmdLineParser(int argc, char* argv[]);
 
+#if HARE_PLATFORM == HARE_PLATFORM_WIN32
+        CmdLineParser(char* cmd);
+#endif
+
     public:
         void parseCmdLine(int argc, char* argv[]);
 

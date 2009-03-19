@@ -112,6 +112,7 @@ protected:
     bool enumerateTable(int tableRef, int index, long itemNode);
     bool evaluateExpr(int stackRef, const String& expr);
 
+public:
     bool notifyBreak(const String &fileName, int lineNumber);
     bool notifyPrint(const String &errorMsg);
     bool notifyError(const String &errorMsg);

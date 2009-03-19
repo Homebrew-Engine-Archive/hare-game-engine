@@ -7,7 +7,7 @@ lastTime = 0
 function beginScene()
     if hare.getTime() - lastTime > 1 then
         lastTime = hare.getTime()
-        print("fps"..tostring(hare.getTimer():getFPS()))
+        print("fps:", hare.getTimer():getFPS())
     end
 end
 
@@ -69,5 +69,4 @@ end
 function quit()
     sprite1 = nil
     sprite2 = nil
- 
 end

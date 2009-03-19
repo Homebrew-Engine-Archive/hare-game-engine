@@ -4,6 +4,7 @@
 #include "GraphicsPrerequisites.h"
 
 #include "Texture.h"
+#include "Shader.h"
 #include <ft2build.h>
 #include FT_FREETYPE_H
 #include "DataHolder.h"
@@ -20,9 +21,7 @@ namespace hare_graphics
 		f32 bear_top;
 		f32 bear_advanceY;
 
-
 		Rect<f32> recGlyph;
-		Texture::Ptr texGlyph;
 	};
 
 	class GRAPHICS_API Font 
@@ -51,24 +50,41 @@ namespace hare_graphics
 
 		};
 	public:
+
+		Font();
 		//ttfName ttf文件名字 ttfSize字体大小 ttfResolution设备分辨率 cacheBufferSize缓冲队列大小（决定动态纹理的大小）
 		Font(const String& ttfName, f32 ttfSize, u32 ttfResolution, u32 cacheSize);
 		~Font();
 
+		//用于编辑时动态加载
+		void postEdit();
+
+		void setFontFileName(const String& ttfName);
+
+		const String& getFontFileName();
+
+		void setFontSize(f32 ttfSize);
+
+		f32 getFontSize();
+
+		void setFontResolution(u32 ttfResolution);
+
+		u32 getFontResolution();
+
+		void setCacheSize(u32 cacheSize);
+
 		//得到一个字模 若 cacheCharQueue中没有这个codePoint则系统制动替换掉最不常用的
 		const CharGlyph& getCharGlyph(u32 codePoint);
-
-		//字体名字
-		const String& getFontName();
-
-		//字体尺寸
-		f32 getFonSize();
 
 		//字符的最大宽度
 		int getMaxCharWidth();
 
 		//字符缓冲尺寸
 		u32 getCacheBufferSize();
+
+		Texture* getFontTexture();
+
+		const ShaderParams& getFontExtParams();
 
 	protected:
 		void addCharGlyph(u32 codePoint);
@@ -78,8 +94,11 @@ namespace hare_graphics
 	protected:
 		String fontName;
 		f32 fontSize;
-		int maxCharWidth;
 		u32 cacheBufferSize;
+		u32 resolution;
+		int maxCharWidth;
+		ShaderParams shaderParams;
+
 		std::deque<CachedChar> cacheCharQueue;
 		Texture::Ptr texCache;
 		u32 numCharPerLine;

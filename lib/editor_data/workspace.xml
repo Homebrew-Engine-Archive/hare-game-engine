@@ -8,10 +8,13 @@
                 <item0 store="0" class="ProjectFile" version="0">
                     <fileName class="String" value="script.lua" />
                     <editorOpen class="bool" value="1" />
-                    <editorPos class="s32" value="657" />
-                    <editorTopLine class="s32" value="17" />
+                    <editorPos class="s32" value="285" />
+                    <editorTopLine class="s32" value="0" />
                     <editorTabPos class="s32" value="1" />
-                    <breakPoints class="meta_array" number="0" />
+                    <breakPoints class="meta_array" number="2">
+                        <item0 class="s32" value="30" />
+                        <item1 class="s32" value="31" />
+                    </breakPoints>
                 </item0>
             </files>
         </item0>
@@ -53,7 +56,7 @@
                 </item3>
                 <item4 store="0" class="ProjectFile" version="0">
                     <fileName class="String" value="factorial.lua" />
-                    <editorOpen class="bool" value="0" />
+                    <editorOpen class="bool" value="1" />
                     <editorPos class="s32" value="0" />
                     <editorTopLine class="s32" value="0" />
                     <editorTabPos class="s32" value="0" />

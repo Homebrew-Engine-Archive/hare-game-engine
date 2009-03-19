@@ -63,7 +63,6 @@ function init()
 	f = tm:createFont("comic.ttf", 20) 
 	canvas = hare.getCanvas()
 	canvas:setFont(f)
-
 end
 
 function quit()

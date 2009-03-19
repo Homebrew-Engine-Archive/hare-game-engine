@@ -7,7 +7,7 @@
 @i18n\tool\bin\xgettext.exe -C -n -k_ -j -o i18n\editor.pot editor_app\*.cpp
 @i18n\tool\bin\xgettext.exe -C -n -k_ -j -o i18n\editor.pot editor_app\*.h
 
-@i18n\tool\bin\xgettext.exe -C -n -k_ -o    i18n\lua_plugin.pot plugins\editor_lua_plugin\*.cpp
-@i18n\tool\bin\xgettext.exe -C -n -k_ -j -o i18n\lua_plugin.pot plugins\editor_lua_plugin\*.h
+@i18n\tool\bin\xgettext.exe -C -n -k_ -o    i18n\lua_debugger.pot plugins\lua_debugger\*.cpp
+@i18n\tool\bin\xgettext.exe -C -n -k_ -j -o i18n\lua_debugger.pot plugins\lua_debugger\*.h
 
 @pause

@@ -43,13 +43,15 @@ namespace hare_graphics
 
 	void Canvas::drawText(int x, int y, const String& text)
 	{
-		if (!font)
+		if (!font || text.empty())
 			return;
 
 		WString wstr = StringUtil::fromUTF8(text);
 		Shader::Ptr shader = new SimpleShader;
 		TextureMtrl::Ptr texMtrl = new TextureMtrl;
-
+		texMtrl->setTexture(font->getFontTexture());
+		shader->setShaderParams(font->getFontExtParams());
+		shader->setMaterial(texMtrl);
 		f32 layout_x = x;
 		f32 layout_y = 0;
 		
@@ -69,8 +71,7 @@ namespace hare_graphics
 				layout_x += charGlyph.bear_left;
 				layout_y = y - charGlyph.baselineX;
 
-				texMtrl->setTexture(charGlyph.texGlyph);
-				shader->setMaterial(texMtrl);
+
 
 				Quad quad;
 				quad.setShader(shader);
@@ -78,8 +79,8 @@ namespace hare_graphics
 
 				layout_x += charGlyph.bear_advanceX - charGlyph.bear_left;
 
-				quad.setWidth((charGlyph.recGlyph.maxX - charGlyph.recGlyph.minX) * charGlyph.texGlyph->getWidth());
-				quad.setHeight((charGlyph.recGlyph.maxY - charGlyph.recGlyph.minY) * charGlyph.texGlyph->getHeight());
+				quad.setWidth((charGlyph.recGlyph.maxX - charGlyph.recGlyph.minX) * font->getFontTexture()->getWidth());
+				quad.setHeight((charGlyph.recGlyph.maxY - charGlyph.recGlyph.minY) * font->getFontTexture()->getHeight());
 				texMtrl->setUV(charGlyph.recGlyph.minX, charGlyph.recGlyph.minY, charGlyph.recGlyph.maxX, charGlyph.recGlyph.maxY);
 				RenderSystem::getSingletonPtr()->render(&quad);		
 				RenderSystem::getSingletonPtr()->render();
@@ -93,8 +94,8 @@ namespace hare_graphics
 		Quad quad2;
 		quad2.setShader(shader);
 		quad2.moveTo(150,150);
-		quad2.setWidth(charGlyph.texGlyph->getWidth());
-		quad2.setHeight(charGlyph.texGlyph->getHeight());
+		quad2.setWidth(font->getFontTexture()->getWidth());
+		quad2.setHeight(font->getFontTexture()->getHeight());
 		texMtrl->setUV(0,0,1,1);
 		RenderSystem::getSingletonPtr()->render(&quad2);	
 

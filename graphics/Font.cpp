@@ -7,11 +7,32 @@
 
 namespace hare_graphics
 {
-	Font::Font(const String& ttfName, f32 ttfSize, u32 ttfResolution, u32 cacheSize)
-		:fontSize(ttfSize)
+	Font::Font()
 	{
+	}
+
+	Font::Font(const String& ttfName, f32 ttfSize, u32 ttfResolution, u32 cacheSize)
+		:fontName(ttfName)
+		,fontSize(ttfSize)
+		,resolution(ttfResolution)
+		,cacheBufferSize(cacheSize)
+	{
+		postEdit();
+	}
+
+	Font::~Font()
+	{
+		FT_Done_FreeType(ftLibrary);
+	}
+
+	void Font::postEdit()
+	{
+		shaderParams.AlphaBlendEnable = true;
+		shaderParams.AlphaTestEnable  = false;
+
 		String tmpExt;
-		StringUtil::splitFilename(ttfName, fontName, tmpExt);
+		String fontBaseName;
+		StringUtil::splitFilename(fontName, fontBaseName, tmpExt);
 		StringUtil::toLowerCase(tmpExt);
 		assert(tmpExt == "ttf");
 
@@ -22,7 +43,7 @@ namespace hare_graphics
 		/*文件系统打开文件将数据读进input
 		*/
 		FileSystem* fs = getFileSystem();
-		FileHandle fh = fs->openFile(ttfName, FM_Read);
+		FileHandle fh = fs->openFile(fontName, FM_Read);
 
 		if (!fh)
 			HARE_EXCEPT(Exception::ERR_FILE_NOT_FOUND, "Could not open FontFile!", "Font::Font fs->openFile");
@@ -31,18 +52,18 @@ namespace hare_graphics
 		input.allocate(size);
 		fs->readFile(fh, (char*)input.getData(), size, 1);
 		fs->closeFile(fh);
-		
+
 		ftResult = FT_New_Memory_Face(ftLibrary, (FT_Byte*)input.getData(), (FT_Long)input.getSize(), 0, &face);
 		if (ftResult)
 			HARE_EXCEPT(Exception::ERR_INTERNAL_ERROR, "Could not open font face!", "Font::Font FT_New_Memory_Face");
 
-		FT_F26Dot6  ftSize = (FT_F26Dot6)(ttfSize * (1 << 6));
-		ftResult = FT_Set_Char_Size( face, ftSize, 0, ttfResolution, ttfResolution );
+		FT_F26Dot6  ftSize = (FT_F26Dot6)(fontSize * (1 << 6));
+		ftResult = FT_Set_Char_Size( face, ftSize, 0, resolution, resolution );
 		if (ftResult)
 			HARE_EXCEPT(Exception::ERR_INTERNAL_ERROR, "Could not set char size!", "Font::Font FT_Set_Char_Size");
 
 		int max_height = 0, max_width = 0;
-		
+
 		//随即抽取几个中文字符选出最大的宽度和空隙
 		wchar_t ch = L'赢';
 		for (wchar_t count = ch - 50; count < ch + 50; ++count){
@@ -74,7 +95,7 @@ namespace hare_graphics
 		maxCharWidth = max(max_width, max_height);
 
 		//纹理尺寸
-		u32 texSize = MathUtil::firstPO2From(sqrt((f32)cacheSize) * maxCharWidth);
+		u32 texSize = MathUtil::firstPO2From(sqrt((f32)cacheBufferSize) * maxCharWidth);
 
 		//纹理每行装的字符数
 		numCharPerLine = texSize / maxCharWidth;
@@ -88,12 +109,46 @@ namespace hare_graphics
 
 		ch = L'A';
 		advanceFillCache(ch, ch + 63);
-			
 	}
 
-	Font::~Font()
+	void Font::setFontFileName(const String& ttfName)
 	{
-		FT_Done_FreeType(ftLibrary);
+		String fontName = ttfName;
+	}
+
+	const String& Font::getFontFileName()
+	{
+		return fontName;
+	}
+
+	void Font::setFontSize(f32 ttfSize)
+	{
+		f32 fontSize = ttfSize;
+	}
+
+	f32 Font::getFontSize()
+	{
+		return fontSize;
+	}
+
+	void Font::setFontResolution(u32 ttfResolution)
+	{
+		resolution = ttfResolution;
+	}
+
+	u32 Font::getFontResolution()
+	{
+		return resolution;
+	}
+
+	void Font::setCacheSize(u32 cacheSize)
+	{
+		cacheBufferSize = cacheSize;
+	}
+
+	u32 Font::getCacheBufferSize()
+	{
+		return cacheBufferSize;		
 	}
 
 	const CharGlyph& Font::getCharGlyph(u32 codePoint)
@@ -112,7 +167,6 @@ namespace hare_graphics
 				charGlyph.bear_advanceY = tmpCacheChar.bear_advanceY;
 
 				charGlyph.recGlyph = tmpCacheChar.recGlyph;
-				charGlyph.texGlyph = texCache;
 
 				//move the char to deque's front
 				cacheCharQueue.erase(it);
@@ -139,19 +193,8 @@ namespace hare_graphics
 		charGlyph.bear_advanceY = tmpCacheChar.bear_advanceY;
 
 		charGlyph.recGlyph = tmpCacheChar.recGlyph;
-		charGlyph.texGlyph = texCache;
 		
 		return charGlyph;
-	}
-
-	const String& Font::getFontName()
-	{
-		return fontName;
-	}
-
-	f32 Font::getFonSize()
-	{
-		return fontSize;
 	}
 
 	int Font::getMaxCharWidth()
@@ -159,10 +202,16 @@ namespace hare_graphics
 		return  maxCharWidth;
 	}
 
-	u32 Font::getCacheBufferSize()
+	Texture* Font::getFontTexture()
 	{
-		return cacheBufferSize;		
+		return texCache;
 	}
+
+	const ShaderParams& Font::getFontExtParams()
+	{
+		return shaderParams;
+	}
+
 
 	void Font::addCharGlyph(u32 codePoint)
 	{

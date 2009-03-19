@@ -57,7 +57,7 @@ namespace hare_graphics
 		~Font();
 
 		//用于编辑时动态加载
-		void postEdit();
+		void postLoaded();
 
 		void setFontFileName(const String& ttfName);
 
@@ -91,6 +91,10 @@ namespace hare_graphics
 
 		void advanceFillCache(u32 codePointBegin, u32 codePointEnd);
 
+		void initalzeResouse();
+
+		void destoryResouse();
+
 	protected:
 		String fontName;
 		f32 fontSize;
@@ -109,6 +113,8 @@ namespace hare_graphics
 
 		CachedChar willBeFillCachedPos;//添加一个字模时在纹理中的位置 初始化的位置是(0,0)
 		CharGlyph charGlyph;
+
+		bool bInitalize;
 
 	};
 }

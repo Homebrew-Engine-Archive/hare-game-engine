@@ -8,6 +8,7 @@
 namespace hare_graphics
 {
 	Font::Font()
+		:bInitalize(false)
 	{
 	}
 
@@ -16,16 +17,17 @@ namespace hare_graphics
 		,fontSize(ttfSize)
 		,resolution(ttfResolution)
 		,cacheBufferSize(cacheSize)
+		,bInitalize(false)
 	{
-		postEdit();
+		postLoaded();
 	}
 
 	Font::~Font()
 	{
-		FT_Done_FreeType(ftLibrary);
+		destoryResouse();
 	}
 
-	void Font::postEdit()
+	void Font::initalzeResouse()
 	{
 		shaderParams.AlphaBlendEnable = true;
 		shaderParams.AlphaTestEnable  = false;
@@ -40,6 +42,7 @@ namespace hare_graphics
 		if (ftResult)
 			HARE_EXCEPT(Exception::ERR_INTERNAL_ERROR, "Could not init FreeType library!", "Font::Font FT_Init_FreeType");
 
+		bInitalize = true;
 		/*文件系统打开文件将数据读进input
 		*/
 		FileSystem* fs = getFileSystem();
@@ -109,6 +112,21 @@ namespace hare_graphics
 
 		ch = L'A';
 		advanceFillCache(ch, ch + 63);
+	}
+
+	void Font::destoryResouse()
+	{
+		if (bInitalize){
+			FT_Done_FreeType(ftLibrary);
+			bInitalize = false;
+		}
+	}
+
+	void Font::postLoaded()
+	{
+		destoryResouse();
+
+		initalzeResouse();
 	}
 
 	void Font::setFontFileName(const String& ttfName)

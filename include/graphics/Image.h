@@ -15,10 +15,12 @@ namespace hare_graphics
 		Image(const Image& rhs);
 		virtual ~Image();
 
+		void f();
+
 		void create(u32 width, u32 height, HarePixelFormat format);
 		void destory();
 
-		bool loadFormFile(const String& fileName);
+		bool loadFromFile(const String& fileName);
 		bool loadFromMemery(const DataHolder& input, const String& type);
 		bool saveToFile(const String& fileName);
 

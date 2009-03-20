@@ -5,12 +5,14 @@
 
 #include "Texture.h"
 #include "Shader.h"
-#include <ft2build.h>
-#include FT_FREETYPE_H
+//#include <ft2build.h>
+//#include FT_FREETYPE_H
 #include "DataHolder.h"
 
 namespace hare_graphics
 {
+	struct FontResource;
+
 	struct CharGlyph
 	{
 		f32 baselineX;
@@ -31,16 +33,10 @@ namespace hare_graphics
 		{
 			int x;
 			int y;
-			Rect<f32> recGlyph;
+
 			u32 codePoint;
 
-			f32 baselineX;
-			f32 bear_left;
-			f32 bear_advanceX;
-
-			f32 baselineY;
-			f32 bear_top;
-			f32 bear_advanceY;
+			CharGlyph charGlyph;
 
 			CachedChar()
 				:x(0),y(0)
@@ -91,9 +87,9 @@ namespace hare_graphics
 
 		void advanceFillCache(u32 codePointBegin, u32 codePointEnd);
 
-		void initalzeResouse();
+		void initalzeResource();
 
-		void destoryResouse();
+		void destoryResource();
 
 	protected:
 		String fontName;
@@ -107,8 +103,9 @@ namespace hare_graphics
 		Texture::Ptr texCache;
 		u32 numCharPerLine;
 
-		FT_Face		face;
-		FT_Library	ftLibrary;
+		FontResource* fontResource; 
+		//FT_Face		face;
+		//FT_Library	ftLibrary;
 		DataHolder  input;
 
 		CachedChar willBeFillCachedPos;//添加一个字模时在纹理中的位置 初始化的位置是(0,0)

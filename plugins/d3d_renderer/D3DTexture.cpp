@@ -199,7 +199,7 @@ namespace hare_d3d
 		}else{
 			Image img;
 			assert(!fileName.empty());
-			img.loadFormFile(fileName);
+			img.loadFromFile(fileName);
 
 			u32 srcWidth = img.getWidth();
 			u32 srcHeight= img.getHeight();

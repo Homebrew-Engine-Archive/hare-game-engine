@@ -19,7 +19,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../../include;../../ext/d3d/include;../../ext/freetype/include"
+				AdditionalIncludeDirectories="../../include;../../ext/d3d/include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;D3DRENDER_EXPORTS"
 				MinimalRebuild="TRUE"
 				BasicRuntimeChecks="3"

@@ -133,13 +133,12 @@ namespace hare_core
 
     template<> String _toUTF8<2>(const WString& str)
     {
-        printf("wchar_t 2\n");
         size_t size = 3 * str.length() + 1;
         String ret(size, 0);
-        const UTF16* srcSta = (const UTF16*)&(*str.begin());
-        const UTF16* srcEnd = (const UTF16*)&(*str.end());
-        UTF8* tarSta = (UTF8*)&(*ret.begin());
-        UTF8* tarEnd = (UTF8*)&(*ret.end());
+        const UTF16* srcSta = (const UTF16*)str.c_str();
+		const UTF16* srcEnd = srcSta + str.length();
+        UTF8* tarSta = (UTF8*)ret.c_str();
+        UTF8* tarEnd = tarSta + size;
         ConversionResult res = ConvertUTF16toUTF8(&srcSta, srcEnd, &tarSta, tarEnd, strictConversion);
         if (res != conversionOK)
         {
@@ -150,13 +149,12 @@ namespace hare_core
 
     template<> String _toUTF8<4>(const WString& str)
     {
-        printf("wchar_t 4\n");
-        size_t size = 3 * str.length() + 1;
+        size_t size = 4 * str.length() + 1;
         String ret(size, 0);
-        const UTF32* srcSta = (const UTF32*)&(*str.begin());
-        const UTF32* srcEnd = (const UTF32*)&(*str.end());
-        UTF8* tarSta = (UTF8*)*ret.begin();
-        UTF8* tarEnd = (UTF8*)*ret.end();
+		const UTF32* srcSta = (const UTF32*)str.c_str();
+		const UTF32* srcEnd = srcSta + str.length();
+        UTF8* tarSta = (UTF8*)ret.c_str();
+        UTF8* tarEnd = tarSta + size;
         ConversionResult res = ConvertUTF32toUTF8(&srcSta, srcEnd, &tarSta, tarEnd, strictConversion);
         if (res != conversionOK)
         {
@@ -169,10 +167,10 @@ namespace hare_core
     {
         size_t size = str.size() + 1;
         WString ret(size, 0);
-        const UTF8* srcSta = (const UTF8*)&(*str.begin());
-        const UTF8* srcEnd = (const UTF8*)&(*str.end());
-        UTF16* tarSta = (UTF16*)&(*ret.begin());
-        UTF16* tarEnd = (UTF16*)&(*ret.end());
+        const UTF8* srcSta = (const UTF8*)str.c_str();
+		const UTF8* srcEnd = srcSta + str.length();
+        UTF16* tarSta = (UTF16*)ret.c_str();
+        UTF16* tarEnd = tarSta + size;
         ConversionResult res = ConvertUTF8toUTF16(&srcSta, srcEnd, &tarSta, tarEnd, strictConversion);
         if (res != conversionOK)
         {
@@ -185,10 +183,10 @@ namespace hare_core
     {
         size_t size = str.size() + 1;
         WString ret(size, 0);
-        const UTF8* srcSta = (const UTF8*)*str.begin();
-        const UTF8* srcEnd = (const UTF8*)*str.end();
-        UTF32* tarSta = (UTF32*)&(*ret.begin());
-        UTF32* tarEnd = (UTF32*)&(*ret.end());
+        const UTF8* srcSta = (const UTF8*)str.c_str();
+        const UTF8* srcEnd = srcSta + str.length();
+        UTF32* tarSta = (UTF32*)ret.c_str();
+        UTF32* tarEnd = tarSta + size;
         ConversionResult res = ConvertUTF8toUTF32(&srcSta, srcEnd, &tarSta, tarEnd, strictConversion);
         if (res != conversionOK)
         {

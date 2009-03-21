@@ -57,6 +57,9 @@ namespace hare_d3d
 		case TextureStage::CABO_Modulate:
 			d3dTextureOp = D3DTOP_MODULATE;
 			break;
+		case TextureStage::CABO_Select1:
+			d3dTextureOp = D3DTOP_SELECTARG1;
+			break;
 		default:
 			assert(false);
 		}
@@ -68,6 +71,9 @@ namespace hare_d3d
 		u32 d3dTextureArg;
 		switch(texArg)
 		{
+		case TextureStage::CBBA_Current:
+			d3dTextureArg = D3DTA_CURRENT;
+			break;
 		case TextureStage::CABA_Texture:
 			d3dTextureArg = D3DTA_TEXTURE;
 			break;

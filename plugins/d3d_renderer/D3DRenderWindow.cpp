@@ -11,8 +11,13 @@ namespace hare_d3d
 		D3DRenderWindow* renderWindow = (D3DRenderWindow*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
 		switch( uMsg )
 		{
+		case WM_SIZE:
+			if (renderWindow)
+				renderWindow->resize(LOWORD(lParam), HIWORD(lParam));
+			break;
 		case WM_CLOSE:
-			renderWindow->destoryWindow();
+			if (renderWindow)
+				renderWindow->destoryWindow();
 			break;
 		}
 
@@ -75,7 +80,7 @@ namespace hare_d3d
 	void D3DRenderWindow::create(const WindowParams& params)
 	{
 		//assert(params.hwnd);
-		u32 mHwnd;
+		HWND hwnd;
 
 		if (params.hwnd == NULL){//如果窗口句柄为空则制动创建
 
@@ -97,24 +102,40 @@ namespace hare_d3d
 
             RegisterClass(&wc);
 
-			mHwnd = (u32)CreateWindow("HareRenderWindow", params.title.c_str(), 
+			hwnd = CreateWindow("HareRenderWindow", params.title.c_str(), 
 				WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, 0, params.width, params.height, NULL, NULL, hInstance, NULL);
 
-			ShowWindow((HWND)mHwnd, SW_NORMAL);
+			RECT  rect;
 
-			UpdateWindow((HWND)mHwnd);
+
+			int xL = (GetSystemMetrics(SM_CXSCREEN) - params.width ) / 2;
+			int yT = (GetSystemMetrics(SM_CYSCREEN) - params.height) / 2;
+			int xR = xL + params.width;
+			int yB = yT + params.height;
+
+			SetRect(&rect, xL, yT, xR, yB);
+
+			AdjustWindowRectEx(&rect, GetWindowLong(hwnd, GWL_STYLE), 
+				(GetMenu(hwnd) != NULL), GetWindowLong(hwnd, GWL_EXSTYLE));
+
+			MoveWindow(hwnd, rect.left, rect.top, rect.right - rect.left,
+				rect.bottom - rect.top, TRUE);
+
+			ShowWindow(hwnd, SW_NORMAL);
+
+			UpdateWindow(hwnd);
 
             isExternal = false;
 		} else {
-			mHwnd = params.hwnd;
+			hwnd = (HWND)params.hwnd;
             isExternal = true;
 		}
 
 		windowParams = params;
 
-		windowParams.hwnd = mHwnd;
+		windowParams.hwnd = (u32)hwnd;
 
-		SetWindowLongPtr((HWND)mHwnd, GWLP_USERDATA, (u32)this);
+		SetWindowLongPtr(hwnd, GWLP_USERDATA, (u32)this);
 
 		//配置信息以后加
 		//从配置文件中得到 D3Dpp
@@ -143,7 +164,35 @@ namespace hare_d3d
 
 	void D3DRenderWindow::resize(u32 w, u32 h)
 	{
-		
+		assert(w > 0 && h > 0);
+
+		LPDIRECT3DDEVICE9 pD3DDevice = static_cast<D3DRenderSystem*>(RenderSystem::getSingletonPtr())->getD3DDevice();
+		assert(pD3DDevice);
+
+		windowParams.width = w;
+
+		windowParams.height = h;
+
+		D3DXMatrixIdentity(&MatProj);
+		D3DXMatrixIdentity(&MatView);
+	
+		D3DXMATRIX matTEMP;
+
+		D3DXMatrixScaling(&MatProj, 1.0f, -1.0f, 1.0f);
+		D3DXMatrixTranslation(&matTEMP, -0.5f, windowParams.height + 0.5f, 0.0f);
+		D3DXMatrixMultiply(&MatProj, &MatProj, &matTEMP);
+
+		D3DXMatrixOrthoOffCenterLH(&matTEMP, 0, (f32)windowParams.width, 0, 
+			(f32)windowParams.height, 0.0f, 1.0f);//正交投影
+
+		D3DXMatrixMultiply(&MatProj, &MatProj, &matTEMP);
+		D3DXMatrixIdentity(&MatView);
+
+		pD3DDevice->SetTransform(D3DTS_VIEW, &MatView);
+		pD3DDevice->SetTransform(D3DTS_PROJECTION, &MatProj);
+
+		//以后从配置文件中的到是否重建后背缓冲和是否剧中的问题
+
 	}
 
 	void D3DRenderWindow::swapBuffer()

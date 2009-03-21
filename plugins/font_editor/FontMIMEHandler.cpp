@@ -21,6 +21,7 @@ FontEditorPage::FontEditorPage(wxWindow* parent, FontMIMEHandler* handler, Font*
  : EditorPage(parent), mime(handler)
 {
     wxBoxSizer* sizer1 = new wxBoxSizer(wxVERTICAL);
+
     wxBoxSizer* sizer2 = new wxBoxSizer(wxHORIZONTAL);
 
     wxStaticText* txt = new wxStaticText(this, wxID_ANY, wxT("SampleText :"), 
@@ -28,17 +29,25 @@ FontEditorPage::FontEditorPage(wxWindow* parent, FontMIMEHandler* handler, Font*
     txt->Wrap(-1);
     sizer2->Add(txt, 0, wxALL, 5);
 
-    wxTextCtrl* txtSample = new wxTextCtrl(this, wxID_ANY, wxEmptyString, 
+    txtSample = new wxTextCtrl(this, wxID_ANY, wxEmptyString, 
         wxDefaultPosition, wxDefaultSize, 0);
+
+    txtSample->Connect(wxEVT_COMMAND_TEXT_UPDATED, 
+        wxCommandEventHandler(FontEditorPage::onTextUpdate), NULL, this);
+
     sizer2->Add(txtSample, 1, 0, 5);
 
     sizer1->Add(sizer2, 0, wxEXPAND, 5);
 
-    canvsText = new wxHareCanvas(this);
-    canvsCache = new wxHareCanvas(this);
+    wxSplitterWindow* splitter = new wxSplitterWindow(this, wxID_ANY, 
+        wxDefaultPosition, wxDefaultSize, wxSP_3D | wxSP_LIVE_UPDATE);
+    splitter->SetMinimumPaneSize(50);
+    
+    canvsText = new wxHareCanvas(splitter);
+    canvsCache = new wxHareCanvas(splitter);
 
-    sizer1->Add(canvsText, 1, wxEXPAND, 5);
-    sizer1->Add(canvsCache, 1, wxEXPAND, 5);
+    splitter->SplitHorizontally(canvsText, canvsCache, 0);
+    sizer1->Add(splitter, 1, wxEXPAND, 5);
 
     SetSizer(sizer1);
     Layout();
@@ -57,34 +66,40 @@ FontEditorPage::FontEditorPage(wxWindow* parent, FontMIMEHandler* handler, Font*
 
 FontEditorPage::~FontEditorPage()
 {
-    //changeFont(NULL);
+    changeFont(NULL);
+}
+
+void FontEditorPage::onTextUpdate(wxCommandEvent& event)
+{
+    txtListener.text = txtSample->GetValue().ToUTF8().data();
 }
 
 bool FontEditorPage::changeFont(Font* font)
 {
-    //if (font == fontPtr)
-    //    return true;
+    if (font == fontPtr)
+        return true;
 
-    //if (fontPtr/* && fontPtr->isModified()*/)
-    //{
-    //    fontPtr->saveToXml(fontPtr->getUrl());
-    //}
+    if (fontPtr)
+    {
+        fontPtr->saveToXml(fontPtr->getUrl());
+    }
 
-    //fontPtr = font;
+    fontPtr = font;
 
-    //if (fontPtr)
-    //{
-    //    SimpleShader* shader = new SimpleShader();
-    //    TextureMtrl* texMtrl = new TextureMtrl();
-    //    texMtrl->setTexture(fontPtr->getFontTexture());
-    //    shader->setShaderParams(font->getFontExtParams());
-    //    shader->setMaterial(texMtrl);
-    //    
-    //    cacheListener.cacheTex = shader;
-    //}
-    //
-    //Manager::getInstancePtr()->getExplorerManager()->removeAllProperties();
-    //Manager::getInstancePtr()->getExplorerManager()->bindProperty(wxT("FontProperity"), fontPtr);
+    if (fontPtr)
+    {
+        SimpleShader* shader = new SimpleShader();
+        TextureMtrl* texMtrl = new TextureMtrl();
+        texMtrl->setTexture(fontPtr->getFontTexture());
+        shader->setShaderParams(font->getFontExtParams());
+        shader->setMaterial(texMtrl);
+        
+        txtListener.font = fontPtr;
+        cacheListener.cacheTex = shader;
+    }
+    
+    Manager::getInstancePtr()->getExplorerManager()->removeAllProperties();
+    Manager::getInstancePtr()->getExplorerManager()->bindProperty(wxT("FontProperity"), fontPtr);
 
     return true;
 }

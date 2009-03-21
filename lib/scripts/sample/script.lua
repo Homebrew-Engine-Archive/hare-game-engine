@@ -18,7 +18,7 @@ function renderScene()
 	canvas:drawLine(0,0, 800, 600, 0xffffffff, 1)
 	canvas:drawRect(50, 50, 600, 500, 0xff00ff00, 0.5)
  
-	canvas:drawText(100,80,'hijkcioimikkk')
+	canvas:drawText(0,0,'hijkcioimikkk')
 end
 
 function endScene()

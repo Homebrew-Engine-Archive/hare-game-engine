@@ -20,13 +20,17 @@ class FontMIMEHandler;
 class FontSceneListenerText : public SceneListenerBase
 {
 public:
+    FontSceneListenerText() : font(0) {}
+
     virtual void beginScene(){}
     virtual void endScene(){}
     virtual void renderScene()
     {
-        getCanvas()->drawText(0, 0, text);
+        getCanvas()->setFont(font);
+        getCanvas()->drawText(100, 100, text);
     }
 public:
+    Font* font;
     String text;
 };
 
@@ -61,6 +65,7 @@ private:
 private:
     wxHareCanvas* canvsText;
     wxHareCanvas* canvsCache;
+    wxTextCtrl* txtSample;
 
     SceneManager* sceneText;
     SceneManager* sceneCache;
@@ -70,6 +75,9 @@ private:
     Font::Ptr fontPtr;
 
     FontMIMEHandler* mime;
+
+private:
+    void onTextUpdate(wxCommandEvent& event);
 
     DECLARE_ABSTRACT_CLASS(FontEditorPage)
 };

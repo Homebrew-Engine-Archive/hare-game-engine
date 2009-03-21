@@ -30,15 +30,13 @@ wxHareCanvas::wxHareCanvas(wxWindow *parent, wxWindowID id, bool hasZBuffer, con
     params.title = name.ToUTF8().data();
 
     renderWindow = getHareApp()->createRenderWindow(params);
-    renderWindow->destoryWindow();
 }
 
 wxHareCanvas::~wxHareCanvas()
 {
     if (renderWindow)
     {
-        //renderWindow->setSceneManager(0);
-        
+        renderWindow->destoryWindow();
     }
     renderWindow = NULL;
 }

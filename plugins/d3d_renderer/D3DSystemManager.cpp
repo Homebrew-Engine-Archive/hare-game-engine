@@ -50,7 +50,7 @@ namespace hare_d3d
 		SecondaryWindowList::iterator it = secondaryWindowList.begin();
 		for (;it != secondaryWindowList.end(); ++it){
 			if (renderWindow == (*it)){
-				delete (D3DRenderWindow*)renderWindow;
+				delete *it;
 				secondaryWindowList.erase(it);
 				break;
 			}

@@ -89,7 +89,7 @@ namespace hare_graphics
 
 
 
-		CharGlyph charGlyph = font->getCharGlyph(wstr[0]);
+		/*CharGlyph charGlyph = font->getCharGlyph(wstr[0]);
 
 		Quad quad2;
 		quad2.setShader(shader);
@@ -97,7 +97,7 @@ namespace hare_graphics
 		quad2.setWidth(font->getFontTexture()->getWidth());
 		quad2.setHeight(font->getFontTexture()->getHeight());
 		texMtrl->setUV(0,0,1,1);
-		RenderSystem::getSingletonPtr()->render(&quad2);	
+		RenderSystem::getSingletonPtr()->render(&quad2);	*/
 
 	}
 

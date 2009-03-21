@@ -104,6 +104,7 @@ namespace hare_d3d
 
 			UpdateWindow((HWND)mHwnd);
 
+            isExternal = false;
 		} else {
 			mHwnd = params.hwnd;
             isExternal = true;
@@ -127,7 +128,9 @@ namespace hare_d3d
 
 	void D3DRenderWindow::destoryWindow()
 	{
-		if (isMainWnd){
+        sceneManager = NULL;
+
+		if (getIsMainWnd()){
             if (!isExternal){
 			    //如果是主窗口则退出程序
 			    PostQuitMessage(0);
@@ -136,8 +139,6 @@ namespace hare_d3d
 			//副窗口则释放资源
 			D3DSystemManager::getSingletonPtr()->destoryRenderWindow(this);	
 		}
-
-        sceneManager = NULL;
 	}
 
 	void D3DRenderWindow::resize(u32 w, u32 h)

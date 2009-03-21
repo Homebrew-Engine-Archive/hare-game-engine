@@ -150,8 +150,6 @@ void LuaDebuggerProcess::OnTerminate(int pid, int status)
 // ------------------------------------------------------------------------
 //   LuaDebuggerEvent
 // ------------------------------------------------------------------------
-IMPLEMENT_DYNAMIC_CLASS(LuaDebuggerEvent, wxEvent)
-
 LuaDebuggerEvent::LuaDebuggerEvent(const LuaDebuggerEvent& event)
  : wxEvent(event), lineNumber(event.lineNumber), fileName(event.fileName), 
    strMessage(event.strMessage), debugData(event.debugData)

@@ -66,7 +66,13 @@ FontEditorPage::FontEditorPage(wxWindow* parent, FontMIMEHandler* handler, Font*
 
 FontEditorPage::~FontEditorPage()
 {
-    changeFont(NULL);
+    if (fontPtr)
+    {
+        fontPtr->saveToXml(fontPtr->getUrl());
+        fontPtr = 0;
+    }
+
+    mime->page = NULL;
 }
 
 void FontEditorPage::onTextUpdate(wxCommandEvent& event)

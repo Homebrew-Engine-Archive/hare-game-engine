@@ -236,9 +236,6 @@ public:
     String fileName;
     String strMessage;
     LuaDebugData::Ptr debugData;
-
-private:
-    DECLARE_DYNAMIC_CLASS(LuaDebuggerEvent)
 };
 
 typedef void (wxEvtHandler::*wxLuaDebuggerEventFunction)(LuaDebuggerEvent&);

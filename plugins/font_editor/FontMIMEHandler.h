@@ -91,6 +91,9 @@ public:
     virtual bool openFile(const wxString& filename);
 
 private:
+
+    friend class FontEditorPage;
+
     FontEditorPage* page;
 };
 

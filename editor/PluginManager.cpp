@@ -16,6 +16,7 @@
 #include "EditorPlugin.h"
 #include <wx/dynload.h>
 #include <wx/dir.h>
+#include <wx/filename.h>
 
 namespace hare_editor
 {
@@ -98,7 +99,8 @@ namespace hare_editor
         bool ok = dir.GetFirst(&filename, pluginsMask, wxDIR_FILES);
         while (ok)
         {
-            if (loadPlugin(path + _T('/') + filename))
+            wxFileName fname(path + _T('/') + filename);
+            if (loadPlugin(fname.GetFullPath()))
                 ++count;
             else
                 failed << _T('\n') << filename;

@@ -9,16 +9,16 @@
                     <fileName class="String" value="script.lua" />
                     <editorOpen class="bool" value="1" />
                     <editorPos class="s32" value="1685" />
-                    <editorTopLine class="s32" value="20" />
-                    <editorTabPos class="s32" value="8" />
+                    <editorTopLine class="s32" value="17" />
+                    <editorTabPos class="s32" value="3" />
                     <breakPoints class="meta_array" number="0" />
                 </item0>
                 <item1 store="0" class="ProjectFile" version="0">
                     <fileName class="String" value="script.lua.bak" />
-                    <editorOpen class="bool" value="0" />
+                    <editorOpen class="bool" value="1" />
                     <editorPos class="s32" value="0" />
                     <editorTopLine class="s32" value="0" />
-                    <editorTabPos class="s32" value="0" />
+                    <editorTabPos class="s32" value="2" />
                     <breakPoints class="meta_array" number="0" />
                 </item1>
             </files>
@@ -48,7 +48,7 @@
                     <editorOpen class="bool" value="1" />
                     <editorPos class="s32" value="0" />
                     <editorTopLine class="s32" value="0" />
-                    <editorTabPos class="s32" value="2" />
+                    <editorTabPos class="s32" value="4" />
                     <breakPoints class="meta_array" number="0" />
                 </item2>
                 <item3 store="0" class="ProjectFile" version="0">
@@ -62,9 +62,9 @@
                 <item4 store="0" class="ProjectFile" version="0">
                     <fileName class="String" value="factorial.lua" />
                     <editorOpen class="bool" value="1" />
-                    <editorPos class="s32" value="619" />
+                    <editorPos class="s32" value="287" />
                     <editorTopLine class="s32" value="0" />
-                    <editorTabPos class="s32" value="7" />
+                    <editorTabPos class="s32" value="9" />
                     <breakPoints class="meta_array" number="0" />
                 </item4>
                 <item5 store="0" class="ProjectFile" version="0">
@@ -112,7 +112,7 @@
                     <editorOpen class="bool" value="1" />
                     <editorPos class="s32" value="0" />
                     <editorTopLine class="s32" value="0" />
-                    <editorTabPos class="s32" value="3" />
+                    <editorTabPos class="s32" value="5" />
                     <breakPoints class="meta_array" number="0" />
                 </item10>
                 <item11 store="0" class="ProjectFile" version="0">
@@ -120,7 +120,7 @@
                     <editorOpen class="bool" value="1" />
                     <editorPos class="s32" value="0" />
                     <editorTopLine class="s32" value="0" />
-                    <editorTabPos class="s32" value="4" />
+                    <editorTabPos class="s32" value="6" />
                     <breakPoints class="meta_array" number="0" />
                 </item11>
                 <item12 store="0" class="ProjectFile" version="0">
@@ -128,7 +128,7 @@
                     <editorOpen class="bool" value="1" />
                     <editorPos class="s32" value="0" />
                     <editorTopLine class="s32" value="0" />
-                    <editorTabPos class="s32" value="5" />
+                    <editorTabPos class="s32" value="7" />
                     <breakPoints class="meta_array" number="0" />
                 </item12>
                 <item13 store="0" class="ProjectFile" version="0">
@@ -152,7 +152,7 @@
                     <editorOpen class="bool" value="1" />
                     <editorPos class="s32" value="0" />
                     <editorTopLine class="s32" value="0" />
-                    <editorTabPos class="s32" value="6" />
+                    <editorTabPos class="s32" value="8" />
                     <breakPoints class="meta_array" number="0" />
                 </item15>
                 <item16 store="0" class="ProjectFile" version="0">

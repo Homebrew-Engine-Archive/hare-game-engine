@@ -17,6 +17,7 @@
 #include "CompilerPlugin.h"
 #include "ConfigManager.h"
 #include "DebuggerPlugin.h"
+#include "MIMEHandlerPlugin.h"
 #include "EditorPage.h"
 #include "EditorPageManager.h"
 #include "EditorPlugin.h"

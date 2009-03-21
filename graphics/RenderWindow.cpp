@@ -8,10 +8,12 @@ namespace hare_graphics
 		,width(0)
 		,height(0)
 		,sceneManager(NULL)
+        ,isExternal(false)
 	{
 	}
 
 	RenderWindow::~RenderWindow()
 	{
+        sceneManager = NULL;
 	}
 }

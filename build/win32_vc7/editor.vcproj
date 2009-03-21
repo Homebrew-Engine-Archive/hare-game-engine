@@ -20,8 +20,8 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\ext\wxWidgets\lib\vc_dll\mswud;..\..\ext\wxWidgets\include;..\..\include\editor\wxTreeListCtrl\include;..\..\include\editor\wxScintilla\include;..\..\editor\wxScintilla\src\scintilla;..\..\editor\wxScintilla\src\scintilla\include;..\..\editor\wxScintilla\src\scintilla\src;..\..\include\editor\wxFlatNotebook\include;..\..\include\editor\wxPropGrid\include;..\..\ext\physfs;..\..\include\;..\..\include\editor"
-				PreprocessorDefinitions="WIN32;_DEBUG;__WXDEBUG__;__WXMSW__;__WX__;WXUSINGDLL;WXMAKINGDLL_FNB;SCI_LEXER;LINK_LEXERS;WXMAKINGDLL_SCI;WXMAKINGDLL_PROPGRID;WXMAKINGDLL_TL;EDITOR_EXPORTS"
+				AdditionalIncludeDirectories="..\..\ext\wxWidgets\lib\vc_dll\mswud;..\..\ext\wxWidgets\include;..\..\include\editor\wxTreeListCtrl\include;..\..\include\editor\wxScintilla\include;..\..\editor\wxScintilla\src\scintilla;..\..\editor\wxScintilla\src\scintilla\include;..\..\editor\wxScintilla\src\scintilla\src;..\..\include\editor\wxFlatNotebook\include;..\..\include\editor\wxPropGrid\include;..\..\include\editor\wxHareCanvas\include;..\..\ext\physfs;..\..\include\;..\..\include\editor"
+				PreprocessorDefinitions="WIN32;_DEBUG;__WXDEBUG__;__WXMSW__;__WX__;WXUSINGDLL;WXMAKINGDLL_FNB;SCI_LEXER;LINK_LEXERS;WXMAKINGDLL_SCI;WXMAKINGDLL_PROPGRID;WXMAKINGDLL_TL;WXMAKINGDLL_HARE_CANVAS;EDITOR_EXPORTS"
 				MinimalRebuild="TRUE"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -34,7 +34,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="core_d.lib wxexpatd.lib wxjpegd.lib wxmsw28ud.lib wxpngd.lib wxregexud.lib wxtiffd.lib wxzlibd.lib winmm.lib comctl32.lib rpcrt4.lib wsock32.lib odbc32.lib oleacc.lib"
+				AdditionalDependencies="core_d.lib graphics_d.lib wxexpatd.lib wxjpegd.lib wxmsw28ud.lib wxpngd.lib wxregexud.lib wxtiffd.lib wxzlibd.lib winmm.lib comctl32.lib rpcrt4.lib wsock32.lib odbc32.lib oleacc.lib"
 				OutputFile="$(OutDir)/$(ProjectName)_d.dll"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="..\..\lib;..\..\ext\wxWidgets\lib\vc_dll"
@@ -156,6 +156,9 @@
 				RelativePath="..\..\editor\FindReplaceDialog.cpp">
 			</File>
 			<File
+				RelativePath="..\..\editor\MIMEHandlerPlugin.cpp">
+			</File>
+			<File
 				RelativePath="..\..\editor\NewFileDialog.cpp">
 			</File>
 			<File
@@ -199,9 +202,6 @@
 			Name="Header Files"
 			Filter="h;hpp;hxx;hm;inl;inc;xsd">
 			<File
-				RelativePath="..\..\include\editor\CompilerPlugin.h">
-			</File>
-			<File
 				RelativePath="..\..\include\editor\ConfigManager.h">
 			</File>
 			<File
@@ -236,6 +236,9 @@
 			</File>
 			<File
 				RelativePath="..\..\include\editor\FindReplaceDialog.h">
+			</File>
+			<File
+				RelativePath="..\..\include\editor\MIMEHandlerPlugin.h">
 			</File>
 			<File
 				RelativePath="..\..\include\editor\NewFileDialog.h">
@@ -1922,6 +1925,34 @@
 					</FileConfiguration>
 					<FileConfiguration
 						Name="Release|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+				</File>
+			</Filter>
+		</Filter>
+		<Filter
+			Name="wxHareCanvas"
+			Filter="">
+			<Filter
+				Name="include"
+				Filter="">
+				<Filter
+					Name="wx"
+					Filter="">
+					<File
+						RelativePath="..\..\include\editor\wxHareCanvas\include\wx\harecanvas.h">
+					</File>
+				</Filter>
+			</Filter>
+			<Filter
+				Name="src"
+				Filter="">
+				<File
+					RelativePath="..\..\editor\wxHareCanvas\src\harecanvas.cpp">
+					<FileConfiguration
+						Name="Debug|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
 							UsePrecompiledHeader="0"/>

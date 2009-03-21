@@ -8,13 +8,10 @@
                 <item0 store="0" class="ProjectFile" version="0">
                     <fileName class="String" value="script.lua" />
                     <editorOpen class="bool" value="1" />
-                    <editorPos class="s32" value="285" />
-                    <editorTopLine class="s32" value="0" />
-                    <editorTabPos class="s32" value="1" />
-                    <breakPoints class="meta_array" number="2">
-                        <item0 class="s32" value="30" />
-                        <item1 class="s32" value="31" />
-                    </breakPoints>
+                    <editorPos class="s32" value="1685" />
+                    <editorTopLine class="s32" value="20" />
+                    <editorTabPos class="s32" value="7" />
+                    <breakPoints class="meta_array" number="0" />
                 </item0>
             </files>
         </item0>
@@ -40,10 +37,10 @@
                 </item1>
                 <item2 store="0" class="ProjectFile" version="0">
                     <fileName class="String" value="echo.lua" />
-                    <editorOpen class="bool" value="0" />
+                    <editorOpen class="bool" value="1" />
                     <editorPos class="s32" value="0" />
                     <editorTopLine class="s32" value="0" />
-                    <editorTabPos class="s32" value="0" />
+                    <editorTabPos class="s32" value="1" />
                     <breakPoints class="meta_array" number="0" />
                 </item2>
                 <item3 store="0" class="ProjectFile" version="0">
@@ -57,9 +54,9 @@
                 <item4 store="0" class="ProjectFile" version="0">
                     <fileName class="String" value="factorial.lua" />
                     <editorOpen class="bool" value="1" />
-                    <editorPos class="s32" value="0" />
+                    <editorPos class="s32" value="619" />
                     <editorTopLine class="s32" value="0" />
-                    <editorTabPos class="s32" value="0" />
+                    <editorTabPos class="s32" value="6" />
                     <breakPoints class="meta_array" number="0" />
                 </item4>
                 <item5 store="0" class="ProjectFile" version="0">
@@ -104,26 +101,26 @@
                 </item9>
                 <item10 store="0" class="ProjectFile" version="0">
                     <fileName class="String" value="luac.lua" />
-                    <editorOpen class="bool" value="0" />
+                    <editorOpen class="bool" value="1" />
                     <editorPos class="s32" value="0" />
                     <editorTopLine class="s32" value="0" />
-                    <editorTabPos class="s32" value="0" />
+                    <editorTabPos class="s32" value="2" />
                     <breakPoints class="meta_array" number="0" />
                 </item10>
                 <item11 store="0" class="ProjectFile" version="0">
                     <fileName class="String" value="printf.lua" />
-                    <editorOpen class="bool" value="0" />
+                    <editorOpen class="bool" value="1" />
                     <editorPos class="s32" value="0" />
                     <editorTopLine class="s32" value="0" />
-                    <editorTabPos class="s32" value="0" />
+                    <editorTabPos class="s32" value="3" />
                     <breakPoints class="meta_array" number="0" />
                 </item11>
                 <item12 store="0" class="ProjectFile" version="0">
                     <fileName class="String" value="README" />
-                    <editorOpen class="bool" value="0" />
+                    <editorOpen class="bool" value="1" />
                     <editorPos class="s32" value="0" />
                     <editorTopLine class="s32" value="0" />
-                    <editorTabPos class="s32" value="0" />
+                    <editorTabPos class="s32" value="4" />
                     <breakPoints class="meta_array" number="0" />
                 </item12>
                 <item13 store="0" class="ProjectFile" version="0">
@@ -144,10 +141,10 @@
                 </item14>
                 <item15 store="0" class="ProjectFile" version="0">
                     <fileName class="String" value="sort.lua" />
-                    <editorOpen class="bool" value="0" />
+                    <editorOpen class="bool" value="1" />
                     <editorPos class="s32" value="0" />
                     <editorTopLine class="s32" value="0" />
-                    <editorTabPos class="s32" value="0" />
+                    <editorTabPos class="s32" value="5" />
                     <breakPoints class="meta_array" number="0" />
                 </item15>
                 <item16 store="0" class="ProjectFile" version="0">

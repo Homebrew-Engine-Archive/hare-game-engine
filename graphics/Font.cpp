@@ -10,6 +10,14 @@
 
 namespace hare_graphics
 {
+    HARE_IMPLEMENT_DYNAMIC_CLASS(Font, Object, 0)
+    {
+        HARE_META(fontFile, String)
+        HARE_META(fontSize, f32)
+        HARE_META(cacheBufferSize, u32)
+        HARE_META(resolution, u32)
+    }
+
 	struct FontResource
 	{
 		FT_Face		face;
@@ -23,7 +31,7 @@ namespace hare_graphics
 	}
 
 	Font::Font(const String& ttfName, f32 ttfSize, u32 ttfResolution, u32 cacheSize)
-		:fontName(ttfName)
+		:fontFile(ttfName)
 		,fontSize(ttfSize)
 		,resolution(ttfResolution)
 		,cacheBufferSize(cacheSize)
@@ -47,12 +55,12 @@ namespace hare_graphics
 		shaderParams.AlphaTestEnable  = false;
 
 		String tmpExt;
-		String fontBaseName;
-		StringUtil::splitFilename(fontName, fontBaseName, tmpExt);
+		String fontFileBase;
+		StringUtil::splitFilename(fontFile, fontFileBase, tmpExt);
 		StringUtil::toLowerCase(tmpExt);
 		assert(tmpExt == "ttf");
 
-		FT_Error ftResult = FT_Init_FreeType( &(fontResource->ftLibrary) );
+		FT_Error ftResult = FT_Init_FreeType(&(fontResource->ftLibrary));
 		if (ftResult)
 			HARE_EXCEPT(Exception::ERR_INTERNAL_ERROR, "Could not init FreeType library!", "Font::Font FT_Init_FreeType");
 
@@ -60,7 +68,7 @@ namespace hare_graphics
 		/*文件系统打开文件将数据读进input
 		*/
 		FileSystem* fs = getFileSystem();
-		FileHandle fh = fs->openFile(fontName, FM_Read);
+		FileHandle fh = fs->openFile(fontFile, FM_Read);
 
 		if (!fh)
 			HARE_EXCEPT(Exception::ERR_FILE_NOT_FOUND, "Could not open FontFile!", "Font::Font fs->openFile");
@@ -97,7 +105,7 @@ namespace hare_graphics
 
 		ch = L'A';
 		for (wchar_t count = ch; count < ch + 63; ++count){
-			ftResult = FT_Load_Char( fontResource->face, count, FT_LOAD_RENDER);
+			ftResult = FT_Load_Char(fontResource->face, count, FT_LOAD_RENDER);
 			if (ftResult)
 				continue;
 
@@ -145,17 +153,17 @@ namespace hare_graphics
 
 	void Font::setFontFileName(const String& ttfName)
 	{
-		String fontName = ttfName;
+		fontFile = ttfName;
 	}
 
 	const String& Font::getFontFileName()
 	{
-		return fontName;
+		return fontFile;
 	}
 
 	void Font::setFontSize(f32 ttfSize)
 	{
-		f32 fontSize = ttfSize;
+		fontSize = ttfSize;
 	}
 
 	f32 Font::getFontSize()

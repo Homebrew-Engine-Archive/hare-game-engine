@@ -9,8 +9,6 @@
 //              Vadim Zeitlin, Otto Wyss
 // Licence:     wxWindows
 /////////////////////////////////////////////////////////////////////////////
-
-
 #ifndef TREELISTCTRL_H
 #define TREELISTCTRL_H
 
@@ -22,9 +20,9 @@
 #    define WXDLLIMPEXP_TL WXEXPORT
 #elif defined(WXUSINGDLL_TL)
 #    define WXDLLIMPEXP_TL WXIMPORT
-#else /* not making nor using FNB as DLL */
+#else
 #    define WXDLLIMPEXP_TL
-#endif // WXMAKINGDLL_FNB
+#endif
 
 #include <wx/treectrl.h>
 #include <wx/control.h>

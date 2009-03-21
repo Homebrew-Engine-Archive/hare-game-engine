@@ -54,11 +54,11 @@ public:
 	virtual void renderScene();
 	virtual void endScene();
 
-	void setBeginSceneListenFun(SWIGLUA_REF fn);
+	void setBeginSceneListenFunc(SWIGLUA_REF fn);
 	
-	void setRenderSceneListenFun(SWIGLUA_REF fn);
+	void setRenderSceneListenFunc(SWIGLUA_REF fn);
 	
-	void setEndSceneListenFun(SWIGLUA_REF fn);
+	void setEndSceneListenFunc(SWIGLUA_REF fn);
 
 };
 
@@ -158,7 +158,11 @@ public:
 
 HareApp* getHareApp();	
 
-class Font;
+class Font : public Object
+{
+private:
+	Font();
+};
 
 class Canvas
 {

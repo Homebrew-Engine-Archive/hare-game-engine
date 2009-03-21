@@ -47,6 +47,7 @@ namespace hare_editor
     protected:
         wxString title;
 
+        DECLARE_ABSTRACT_CLASS(EditorPage)
     };
 }
 

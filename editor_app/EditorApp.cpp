@@ -24,6 +24,10 @@
 
 IMPLEMENT_APP(EditorApp);
 
+BEGIN_EVENT_TABLE(EditorApp, wxApp)
+    EVT_IDLE(EditorApp::OnIdle)
+END_EVENT_TABLE()
+
 void EditorApp::InitLocale()
 {
     AppConfigFile* appConfig = Manager::getInstancePtr()->getConfigManager()->getAppConfigFile();
@@ -67,12 +71,21 @@ void EditorApp::InitLocale()
 bool EditorApp::OnInit()
 {
 #if defined(__WXMSW__) && defined(_DEBUG)
-    _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+    //_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
     //_CrtSetBreakAlloc(5648);
 #endif
 
     wxString argv0 = argv[0];
     core_init(argv0.ToUTF8().data());
+
+    ConfigFile plugin;
+    plugin.load("plugin.cfg");
+    String pluginDir = plugin.getSetting("PluginDir");
+    StringVector plugins = plugin.getMultiSetting("Plugin");
+    for (size_t i = 0; i < plugins.size(); ++i)
+    {
+        getHareApp()->loadPlugin(pluginDir + plugins[i]);
+    }
 
     FileSystem* fs = FileSystem::getSingletonPtr();
 
@@ -83,6 +96,8 @@ bool EditorApp::OnInit()
     editorDir = fn.GetFullPath().ToUTF8().data();
     fs->setWriteDir(editorDir);
     fs->addSearchPath(editorDir);
+
+    getHareApp()->startUp();
 
     if (!wxApp::OnInit())
         return false;
@@ -99,7 +114,20 @@ int EditorApp::OnExit()
 {
     Manager::free();
 
+    getHareApp()->shutDown();
+
+    getHareApp()->freePlugin();
+
     core_quit();
 
     return wxApp::OnExit();
+}
+
+void EditorApp::OnIdle(wxIdleEvent& event)
+{
+    getTimer().update();
+
+    getHareApp()->hareRunFrame();
+
+    event.RequestMore();
 }

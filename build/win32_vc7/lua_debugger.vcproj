@@ -13,7 +13,7 @@
 		<Configuration
 			Name="Debug|Win32"
 			OutputDirectory="..\..\lib\editor_data\plugins"
-			IntermediateDirectory="$(ConfigurationName)\editor_lua_plugin"
+			IntermediateDirectory="$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="2"
 			CharacterSet="1">
 			<Tool
@@ -38,7 +38,7 @@
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="..\..\lib;..\..\ext\wxWidgets\lib\vc_dll;..\..\ext\lua\src"
 				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile="$(OutDir)/editor_lua_plugin.pdb"
+				ProgramDatabaseFile="$(OutDir)/$(ProjectName).pdb"
 				SubSystem="2"
 				ImportLibrary=""
 				TargetMachine="1"/>

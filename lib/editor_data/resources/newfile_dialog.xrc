@@ -51,7 +51,7 @@
 				<border>5</border>
 			</object>
 			<object class="sizeritem">
-				<object class="wxStaticLine" name="m_staticline1" />
+				<object class="wxStaticLine" name="wxID_STATIC" />
 				<flag>wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
 				<border>5</border>
 			</object>

@@ -7,7 +7,8 @@
 
 namespace hare_graphics
 {
-	struct GRAPHICS_API WindowParams{
+	struct GRAPHICS_API WindowParams
+    {
 		u32    hwnd;
 		bool   bFullScreen;
 		u32    width;
@@ -78,6 +79,7 @@ namespace hare_graphics
 		u32 width;
 		u32 height;
 		bool isMainWnd;
+        bool isExternal;
 
 		SceneManager* sceneManager;
 	};

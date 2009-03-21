@@ -11,14 +11,11 @@
 // 
 //***************************************************************
 #include "PCH.h"
-#include "editor/EditorPlugin.h"
 #include "LuaDebugger.h"
-
-using namespace hare_editor;
 
 static const PluginInfo luaDebugger = {
     wxT("LuaDebugger"), 
     wxT("LuaDebugger"),
-    wxT("This is a plugin for lua") };
+    wxT("This is a plugin for lua debugging") };
 
 PluginRegistrant<LuaDebugger> regLuaDebugger(luaDebugger);

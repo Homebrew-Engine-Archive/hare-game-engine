@@ -96,6 +96,8 @@ namespace hare_editor
         wxDateTime lastModified;
 
         ProjectFile::Ptr projectFile;
+
+        DECLARE_ABSTRACT_CLASS(TextEditorPage)
     };
 }
 

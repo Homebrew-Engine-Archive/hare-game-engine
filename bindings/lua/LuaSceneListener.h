@@ -3,17 +3,19 @@
 
 #include "graphics/Graphics.h"
 
+bool notify_error(lua_State *L);
+
 class LuaSceneListener : public SceneListenerBase
 {
 public:
     LuaSceneListener()
     {
-		beginSceneListen.L = 0;
-		beginSceneListen.ref = 0;
-		renderSceneListen.L = 0;
-		renderSceneListen.ref = 0;
-		endSceneListen.L = 0;
-		endSceneListen.ref = 0;
+		begin.L = 0;
+		begin.ref = 0;
+		render.L = 0;
+		render.ref = 0;
+		end.L = 0;
+		end.ref = 0;
     }
 
     virtual ~LuaSceneListener()
@@ -22,53 +24,56 @@ public:
 
     virtual void beginScene()
     {
-		if (beginSceneListen.L == 0)
+		if (begin.L == 0)
 			return ;
 
-		swiglua_ref_get(&beginSceneListen);
+		swiglua_ref_get(&begin);
 
-		lua_call(beginSceneListen.L,0,0); 
+        if (lua_pcall(begin.L, 0, LUA_MULTRET, 0))
+            notify_error(begin.L);
     }
 
     virtual void renderScene()
     {
-		if (renderSceneListen.L == 0)
+		if (render.L == 0)
 			return ;
 
-		swiglua_ref_get(&renderSceneListen);
+		swiglua_ref_get(&render);
 
-		lua_call(renderSceneListen.L,0,0); 
+        if (lua_pcall(render.L, 0, LUA_MULTRET, 0))
+            notify_error(render.L);
     }
 
     virtual void endScene()
     {
-		if (endSceneListen.L == 0)
+		if (end.L == 0)
 			return ;
 
-		swiglua_ref_get(&endSceneListen);
+		swiglua_ref_get(&end);
 
-		lua_call(endSceneListen.L,0,0); 
+        if (lua_pcall(end.L, 0, LUA_MULTRET, 0))
+            notify_error(end.L);
     }
 
-	void setBeginSceneListenFun(SWIGLUA_REF fn)
+	void setBeginSceneListenFunc(SWIGLUA_REF fn)
 	{
-		beginSceneListen = fn;
+		begin = fn;
 	}
 
-	void setRenderSceneListenFun(SWIGLUA_REF fn)
+	void setRenderSceneListenFunc(SWIGLUA_REF fn)
 	{
-		renderSceneListen = fn;
+		render = fn;
 	}
 
-	void setEndSceneListenFun(SWIGLUA_REF fn)
+	void setEndSceneListenFunc(SWIGLUA_REF fn)
 	{
-		endSceneListen = fn;
+		end = fn;
 	}
 
 protected:
-	SWIGLUA_REF beginSceneListen;
-	SWIGLUA_REF renderSceneListen;
-	SWIGLUA_REF endSceneListen;
+	SWIGLUA_REF begin;
+	SWIGLUA_REF render;
+	SWIGLUA_REF end;
 
 };
 

@@ -230,6 +230,13 @@ void EditorFrame::createIDE()
     Manager::getInstancePtr()->getEditorPageManager()->getNotebook()->SetDropTarget(new FileDropTarget(this));
 
     layoutManager.Update();
+
+    EditorPlugin* plugin = Manager::getInstancePtr()->getPluginManager()->findPluginByName(wxT("FontMIMEHandler"));
+    
+    MIMEHandlerPlugin* fontEditor =  (MIMEHandlerPlugin*)plugin;
+
+    if (fontEditor)
+        fontEditor->openFile(wxT("default.font"));
 }
 
 void EditorFrame::preLoadXRC()

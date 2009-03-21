@@ -17,6 +17,8 @@
 
 namespace hare_editor
 {
+    IMPLEMENT_ABSTRACT_CLASS(EditorPage, wxPanel)
+
     EditorPage::EditorPage(wxWindow* parent)
         : wxPanel(parent)
     {

@@ -14,7 +14,7 @@ namespace hare_graphics
 	{
 	public:
 		SceneManager();
-		~SceneManager();
+	   ~SceneManager();
 
 		void beginScene();
 

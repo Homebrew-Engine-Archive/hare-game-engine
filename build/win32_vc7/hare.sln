@@ -31,6 +31,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "lua_debugger", "lua_debugge
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "font_editor", "font_editor.vcproj", "{DED2B450-0ED2-493B-9BBC-A443B7F0666F}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfiguration) = preSolution
 		Debug = Debug
@@ -65,6 +69,10 @@ Global
 		{4DA1AEDA-70D0-4EB5-BB57-F692C907B405}.Debug.Build.0 = Debug|Win32
 		{4DA1AEDA-70D0-4EB5-BB57-F692C907B405}.Release.ActiveCfg = Release|Win32
 		{4DA1AEDA-70D0-4EB5-BB57-F692C907B405}.Release.Build.0 = Release|Win32
+		{DED2B450-0ED2-493B-9BBC-A443B7F0666F}.Debug.ActiveCfg = Debug|Win32
+		{DED2B450-0ED2-493B-9BBC-A443B7F0666F}.Debug.Build.0 = Debug|Win32
+		{DED2B450-0ED2-493B-9BBC-A443B7F0666F}.Release.ActiveCfg = Release|Win32
+		{DED2B450-0ED2-493B-9BBC-A443B7F0666F}.Release.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 	EndGlobalSection

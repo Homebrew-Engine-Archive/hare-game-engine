@@ -64,12 +64,6 @@ namespace hare_editor
         propGridManager->GetGrid()->SetVerticalSpacing(2);
 
         notebook->AddPage(propGridManager, _("Properties"));
-
-        PropertyGridPage* page = new PropertyGridPage();
-
-        propGridManager->AddPage(_("Editor Properties"), wxPG_NULL_BITMAP, page);
-
-        setPropertyGridObject(page, Manager::getInstancePtr()->getConfigManager()->getAppConfigFile());
     }
 
     void ExplorerManager::createProjectPage()
@@ -82,4 +76,19 @@ namespace hare_editor
     ExplorerManager::~ExplorerManager()
     {
     }
+
+    void ExplorerManager::bindProperty(const wxString& name, Object* object)
+    {
+        PropertyGridPage* page = new PropertyGridPage();
+
+        propGridManager->AddPage(name, wxPG_NULL_BITMAP, page);
+
+        setPropertyGridObject(page, object);
+    }
+
+    void ExplorerManager::removeAllProperties()
+    {
+        propGridManager->Clear();
+    }
+
 }

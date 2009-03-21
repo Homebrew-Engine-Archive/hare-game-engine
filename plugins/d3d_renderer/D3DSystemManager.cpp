@@ -50,7 +50,7 @@ namespace hare_d3d
 		SecondaryWindowList::iterator it = secondaryWindowList.begin();
 		for (;it != secondaryWindowList.end(); ++it){
 			if (renderWindow == (*it)){
-				delete *it;
+				delete (D3DRenderWindow*)renderWindow;
 				secondaryWindowList.erase(it);
 				break;
 			}
@@ -63,7 +63,7 @@ namespace hare_d3d
 	}
 
 	void D3DSystemManager::hareRunFrame()
-	{
+	{ 
         D3DRenderSystem* d3drs = static_cast<D3DRenderSystem*>(RenderSystem::getSingletonPtr());
         if (!d3drs)
             return;
@@ -86,17 +86,16 @@ namespace hare_d3d
 	{
 		MSG Message;
 
-		for(;;){	
-			if(PeekMessage(&Message, 0, 0, 0, PM_NOREMOVE)){
-				if(!GetMessage(&Message, NULL, 0, 0)){
+		for (;;){	
+			if (PeekMessage(&Message, 0, 0, 0, PM_NOREMOVE)){
+				if (!GetMessage(&Message, NULL, 0, 0)){
 					break;
 				}
 				TranslateMessage(&Message);
 				DispatchMessage(&Message);
-			}else{
-				getTimer().update();
-
-				hareRunFrame();
+			} else {
+                getTimer().update();
+                hareRunFrame();
 			}
 		}
 	}

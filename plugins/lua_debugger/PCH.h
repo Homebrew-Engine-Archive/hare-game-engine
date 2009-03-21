@@ -26,7 +26,6 @@
 #include "editor/Editor.h"
 using namespace hare_editor;
 
-#define LUA_DEBUG_DATA_NO_LUA
 #include "../../bindings/lua/LuaDebugData.h"
 #include "../../bindings/lua/LuaDebugDefines.h"
 #include "../../bindings/lua/SocketHelper.h"

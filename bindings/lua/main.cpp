@@ -89,17 +89,17 @@ bool load_scripts(const String& game, lua_State *L)
 }
 
 #if HARE_PLATFORM == HARE_PLATFORM_WIN32
-    INT WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR cmd, INT)
-    {
-        //_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
-        //_CrtSetBreakAlloc();
-        core_init(NULL);
-        CmdLineParser cmdLine(cmd);
+INT WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR cmd, INT)
+{
+    //_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+    //_CrtSetBreakAlloc();
+    core_init(NULL);
+    CmdLineParser cmdLine(cmd);
 #else
-    int main(int argc, char *argv[])
-    {
-        core_init(argv[0]);
-        CmdLineParser cmdLine(argc, argv);
+int main(int argc, char *argv[])
+{
+    core_init(argv[0]);
+    CmdLineParser cmdLine(argc, argv);
 #endif
 
     lua_State *L = lua_open();  /* create state */

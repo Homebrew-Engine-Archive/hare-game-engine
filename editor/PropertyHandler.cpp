@@ -426,6 +426,9 @@ namespace hare_editor
     {
         page->Clear();
 
+        if (!obj)
+            return;
+
         wxPGProperty* parent = page->Append(new wxPropertyCategory(
             wxString::FromUTF8(obj->getClassInfo()->className), wxPG_LABEL));
 

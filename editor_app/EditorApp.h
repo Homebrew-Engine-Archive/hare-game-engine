@@ -24,6 +24,10 @@ public:
 private:
     void InitLocale();
     wxLocale locale;
+
+    void OnIdle(wxIdleEvent& event);
+
+    DECLARE_EVENT_TABLE();
 };
 
 #endif //_EDITORAPP_H_

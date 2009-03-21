@@ -43,6 +43,7 @@ namespace hare_editor
     #define MARGIN_SYMBOL       1
     #define MARGIN_FOLDING      2
 
+    IMPLEMENT_ABSTRACT_CLASS(TextEditorPage, EditorPage)
 
     bool writeStringToFile(wxFile& f, const wxString& data, wxFontEncoding encoding, bool useBOM)
     {

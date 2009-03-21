@@ -26,8 +26,10 @@ namespace hare_graphics
 		Rect<f32> recGlyph;
 	};
 
-	class GRAPHICS_API Font 
+    class GRAPHICS_API Font : public Object
 	{
+        HARE_DECLARE_DYNAMIC_CLASS(Font)
+
 	protected:
 		struct CachedChar
 		{
@@ -43,7 +45,6 @@ namespace hare_graphics
 			{
 
 			}
-
 		};
 	public:
 
@@ -92,7 +93,7 @@ namespace hare_graphics
 		void destoryResource();
 
 	protected:
-		String fontName;
+		String fontFile;
 		f32 fontSize;
 		u32 cacheBufferSize;
 		u32 resolution;

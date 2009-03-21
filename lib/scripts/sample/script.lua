@@ -18,7 +18,7 @@ function renderScene()
 	canvas:drawLine(0,0, 800, 600, 0xffffffff, 1)
 	canvas:drawRect(50, 50, 600, 500, 0xff00ff00, 0.5)
  
-	canvas:drawText(100,80,'abc')
+	canvas:drawText(100,80,'hijkcioimikkk')
 end
 
 function endScene()
@@ -43,9 +43,9 @@ function init()
     sprite2:loadFromImage("yu.png")
     --s:addSprite(sprite2)    
     listener = hare.LuaSceneListener()
-    listener:setBeginSceneListenFun(beginScene)
-    listener:setRenderSceneListenFun(renderScene)
-    listener:setEndSceneListenFun(endScene)
+    listener:setBeginSceneListenFunc(beginScene)
+    listener:setRenderSceneListenFunc(renderScene)
+    listener:setEndSceneListenFunc(endScene)
     s:setSceneListener(listener)
 
     p = hare.WindowParams()
@@ -60,9 +60,10 @@ function init()
 	s:addSprite(sprite2)
 		
 	tm = hare.getTextManager() 
-	f = tm:createFont("comic.ttf", 20) 
+	fnt = tm:createFont("comic.ttf", 20) 
 	canvas = hare.getCanvas()
-	canvas:setFont(f)
+	canvas:setFont(fnt)
+    fnt:saveToXml('default.font')
 end
 
 function quit()

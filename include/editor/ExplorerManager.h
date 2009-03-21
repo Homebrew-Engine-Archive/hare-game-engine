@@ -27,6 +27,9 @@ namespace hare_editor
         wxFlatNotebook* getNotebook() { return notebook; }
         ProjectExplorer* getProjectExplorer() { return projectExplorer; }
 
+        void bindProperty(const wxString& name, Object* object);
+        void removeAllProperties();
+
     private:
         wxFlatNotebook* notebook;
         wxPropertyGridManager* propGridManager;

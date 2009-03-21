@@ -94,6 +94,46 @@ namespace hare_graphics
 		Material::Ptr mtrl;
 	};
 
+
+	class GRAPHICS_API ParticleShader : public Shader
+	{
+		HARE_DECLARE_DYNAMIC_CLASS(ParticleShader)
+	public:
+		ParticleShader();
+
+		virtual ~ParticleShader();
+
+		virtual void setMaterial(Material* m)
+		{
+			mtrl = m;
+		}
+
+		virtual Material* getMaterial()
+		{
+			return mtrl;
+		}
+
+		virtual TextureMtrl* getTextureMtrl()
+		{
+			if (!mtrl)
+				return NULL;
+
+			TextureMtrl* texMtrl = mtrl->getTextureMtrl();
+			if (texMtrl){
+				TextureStage texStage;
+				texStage.AlphaBlendOP   = TextureStage::CABO_Select1;
+				texStage.AlphaBlendArg1 = TextureStage::CABA_Texture;
+
+				texMtrl->setTextureStage(texStage);	
+			}
+
+			return texMtrl;
+		}
+
+	protected:
+		Material::Ptr mtrl;
+
+	};
 }
 
 #endif

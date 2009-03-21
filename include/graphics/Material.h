@@ -13,10 +13,12 @@ namespace hare_graphics
 		enum ColorAlphaBlendOperation
 		{
 			CABO_Modulate,
+			CABO_Select1,
 		};
 
 		enum ColorAlphaBlendArgument
 		{
+			CBBA_Current,
 			CABA_Texture,
 			CABA_Diffuse,
 		};
@@ -278,6 +280,7 @@ namespace hare_graphics
 		virtual void frameMove();
 	public:
 	};
+
 
 }
 

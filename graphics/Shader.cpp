@@ -59,4 +59,19 @@ namespace hare_graphics
 
 	}
 
+
+	HARE_IMPLEMENT_DYNAMIC_CLASS(ParticleShader, Shader, 0)
+	{}
+
+	ParticleShader::ParticleShader()
+	{
+		shaderParams.AlphaBlendEnable = true;
+		shaderParams.AlphaTestEnable = false;
+	}
+
+	ParticleShader::~ParticleShader()
+	{
+
+	}
+
 }

@@ -312,5 +312,4 @@ namespace hare_graphics
 	}
 
 
-
 }

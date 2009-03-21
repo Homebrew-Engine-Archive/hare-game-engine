@@ -201,10 +201,12 @@ namespace hare_graphics
 
 				charGlyph = tmpCacheChar.charGlyph;
 
-				//move the char to deque's front
-				cacheCharQueue.erase(it);
+				if (it != cacheCharQueue.begin()){
+					//move the char to deque's front
+					cacheCharQueue.erase(it);
 
-				cacheCharQueue.push_front(tmpCacheChar);
+					cacheCharQueue.push_front(tmpCacheChar);				
+				}
 
 				return charGlyph;
 			}		
@@ -213,7 +215,7 @@ namespace hare_graphics
 		try{
 			addCharGlyph(codePoint);		
 		}catch(...){
-			addCharGlyph(CODEPOINT_QUAD); //the char glyph is quad
+			getCharGlyph(CODEPOINT_QUAD); //the char glyph is quad
 		}
 
 		const CachedChar& tmpCacheChar = cacheCharQueue.front();
@@ -253,6 +255,14 @@ namespace hare_graphics
 
 		if (fontResource->face->glyph->bitmap.rows > maxCharWidth || fontResource->face->glyph->bitmap.width > maxCharWidth){
 			HARE_EXCEPT(Exception::ERR_INTERNAL_ERROR, "char size overcome maxCharWidth!", "Font::addCharGlyph");
+		}
+
+		//如果cache队列已经满了
+		if (cacheCharQueue.size() == cacheBufferSize){
+			//将 willBeFillCachedPos 指向最不常用的字
+			willBeFillCachedPos = cacheCharQueue.back();
+
+			cacheCharQueue.pop_back();
 		}
 
 		//clear char glyph base
@@ -298,10 +308,6 @@ namespace hare_graphics
 			texCache->upload(img, willBeFillCachedPos.x, willBeFillCachedPos.y);
 		}
 
-		if (cacheCharQueue.size() == cacheBufferSize){
-			cacheCharQueue.pop_back();
-		}
-
 		willBeFillCachedPos.codePoint = codePoint;
 		willBeFillCachedPos.charGlyph.recGlyph.minX = (f32)(willBeFillCachedPos.x) / (f32)texCache->getWidth();
 		willBeFillCachedPos.charGlyph.recGlyph.minY = (f32)(willBeFillCachedPos.y) / (f32)texCache->getHeight();
@@ -317,11 +323,7 @@ namespace hare_graphics
 		//将 新加入的到cache的字放到队列的首位
 		cacheCharQueue.push_front(willBeFillCachedPos);
 
-		//如果cache队列已经满了
-		if (cacheCharQueue.size() == cacheBufferSize){
-			//将 willBeFillCachedPos 指向最不常用的字
-			willBeFillCachedPos = cacheCharQueue.back();
-		}else{//还有空位
+		if (cacheCharQueue.size() < cacheBufferSize){//还有空位
 			willBeFillCachedPos.x = (cacheCharQueue.size() % numCharPerLine) * maxCharWidth;
 			willBeFillCachedPos.y = (cacheCharQueue.size() / numCharPerLine) * maxCharWidth;
 		}
@@ -334,7 +336,7 @@ namespace hare_graphics
 			try{
 				addCharGlyph(count);
 			}catch(...){
-				addCharGlyph(CODEPOINT_QUAD);
+				getCharGlyph(CODEPOINT_QUAD);
 			}
 		}
 	}

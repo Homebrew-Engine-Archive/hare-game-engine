@@ -47,10 +47,10 @@ namespace hare_graphics
 			return;
 
 		WString wstr = StringUtil::fromUTF8(text);
-		Shader::Ptr shader = new SimpleShader;
-		TextureMtrl::Ptr texMtrl = new TextureMtrl;
+		TextureMtrl* texMtrl = new TextureMtrl;
+		Shader::Ptr shader = new ParticleShader;
 		texMtrl->setTexture(font->getFontTexture());
-		shader->setShaderParams(font->getFontExtParams());
+		//shader->setShaderParams(font->getFontExtParams());
 		shader->setMaterial(texMtrl);
 		f32 layout_x = x;
 		f32 layout_y = 0;

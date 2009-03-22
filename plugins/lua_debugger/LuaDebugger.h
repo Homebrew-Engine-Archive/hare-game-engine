@@ -126,7 +126,7 @@ public:
 
     bool enumerateStack();
     bool enumerateStackEntry(int stackEntry);
-    bool enumerateTable(int tableRef, int index, long itemNode);
+    bool enumerateTable(int stackRef, const String &table);
     bool evaluateExpr(int stackRef, const String &strExpression);
 
     virtual wxString getSocketErrorMsg();

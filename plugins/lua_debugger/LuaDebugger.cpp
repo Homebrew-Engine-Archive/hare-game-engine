@@ -535,16 +535,15 @@ bool LuaDebugger::enumerateStackEntry(int stackEntry)
         wxT("Debugger EnumerateStackEntry"));
 }
 
-bool LuaDebugger::enumerateTable(int tableRef, int index, long itemNode)
+bool LuaDebugger::enumerateTable(int stackRef, const String &table)
 {
     if (state != Debugger_Breaked)
         return false;
 
     return checkSocketConnected(true, wxT("Debugger EnumerateTable")) && checkSocketWrite(
         SocketHelper::writeCmd(getSocket(), LUA_DEBUGGER_CMD_ENUMERATE_TABLE_REF) &&
-        SocketHelper::writeInt(getSocket(), tableRef) &&
-        SocketHelper::writeInt(getSocket(), index) &&
-        SocketHelper::writeLong(getSocket(), itemNode),
+        SocketHelper::writeInt(getSocket(), stackRef) &&
+        SocketHelper::writeString(getSocket(), table),
         wxT("Debugger EnumerateTable"));
 }
 

@@ -14,6 +14,7 @@
 #include "EditorMain.h"
 #include <wx/wxscintilla.h>
 #include <wx/wxFlatNotebook/wxFlatNotebook.h>
+#include <wx/harecanvas.h>
 #include <wx/xrc/xmlres.h>
 
 #if defined(__WXGTK__) || defined(__WXMOTIF__) || defined(__WXMAC__) || defined(__WXMGL__) || defined(__WXX11__)
@@ -150,6 +151,10 @@ EditorFrame::EditorFrame(wxFrame *frame, const wxString& title)
         }
     }
 
+    // create canvas and destroy it, we mush have a window to init graphics moudle
+    wxHareCanvas* canvas = new wxHareCanvas(this);
+    canvas->Destroy();
+
     layoutManager.SetManagedWindow(this);
 
     registerEvents();
@@ -230,13 +235,6 @@ void EditorFrame::createIDE()
     Manager::getInstancePtr()->getEditorPageManager()->getNotebook()->SetDropTarget(new FileDropTarget(this));
 
     layoutManager.Update();
-
-    EditorPlugin* plugin = Manager::getInstancePtr()->getPluginManager()->findPluginByName(wxT("FontMIMEHandler"));
-    
-    MIMEHandlerPlugin* fontEditor =  (MIMEHandlerPlugin*)plugin;
-
-    if (fontEditor)
-        fontEditor->openFile(wxT("default.font"));
 }
 
 void EditorFrame::preLoadXRC()

@@ -109,7 +109,7 @@ protected:
     
     bool enumerateStack();
     bool enumerateStackEntry(int stackRef);
-    bool enumerateTable(int tableRef, int index, long itemNode);
+    bool enumerateTable(int stackRef, const String& table);
     bool evaluateExpr(int stackRef, const String& expr);
 
 public:
@@ -119,7 +119,7 @@ public:
     bool notifyExit();
     bool notifyStackEnumeration(LuaDebugData& debugData);
     bool notifyStackEntryEnumeration(int stackRef, LuaDebugData& debugData);
-    bool notifyTableEnumeration(long itemNode, LuaDebugData& debugData);
+    bool notifyTableEnumeration(int stackRef, LuaDebugData& debugData);
     bool notifyEvaluateExpr(LuaDebugData& debugData);
 };
 

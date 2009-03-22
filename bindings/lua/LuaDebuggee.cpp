@@ -322,15 +322,13 @@ bool LuaDebuggee::handleDebuggerCmd(int cmd)
         }
     case LUA_DEBUGGER_CMD_ENUMERATE_TABLE_REF:
         {
-            int tableRef = 0;
-            int index = 0;
-            long itemNode = 0;
+            int stackRef = 0;
+            String table = 0;
 
-            if (SocketHelper::readInt(&socket, tableRef) &&
-                SocketHelper::readInt(&socket, index) &&
-                SocketHelper::readLong(&socket, itemNode))
+            if (SocketHelper::readInt(&socket, stackRef) &&
+                SocketHelper::readString(&socket, table))
             {
-                ret = enumerateTable(tableRef, index, itemNode);
+                ret = enumerateTable(stackRef, table);
             }
             break;
         }
@@ -481,15 +479,15 @@ bool LuaDebuggee::enumerateStackEntry(int stackRef)
     return notifyStackEntryEnumeration(stackRef, debugData);
 }
 
-bool LuaDebuggee::enumerateTable(int tableRef, int index, long itemNode)
+bool LuaDebuggee::enumerateTable(int stackRef, const String& table)
 {
     LuaDebugData debugData;
 
     enterLuaCriticalSection();
-    debugData.enumerateTable(state, tableRef, index);
+    debugData.enumerateTable(state, stackRef, table);
     leaveLuaCriticalSection();
 
-    return notifyTableEnumeration(itemNode, debugData);
+    return notifyTableEnumeration(stackRef, debugData);
 }
 
 bool LuaDebuggee::evaluateExpr(int stackRef, const String& expr)
@@ -547,11 +545,11 @@ bool LuaDebuggee::notifyStackEntryEnumeration(int stackRef, LuaDebugData& debugD
         SocketHelper::writeObject(&socket, &debugData);
 }
 
-bool LuaDebuggee::notifyTableEnumeration(long itemNode, LuaDebugData& debugData)
+bool LuaDebuggee::notifyTableEnumeration(int stackRef, LuaDebugData& debugData)
 {
     return isConnected() &&
         SocketHelper::writeCmd(&socket, LUA_DEBUGGEE_EVENT_TABLE_ENUM) &&
-        SocketHelper::writeLong(&socket, itemNode) &&
+        SocketHelper::writeInt(&socket, stackRef) &&
         SocketHelper::writeObject(&socket, &debugData);
 }
 

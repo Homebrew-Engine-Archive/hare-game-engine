@@ -75,6 +75,11 @@ FontEditorPage::~FontEditorPage()
     {
         fontPtr->saveToXml(fontPtr->getUrl());
         fontPtr = 0;
+
+        if (!Manager::isAppShuttingDown())
+        {
+            Manager::getInstancePtr()->getExplorerManager()->removeAllProperties();
+        }
     }
 
     mime->page = NULL;
@@ -123,9 +128,8 @@ bool FontEditorPage::changeFont(Font* font)
     return true;
 }
 
-FontMIMEHandler::FontMIMEHandler()
+FontMIMEHandler::FontMIMEHandler() : page(0)
 {
-    page = new FontEditorPage(Manager::getInstancePtr()->getEditorPageManager()->getNotebook(), this, NULL);
 }
 
 bool FontMIMEHandler::canHandle(const wxString& filename) const
@@ -141,11 +145,12 @@ bool FontMIMEHandler::openFile(const wxString& filename)
         return false;
 
     if (!page)
+    {
         page = new FontEditorPage(Manager::getInstancePtr()->getEditorPageManager()->getNotebook(), this, font);
+        Manager::getInstancePtr()->getEditorPageManager()->addEditorPage(page);
+    }
     else
         page->changeFont(font);
-
-    Manager::getInstancePtr()->getEditorPageManager()->addEditorPage(page);
 
     return page->isOk();
 }

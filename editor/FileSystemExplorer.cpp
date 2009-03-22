@@ -14,6 +14,8 @@
 #include "FileSystemExplorer.h"
 #include "EditorManager.h"
 #include "EditorPageManager.h"
+#include "PluginManager.h"
+#include "MIMEHandlerPlugin.h"
 #include <wx/listctrl.h>
 #include <wx/textctrl.h>
 #include <wx/xrc/xmlres.h>
@@ -217,6 +219,16 @@ namespace hare_editor
             else
             {
                 // MIME Handler
+                PluginsArray plugins = Manager::getInstancePtr()->getPluginManager()->findPlugins(EPT_MIMEHandler);
+                for (size_t i = 0; i < plugins.size(); ++i)
+                {
+                    MIMEHandlerPlugin* plugin = (MIMEHandlerPlugin*)plugins[i];
+                    if (plugin->canHandle(path))
+                    {
+                        plugin->openFile(path);
+                        break;
+                    }
+                }
             }
         }
     }

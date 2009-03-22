@@ -19,8 +19,8 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\ext\wxWidgets\lib\vc_dll\mswud;..\..\ext\wxWidgets\include;..\..\include;..\..\include\editor\wxFlatNotebook\include;..\..\include\editor\wxScintilla\include;..\..\include\editor\wxPropGrid\include"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;__WX__;WXUSINGDLL"
+				AdditionalIncludeDirectories="..\..\ext\wxWidgets\lib\vc_dll\mswud;..\..\ext\wxWidgets\include;..\..\include;..\..\include\editor\wxFlatNotebook\include;..\..\include\editor\wxScintilla\include;..\..\include\editor\wxPropGrid\include;..\..\include\editor\wxHareCanvas\include"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;__WX__;WXUSINGDLL;WXUSINGDLL_HARE_CANVAS"
 				MinimalRebuild="TRUE"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"

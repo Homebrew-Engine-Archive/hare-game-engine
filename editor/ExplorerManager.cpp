@@ -84,11 +84,14 @@ namespace hare_editor
         propGridManager->AddPage(name, wxPG_NULL_BITMAP, page);
 
         setPropertyGridObject(page, object);
+
+        propGridManager->Refresh();
     }
 
     void ExplorerManager::removeAllProperties()
     {
         propGridManager->Clear();
+        propGridManager->Refresh();
     }
 
 }

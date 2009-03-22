@@ -8,7 +8,6 @@ HARE_IMPLEMENT_DYNAMIC_CLASS(LuaDebugItem, Object, 0)
     HARE_META(itemValue, String)
     HARE_META(itemValueType, u8)
     HARE_META(itemSource, String)
-    HARE_META(luaRef, s32)
     HARE_META(index, s32)
     HARE_META(flag, s32)
 }
@@ -46,7 +45,7 @@ void LuaDebugData::enumerateStack(lua_State* L)
                 }
 
                 items.push_back(new LuaDebugItem(name, LUA_TNONE, lineStr, 
-                    LUA_TNONE, source, LUA_NOREF, stackFrame, LUA_DEBUGITEM_CALLSTACK));
+                    LUA_TNONE, source, stackFrame, LUA_DEBUGITEM_CALLSTACK));
             }
         }
 
@@ -54,11 +53,11 @@ void LuaDebugData::enumerateStack(lua_State* L)
     }
 }
 
-void LuaDebugData::enumerateStackEntry(lua_State* L, int stackFrame)
+void LuaDebugData::enumerateStackEntry(lua_State* L, int stackRef)
 {
     lua_Debug luaDebug = INIT_LUA_DEBUG;
 
-    if (lua_getstack(L, stackFrame, &luaDebug) != 0)
+    if (lua_getstack(L, stackRef, &luaDebug) != 0)
     {
         int stack_idx  = 1;
         String name = lua_getlocal(L, &luaDebug, stack_idx);
@@ -73,18 +72,12 @@ void LuaDebugData::enumerateStackEntry(lua_State* L, int stackFrame)
             lua_pop(L, 1); // remove variable value
 
             items.push_back(new LuaDebugItem(name, LUA_TNONE, value, valueType, 
-                source, LUA_NOREF, 0, LUA_DEBUGITEM_STACKFRAME));
+                source, 0, LUA_DEBUGITEM_STACKFRAME));
 
             name = lua_getlocal(L, &luaDebug, ++stack_idx);
         }
     }
 }
-
-void LuaDebugData::enumerateTable(lua_State* L, int tableRef, int index)
-{
-
-}
-
 
 static void coverGlobals(lua_State* L, int stackRef)
 {
@@ -126,6 +119,40 @@ static void restoreGlobals(lua_State* L)
     lua_pop(L, 1); // pop table of covered globals;
 }
 
+void LuaDebugData::enumerateTable(lua_State* L, int stackRef, const String& table)
+{
+    int keyType = LUA_TNONE;
+    int valueType = LUA_TNONE;
+    String value;
+    String key;
+
+    coverGlobals(L, stackRef);
+
+    int top = lua_gettop(L);
+
+    lua_getglobal(L, table.c_str());
+    if (lua_istable(L, -1))
+    {
+        lua_pushnil(L);
+        while (lua_next(L, -2))
+        {
+            // value at -1, key at -2, table at -3
+            getTypeValue(L, -2, &keyType, key);
+            getTypeValue(L, -1, &valueType, value);
+
+            items.push_back(new LuaDebugItem(key, keyType, 
+                value, valueType, StringUtil::EMPTY, 0, LUA_DEBUGITEM_TABLEITEMS));
+
+            // pop value, leave key
+            lua_pop(L, 1);
+        }
+    }
+
+    lua_settop(L, top);
+
+    restoreGlobals(L);
+}
+
 void LuaDebugData::evaluateExpr(lua_State* L, int stackRef, const String& expr)
 {
     String exprExec = "return " + expr;
@@ -159,7 +186,7 @@ void LuaDebugData::evaluateExpr(lua_State* L, int stackRef, const String& expr)
     }
 
     items.push_back(new LuaDebugItem(expr, LUA_TNONE, 
-        value, valueType, StringUtil::EMPTY, LUA_NOREF, 0, LUA_DEBUGITEM_NONE));
+        value, valueType, StringUtil::EMPTY, 0, LUA_DEBUGITEM_EXPRVALUE));
 
     lua_settop(L, top);
 

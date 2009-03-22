@@ -16,6 +16,9 @@ enum LuaDebugDataItem
     LUA_DEBUGITEM_NONE = 0,
     LUA_DEBUGITEM_CALLSTACK,
     LUA_DEBUGITEM_STACKFRAME,
+    LUA_DEBUGITEM_TABLEITEMS,
+    LUA_DEBUGITEM_EXPRVALUE,
+
 };
 
 class LuaDebugItem : public Object
@@ -24,13 +27,12 @@ class LuaDebugItem : public Object
 
 public:
     LuaDebugItem(const String& key, u8 keyType, const String& value,
-        u8 valueType, const String& source, s32 ref, s32 idx, s32 flg)
-        : itemKey(key), itemKeyType(keyType), itemValue(value), 
-          itemValueType(valueType), itemSource(source), luaRef(ref),
-          index(idx), flag(flg) {}
+        u8 valueType, const String& source, s32 idx, s32 flg)
+        : itemKey(key), itemKeyType(keyType), itemValue(value), itemValueType(valueType), 
+          itemSource(source), index(idx), flag(flg) {}
 
     LuaDebugItem() : itemKeyType(LUA_TNONE), itemValueType(LUA_TNONE), 
-        luaRef(LUA_NOREF), index(0), flag(LUA_DEBUGITEM_NONE) {}
+        index(0), flag(LUA_DEBUGITEM_NONE) {}
 
 public:
     String   itemKey;
@@ -38,7 +40,6 @@ public:
     String   itemValue;
     u8       itemValueType;
     String   itemSource;
-    s32      luaRef;
     s32      index;
     s32      flag;
 };
@@ -49,8 +50,8 @@ class LuaDebugData : public Object
 
 public:
     void enumerateStack(lua_State* L);
-    void enumerateStackEntry(lua_State* L, int stackFrame);
-    void enumerateTable(lua_State* L, int tableRef, int index);
+    void enumerateStackEntry(lua_State* L, int stackRef);
+    void enumerateTable(lua_State* L, int stackRef, const String& table);
     void evaluateExpr(lua_State* L, int stackRef, const String& expr);
 
 private:

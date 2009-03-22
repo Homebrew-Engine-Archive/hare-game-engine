@@ -16,11 +16,13 @@ namespace hare_d3d
 		,primCount(0)
 		,isLock(false)
 	{
-		afterResetDevice();
+        DeviceManager::getSingletonPtr()->registerDeviceObject(this);
+        afterResetDevice();
 	}
 
 	D3DVertexBufferManager::~D3DVertexBufferManager()
 	{
+        DeviceManager::getSingletonPtr()->unregisterDeviceObject(this);
 		release();
 	}
 

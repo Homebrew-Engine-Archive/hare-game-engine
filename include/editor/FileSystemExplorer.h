@@ -17,31 +17,76 @@
 
 namespace hare_editor
 {
-    class FileSystemExplorer : public wxPanel
+    //---------------------------------------------------------------
+    // FileSystemPanel : the common panel showing the file system
+    //---------------------------------------------------------------
+    class FileSystemPanel : public wxPanel
     {
     public:
-        FileSystemExplorer(wxWindow *parent);
-        ~FileSystemExplorer();
+        FileSystemPanel(wxWindow *parent);
+       ~FileSystemPanel();
 
         void update(const wxString& path);
         void refresh();
 
+        wxString getUrl() const
+        {
+            return curUrl;
+        }
+
     private:
         void onGoUp(wxCommandEvent& event);
         void onRefresh(wxCommandEvent& event);
-        void onDoubleClicked(wxListEvent& event);
         void onChangeView(wxCommandEvent& event);
         void onChangeViewMenu(wxCommandEvent& event);
 
         void recreateList(long flags);
 
-    private:
+    protected:
         wxListCtrl* listCtrl;
         wxStaticText* url;
-        wxString curPath;
         wxImageList* smallList;
 
+        wxString curUrl;
+
         DECLARE_EVENT_TABLE()
+    };
+
+    //---------------------------------------------------------------
+    // FileSystemExplorer : shown in the Explorer
+    //---------------------------------------------------------------
+    class FileSystemExplorer : public FileSystemPanel
+    {
+    public:
+        FileSystemExplorer(wxWindow *parent);
+
+    private:
+        void onDoubleClicked(wxListEvent& event);
+    };
+
+    //---------------------------------------------------------------
+    // FileSystemDialog : this is a dialog for selecting files
+    //---------------------------------------------------------------
+    class FileSystemDialog : public wxDialog
+    {
+    public:
+        FileSystemDialog(wxWindow *parent,
+            const wxString& message = wxT("FileSystemDialog"),
+            const wxString& defaultPath = wxEmptyString,
+            long style = wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER,
+            const wxPoint& pos = wxDefaultPosition,
+            const wxSize& size = wxDefaultSize,
+            const wxString& name = wxT("FileSystemDialog"));
+
+       wxString GetPath() const;
+       void SetPath(const wxString& path);
+
+    private:
+        FileSystemPanel* panel;
+        wxString file;
+
+    private:
+        void onDoubleClicked(wxListEvent& event);
     };
 }
 

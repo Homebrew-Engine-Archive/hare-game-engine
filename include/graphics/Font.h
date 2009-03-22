@@ -5,8 +5,6 @@
 
 #include "Texture.h"
 #include "Shader.h"
-//#include <ft2build.h>
-//#include FT_FREETYPE_H
 #include "DataHolder.h"
 
 namespace hare_graphics
@@ -54,7 +52,8 @@ namespace hare_graphics
 		~Font();
 
 		//用于编辑时动态加载
-		void postLoaded();
+		virtual void postLoaded();
+        virtual void postEdited(Attribute* attr);
 
 		void setFontFileName(const String& ttfName);
 
@@ -105,8 +104,6 @@ namespace hare_graphics
 		u32 numCharPerLine;
 
 		FontResource* fontResource; 
-		//FT_Face		face;
-		//FT_Library	ftLibrary;
 		DataHolder  input;
 
 		CachedChar willBeFillCachedPos;//添加一个字模时在纹理中的位置 初始化的位置是(0,0)

@@ -18,7 +18,7 @@ function renderScene()
 	canvas:drawLine(0,0, 800, 600, 0xffffffff, 1)
 	canvas:drawRect(50, 50, 600, 500, 0xff00ff00, 0.5)
  
-	canvas:drawText(0,0,'hijkcioimikkk')
+	canvas:drawText(50,50,'abc')
 end
 
 function endScene()
@@ -63,7 +63,6 @@ function init()
 	fnt = tm:createFont("comic.ttf", 20) 
 	canvas = hare.getCanvas()
 	canvas:setFont(fnt)
-    fnt:saveToXml('default.font')
 end
 
 function quit()

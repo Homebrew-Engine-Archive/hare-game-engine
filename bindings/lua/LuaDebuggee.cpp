@@ -113,7 +113,14 @@ bool LuaDebuggee::debugHook(int event)
                 }
             case DEBUG_STEPOVER:
                 {
-                    if ((framesUntilBreak == 0) && notifyBreak(fileName, lineNumber))
+                    if ((framesUntilBreak <= 0) && notifyBreak(fileName, lineNumber))
+                        wait = true;
+
+                    break;
+                }
+            case DEBUG_STEPOUT:
+                {
+                    if ((framesUntilBreak < 0) && notifyBreak(fileName, lineNumber))
                         wait = true;
 
                     break;
@@ -407,8 +414,8 @@ bool LuaDebuggee::stepOver()
 
 bool LuaDebuggee::stepOut()
 {
-    framesUntilBreak = 1;
-    nextOperation = DEBUG_STEPOVER;
+    framesUntilBreak = 0;
+    nextOperation = DEBUG_STEPOUT;
 
     if (!running)
         runCondition.signal();

@@ -46,6 +46,20 @@ namespace hare_editor
         Object::Ptr object;
         Attribute::List attributes;
     };
+
+    class FSUrlProperty : public wxLongStringProperty
+    {
+        DECLARE_DYNAMIC_CLASS(FSUrlProperty)
+    public:
+        FSUrlProperty(const wxString& name = wxPG_LABEL, const wxString& label = wxPG_LABEL,
+            const wxString& value = wxEmptyString);
+        virtual ~FSUrlProperty();
+
+        virtual bool OnButtonClick(wxPropertyGrid* propGrid, wxString& value);
+
+    protected:
+        wxString m_dlgMessage;
+    };
     
     void setPropertyGridObject(PropertyGridPage* page, Object* obj);
 }

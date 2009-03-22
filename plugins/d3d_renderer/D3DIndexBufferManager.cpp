@@ -14,11 +14,13 @@ namespace hare_d3d
 		:IndexBufferSize(size)
 		,d3dIndexBuffer(NULL)
 	{
+        DeviceManager::getSingletonPtr()->registerDeviceObject(this);
 		afterResetDevice();
 	}
 
 	D3DIndexBufferManager::~D3DIndexBufferManager()
 	{
+        DeviceManager::getSingletonPtr()->unregisterDeviceObject(this);
 		release();
 	}
 

@@ -21,28 +21,30 @@
 
 namespace hare_editor
 {
-    int idFSExplorerList = wxNewId();
-    int idFSExplorerUp = XRCID("idFSExplorerUp");
-    int idFSExplorerRefresh = XRCID("idFSExplorerRefresh");
-    int idFSExplorerURL = XRCID("idFSExplorerURL");
-    int idFSExplorerChageView = XRCID("idFSExplorerChageView");
-    int idFSEIconView = wxNewId();
-    int idFSEListView = wxNewId();
-    int idFSEReportView = wxNewId();
+    // ---------------------------------------------------------------
+    // FileSystemPanel
+    // ---------------------------------------------------------------
+    int idFSPanelUp = XRCID("idFSPanelUp");
+    int idFSPanelRefresh = XRCID("idFSPanelRefresh");
+    int idFSPanelURL = XRCID("idFSPanelURL");
+    int idFSPanelChageView = XRCID("idFSPanelChageView");
+    int idFSPanelList = wxNewId();
+    int idFSPanelIconView = wxNewId();
+    int idFSPanelListView = wxNewId();
+    int idFSPanelReportView = wxNewId();
 
-    BEGIN_EVENT_TABLE(FileSystemExplorer, wxPanel)
-        EVT_MENU(idFSExplorerUp, FileSystemExplorer::onGoUp)
-        EVT_MENU(idFSExplorerRefresh, FileSystemExplorer::onRefresh)
-        EVT_MENU(idFSExplorerChageView, FileSystemExplorer::onChangeView)
-        EVT_MENU_RANGE(idFSEIconView, idFSEReportView, FileSystemExplorer::onChangeViewMenu)
-        EVT_LIST_ITEM_ACTIVATED(idFSExplorerList, FileSystemExplorer::onDoubleClicked)
+    BEGIN_EVENT_TABLE(FileSystemPanel, wxPanel)
+        EVT_MENU(idFSPanelUp, FileSystemPanel::onGoUp)
+        EVT_MENU(idFSPanelRefresh, FileSystemPanel::onRefresh)
+        EVT_MENU(idFSPanelChageView, FileSystemPanel::onChangeView)
+        EVT_MENU_RANGE(idFSPanelIconView, idFSPanelReportView, FileSystemPanel::onChangeViewMenu)
     END_EVENT_TABLE()
 
-    FileSystemExplorer::FileSystemExplorer(wxWindow *parent)
+    FileSystemPanel::FileSystemPanel(wxWindow *parent)
         : listCtrl(0)
     {
-        wxXmlResource::Get()->LoadPanel(this, parent, wxT("panelFSExplorer"));
-        url = XRCCTRL(*this, "idFSExplorerURL", wxStaticText);
+        wxXmlResource::Get()->LoadPanel(this, parent, wxT("panelFSPanel"));
+        url = XRCCTRL(*this, "idFSPanelURL", wxStaticText);
 
         smallList = new wxImageList(16, 16);
 
@@ -58,17 +60,17 @@ namespace hare_editor
         update(wxT("/"));
     }
 
-    FileSystemExplorer::~FileSystemExplorer()
+    FileSystemPanel::~FileSystemPanel()
     {
         delete smallList;
         listCtrl->SetImageList(0, wxIMAGE_LIST_SMALL);
     }
 
-    void FileSystemExplorer::recreateList(long flags)
+    void FileSystemPanel::recreateList(long flags)
     {
         delete listCtrl;
 
-        listCtrl = new wxListCtrl(this, idFSExplorerList, wxDefaultPosition, wxDefaultSize,
+        listCtrl = new wxListCtrl(this, idFSPanelList, wxDefaultPosition, wxDefaultSize,
             flags | wxLC_SORT_ASCENDING | wxLC_AUTOARRANGE);
 
         if ((flags & wxLC_MASK_TYPE) == wxLC_REPORT)
@@ -85,64 +87,43 @@ namespace hare_editor
         refresh();
     }
 
-    void FileSystemExplorer::onGoUp(wxCommandEvent& event)
+    void FileSystemPanel::onGoUp(wxCommandEvent& event)
     {
-        if (curPath == wxT("/"))
+        if (curUrl == wxT("/"))
             return;
 
-        wxString path = curPath.Mid(0, curPath.Len() - 1);
+        wxString path = curUrl.Mid(0, curUrl.Len() - 1);
         int lastSep = path.Find(wxT('/'), true);
         path = path.Mid(0, lastSep);
         update(path);
     }
 
-    void FileSystemExplorer::onRefresh(wxCommandEvent& event)
+    void FileSystemPanel::onRefresh(wxCommandEvent& event)
     {
         refresh();
     }
 
-    void FileSystemExplorer::refresh()
+    void FileSystemPanel::refresh()
     {
-        update(curPath);
+        update(curUrl);
     }
 
-    void FileSystemExplorer::onDoubleClicked(wxListEvent& event)
-    {
-        wxString path = curPath + event.GetText();
-        String pathUTF8 = path.ToUTF8().data();
-
-        FileSystem* fs = FileSystem::getSingletonPtr();
-        if (fs->exists(pathUTF8))
-        {
-            if (fs->isDir(pathUTF8))
-            {
-                update(wxString::FromUTF8(pathUTF8.c_str()));
-            }
-            else
-            {
-                const char* realDir = fs->getRealDir(pathUTF8);
-                wxFileName fname(wxString::FromUTF8(realDir) + curPath, event.GetText());
-                Manager::getInstancePtr()->getEditorPageManager()->openInTextEditor(fname.GetFullPath());
-            }
-        }
-    }
-
-    void FileSystemExplorer::onChangeView(wxCommandEvent& event)
+    void FileSystemPanel::onChangeView(wxCommandEvent& event)
     {
         wxMenu menuPopup;
 
-        menuPopup.AppendRadioItem(idFSEReportView, _("&Report View"));
-        menuPopup.AppendRadioItem(idFSEListView, _("&List View"));
+        menuPopup.AppendRadioItem(idFSPanelReportView, _("&Report View"));
+        menuPopup.AppendRadioItem(idFSPanelListView, _("&List View"));
 
         int checkId = -1;
 
         switch (listCtrl->GetWindowStyleFlag() & wxLC_MASK_TYPE)
         {
         case wxLC_LIST:
-            checkId = idFSEListView;
+            checkId = idFSPanelListView;
             break;
         case wxLC_REPORT:
-            checkId = idFSEReportView;
+            checkId = idFSPanelReportView;
             break;
         }
 
@@ -151,29 +132,43 @@ namespace hare_editor
         PopupMenu(&menuPopup);
     }
 
-    void FileSystemExplorer::onChangeViewMenu(wxCommandEvent& event)
+    void FileSystemPanel::onChangeViewMenu(wxCommandEvent& event)
     {
         int id = event.GetId();
-        if (id == idFSEListView)
+        if (id == idFSPanelListView)
             recreateList(wxLC_LIST);
-        else if (id == idFSEReportView)
+        else if (id == idFSPanelReportView)
             recreateList(wxLC_REPORT);
     }
 
-    void FileSystemExplorer::update(const wxString& path)
+    void FileSystemPanel::update(const wxString& path)
     {
-        curPath = path;
+        curUrl = path;
 
-        if (!curPath.EndsWith(wxT("/")))
-            curPath += wxT("/");
+        if (!curUrl.StartsWith(wxT("/")))
+            curUrl = wxT("/") + curUrl;
 
-        url->SetLabel(curPath);
+        String pathUTF8 = curUrl.ToUTF8().data();
+
+        FileSystem* fs = FileSystem::getSingletonPtr();
+
+        while (!fs->isDir(pathUTF8))
+        {
+            curUrl = curUrl.Mid(0, curUrl.Len() - 1);
+            int lastSep = path.Find(wxT('/'), true);
+            curUrl = curUrl.Mid(0, lastSep);
+            pathUTF8 = curUrl.ToUTF8().data();
+        }
+
+        if (!curUrl.EndsWith(wxT("/")))
+            curUrl += wxT("/");
+
+        pathUTF8 = curUrl.ToUTF8().data();
+
+        url->SetLabel(curUrl);
 
         listCtrl->DeleteAllItems();
 
-        String pathUTF8 = curPath.ToUTF8().data();
-
-        FileSystem* fs = FileSystem::getSingletonPtr();
         StringVector files = fs->enumFiles(pathUTF8);
         int nextPos = 0;
 
@@ -189,10 +184,90 @@ namespace hare_editor
             }
         }
 
-        if (listCtrl->GetWindowStyleFlag() & wxLC_REPORT && listCtrl->GetItemCount() > 0)
+        if ((listCtrl->GetWindowStyleFlag() & wxLC_REPORT) && 
+            listCtrl->GetItemCount() > 0)
         {
             listCtrl->SetColumnWidth(0, wxLIST_AUTOSIZE);
             listCtrl->SetColumnWidth(1, wxLIST_AUTOSIZE);
+        }
+    }
+
+    // ---------------------------------------------------------------
+    // FileSystemExplorer
+    // ---------------------------------------------------------------
+    FileSystemExplorer::FileSystemExplorer(wxWindow *parent)
+     : FileSystemPanel(parent)
+    {
+        Connect(wxEVT_COMMAND_LIST_ITEM_ACTIVATED, 
+            wxListEventHandler(FileSystemExplorer::onDoubleClicked), 0, this);
+    }
+
+    void FileSystemExplorer::onDoubleClicked(wxListEvent& event)
+    {
+        wxString path = curUrl + event.GetText();
+        String pathUTF8 = path.ToUTF8().data();
+
+        FileSystem* fs = FileSystem::getSingletonPtr();
+        if (fs->exists(pathUTF8))
+        {
+            if (fs->isDir(pathUTF8))
+            {
+                update(wxString::FromUTF8(pathUTF8.c_str()));
+            }
+            else
+            {
+                // MIME Handler
+            }
+        }
+    }
+
+    // ---------------------------------------------------------------
+    // FileSystemExplorer
+    // ---------------------------------------------------------------
+    FileSystemDialog::FileSystemDialog(wxWindow *parent, 
+        const wxString& message, const wxString& defaultPath, long style,
+        const wxPoint& pos, const wxSize& size, const wxString& name)
+     : wxDialog(parent, wxID_ANY, message, pos, size, style, name)
+    {
+        wxBoxSizer* sizer = new wxBoxSizer(wxVERTICAL);
+        panel = new FileSystemPanel(this);
+        sizer->Add(panel, 1, wxALIGN_LEFT | wxALIGN_TOP | wxEXPAND, 0);
+        SetSizer(sizer);
+        Layout();
+
+        panel->Connect(wxEVT_COMMAND_LIST_ITEM_ACTIVATED, 
+            wxListEventHandler(FileSystemDialog::onDoubleClicked), 0, this);
+
+        SetPath(defaultPath);
+    }
+
+    wxString FileSystemDialog::GetPath() const
+    {
+        return panel->getUrl() + file;
+    }
+
+    void FileSystemDialog::SetPath(const wxString& path)
+    {
+        panel->update(path);
+    }
+
+    void FileSystemDialog::onDoubleClicked(wxListEvent& event)
+    {
+        wxString path = panel->getUrl() + event.GetText();
+        String pathUTF8 = path.ToUTF8().data();
+
+        FileSystem* fs = FileSystem::getSingletonPtr();
+        if (fs->exists(pathUTF8))
+        {
+            if (fs->isDir(pathUTF8))
+            {
+                panel->update(wxString::FromUTF8(pathUTF8.c_str()));
+            }
+            else
+            {
+                file = event.GetText();
+                EndModal(wxID_OK);
+            }
         }
     }
 }

@@ -15,6 +15,9 @@
 #include <wx/splitter.h>
 #include <wx/wxFlatNotebook/wxFlatNotebook.h>
 
+int idFontTextWindow = wxNewId();
+int idFontCacheWindow = wxNewId();
+
 IMPLEMENT_ABSTRACT_CLASS(FontEditorPage, EditorPage)
 
 FontEditorPage::FontEditorPage(wxWindow* parent, FontMIMEHandler* handler, Font* font)
@@ -43,8 +46,10 @@ FontEditorPage::FontEditorPage(wxWindow* parent, FontMIMEHandler* handler, Font*
         wxDefaultPosition, wxDefaultSize, wxSP_3D | wxSP_LIVE_UPDATE);
     splitter->SetMinimumPaneSize(50);
     
-    canvsText = new wxHareCanvas(splitter);
-    canvsCache = new wxHareCanvas(splitter);
+    canvsText = new wxHareCanvas(splitter, idFontTextWindow);
+    canvsText->Connect(wxEVT_SIZE, wxSizeEventHandler(FontEditorPage::onSize), NULL, this);
+    canvsCache = new wxHareCanvas(splitter, idFontCacheWindow);
+    canvsCache->Connect(wxEVT_SIZE, wxSizeEventHandler(FontEditorPage::onSize), NULL, this);
 
     splitter->SplitHorizontally(canvsText, canvsCache, 0);
     sizer1->Add(splitter, 1, wxEXPAND, 5);
@@ -80,6 +85,18 @@ void FontEditorPage::onTextUpdate(wxCommandEvent& event)
     txtListener.text = txtSample->GetValue().ToUTF8().data();
 }
 
+void FontEditorPage::onSize(wxSizeEvent& event)
+{
+    if (event.GetSize().GetWidth() > 0 && event.GetSize().GetHeight() > 0)
+    {
+        if (event.GetId() == idFontTextWindow)
+            canvsText->getRenderWindow()->resize(event.GetSize().GetWidth(), event.GetSize().GetHeight());
+        else if (event.GetId() == idFontCacheWindow)
+            canvsCache->getRenderWindow()->resize(event.GetSize().GetWidth(), event.GetSize().GetHeight());
+    }
+}
+
+
 bool FontEditorPage::changeFont(Font* font)
 {
     if (font == fontPtr)
@@ -94,18 +111,14 @@ bool FontEditorPage::changeFont(Font* font)
 
     if (fontPtr)
     {
-        SimpleShader* shader = new SimpleShader();
-        TextureMtrl* texMtrl = new TextureMtrl();
-        texMtrl->setTexture(fontPtr->getFontTexture());
-        shader->setShaderParams(font->getFontExtParams());
-        shader->setMaterial(texMtrl);
-        
         txtListener.font = fontPtr;
-        cacheListener.cacheTex = shader;
+        cacheListener.font = fontPtr;
     }
     
     Manager::getInstancePtr()->getExplorerManager()->removeAllProperties();
     Manager::getInstancePtr()->getExplorerManager()->bindProperty(wxT("FontProperity"), fontPtr);
+
+    setTitle(wxT("[FontEditor]") + wxString::FromUTF8(fontPtr->getUrl().c_str()));
 
     return true;
 }

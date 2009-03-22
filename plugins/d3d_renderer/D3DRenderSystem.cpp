@@ -163,8 +163,7 @@ namespace hare_d3d
 			}
 			
 		}
-
-	}
+    }
 
 	void D3DRenderSystem::resetDevice()
 	{

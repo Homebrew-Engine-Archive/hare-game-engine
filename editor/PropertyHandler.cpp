@@ -12,12 +12,47 @@
 //***************************************************************
 #include "PCH.h"
 #include "PropertyHandler.h"
+#include "FileSystemExplorer.h"
 #include <wx/propgrid/propgrid.h>
 #include <wx/propgrid/propdev.h>
 #include <wx/propgrid/manager.h>
 
 namespace hare_editor
 {
+    //-----------------------------------------------------------------------------------
+    // FSUrlProperty
+    //-----------------------------------------------------------------------------------
+    WX_PG_IMPLEMENT_DERIVED_PROPERTY_CLASS(FSUrlProperty, wxLongStringProperty, const wxString&)
+
+    FSUrlProperty::FSUrlProperty(const wxString& name, const wxString& label, const wxString& value)
+        : wxLongStringProperty(name, label, value)
+    {
+        m_flags |= wxPG_NO_ESCAPE;
+    }
+    
+    FSUrlProperty::~FSUrlProperty() 
+    { 
+    }
+
+    bool FSUrlProperty::OnButtonClick(wxPropertyGrid* propGrid, wxString& value)
+    {
+        wxSize size(300, 400);
+
+        FileSystemDialog dlg(propGrid,
+            _("FileSystem"),
+            value,
+            wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER,
+            propGrid->GetGoodEditorDialogPosition(this, size),
+            size);
+
+        if (dlg.ShowModal() == wxID_OK)
+        {
+            value = dlg.GetPath();
+            return true;
+        }
+        return false;
+    }
+
     void bindAttribute(Attribute* attr, PropertyGridPage* page, wxPGProperty* parent);
 
     template <typename T>
@@ -130,8 +165,20 @@ namespace hare_editor
     void doBindMeta<String>(Attribute* attr, PropertyGridPage* page, wxPGProperty* parent)
     {
         String* value = (String*)attr->data;
-        wxPGProperty* prop = page->AppendIn(parent, new wxStringProperty(wxString::FromUTF8(attr->name), wxPG_LABEL, 
-            wxString::FromUTF8(value->c_str())));
+
+        wxPGProperty* prop = 0;
+
+        if (attr->hasFlag(Object::propFSUrl))
+        {
+            prop = page->AppendIn(parent, new FSUrlProperty(wxString::FromUTF8(attr->name), wxPG_LABEL, 
+                wxString::FromUTF8(value->c_str())));
+            prop->SetFlag(wxPG_PROP_NOEDITOR);
+        }
+        else
+        {
+            prop = page->AppendIn(parent, new wxStringProperty(wxString::FromUTF8(attr->name), wxPG_LABEL, 
+                wxString::FromUTF8(value->c_str())));
+        }
         prop->SetClientData(attr);
         prop->SetHelpString(wxT("[String]"));
         if (attr->hasFlag(Object::propReadOnly))

@@ -12,8 +12,13 @@ namespace hare_d3d
 		switch( uMsg )
 		{
 		case WM_SIZE:
-			if (renderWindow)
-				renderWindow->resize(LOWORD(lParam), HIWORD(lParam));
+            {
+                int w = LOWORD(lParam) > 0 ? LOWORD(lParam) : 1;
+                int h = HIWORD(lParam) > 0 ? HIWORD(lParam) : 1;
+
+                if (renderWindow)
+                    renderWindow->resize(w, h);
+            }
 			break;
 		case WM_CLOSE:
 			if (renderWindow)
@@ -170,27 +175,9 @@ namespace hare_d3d
 		assert(pD3DDevice);
 
 		windowParams.width = w;
-
 		windowParams.height = h;
 
-		D3DXMatrixIdentity(&MatProj);
-		D3DXMatrixIdentity(&MatView);
-	
-		D3DXMATRIX matTEMP;
-
-		D3DXMatrixScaling(&MatProj, 1.0f, -1.0f, 1.0f);
-		D3DXMatrixTranslation(&matTEMP, -0.5f, windowParams.height + 0.5f, 0.0f);
-		D3DXMatrixMultiply(&MatProj, &MatProj, &matTEMP);
-
-		D3DXMatrixOrthoOffCenterLH(&matTEMP, 0, (f32)windowParams.width, 0, 
-			(f32)windowParams.height, 0.0f, 1.0f);//正交投影
-
-		D3DXMatrixMultiply(&MatProj, &MatProj, &matTEMP);
-		D3DXMatrixIdentity(&MatView);
-
-		pD3DDevice->SetTransform(D3DTS_VIEW, &MatView);
-		pD3DDevice->SetTransform(D3DTS_PROJECTION, &MatProj);
-
+        //D3DRenderSystem::getSingletonPtr()->resetDevice();
 		//以后从配置文件中的到是否重建后背缓冲和是否剧中的问题
 
 	}
@@ -242,6 +229,27 @@ namespace hare_d3d
 
 		pD3DDevice->SetTransform(D3DTS_VIEW, &MatView);
 		pD3DDevice->SetTransform(D3DTS_PROJECTION, &MatProj);
+
+        //D3DSURFACE_DESC desc;
+        //pRenderSurface->GetDesc(&desc);
+
+        //D3DVIEWPORT9 vp;
+        //vp.X = 0;
+        //vp.Y = 0;
+        //vp.Width = desc.Width;
+        //vp.Height = desc.Height;
+        //vp.MinZ = 0.0f;
+        //vp.MaxZ = 1.0f;
+        //pD3DDevice->SetViewport(&vp);
+
+        //D3DXMATRIX tmp;
+        //D3DXMatrixScaling(&matProj, 1.0f, -1.0f, 1.0f);
+        //D3DXMatrixTranslation(&tmp, -0.5f, +0.5f, 0.0f);
+        //D3DXMatrixMultiply(&matProj, &matProj, &tmp);
+        //D3DXMatrixOrthoOffCenterLH(&tmp, 0.0f, (f32)(windowParams.width), 
+        //    -(f32)windowParams.height, 0.0f, 0.0f, 1.0f);
+        //D3DXMatrixMultiply(&matProj, &matProj, &tmp);
+        //pD3DDevice->SetTransform(D3DTS_PROJECTION, &matProj);
 
 		D3DRenderSystem::getSingletonPtr()->setCurRenderWindow(this);
 

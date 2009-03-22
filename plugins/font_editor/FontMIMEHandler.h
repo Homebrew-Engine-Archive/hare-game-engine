@@ -26,6 +26,9 @@ public:
     virtual void endScene(){}
     virtual void renderScene()
     {
+        if (!font)
+            return;
+
         getCanvas()->setFont(font);
         getCanvas()->drawText(100, 100, text);
     }
@@ -37,14 +40,25 @@ public:
 class FontSceneListenerCache : public SceneListenerBase
 {
 public:
+    FontSceneListenerCache() : font(0) {}
+
     virtual void beginScene(){}
     virtual void endScene(){}
     virtual void renderScene()
     {
-        getCanvas()->drawImage(0, 0, cacheTex);
+        if (!font)
+            return;
+
+        SimpleShader::Ptr shader = new SimpleShader();
+        TextureMtrl* texMtrl = new TextureMtrl();
+        texMtrl->setTexture(font->getFontTexture());
+        shader->setShaderParams(font->getFontExtParams());
+        shader->setMaterial(texMtrl);
+
+        getCanvas()->drawImage(0, 0, shader);
     }
 public:
-    Shader::Ptr cacheTex;
+    Font* font;
 };
 
 class FontEditorPage : public EditorPage 
@@ -78,6 +92,7 @@ private:
 
 private:
     void onTextUpdate(wxCommandEvent& event);
+    void onSize(wxSizeEvent& event);
 
     DECLARE_ABSTRACT_CLASS(FontEditorPage)
 };

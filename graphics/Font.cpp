@@ -12,7 +12,7 @@ namespace hare_graphics
 {
     HARE_IMPLEMENT_DYNAMIC_CLASS(Font, Object, 0)
     {
-        HARE_META(fontFile, String)
+        HARE_META_F(fontFile, String, propFSUrl)
         HARE_META(fontSize, f32)
         HARE_META(cacheBufferSize, u32)
         HARE_META(resolution, u32)
@@ -141,6 +141,7 @@ namespace hare_graphics
 		if (bInitalize){
 			FT_Done_FreeType(fontResource->ftLibrary);
 			bInitalize = false;
+            cacheCharQueue.clear();
 		}
 	}
 
@@ -150,6 +151,11 @@ namespace hare_graphics
 
 		initalzeResource();
 	}
+
+    void Font::postEdited(Attribute* attr)
+    {
+        //postLoaded();
+    }
 
 	void Font::setFontFileName(const String& ttfName)
 	{

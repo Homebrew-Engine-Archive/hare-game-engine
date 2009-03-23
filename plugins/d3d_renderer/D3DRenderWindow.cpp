@@ -177,7 +177,10 @@ namespace hare_d3d
 		windowParams.width = w;
 		windowParams.height = h;
 
-        //D3DRenderSystem::getSingletonPtr()->resetDevice();
+		D3Dpp.BackBufferWidth = windowParams.width;
+		D3Dpp.BackBufferHeight = windowParams.height;
+
+        D3DRenderSystem::getSingletonPtr()->resetDevice();
 		//以后从配置文件中的到是否重建后背缓冲和是否剧中的问题
 
 	}

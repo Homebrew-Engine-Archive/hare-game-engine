@@ -76,6 +76,21 @@ namespace hare_d3d
 		if (renderWindow->getIsMainWnd()){
 
 			if (pD3DDevice){//D3D设备已经存在 调用原因可能是设备重建
+				
+				pD3DDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
+				pD3DDevice->SetRenderState(D3DRS_LIGHTING, FALSE);
+				setShaderParams(curShaderParams);
+				setTextureStage(curTextureStage);
+
+				hr = pD3DDevice->GetRenderTarget(0, &(renderWindow->pRenderSurface));
+
+				hr = pD3DDevice->GetDepthStencilSurface(&(renderWindow->pDepthStencilSurface));
+
+				if (FAILED(hr)){
+					assert(false);
+				}
+
+
 				return ;
 			}
 
@@ -171,7 +186,7 @@ namespace hare_d3d
 		DeviceManager::getSingletonPtr()->beforeResetDevice();
 
 		hr = pD3DDevice->Reset(pPrimaryWindow->getPresentationParameters());
-		
+
 		if (FAILED(hr)){
 			assert(false);
 		}

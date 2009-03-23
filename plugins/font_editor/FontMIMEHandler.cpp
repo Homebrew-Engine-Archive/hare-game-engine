@@ -43,7 +43,7 @@ FontEditorPage::FontEditorPage(wxWindow* parent, FontMIMEHandler* handler, Font*
     sizer1->Add(sizer2, 0, wxEXPAND, 5);
 
     wxSplitterWindow* splitter = new wxSplitterWindow(this, wxID_ANY, 
-        wxDefaultPosition, wxDefaultSize, wxSP_3D | wxSP_LIVE_UPDATE);
+        wxDefaultPosition, wxDefaultSize, wxSP_3D);
     splitter->SetMinimumPaneSize(50);
     
     canvsText = new wxHareCanvas(splitter, idFontTextWindow);
@@ -92,13 +92,23 @@ void FontEditorPage::onTextUpdate(wxCommandEvent& event)
 
 void FontEditorPage::onSize(wxSizeEvent& event)
 {
-    if (event.GetSize().GetWidth() > 0 && event.GetSize().GetHeight() > 0)
-    {
-        if (event.GetId() == idFontTextWindow)
-            canvsText->getRenderWindow()->resize(event.GetSize().GetWidth(), event.GetSize().GetHeight());
-        else if (event.GetId() == idFontCacheWindow)
-            canvsCache->getRenderWindow()->resize(event.GetSize().GetWidth(), event.GetSize().GetHeight());
-    }
+	wxHareCanvas* win = NULL;
+
+    if (event.GetId() == idFontTextWindow)
+	{
+        win = canvsText;
+	}
+	else if (event.GetId() == idFontCacheWindow)
+	{
+		win = canvsCache;
+	}
+	
+	if (win)
+	{
+		wxSize size = win->GetClientSize();
+		if (size.GetWidth() > 0 && size.GetHeight() > 0)
+			win->getRenderWindow()->resize(size.GetWidth(), size.GetHeight());
+	}
 }
 
 

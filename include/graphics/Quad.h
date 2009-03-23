@@ -17,7 +17,7 @@ namespace hare_graphics
 		virtual u32 getVertexCount();
 		virtual u32	getPrimCount();
 		virtual RenderOperation::RenderOperationType	getOperationType();
-		virtual void setTextureUVMap(f32 ul, f32 ur, f32 vt, f32 vb);
+		virtual void setTextureUVMap(f32 ul, f32 vt, f32 ur, f32 vb);
 		virtual void setTextureUVMap(const Rect<f32>& rc);
 
 		void move(float dx, float dy);

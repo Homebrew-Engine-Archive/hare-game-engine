@@ -153,7 +153,7 @@ EditorFrame::EditorFrame(wxFrame *frame, const wxString& title)
 
     // create canvas and destroy it, we mush have a window to init graphics moudle
     wxHareCanvas* canvas = new wxHareCanvas(this);
-    canvas->Destroy();
+    canvas->Hide();
 
     layoutManager.SetManagedWindow(this);
 

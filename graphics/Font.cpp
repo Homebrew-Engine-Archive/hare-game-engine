@@ -142,6 +142,9 @@ namespace hare_graphics
 			FT_Done_FreeType(fontResource->ftLibrary);
 			bInitalize = false;
             cacheCharQueue.clear();
+			willBeFillCachedPos.x = 0;
+			willBeFillCachedPos.y = 0;
+			texCache = NULL;
 		}
 	}
 
@@ -154,7 +157,7 @@ namespace hare_graphics
 
     void Font::postEdited(Attribute* attr)
     {
-        //postLoaded();
+        postLoaded();
     }
 
 	void Font::setFontFileName(const String& ttfName)

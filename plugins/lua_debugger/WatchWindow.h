@@ -26,6 +26,7 @@ public:
 
     void addEmptyRow();
     void updateWatchData(LuaDebugData* debugData);
+    void updateTableData(const String& tableName, LuaDebugData* debugData);
     void redraw();
     bool isReallyShown();
 
@@ -39,6 +40,8 @@ protected:
 private:
     void onTreeKeyDown(wxTreeEvent& event);
     void onTreeEndLabelEdit(wxTreeEvent& event);
+    void onTreeBeginLabelEdit(wxTreeEvent& event);
+    void onTreeItemExpanded(wxTreeEvent& event);
 
     DECLARE_EVENT_TABLE();
 };

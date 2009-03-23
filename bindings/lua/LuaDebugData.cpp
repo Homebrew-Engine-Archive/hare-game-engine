@@ -60,10 +60,9 @@ void LuaDebugData::enumerateStackEntry(lua_State* L, int stackRef)
     if (lua_getstack(L, stackRef, &luaDebug) != 0)
     {
         int stack_idx  = 1;
-        String name = lua_getlocal(L, &luaDebug, stack_idx);
-        while (!name.empty())
+        const char* name = lua_getlocal(L, &luaDebug, stack_idx);
+        while (name)
         {
-            String source = luaDebug.source;
             String value;
             int valueType = LUA_TNONE;
 
@@ -72,7 +71,7 @@ void LuaDebugData::enumerateStackEntry(lua_State* L, int stackRef)
             lua_pop(L, 1); // remove variable value
 
             items.push_back(new LuaDebugItem(name, LUA_TNONE, value, valueType, 
-                source, 0, LUA_DEBUGITEM_STACKFRAME));
+                StringUtil::EMPTY, 0, LUA_DEBUGITEM_STACKFRAME));
 
             name = lua_getlocal(L, &luaDebug, ++stack_idx);
         }
@@ -125,26 +124,36 @@ void LuaDebugData::enumerateTable(lua_State* L, int stackRef, const String& tabl
     int valueType = LUA_TNONE;
     String value;
     String key;
+    String exprExec = "return " + table;
 
     coverGlobals(L, stackRef);
 
     int top = lua_gettop(L);
 
-    lua_getglobal(L, table.c_str());
-    if (lua_istable(L, -1))
+    const char* code = exprExec.c_str();
+
+    int status = luaL_loadbuffer(L, code, strlen(code), code);
+    if (!status)
     {
-        lua_pushnil(L);
-        while (lua_next(L, -2))
+        status = lua_pcall(L, 0, LUA_MULTRET, 0);  /* call main */
+        if (!status)
         {
-            // value at -1, key at -2, table at -3
-            getTypeValue(L, -2, &keyType, key);
-            getTypeValue(L, -1, &valueType, value);
+            if (lua_istable(L, -1))
+            {
+                lua_pushnil(L);
+                while (lua_next(L, -2))
+                {
+                    // value at -1, key at -2, table at -3
+                    getTypeValue(L, -2, &keyType, key);
+                    getTypeValue(L, -1, &valueType, value);
 
-            items.push_back(new LuaDebugItem(key, keyType, 
-                value, valueType, StringUtil::EMPTY, 0, LUA_DEBUGITEM_TABLEITEMS));
+                    items.push_back(new LuaDebugItem(key, keyType, 
+                        value, valueType, StringUtil::EMPTY, 0, LUA_DEBUGITEM_TABLEITEMS));
 
-            // pop value, leave key
-            lua_pop(L, 1);
+                    // pop value, leave key
+                    lua_pop(L, 1);
+                }
+            }
         }
     }
 

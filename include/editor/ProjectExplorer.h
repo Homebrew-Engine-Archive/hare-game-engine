@@ -25,7 +25,7 @@ namespace hare_editor
         HARE_DECLARE_DYNAMIC_CLASS(Project)
     public:
         bool positionBreakPoints();
-        ProjectFile* findFile(const String& name);
+        ProjectFile::Ptr findFile(const String& name);
 
         String projectName;
         String debuggerName;
@@ -42,7 +42,7 @@ namespace hare_editor
 
         String activeProject;
 
-        Project* findProject(const String& name);
+        Project::Ptr findProject(const String& name);
     };
 
     class EDITOR_API ProjectExplorer : public wxPanel

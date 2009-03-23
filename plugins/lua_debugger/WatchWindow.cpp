@@ -28,6 +28,8 @@ private:
 BEGIN_EVENT_TABLE(LuaWatchWindow, wxPanel)
     EVT_TREE_KEY_DOWN(wxID_ANY, onTreeKeyDown)
     EVT_TREE_END_LABEL_EDIT(wxID_ANY, onTreeEndLabelEdit)
+    EVT_TREE_BEGIN_LABEL_EDIT(wxID_ANY, onTreeBeginLabelEdit)
+    EVT_TREE_ITEM_EXPANDED(wxID_ANY, onTreeItemExpanded)
 END_EVENT_TABLE()
 
 LuaWatchWindow::LuaWatchWindow(wxWindow* parent, LuaDebugger* dbg)
@@ -36,7 +38,8 @@ LuaWatchWindow::LuaWatchWindow(wxWindow* parent, LuaDebugger* dbg)
     wxBoxSizer* sizer = new wxBoxSizer(wxVERTICAL);
 
     treeList = new wxTreeListCtrl(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, 
-        wxTR_HIDE_ROOT | wxTR_EDIT_LABELS | wxTR_FULL_ROW_HIGHLIGHT | wxTR_ROW_LINES | wxTR_COLUMN_LINES);
+        wxTR_HIDE_ROOT | wxTR_EDIT_LABELS | wxTR_FULL_ROW_HIGHLIGHT | 
+        wxTR_ROW_LINES | wxTR_COLUMN_LINES | wxTR_HAS_BUTTONS);
     sizer->Add(treeList, 1, wxALIGN_LEFT | wxALIGN_TOP | wxEXPAND, 0);
     SetSizer(sizer);
     Layout();
@@ -72,6 +75,20 @@ void LuaWatchWindow::onDropText(const wxString& text)
     debugger->evaluateExpr(debugger->getCurrStackLevel(), text.ToUTF8().data());
 }
 
+void LuaWatchWindow::onTreeItemExpanded(wxTreeEvent& event)
+{
+    wxTreeItemId id = event.GetItem();
+
+    if (id.IsOk())
+    {
+        wxString tableName = treeList->GetItemText(id, 0);
+
+        debugger->enumerateTable(debugger->getCurrStackLevel(), tableName.ToUTF8().data());
+    }
+    else
+        event.Veto();
+}
+
 void LuaWatchWindow::onTreeKeyDown(wxTreeEvent& event)
 {
     if (event.GetKeyCode() == WXK_F2)
@@ -81,15 +98,23 @@ void LuaWatchWindow::onTreeKeyDown(wxTreeEvent& event)
     else if (event.GetKeyCode() == WXK_DELETE)
     {
         wxTreeItemIdValue cookie;
-        if (treeList->GetSelection() != treeList->GetLastChild(root, cookie))
+        wxTreeItemId id = treeList->GetSelection();
+        if (id && id != treeList->GetLastChild(root, cookie) &&
+            treeList->GetItemParent(id) == root)
         {
-            treeList->Delete(treeList->GetSelection());
+            treeList->Delete(id);
             event.Veto();
             return;
         }
     }
 
     event.Skip();
+}
+
+void LuaWatchWindow::onTreeBeginLabelEdit(wxTreeEvent& event)
+{
+    if (treeList->GetItemParent(event.GetItem()) != root)
+        event.Veto();
 }
 
 void LuaWatchWindow::onTreeEndLabelEdit(wxTreeEvent& event)
@@ -128,6 +153,37 @@ void LuaWatchWindow::onTreeEndLabelEdit(wxTreeEvent& event)
     }
 }
 
+void LuaWatchWindow::updateTableData(const String& tableName, LuaDebugData* debugData)
+{
+    if (debugData && debugData->items.size() > 0)
+    {
+        wxTreeItemIdValue cookie;
+        wxTreeItemId child = treeList->GetFirstChild(root, cookie);
+        while (child.IsOk())
+        {
+            wxString text = treeList->GetItemText(child, 0);
+
+            if (text == wxString::FromUTF8(tableName.c_str()))
+            {
+                treeList->DeleteChildren(child);
+                
+                for (size_t i = 0; i < debugData->items.size(); ++i)
+                {
+                    wxString key = wxString::FromUTF8(debugData->items[i]->itemKey.c_str());
+                    wxString value = wxString::FromUTF8(debugData->items[i]->itemValue.c_str());
+                    wxString type = LUA_TYPE_NAME[debugData->items[i]->itemValueType];
+
+                    wxTreeItemId itemId = treeList->AppendItem(child, key);
+                    treeList->SetItemText(itemId, 1, value);
+                    treeList->SetItemText(itemId, 2, type);
+                }
+            }
+
+            child = treeList->GetNextChild(root, cookie);
+        }
+    }
+}
+
 void LuaWatchWindow::updateWatchData(LuaDebugData* debugData)
 {
     if (debugData && debugData->items.size() > 0)
@@ -140,13 +196,23 @@ void LuaWatchWindow::updateWatchData(LuaDebugData* debugData)
 
             if (text == wxString::FromUTF8(debugData->items[0]->itemKey.c_str()))
             {
+                bool isExpnded = treeList->IsExpanded(child);
                 treeList->DeleteChildren(child);
-                treeList->SetItemText(child, 1, wxString::FromUTF8(debugData->items[0]->itemValue.c_str()));
+                wxString value = wxString::FromUTF8(debugData->items[0]->itemValue.c_str());
+                treeList->SetItemText(child, 1, value);
 
                 if (debugData->items[0]->itemValueType >= 0 &&
                     debugData->items[0]->itemValueType <= 8)
                 {
                     treeList->SetItemText(child, 2, LUA_TYPE_NAME[debugData->items[0]->itemValueType]);
+
+                    if (debugData->items[0]->itemValueType == LUA_TTABLE)
+                    {
+                        treeList->AppendItem(child, wxEmptyString);
+
+                        if (isExpnded)
+                            debugger->enumerateTable(debugger->getCurrStackLevel(), text.ToUTF8().data());
+                    }
                 }
                 else
                     treeList->SetItemText(child, 2, wxEmptyString);

@@ -14,6 +14,10 @@
 
 const wxChar* wxHareCanvasNameStr = wxT("HareCanvas");
 
+BEGIN_EVENT_TABLE(wxHareCanvas, wxWindow)
+    EVT_ERASE_BACKGROUND(wxHareCanvas::onEraseBackground)
+END_EVENT_TABLE()
+
 wxHareCanvas::wxHareCanvas(wxWindow *parent, wxWindowID id, bool hasZBuffer, const wxPoint& pos,
         const wxSize& size, long style, const wxString& name) : wxWindow()
 {
@@ -47,4 +51,9 @@ bool wxHareCanvas::Create(wxWindow *parent, wxWindowID id, const wxPoint& pos,
     wxCHECK_MSG(parent, false, wxT("can't create wxWindow without parent"));
 
     return wxWindow::Create(parent, id, pos, size, style, name);
+}
+
+void wxHareCanvas::onEraseBackground(wxEraseEvent& event)
+{
+    event.Skip();
 }

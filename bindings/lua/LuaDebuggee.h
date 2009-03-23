@@ -119,7 +119,7 @@ public:
     bool notifyExit();
     bool notifyStackEnumeration(LuaDebugData& debugData);
     bool notifyStackEntryEnumeration(int stackRef, LuaDebugData& debugData);
-    bool notifyTableEnumeration(int stackRef, LuaDebugData& debugData);
+    bool notifyTableEnumeration(LuaDebugData& debugData, const String& table);
     bool notifyEvaluateExpr(LuaDebugData& debugData);
 };
 

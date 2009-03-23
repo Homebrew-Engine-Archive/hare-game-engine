@@ -49,7 +49,12 @@ public:
     }
 
 protected:
+
+    void onEraseBackground(wxEraseEvent& event);
+
     RenderWindow* renderWindow;
+
+    DECLARE_EVENT_TABLE()
 };
 
 #endif

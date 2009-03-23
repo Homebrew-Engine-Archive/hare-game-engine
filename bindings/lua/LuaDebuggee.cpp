@@ -102,37 +102,13 @@ bool LuaDebuggee::debugHook(int event)
         }
         else if (event == LUA_HOOKLINE)
         {
-            switch (nextOperation)
+            if (hasBreakPoint(fileName, lineNumber) ||
+                (nextOperation == DEBUG_STEP) ||
+                (nextOperation == DEBUG_STEPOVER && framesUntilBreak <= 0) ||
+                (nextOperation == DEBUG_STEPOUT && framesUntilBreak < 0))
             {
-            case DEBUG_STEP:
-                {
-                    if (notifyBreak(fileName, lineNumber))
-                        wait = true;
-
-                    break;
-                }
-            case DEBUG_STEPOVER:
-                {
-                    if ((framesUntilBreak <= 0) && notifyBreak(fileName, lineNumber))
-                        wait = true;
-
-                    break;
-                }
-            case DEBUG_STEPOUT:
-                {
-                    if ((framesUntilBreak < 0) && notifyBreak(fileName, lineNumber))
-                        wait = true;
-
-                    break;
-                }
-            case DEBUG_GO:
-            default:
-                {
-                    if (hasBreakPoint(fileName, lineNumber) && notifyBreak(fileName, lineNumber))
-                        wait = true;
-
-                    break;
-                }
+                if (notifyBreak(fileName, lineNumber))
+                    wait = true;
             }
         }
     }
@@ -320,10 +296,10 @@ bool LuaDebuggee::handleDebuggerCmd(int cmd)
 
             break;
         }
-    case LUA_DEBUGGER_CMD_ENUMERATE_TABLE_REF:
+    case LUA_DEBUGGER_CMD_ENUMERATE_TABLE:
         {
             int stackRef = 0;
-            String table = 0;
+            String table;
 
             if (SocketHelper::readInt(&socket, stackRef) &&
                 SocketHelper::readString(&socket, table))
@@ -487,7 +463,7 @@ bool LuaDebuggee::enumerateTable(int stackRef, const String& table)
     debugData.enumerateTable(state, stackRef, table);
     leaveLuaCriticalSection();
 
-    return notifyTableEnumeration(stackRef, debugData);
+    return notifyTableEnumeration(debugData, table);
 }
 
 bool LuaDebuggee::evaluateExpr(int stackRef, const String& expr)
@@ -545,11 +521,11 @@ bool LuaDebuggee::notifyStackEntryEnumeration(int stackRef, LuaDebugData& debugD
         SocketHelper::writeObject(&socket, &debugData);
 }
 
-bool LuaDebuggee::notifyTableEnumeration(int stackRef, LuaDebugData& debugData)
+bool LuaDebuggee::notifyTableEnumeration(LuaDebugData& debugData, const String& table)
 {
     return isConnected() &&
         SocketHelper::writeCmd(&socket, LUA_DEBUGGEE_EVENT_TABLE_ENUM) &&
-        SocketHelper::writeInt(&socket, stackRef) &&
+        SocketHelper::writeString(&socket, table) &&
         SocketHelper::writeObject(&socket, &debugData);
 }
 

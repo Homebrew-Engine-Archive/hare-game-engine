@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <resource xmlns="http://www.wxwindows.org/wxxrc" version="2.3.0.1">
-  <object class="wxMenu" name="lua_debugger_menu"> 
+  <object class="wxMenu" name="lua_debugger_menu">
 	<object class="wxMenu" name="idLuaDebugWindows">
         <label>Windows</label>
+        <object class="wxMenuItem" name="idLuaDebugLocals">
+            <label>Locals</label>
+            <bitmap>locals.png</bitmap>
+            <enabled>1</enabled>
+        </object>
         <object class="wxMenuItem" name="idLuaDebugWatch">
-            <label>Watch</label> 
+            <label>Watch</label>
             <bitmap>watch.png</bitmap>
             <enabled>1</enabled>
         </object>
@@ -14,7 +19,7 @@
             <enabled>1</enabled>
         </object>
         <object class="wxMenuItem" name="idLuaDebugOutput">
-            <label>Debug Output</label> 
+            <label>Debug Output</label>
             <bitmap>output.png</bitmap>
             <enabled>1</enabled>
         </object>

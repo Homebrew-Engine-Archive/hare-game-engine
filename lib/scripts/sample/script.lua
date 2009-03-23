@@ -4,6 +4,8 @@ sceneListen = nil
 
 lastTime = 0
 
+a = {[{100, 200}] = { 300, 400}, 200, { 300, 500}, abc = "abc"}
+
 function beginScene()
     if hare.getTime() - lastTime > 1 then
         lastTime = hare.getTime()

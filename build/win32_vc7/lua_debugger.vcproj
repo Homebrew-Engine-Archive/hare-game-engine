@@ -122,6 +122,9 @@
 				RelativePath="..\..\plugins\lua_debugger\CallStackWindow.cpp">
 			</File>
 			<File
+				RelativePath="..\..\plugins\lua_debugger\LocalWindow.cpp">
+			</File>
+			<File
 				RelativePath="..\..\plugins\lua_debugger\LuaDebugger.cpp">
 			</File>
 			<File
@@ -149,6 +152,9 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
 			<File
 				RelativePath="..\..\plugins\lua_debugger\CallStackWindow.h">
+			</File>
+			<File
+				RelativePath="..\..\plugins\lua_debugger\LocalWindow.h">
 			</File>
 			<File
 				RelativePath="..\..\plugins\lua_debugger\LuaDebugger.h">

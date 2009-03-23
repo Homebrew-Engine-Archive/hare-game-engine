@@ -30,19 +30,22 @@ namespace hare_editor
         ProjectFile *file;
     };
 
-    ProjectFile* Project::findFile(const String& name)
+    ProjectFile::Ptr Project::findFile(const String& name)
     {
         ProjectFile::List::iterator it = files.begin();
         for (; it != files.end(); ++it)
         {
-            if ((*it)->fileName == name)
+            String fname = (*it)->fileName;
+            if (fname == name)
+            {
                 return *it;
+            }
         }
 
         return 0;
     }
 
-    Project* Workspace::findProject(const String& name)
+    Project::Ptr Workspace::findProject(const String& name)
     {
         Project::List::iterator it = projects.begin();
         for (; it != projects.end(); ++it)
@@ -116,7 +119,7 @@ namespace hare_editor
         while (dirOk)
         {
             String prjName = dirName.ToUTF8().data();
-            Project* prj = new Project;
+            Project::Ptr prj = new Project;
             prj->projectName = prjName;
             workspace->projects.push_back(prj);
 
@@ -125,7 +128,7 @@ namespace hare_editor
             bool ok = f.GetFirst(&fileName, wxT("*.*"), wxDIR_FILES);
             while (ok)
             {
-                ProjectFile* file = new ProjectFile;
+                ProjectFile::Ptr file = new ProjectFile;
                 file->fileName = fileName.ToUTF8().data();
                 prj->files.push_back(file);
                 ok = f.GetNext(&fileName);
@@ -140,17 +143,17 @@ namespace hare_editor
             Project::List::iterator it0 = savedWorkspace->projects.begin();
             for (; it0 != savedWorkspace->projects.end(); ++it0)
             {
-                Project* savedPrj = *it0;
-                Project* prj = workspace->findProject(savedPrj->projectName);
+                Project::Ptr savedPrj = *it0;
+                Project::Ptr prj = workspace->findProject(savedPrj->projectName);
                 if (prj)
                 {
                     ProjectFile::List::iterator it1 = savedPrj->files.begin();
                     for (; it1 != savedPrj->files.end(); ++it1)
                     {
-                        ProjectFile* savedFile = *it1;
-                        ProjectFile* file = prj->findFile(savedFile->fileName);
+                        ProjectFile::Ptr savedFile = *it1;
+                        ProjectFile::Ptr file = prj->findFile(savedFile->fileName);
                         if (file)
-                            *file = *savedFile;
+                            file = savedFile;
                     }
                 }
             }

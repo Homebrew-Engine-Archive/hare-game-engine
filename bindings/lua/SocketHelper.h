@@ -33,10 +33,11 @@ public:
 
     static bool writeString(Socket* socket, const String& str)
     {
-        int len = (int)str.size();
+        const char* cstr = str.c_str();
+        int len = strlen(cstr);
         bool ok = socket->write((const char*)&len, sizeof(int)) == sizeof(int);
         if (ok && (len > 0))
-            ok = socket->write(str.c_str(), len) == len;
+            ok = socket->write(cstr, len) == len;
         return ok;
     }
 
@@ -90,7 +91,7 @@ public:
             value.resize(len + 1, 0);
             ok = socket->read((char*)value.c_str(), len) == len;
         }
-        if (ok) str = value;
+        if (ok) str = value.c_str();
         return ok;
     }
 

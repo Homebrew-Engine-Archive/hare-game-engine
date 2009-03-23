@@ -3,12 +3,12 @@
     <projects class="object_list" number="2">
         <item0 store="0" class="Project" version="0">
             <projectName class="String" value="sample" />
-            <debuggerName class="String" value="" />
+            <debuggerName class="String" value="LuaDebugger" />
             <files class="object_list" number="1">
                 <item0 store="0" class="ProjectFile" version="0">
                     <fileName class="String" value="script.lua" />
                     <editorOpen class="bool" value="1" />
-                    <editorPos class="s32" value="253" />
+                    <editorPos class="s32" value="572" />
                     <editorTopLine class="s32" value="0" />
                     <editorTabPos class="s32" value="1" />
                     <breakPoints class="meta_array" number="0" />

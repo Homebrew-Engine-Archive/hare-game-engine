@@ -125,8 +125,6 @@ int EditorApp::OnExit()
 
 void EditorApp::OnIdle(wxIdleEvent& event)
 {
-    getTimer().update();
-
     getHareApp()->hareRunFrame();
 
     event.RequestMore();

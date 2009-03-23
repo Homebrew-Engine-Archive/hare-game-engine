@@ -33,6 +33,8 @@ namespace hare_graphics
 
 	void SystemManager::hareRunFrame()
 	{
+        getTimer().update();
+
 		//‰÷»æ«∞
 		SecondaryWindowList::iterator it = secondaryWindowList.begin();
 		for (;it != secondaryWindowList.end(); ++it){

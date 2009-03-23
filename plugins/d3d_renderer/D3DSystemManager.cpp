@@ -63,7 +63,7 @@ namespace hare_d3d
 	}
 
 	void D3DSystemManager::hareRunFrame()
-	{ 
+	{
         D3DRenderSystem* d3drs = static_cast<D3DRenderSystem*>(RenderSystem::getSingletonPtr());
         if (!d3drs)
             return;
@@ -94,7 +94,6 @@ namespace hare_d3d
 				TranslateMessage(&Message);
 				DispatchMessage(&Message);
 			} else {
-                getTimer().update();
                 hareRunFrame();
 			}
 		}

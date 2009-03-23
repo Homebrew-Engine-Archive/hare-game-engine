@@ -11,6 +11,7 @@
 // 
 //***************************************************************
 #include "wx/harecanvas.h"
+#include <wx/dcclient.h>
 
 const wxChar* wxHareCanvasNameStr = wxT("HareCanvas");
 
@@ -56,4 +57,6 @@ bool wxHareCanvas::Create(wxWindow *parent, wxWindowID id, const wxPoint& pos,
 void wxHareCanvas::onEraseBackground(wxEraseEvent& event)
 {
     event.Skip();
+
+    //getHareApp()->hareRunFrame();
 }

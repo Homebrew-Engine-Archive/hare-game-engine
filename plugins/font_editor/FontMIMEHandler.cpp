@@ -92,23 +92,18 @@ void FontEditorPage::onTextUpdate(wxCommandEvent& event)
 
 void FontEditorPage::onSize(wxSizeEvent& event)
 {
-	wxHareCanvas* win = NULL;
-
     if (event.GetId() == idFontTextWindow)
 	{
-        win = canvsText;
-	}
-	else if (event.GetId() == idFontCacheWindow)
-	{
-		win = canvsCache;
-	}
-	
-	if (win)
-	{
-		wxSize size = win->GetClientSize();
-		if (size.GetWidth() > 0 && size.GetHeight() > 0)
-			win->getRenderWindow()->resize(size.GetWidth(), size.GetHeight());
-	}
+        wxSize size = canvsText->GetClientSize();
+        if (size.GetWidth() > 0 && size.GetHeight() > 0)
+            canvsText->getRenderWindow()->resize(size.GetWidth(), size.GetHeight());
+    }
+    else if (event.GetId() == idFontCacheWindow)
+    {
+        wxSize size = canvsCache->GetClientSize();
+        if (size.GetWidth() > 0 && size.GetHeight() > 0)
+            canvsCache->getRenderWindow()->resize(size.GetWidth(), size.GetHeight());
+    }
 }
 
 
@@ -156,8 +151,10 @@ bool FontMIMEHandler::openFile(const wxString& filename)
 
     if (!page)
     {
+        Manager::getInstancePtr()->getEditorPageManager()->getNotebook()->Freeze();
         page = new FontEditorPage(Manager::getInstancePtr()->getEditorPageManager()->getNotebook(), this, font);
         Manager::getInstancePtr()->getEditorPageManager()->addEditorPage(page);
+        Manager::getInstancePtr()->getEditorPageManager()->getNotebook()->Thaw();
     }
     else
         page->changeFont(font);

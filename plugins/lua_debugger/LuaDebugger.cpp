@@ -303,14 +303,14 @@ bool LuaDebugger::buildToolBar(wxAuiToolBar* toolBar)
     bmp.LoadFile(fullPath + wxT("step_out.png"), wxBITMAP_TYPE_PNG);
     toolBar->AddTool(idLuaDebugStepOut, _("StepOut"), bmp, wxT("StepOut"));
     toolBar->AddSeparator();
+    bmp.LoadFile(fullPath + wxT("locals.png"), wxBITMAP_TYPE_PNG);
+    toolBar->AddTool(idLuaDebugLocals, _("Locals"), bmp, wxEmptyString);
     bmp.LoadFile(fullPath + wxT("watch.png"), wxBITMAP_TYPE_PNG);
     toolBar->AddTool(idLuaDebugWatch, _("Watch"), bmp, wxEmptyString);
     bmp.LoadFile(fullPath + wxT("call_stack.png"), wxBITMAP_TYPE_PNG);
     toolBar->AddTool(idLuaDebugCallStack, _("Call Stack"), bmp, wxEmptyString);
     bmp.LoadFile(fullPath + wxT("output.png"), wxBITMAP_TYPE_PNG);
     toolBar->AddTool(idLuaDebugOutput, _("Debug Output"), bmp, wxEmptyString);
-    bmp.LoadFile(fullPath + wxT("locals.png"), wxBITMAP_TYPE_PNG);
-    toolBar->AddTool(idLuaDebugLocals, _("Locals"), bmp, wxEmptyString);
     
     return true;
 }

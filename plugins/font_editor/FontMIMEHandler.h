@@ -55,14 +55,7 @@ public:
         shader->setShaderParams(font->getFontExtParams());
         shader->setMaterial(texMtrl);
 
-        //getCanvas()->drawImage(0, 0, shader);
-		Quad quad2;
-		quad2.setShader(shader);
-		quad2.moveTo(150,150);
-		quad2.setWidth(font->getFontTexture()->getWidth());
-		quad2.setHeight(font->getFontTexture()->getHeight());
-		texMtrl->setUV(0,0,1,1);
-		RenderSystem::getSingletonPtr()->render(&quad2);	
+        getCanvas()->drawImage(0, 0, shader);
     }
 public:
     Font* font;

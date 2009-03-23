@@ -183,6 +183,7 @@ namespace hare_d3d
 	void D3DRenderSystem::resetDevice()
 	{
 		HRESULT hr;
+		curRenderTexture = NULL;
 		DeviceManager::getSingletonPtr()->beforeResetDevice();
 
 		hr = pD3DDevice->Reset(pPrimaryWindow->getPresentationParameters());
@@ -245,8 +246,8 @@ namespace hare_d3d
 
 				//ÎÆÀíÑ°Ö· ÓÐµãÀÃ - -!
 				f32 ul, ur, vt, vb;
-				textureMtrl->getUV(ul, ur, vt, vb);
-				operation->setTextureUVMap(ul, ur, vt, vb);
+				textureMtrl->getUV(ul, vt, ur, vb);
+				operation->setTextureUVMap(ul, vt, ur, vb);
 
 
 				D3DTexture* texture = (D3DTexture*)textureMtrl->getTexture();

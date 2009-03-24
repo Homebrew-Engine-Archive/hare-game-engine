@@ -33,19 +33,6 @@ namespace hare_graphics
 		
 	}
 
-	void Image::f()
-	{
-		for (int i = 0; i < imageInfo.height; i++){
-			for (int j = 0; j < imageInfo.width * 4; ){
-				u8* buffer = (u8*)imageData.getData() + getRowStride() * i;
-				if (buffer[j + 3] != 0 /*&& buffer[j] > 128 && buffer[j + 1] > 128 && buffer[j + 2] > 128*/){
-					buffer[j + 3] = (255 - buffer[j + 1]);
-				}
-				j += 4;
-			}
-		}
-	}
-
 	void Image::create(u32 width, u32 height, HarePixelFormat format)
 	{
 		destory();

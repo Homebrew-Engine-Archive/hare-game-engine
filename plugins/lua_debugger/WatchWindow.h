@@ -28,7 +28,6 @@ public:
     void updateWatchData(LuaDebugData* debugData);
     void updateTableData(const String& tableName, LuaDebugData* debugData);
     void redraw();
-    bool isReallyShown();
 
     void onDropText(const wxString& text);
 

@@ -49,15 +49,3 @@ void LuaOutputWindow::append(const wxString& msg, LuaLoggerType tp)
     txt->AppendText(msg);
 };
 
-bool LuaOutputWindow::isReallyShown()
-{
-    wxWindow* win = this;
-    while (win && win->IsShown())
-    {
-        win = win->GetParent();
-        if (!win)
-            return true;
-    }
-    return false;
-}
-

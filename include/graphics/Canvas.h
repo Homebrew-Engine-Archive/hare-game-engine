@@ -21,7 +21,7 @@ namespace hare_graphics
 
 		void drawImage(int x, int y, Shader* shader, f32 z = 0.f);
 
-		void drawImage(const Rect<int>& rect, Shader* shader, float rot = 0.f, f32 z = 0.f);
+		void drawImage(const RectF& rect, Shader* shader, f32 rot = 0.f, f32 z = 0.f);
 
 		void setFont(Font* f);
 	private:

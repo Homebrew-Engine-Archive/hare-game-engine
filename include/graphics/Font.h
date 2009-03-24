@@ -21,7 +21,7 @@ namespace hare_graphics
 		f32 bear_top;
 		f32 bear_advanceY;
 
-		Rect<f32> recGlyph;
+		RectF recGlyph;
 	};
 
     class GRAPHICS_API Font : public Object

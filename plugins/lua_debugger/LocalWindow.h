@@ -26,7 +26,6 @@ public:
 
     void updateLocalData(LuaDebugData* debugData);
     void updateTableData(const String& tableName, LuaDebugData* debugData);
-    bool isReallyShown();
 
 protected:
     LuaDebugger* debugger;

@@ -199,9 +199,9 @@ namespace hare_graphics
 
 		virtual void frameMove();
 	public:
-		Point<f32> offset;    // 0 - 1
-		Point<f32> direction;
-		f32        speed;
+		PointF  offset;    // 0 - 1
+		PointF  direction;
+		f32     speed;
 
 	};
 
@@ -215,8 +215,8 @@ namespace hare_graphics
 
 		virtual void frameMove();
 	public:
-		Point<f32> lt;    // 0 - 1
-		Point<f32> scale;
+		PointF lt;    // 0 - 1
+		PointF scale;
 
 	};
 
@@ -230,7 +230,7 @@ namespace hare_graphics
 
 		virtual void frameMove();
 	public:
-		Point<f32> center; // 0 - 1
+		PointF center; // 0 - 1
 		f32 rotation;
 		f32 speed;
 	};

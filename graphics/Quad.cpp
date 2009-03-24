@@ -96,7 +96,7 @@ namespace hare_graphics
 		buffer[3].v = vt;
 	}
 
-	void Quad::setTextureUVMap(const Rect<f32>& rc)
+	void Quad::setTextureUVMap(const RectF& rc)
 	{
 		buffer[0].u = rc.minX;	
 		buffer[0].v = rc.minY;		

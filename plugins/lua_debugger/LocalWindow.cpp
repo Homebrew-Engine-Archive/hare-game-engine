@@ -111,15 +111,3 @@ void LuaLocalWindow::updateLocalData(LuaDebugData* debugData)
         }
     }
 }
-
-bool LuaLocalWindow::isReallyShown()
-{
-    wxWindow* win = this;
-    while (win && win->IsShown())
-    {
-        win = win->GetParent();
-        if (!win)
-            return true;
-    }
-    return false;
-}

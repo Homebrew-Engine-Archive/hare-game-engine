@@ -35,7 +35,6 @@ public:
 public:
     void append(const wxString& msg, LuaLoggerType tp);
     void clear();
-    bool isReallyShown();
 
 protected:
     LuaDebugger* debugger;

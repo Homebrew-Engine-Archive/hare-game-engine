@@ -241,15 +241,3 @@ void LuaWatchWindow::redraw()
         child = treeList->GetNextChild(root, cookie);
     }
 }
-
-bool LuaWatchWindow::isReallyShown()
-{
-    wxWindow* win = this;
-    while (win && win->IsShown())
-    {
-        win = win->GetParent();
-        if (!win)
-            return true;
-    }
-    return false;
-}

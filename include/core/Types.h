@@ -13,6 +13,8 @@
 #ifndef _TYPES_H_
 #define _TYPES_H_
 
+#include "MathCommon.h"
+
 namespace hare_core
 {
     typedef unsigned char	u8;
@@ -27,6 +29,15 @@ namespace hare_core
     typedef std::string     String;
     typedef std::wstring    WString;
     typedef std::vector<String> StringVector;
+
+    typedef TPoint<f32>     PointF;
+    typedef TPoint<s32>     PointN;
+
+    typedef TSize<f32>      SizeF;
+    typedef TSize<s32>      SizeN;
+
+    typedef TRect<f32>      RectF;
+    typedef TRect<s32>      RectN;
 }
 
 #if HARE_COMPILER == HARE_COMPILER_GNUC && HARE_COMP_VER >= 310 && !defined(STLPORT)

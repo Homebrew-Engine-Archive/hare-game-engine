@@ -25,7 +25,6 @@ public:
 
     void clear();
     void setCallStackData(LuaDebugData* data);
-    bool isReallyShown();
 
 protected:
     void onDbClick(wxListEvent& event);

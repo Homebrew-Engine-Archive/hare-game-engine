@@ -4,76 +4,77 @@
 namespace hare_core
 {
     template <class T>
-    class Point
+    class TPoint
     {
     public:
-        static const Point<T> ZERO;
+        static const TPoint<T> ZERO;
 
         T x;
         T y;
 
-        Point()
+    public:
+        TPoint()
         {
         }
 
-        Point(T ix, T iy)
+        TPoint(T ix, T iy)
         {
             set(ix, iy);
         }
 
-        Point(const Point& rhs)
+        TPoint(const TPoint& rhs)
         {
             set(rhs.x, rhs.y);
         }
 
-        Point& operator= (const Point& rhs)
+        TPoint& operator= (const TPoint& rhs)
         {
             set(rhs.x, rhs.y);
             return *this;
         }
 
-        bool operator == ( const Point<T>& rhs) const
+        bool operator == ( const TPoint<T>& rhs) const
         {
             return x == rhs.x && y == rhs.y;
         }
 
-        bool operator != ( const Point<T>& rhs) const
+        bool operator != ( const TPoint<T>& rhs) const
         {
             return !(*this == rhs);
         }
 
-        Point<T>& operator += ( const Point<T>& rhs)
+        TPoint<T>& operator += ( const TPoint<T>& rhs)
         {
             x += rhs.x;
             y += rhs.y;
             return *this;
         }
 
-        Point<T>& operator -= ( const Point<T>& rhs)
+        TPoint<T>& operator -= ( const TPoint<T>& rhs)
         {
             x -= rhs.x;
             y -= rhs.y;
             return *this;
         }
 
-        Point<T> operator + () const
+        TPoint<T> operator + () const
         {
             return *this;
         }
 
-        Point<T> operator - () const
+        TPoint<T> operator - () const
         {
-            return Point<T>(-x, -y);
+            return TPoint<T>(-x, -y);
         }
 
-        Point<T> operator + ( const Point<T>& rhs) const
+        TPoint<T> operator + ( const TPoint<T>& rhs) const
         {
-            return Point<T>(x + rhs.x, y + rhs.y);
+            return TPoint<T>(x + rhs.x, y + rhs.y);
         }
 
-        Point<T> operator - ( const Point<T>& rhs) const
+        TPoint<T> operator - ( const TPoint<T>& rhs) const
         {
-            return Point<T>(x - rhs.x, y - rhs.y);
+            return TPoint<T>(x - rhs.x, y - rhs.y);
         }
 
         void set(T ix, T iy)
@@ -90,31 +91,31 @@ namespace hare_core
     };
 
     template<class T>
-    const Point<T> Point<T>::ZERO(0, 0);
+    const TPoint<T> TPoint<T>::ZERO(0, 0);
 
     template <class T>
-    class Size
+    class TSize
     {
     public:
-        static const Size<T> ZERO;
+        static const TSize<T> ZERO;
 
         T cx, cy;
 
-        Size() {}
-        Size(T icx, T icy) : cx(icx), cy(icy) {}
+        TSize() {}
+        TSize(T icx, T icy) : cx(icx), cy(icy) {}
 
-        Size& operator= (const Size<T>& rhs)
+        TSize& operator= (const TSize<T>& rhs)
         {
             set(rhs.cx, rhs.cy);
             return *this;
         }
 
-        bool operator == ( const Size<T>& rhs) const
+        bool operator == ( const TSize<T>& rhs) const
         {
             return cx == rhs.cx && cy == rhs.cy;
         }
 
-        bool operator != ( const Size<T>& rhs) const
+        bool operator != ( const TSize<T>& rhs) const
         {
             return !(*this == rhs);
         }
@@ -149,14 +150,14 @@ namespace hare_core
     };
 
     template<class T>
-    const Size<T> Size<T>::ZERO(0, 0);
+    const TSize<T> TSize<T>::ZERO(0, 0);
 
 
     template <class T>
-    class Rect
+    class TRect
     {
     public:
-        static const Rect<T> ZERO;
+        static const TRect<T> ZERO;
 
         union
         {
@@ -166,19 +167,19 @@ namespace hare_core
             };
             struct
             {
-                Point<T> ptMin, ptMax;
+                TPoint<T> ptMin, ptMax;
             };
         };
 
-        Rect() {}
-        Rect(T iminX, T iminY, T imaxX, T imaxY) : minX(iminX), minY(iminY), maxX(imaxX), maxY(imaxY) {}
-        Rect(const Point<T> &iptMin, const Point<T> &iptMax ) : ptMin(iptMin), ptMax(iptMax) {}
+        TRect() {}
+        TRect(T iminX, T iminY, T imaxX, T imaxY) : minX(iminX), minY(iminY), maxX(imaxX), maxY(imaxY) {}
+        TRect(const TPoint<T> &iptMin, const TPoint<T> &iptMax ) : ptMin(iptMin), ptMax(iptMax) {}
 
-        bool operator == ( const Rect<T>& rhs) const
+        bool operator == ( const TRect<T>& rhs) const
         {
             return minX == rhs.minX && maxX == rhs.maxX && minY == rhs.minY && maxY == rhs.maxY;
         }
-        bool operator != ( const Rect<T>& rhs) const
+        bool operator != ( const TRect<T>& rhs) const
         {
             return !(*this == rhs);
         }
@@ -191,7 +192,7 @@ namespace hare_core
             maxY = imaxY;
         }
 
-        void set(const Point<T> &iptMin, const Point<T> &iptMax)
+        void set(const TPoint<T> &iptMin, const TPoint<T> &iptMax)
         {
             ptMin = iptMin;
             ptMax = iptMax;
@@ -232,9 +233,9 @@ namespace hare_core
             maxX = maxY = std::numeric_limits<T>::max();
         }
 
-        inline bool intersect(const Rect<T> &r1, const Rect<T> &r2);
+        inline bool intersect(const TRect<T> &r1, const TRect<T> &r2);
 
-        inline void unionRect(const Rect<T> &r1, const Rect<T> &r2);
+        inline void unionRect(const TRect<T> &r1, const TRect<T> &r2);
 
         void move(T offsetX, T offsetY)
         {
@@ -244,7 +245,7 @@ namespace hare_core
             maxY += offsetY;
         }
 
-        void move(const Point<T> &offset)
+        void move(const TPoint<T> &offset)
         {
             move(offset.x, offset.y);
         }
@@ -254,7 +255,7 @@ namespace hare_core
             move(x - minX, y - minY);
         }
 
-        void moveTo(const Point<T> pt)
+        void moveTo(const TPoint<T> pt)
         {
             move(pt - ptMin);
         }
@@ -280,19 +281,19 @@ namespace hare_core
             return x >= minX && x <= maxX && y >= minY && y <= maxY;
         }
 
-        bool isPointIn(const Point<T> &pt) const
+        bool isPointIn(const TPoint<T> &pt) const
         {
-            return isPointIn(pt.x, pt.y);
+            return isTPointIn(pt.x, pt.y);
         }
 
-        bool isRectIn(const Rect<T> rc) const
+        bool isRectIn(const TRect<T> rc) const
         {
             return rc.minX >= minX && rc.minY >= minY && rc.maxX <= maxX && rc.maxY <= maxY;
         }
 
-        Point<T> center() const
+        TPoint<T> center() const
         {
-            return Point<T>(minX + width()/2, minY + height()/2);
+            return TPoint<T>(minX + width()/2, minY + height()/2);
         }
 
         template<class T2>
@@ -306,10 +307,10 @@ namespace hare_core
     };
 
     template<class T>
-    const Rect<T> Rect<T>::ZERO(0, 0, 0, 0);
+    const TRect<T> TRect<T>::ZERO(0, 0, 0, 0);
 
     template <class T>
-    bool Rect<T>::intersect(const Rect<T> &r1, const Rect<T> &r2)
+    bool TRect<T>::intersect(const TRect<T> &r1, const TRect<T> &r2)
     {
         minX = std::max(r1.minX, r2.minX);
         minY = std::max(r1.minY, r2.minY);
@@ -321,7 +322,7 @@ namespace hare_core
     }
 
     template <class T>
-    void Rect<T>::unionRect(const Rect<T> &r1, const Rect<T> &r2)
+    void TRect<T>::unionRect(const TRect<T> &r1, const TRect<T> &r2)
     {
         minX = std::min(r1.minX, r2.minX);
         minY = std::min(r1.minY, r2.minY);

@@ -126,7 +126,7 @@ namespace hare_d3d
 
 	}
 
-	void D3DTexture::download(Image &img, const Rect<int>* rc)
+	void D3DTexture::download(Image &img, const RectN* rc)
 	{
 		
 	}

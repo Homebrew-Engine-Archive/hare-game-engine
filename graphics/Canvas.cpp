@@ -52,7 +52,7 @@ namespace hare_graphics
 		texMtrl->setTexture(font->getFontTexture());
 		//shader->setShaderParams(font->getFontExtParams());
 		shader->setMaterial(texMtrl);
-		f32 layout_x = x;
+		f32 layout_x = (f32)x;
 		f32 layout_y = 0;
 		
 		for (u32 batchCount = 0; batchCount <= wstr.size() / font->getCacheBufferSize(); ++batchCount){
@@ -123,7 +123,7 @@ namespace hare_graphics
 		RenderSystem::getSingletonPtr()->render(&quad);	
 	}
 
-	void Canvas::drawImage(const Rect<int>& rect, Shader* shader, float rot, f32 z)
+	void Canvas::drawImage(const RectF& rect, Shader* shader, f32 rot, f32 z)
 	{
 		if (!shader)
 			return;
@@ -137,7 +137,7 @@ namespace hare_graphics
 
 		Quad quad;
 		quad.setShader(shader);
-		quad.moveTo((f32)rect.minX, (f32)rect.minY);
+		quad.moveTo(rect.minX, rect.minY);
 		quad.setDepth(z);
 		quad.setWidth(rect.width());
 		quad.setHeight(rect.height());

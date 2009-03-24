@@ -383,17 +383,6 @@ void LuaDebugger::onLuaDebugStepOut(wxCommandEvent& event)
     stepOut();
 }
 
-static bool isReallyShown(wxWindow* win)
-{
-    while (win && win->IsShown())
-    {
-        win = win->GetParent();
-        if (!win)
-            return true;
-    }
-    return false;
-}
-
 void LuaDebugger::onLuaDebugShowWindow(wxCommandEvent& event)
 {
     wxWindow* win = 0;
@@ -411,7 +400,7 @@ void LuaDebugger::onLuaDebugShowWindow(wxCommandEvent& event)
     {
         EditorDockEvent evt(editorEVT_SHOW_DOCK_WINDOW);
         evt.window = win;
-        evt.show = !isReallyShown(win);
+        evt.show = !win->IsShownOnScreen();
         Manager::getInstancePtr()->processEvent(evt);
     }
 }
@@ -1147,13 +1136,13 @@ void LuaDebugger::onLuaDebugBreak(LuaDebuggerEvent& event)
 
     syncEditor(event.fileName, event.lineNumber);
 
-    if (callStackWindow->isReallyShown())
+    if (callStackWindow->IsShownOnScreen())
         enumerateStack();
 
-    if (watchWindow->isReallyShown())
+    if (watchWindow->IsShownOnScreen())
         watchWindow->redraw();
 
-    if (localWindow->isReallyShown())
+    if (localWindow->IsShownOnScreen())
         enumerateStackEntry(getCurrStackLevel());
 
     Manager::getInstancePtr()->getAppWindow()->Raise();

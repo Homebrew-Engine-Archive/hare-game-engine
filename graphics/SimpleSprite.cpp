@@ -23,8 +23,8 @@ namespace hare_graphics
 		shader = new SimpleShader;
 		AnimMod* animModMtrl = new AnimMod;
 		TextureMtrl* texMtrl;
-		PannerMod*   pannerMtrl;
-		ScalerMod*   scaleMtrl;
+		//PannerMod*   pannerMtrl;
+		//ScalerMod*   scaleMtrl;
 		AnimModUnit* animModUnit;
 		Texture* tex;
 

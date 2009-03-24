@@ -76,16 +76,3 @@ void LuaCallStackWindow::onDbClick(wxListEvent& event)
         }
     }
 }
-
-bool LuaCallStackWindow::isReallyShown()
-{
-    wxWindow* win = this;
-    while (win && win->IsShown())
-    {
-        win = win->GetParent();
-        if (!win)
-            return true;
-    }
-    return false;
-}
-

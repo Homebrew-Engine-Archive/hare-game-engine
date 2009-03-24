@@ -15,8 +15,6 @@ namespace hare_graphics
 		Image(const Image& rhs);
 		virtual ~Image();
 
-		void f();
-
 		void create(u32 width, u32 height, HarePixelFormat format);
 		void destory();
 

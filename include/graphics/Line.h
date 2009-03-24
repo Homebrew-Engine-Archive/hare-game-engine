@@ -2,12 +2,12 @@
 #define LINE
 
 #include "GraphicsPrerequisites.h"
-#include "RenderOperation.h"
+#include "RenderUnit.h"
 
 
 namespace hare_graphics
 {
-	class GRAPHICS_API Line : public RenderOperation
+	class GRAPHICS_API Line : public RenderUnit
 	{
 	public:
 		Line();
@@ -16,7 +16,7 @@ namespace hare_graphics
 		virtual Vertex* getBuffer();
 		virtual u32 getVertexCount();
 		virtual u32	getPrimCount();
-		virtual RenderOperation::RenderOperationType	getOperationType();
+		virtual RenderUnit::RenderOperationType	getOperationType();
 		virtual void setTextureUVMap(f32 ul, f32 vt, f32 ur, f32 vb);
 
 		void setColor(u32 color);

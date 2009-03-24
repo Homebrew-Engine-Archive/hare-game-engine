@@ -11,7 +11,7 @@ namespace hare_graphics
 	class RenderTarget;
 	class RenderWindow;
 	class Texture;
-	class RenderOperation;
+	class RenderUnit;
 
 
 	class GRAPHICS_API RenderSystem : public Singleton<RenderSystem>
@@ -27,7 +27,7 @@ namespace hare_graphics
 
 		virtual void beginFrame() = 0;
 		virtual void render() = 0;
-		virtual void render(RenderOperation* operation) = 0;
+		virtual void render(RenderUnit* operation) = 0;
 		virtual void endFrame() = 0;
 		virtual void clear() = 0;
 

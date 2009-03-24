@@ -18,7 +18,7 @@ using namespace hare_core;
 #include "SceneManager.h"
 #include "SystemManager.h"
 #include "Quad.h"
-#include "RenderOperation.h"
+#include "RenderUnit.h"
 #include "Material.h"
 #include "Shader.h"
 #include "Texture.h"

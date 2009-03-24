@@ -11,7 +11,7 @@ namespace hare_graphics
 {
 	class Shader;
 
-	class GRAPHICS_API RenderOperation
+	class GRAPHICS_API RenderUnit
 	{
 	public:
 		enum RenderOperationType{
@@ -23,11 +23,11 @@ namespace hare_graphics
 			ROT_TRIANGLE_FAN,
 		};
 	public:
-		RenderOperation();
-		virtual ~RenderOperation();
+		RenderUnit();
+		virtual ~RenderUnit();
 
 		virtual Vertex* getBuffer() = 0;
-		virtual u32 getVertexCount() = 0;
+		virtual u32    getVertexCount() = 0;
 		virtual u32	getPrimCount() = 0;
 		virtual RenderOperationType	getOperationType() = 0;
 		virtual void setTextureUVMap(f32 ul, f32 vt, f32 ur, f32 vb) = 0;

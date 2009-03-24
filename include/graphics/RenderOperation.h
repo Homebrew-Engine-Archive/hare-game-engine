@@ -27,7 +27,7 @@ namespace hare_graphics
 		virtual ~RenderOperation();
 
 		virtual Vertex* getBuffer() = 0;
-		virtual u32    getVertexCount() = 0;
+		virtual u32 getVertexCount() = 0;
 		virtual u32	getPrimCount() = 0;
 		virtual RenderOperationType	getOperationType() = 0;
 		virtual void setTextureUVMap(f32 ul, f32 vt, f32 ur, f32 vb) = 0;

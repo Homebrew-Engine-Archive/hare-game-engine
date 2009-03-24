@@ -606,7 +606,6 @@ void EditorFrame::onToolbarDropDownDebug(wxAuiToolBarEvent& event)
 void EditorFrame::onEraseBackground(wxEraseEvent& event)
 {
     // for flicker-free display
-    event.Skip();
 }
 
 bool EditorFrame::onDropFiles(wxCoord x, wxCoord y, const wxArrayString& filenames)

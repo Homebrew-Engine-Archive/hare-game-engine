@@ -35,8 +35,7 @@ namespace hare_editor
         ProjectFile::List::iterator it = files.begin();
         for (; it != files.end(); ++it)
         {
-            String fname = (*it)->fileName;
-            if (fname == name)
+            if ((*it)->fileName == name)
             {
                 return *it;
             }
@@ -151,9 +150,15 @@ namespace hare_editor
                     for (; it1 != savedPrj->files.end(); ++it1)
                     {
                         ProjectFile::Ptr savedFile = *it1;
-                        ProjectFile::Ptr file = prj->findFile(savedFile->fileName);
-                        if (file)
-                            file = savedFile;
+                        ProjectFile::List::iterator it2 = prj->files.begin();
+                        for (; it2 != prj->files.end(); ++it2)
+                        {
+                            if ((*it2)->fileName == savedFile->fileName)
+                            {
+                                *it2 = savedFile;
+                                break;
+                            }
+                        }
                     }
                 }
             }

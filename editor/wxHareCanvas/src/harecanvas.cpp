@@ -24,6 +24,8 @@ wxHareCanvas::wxHareCanvas(wxWindow *parent, wxWindowID id, bool hasZBuffer, con
 {
     renderWindow = NULL;
 
+    style |= wxTRANSPARENT_WINDOW;
+
     Create(parent, id, pos, size, style, name);
 
     WindowParams params;
@@ -56,7 +58,5 @@ bool wxHareCanvas::Create(wxWindow *parent, wxWindowID id, const wxPoint& pos,
 
 void wxHareCanvas::onEraseBackground(wxEraseEvent& event)
 {
-    event.Skip();
-
-    //getHareApp()->hareRunFrame();
+    // for flicker-free display
 }

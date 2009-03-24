@@ -51,7 +51,7 @@ FontEditorPage::FontEditorPage(wxWindow* parent, FontMIMEHandler* handler, Font*
     canvsCache = new wxHareCanvas(splitter, idFontCacheWindow);
     canvsCache->Connect(wxEVT_SIZE, wxSizeEventHandler(FontEditorPage::onSize), NULL, this);
 
-    splitter->SplitHorizontally(canvsText, canvsCache, 0);
+    splitter->SplitHorizontally(canvsText, canvsCache, 150);
     sizer1->Add(splitter, 1, wxEXPAND, 5);
 
     SetSizer(sizer1);

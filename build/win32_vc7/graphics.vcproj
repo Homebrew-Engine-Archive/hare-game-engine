@@ -224,7 +224,7 @@
 			</File>
 		</Filter>
 		<Filter
-			Name="RenderOperation"
+			Name="RenderUnit"
 			Filter="">
 			<File
 				RelativePath="..\..\graphics\Line.cpp">
@@ -233,16 +233,22 @@
 				RelativePath="..\..\include\graphics\Line.h">
 			</File>
 			<File
+				RelativePath="..\..\graphics\Mesh.cpp">
+			</File>
+			<File
+				RelativePath="..\..\include\graphics\Mesh.h">
+			</File>
+			<File
 				RelativePath="..\..\graphics\Quad.cpp">
 			</File>
 			<File
 				RelativePath="..\..\include\graphics\Quad.h">
 			</File>
 			<File
-				RelativePath="..\..\graphics\RenderOperation.cpp">
+				RelativePath="..\..\graphics\RenderUnit.cpp">
 			</File>
 			<File
-				RelativePath="..\..\include\graphics\RenderOperation.h">
+				RelativePath="..\..\include\graphics\RenderUnit.h">
 			</File>
 		</Filter>
 		<Filter
@@ -339,6 +345,10 @@
 			<File
 				RelativePath="..\..\include\graphics\TextManager.h">
 			</File>
+		</Filter>
+		<Filter
+			Name="ParticleSystem"
+			Filter="">
 		</Filter>
 		<File
 			RelativePath="..\..\include\graphics\Graphics.h">

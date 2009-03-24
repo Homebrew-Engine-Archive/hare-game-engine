@@ -23,7 +23,7 @@ namespace hare_d3d
 
 		virtual void beginFrame();
 		virtual void render();
-		virtual void render(RenderOperation* operation);
+		virtual void render(RenderUnit* operation);
 		virtual void endFrame();
 		virtual void clear();
 

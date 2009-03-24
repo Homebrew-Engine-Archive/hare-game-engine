@@ -222,7 +222,7 @@ namespace hare_d3d
 		}
 	}
 
-	void D3DRenderSystem::render(RenderOperation* operation)
+	void D3DRenderSystem::render(RenderUnit* operation)
 	{
 		if (!operation)
 			return ;

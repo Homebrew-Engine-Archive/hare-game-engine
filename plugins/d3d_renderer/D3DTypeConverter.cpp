@@ -127,17 +127,17 @@ namespace hare_d3d
 		return d3dfmt;
 	}
 
-	D3DPRIMITIVETYPE D3DTypeConverter::toD3DPrimtiveType(RenderOperation::RenderOperationType primtype)
+	D3DPRIMITIVETYPE D3DTypeConverter::toD3DPrimtiveType(RenderUnit::RenderOperationType primtype)
 	{
 		D3DPRIMITIVETYPE retPrimType;
 		switch(primtype)
 		{
-		case RenderOperation::ROT_POINT_LIST:     retPrimType = D3DPT_POINTLIST;    break;
-		case RenderOperation::ROT_LINE_LIST:      retPrimType = D3DPT_LINELIST;     break;
-		case RenderOperation::ROT_LINE_STRIP:     retPrimType = D3DPT_LINESTRIP;    break;
-		case RenderOperation::ROT_TRIANGLE_LIST:  retPrimType = D3DPT_TRIANGLELIST; break;
-		case RenderOperation::ROT_TRIANGLE_STRIP: retPrimType = D3DPT_TRIANGLESTRIP;break;
-		case RenderOperation::ROT_TRIANGLE_FAN:   retPrimType = D3DPT_TRIANGLEFAN;  break;
+		case RenderUnit::ROT_POINT_LIST:     retPrimType = D3DPT_POINTLIST;    break;
+		case RenderUnit::ROT_LINE_LIST:      retPrimType = D3DPT_LINELIST;     break;
+		case RenderUnit::ROT_LINE_STRIP:     retPrimType = D3DPT_LINESTRIP;    break;
+		case RenderUnit::ROT_TRIANGLE_LIST:  retPrimType = D3DPT_TRIANGLELIST; break;
+		case RenderUnit::ROT_TRIANGLE_STRIP: retPrimType = D3DPT_TRIANGLESTRIP;break;
+		case RenderUnit::ROT_TRIANGLE_FAN:   retPrimType = D3DPT_TRIANGLEFAN;  break;
 		default: assert(false);
 		}
 

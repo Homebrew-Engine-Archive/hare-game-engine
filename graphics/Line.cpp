@@ -28,9 +28,9 @@ namespace hare_graphics
 		return 1;
 	}
 
-	RenderOperation::RenderOperationType Line::getOperationType()
+	RenderUnit::RenderOperationType Line::getOperationType()
 	{
-		return RenderOperation::ROT_LINE_LIST;
+		return RenderUnit::ROT_LINE_LIST;
 	}
 
 	void Line::setTextureUVMap(f32 ul, f32 ur, f32 vt, f32 vb)

@@ -31,9 +31,9 @@ namespace hare_graphics
 		return 2;
 	}
 
-	RenderOperation::RenderOperationType Quad::getOperationType()
+	RenderUnit::RenderOperationType Quad::getOperationType()
 	{
-		return RenderOperation::ROT_TRIANGLE_LIST;
+		return RenderUnit::ROT_TRIANGLE_LIST;
 	}
 
 	void Quad::move(float dx, float dy)

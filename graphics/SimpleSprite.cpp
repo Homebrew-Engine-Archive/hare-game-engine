@@ -20,45 +20,54 @@ namespace hare_graphics
 
 	void SimpleSprite::loadFromImage(const String& filename)
 	{
-		shader = new SimpleShader;
-		AnimMod* animModMtrl = new AnimMod;
-		TextureMtrl* texMtrl;
-		//PannerMod*   pannerMtrl;
-		//ScalerMod*   scaleMtrl;
-		AnimModUnit* animModUnit;
+
+
+
+
+
+
 		Texture* tex;
-
-
-
-		//tex = RenderSystem::getSingletonPtr()->createTexture();
-		//tex->createFromFile("haha.png");
-		//texMtrl = new TextureMtrl;
-		//texMtrl->setTexture(tex);
-		//animModUnit = new AnimModUnit;
-		//animModUnit->frameTime = 1;
-		//animModUnit->setSubMtrl(texMtrl);
-		//animModMtrl->addFrame(animModUnit);
-
 		tex = RenderSystem::getSingletonPtr()->createTexture();
 		tex->createFromFile(filename);
+
+		TextureMtrl* texMtrl;
 		texMtrl = new TextureMtrl;
 		texMtrl->setTexture(tex);
 
-		//pannerMtrl = new PannerMod;
-		//pannerMtrl->direction.x = 0.1f;
-		//pannerMtrl->direction.y = 0.1f;
-		//pannerMtrl->speed = 1.f;
-		//pannerMtrl->setSubMtrl(texMtrl);
+		PannerMod*   pannerMtrl;
+		pannerMtrl = new PannerMod;
+		pannerMtrl->offset.x = 0.5f;
+		pannerMtrl->panDirection.x = 0.5f;
+		pannerMtrl->panRate = 0.5f;
+		pannerMtrl->setSubMtrl(texMtrl);
+		
+		ScalerMod*   scaleMtrl;
+		scaleMtrl = new ScalerMod;
+		scaleMtrl->scale.x = 0.5f;
+		scaleMtrl->scale.y = 0.5f;
+		scaleMtrl->center.x = 0.2f;
+		scaleMtrl->center.x = 0.2f;
+		scaleMtrl->setSubMtrl(pannerMtrl);
 
-		//scaleMtrl = new ScalerMod;
-		//scaleMtrl->scale.y = 0.5f;
-		//scaleMtrl->setSubMtrl(pannerMtrl);
+		RotatorMod* rotatorMod;
+		rotatorMod = new RotatorMod;
+		rotatorMod->center.x = 0.5f;
+		rotatorMod->center.y = 0.5f;
+		rotatorMod->rotation = 10.5f;
+		rotatorMod->speed = 10.5f;
+		rotatorMod->setSubMtrl(scaleMtrl);
 
+		AnimModUnit* animModUnit;
 		animModUnit = new AnimModUnit;
 		animModUnit->frameTime = 1;
-		animModUnit->setSubMtrl(texMtrl);
+		//animModUnit->setSubMtrl(pannerMtrl);
+		//animModUnit->setSubMtrl(scaleMtrl);
+		animModUnit->setSubMtrl(rotatorMod);
+
+		AnimMod* animModMtrl = new AnimMod;
 		animModMtrl->addFrame(animModUnit);
 
+		shader = new SimpleShader;
 		shader->setMaterial(animModMtrl);
 		quad.normalize();
 		quad.setWidth((float)tex->getWidth());

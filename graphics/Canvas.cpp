@@ -81,7 +81,7 @@ namespace hare_graphics
 
 				quad.setWidth((charGlyph.recGlyph.maxX - charGlyph.recGlyph.minX) * font->getFontTexture()->getWidth());
 				quad.setHeight((charGlyph.recGlyph.maxY - charGlyph.recGlyph.minY) * font->getFontTexture()->getHeight());
-				texMtrl->setUV(charGlyph.recGlyph.minX, charGlyph.recGlyph.minY, charGlyph.recGlyph.maxX, charGlyph.recGlyph.maxY);
+				quad.setTextureUVMap(charGlyph.recGlyph);
 				RenderSystem::getSingletonPtr()->render(&quad);		
 				RenderSystem::getSingletonPtr()->render();
 			}		

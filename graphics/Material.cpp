@@ -13,7 +13,7 @@ namespace hare_graphics
 		,AlphaBlendArg2(CABA_Diffuse)
 		,wrapModeU(WM_Wrap)
 		,wrapModeV(WM_Wrap)
-		,lodSet(LS_Interface)
+		,lodSet(LS_HighQuality)
 	{
 
 	}
@@ -79,10 +79,7 @@ namespace hare_graphics
 
 	void TextureMtrl::frameMove()
 	{
-		uleft = 0; 
-		uright= 1; 
-		vtop  = 0;
-		vbottom = 1;
+		texMat = Matrix4::IDENTITY;
 	}
 
 	//½áµã²ÄÖÊ 
@@ -105,12 +102,15 @@ namespace hare_graphics
 	{}
 
 	PannerMod::PannerMod()
+		:startTime(0)
+		,offset(Point<f32>::ZERO)
+		,panDirection(Point<f32>::ZERO)
+		,panRate(0)
+		,oscillationPhase(Point<f32>::ZERO)
+		,oscillationAmplitude(Point<f32>::ZERO)
+		,oscillationRate(Point<f32>::ZERO)
 	{
-		offset.x = 0;    // 0 - 1
-		offset.y = 0;
-		direction.x = 0;
-		direction.y = 0;
-		speed = 0;
+
 	}
 
 	PannerMod::~PannerMod()
@@ -120,26 +120,36 @@ namespace hare_graphics
 
 	void PannerMod::frameMove()
 	{
-		static f32 tmpOffsetX = 0;
-		static f32 tmpOffsetY = 0;
 		if (mtrl)
 			mtrl->frameMove();
 
 		TextureMtrl* texMtrl = getTextureMtrl();
 
 		if (texMtrl){
-			f32 uleft, uright, vtop, vbottom;
-			texMtrl->getUV(uleft, uright, vtop, vbottom);
-			
-			tmpOffsetX += direction.x * speed * getTimer().getDeltaTime() + offset.x;
-			tmpOffsetY += direction.y * speed * getTimer().getDeltaTime() + offset.y;
+			if (startTime == 0){
+				startTime = getTime();
+			}
 
-			uleft += tmpOffsetX; 
-			uright+= tmpOffsetX; 
-			vtop  += tmpOffsetY;
-			vbottom+=tmpOffsetY;
+			f32 detTime = getTime() - startTime;
 
-			texMtrl->setUV(uleft, uright, vtop, vbottom);
+			Point<f32> curAngle;
+			curAngle.x = oscillationRate.x*detTime + oscillationPhase.x;
+			curAngle.y = oscillationRate.y*detTime + oscillationPhase.y;
+
+			Point<f32> aniOffset;
+			aniOffset.x = MathUtil::rSin(MathUtil::toRadian(curAngle.x))*(oscillationAmplitude.x/2.f);
+			aniOffset.y = MathUtil::rSin(MathUtil::toRadian(curAngle.y))*(oscillationAmplitude.y/2.f);
+
+			Point<f32> cur = panDirection * panRate * detTime + aniOffset;
+
+			cur.x = MathUtil::rModf(cur.x);
+			cur.y = MathUtil::rModf(cur.y);
+
+			Matrix4 mat(Matrix4::IDENTITY);
+			mat._13 = -cur.x - offset.x;
+			mat._23 = -cur.y - offset.y;
+
+			texMtrl->texMat = mat * texMtrl->texMat;
 		}
 	}
 
@@ -148,11 +158,14 @@ namespace hare_graphics
 	{}
 
 	ScalerMod::ScalerMod()
+		:startTime(0)
+		,scale(1, 1)
+		,center(Point<f32>::ZERO)
+		,oscillationPhase(Point<f32>::ZERO)
+		,oscillationAmplitude(Point<f32>::ZERO)
+		,oscillationRate(Point<f32>::ZERO)
 	{
-		lt.x = 0;    // 0 - 1
-		lt.y = 0;
-		scale.x = 1;
-		scale.y = 1;
+
 	}
 
 	ScalerMod::~ScalerMod()
@@ -168,19 +181,37 @@ namespace hare_graphics
 		TextureMtrl* texMtrl = getTextureMtrl();
 
 		if (texMtrl){
-			f32 uleft, uright, vtop, vbottom;
-			texMtrl->getUV(uleft, uright, vtop, vbottom);	
+			if (startTime == 0){
+				startTime = getTime();
+			}
 
-			f32 tmpScaleX = 1.0f / scale.x;
-			f32 tmpScaleY = 1.0f / scale.y;
+			f32 detTime = getTime() - startTime;
 
-			uleft += lt.x;
-			vtop += lt.y;
+			Point<f32> curAngle;
+			curAngle.x = oscillationRate.x*detTime + oscillationPhase.x;
+			curAngle.y = oscillationRate.y*detTime + oscillationPhase.y;
 
-			uright = uleft + tmpScaleX;
-			vbottom= vtop  + tmpScaleY;
+			Point<f32> aniScale;
+			aniScale.x = MathUtil::rSin(MathUtil::toRadian(curAngle.x))*(oscillationAmplitude.x/2.f);
+			aniScale.y = MathUtil::rSin(MathUtil::toRadian(curAngle.y))*(oscillationAmplitude.y/2.f);
 
-			texMtrl->setUV(uleft, uright, vtop, vbottom);	
+			// move to center.
+			Matrix4 mat;
+			mat = Matrix4::IDENTITY;
+
+			mat._13 = -center.x;
+			mat._23 = -center.y;
+
+			texMtrl->texMat = mat * texMtrl->texMat;		
+
+			mat = Matrix4::IDENTITY;
+			mat._11 = 1.f/(scale.x + aniScale.x);
+			mat._22 = 1.f/(scale.y + aniScale.y);
+
+			mat._13 = center.x;
+			mat._23 = center.y;
+
+			texMtrl->texMat = mat * texMtrl->texMat;
 		}
 	}
 
@@ -189,11 +220,15 @@ namespace hare_graphics
 	{}
 
 	RotatorMod::RotatorMod()
+		:center(0, 0)
+		,rotation(0)
+		,speed(0)
+		,oscillationPhase(0)
+		,oscillationAmplitude(0)
+		,oscillationRate(0)
+		,startTime(0)
 	{
-		center.x = 0; // 0 - 1
-		center.y = 0;
-		rotation = 0;
-		speed = 0;
+
 	}
 
 	RotatorMod::~RotatorMod()
@@ -209,26 +244,38 @@ namespace hare_graphics
 		TextureMtrl* texMtrl = getTextureMtrl();
 
 		if (texMtrl){
-			f32 uleft, uright, vtop, vbottom;
-			texMtrl->getUV(uleft, uright, vtop, vbottom);	
-
-			f32 tx1, ty1, tx2, ty2;
-			//f32 cost, sint;
-
-			tx1 = -center.x;
-			ty1 = -center.y;
-			tx2 = 1.0f - center.x;
-			ty2 = 1.0f - center.y;
-	
-			f32 tmpRotation = speed * getTimer().getDeltaTime() + rotation;
-
-			if (tmpRotation != 0.0f){	
-
-			}else{
-				
+			if (startTime == 0){
+				startTime = getTime();
 			}
 
-			texMtrl->setUV(uleft, uright, vtop, vbottom);	
+			f32 detTime = getTime() - startTime;
+
+			f32 cur = oscillationRate*detTime + oscillationPhase;
+			f32 degree;
+			degree = rotation + MathUtil::rSin(MathUtil::toRadian(cur))*(oscillationAmplitude/2.f) + speed*detTime;
+
+			f32 c = MathUtil::rCos(MathUtil::toRadian(degree));
+			f32 s = MathUtil::rSin(MathUtil::toRadian(degree));
+
+			Matrix4 mat;
+			mat = Matrix4::IDENTITY;
+
+			mat._13 = -center.x;
+			mat._23 = -center.y;
+
+			texMtrl->texMat = mat * texMtrl->texMat;		
+
+			mat = Matrix4::IDENTITY;
+
+			mat._11 = c;
+			mat._12 = -s;
+			mat._21 = s;
+			mat._22 = c;
+
+			mat._13 = center.x;
+			mat._23 = center.y;
+
+			texMtrl->texMat = mat * texMtrl->texMat;
 		}
 	}
 

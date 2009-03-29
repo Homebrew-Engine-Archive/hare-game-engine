@@ -120,7 +120,7 @@ namespace hare_graphics
 		maxCharWidth = max(max_width, max_height);
 
 		//纹理尺寸
-		u32 texSize = MathUtil::firstPO2From((u32)sqrt((f32)cacheBufferSize) * maxCharWidth);
+		u32 texSize = (u32)MathUtil::firstPO2From(sqrt((f32)cacheBufferSize) * maxCharWidth);
 
 		//纹理每行装的字符数
 		numCharPerLine = texSize / maxCharWidth;

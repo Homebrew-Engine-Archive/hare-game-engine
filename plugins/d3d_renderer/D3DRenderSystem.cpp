@@ -238,13 +238,20 @@ namespace hare_d3d
 		bool bRenderTextureChange= false; //当前纹理是否改变
 		Matrix4 tmpTexMat;
 
-		Shader* shader = operation->getShader();
-		if (shader){
-			if (curShaderParams != shader->getShaderParams()){
-				curShaderParams = shader->getShaderParams();
+		Material* mtrl = operation->getMaterial();
+		if (mtrl){
+			Shader* shader = mtrl->getShader();
+			ShaderParams tmpShaderParams;
+			if (shader){
+				tmpShaderParams = shader->getShaderParams();
+			}
+
+			if (curShaderParams != tmpShaderParams){
+				curShaderParams = tmpShaderParams;
 				bShaderParamsChange = true;
 			}
-			TextureMtrl* textureMtrl = shader->getTextureMtrl();
+
+			TextureMtrl* textureMtrl = mtrl->getTextureMtrl();
 			if (textureMtrl){
 				if (curTextureStage != textureMtrl->getTextureStage()){
 					curTextureStage = textureMtrl->getTextureStage();
@@ -268,10 +275,10 @@ namespace hare_d3d
 				curRenderTexture = NULL;
 				tmpTexMat = Matrix4::IDENTITY;
 			}
-		}else{ //画点和画线模式是否需要设置混合模式
+		}else{
 			bRenderTextureChange = true;
 			curRenderTexture = NULL;	
-			tmpTexMat = Matrix4::IDENTITY;
+			tmpTexMat = Matrix4::IDENTITY;	
 		}
 
 		if ( bRenderTextureChange || bTextureStageChange || bShaderParamsChange
@@ -365,6 +372,7 @@ namespace hare_d3d
 			pD3DDevice->SetSamplerState(0, D3DSAMP_MIPFILTER, bAnisotropicFilter ? D3DTEXF_ANISOTROPIC : D3DTEXF_LINEAR);
 		}
 
+		pD3DDevice->SetTextureStageState(0, D3DTSS_RESULTARG, D3DTA_CURRENT);
 		//textureMap
 		//pD3DDevice->SetTextureStageState(0, D3DTSS_TEXCOORDINDEX, 0);
 		//pD3DDevice->SetTextureStageState(0, D3DTSS_RESULTARG, D3DTA_CURRENT);

@@ -40,6 +40,9 @@ namespace hare_d3d
 		static const u32 VERTEX_CAPACITY;
 
 		static const u32 VERTEX_FVF;
+	protected:
+		void initalizeParam();
+
 	private:
 
 		LPDIRECT3D9 pD3DInterface;
@@ -65,6 +68,8 @@ namespace hare_d3d
 		D3DRenderWindow* pPrimaryWindow;
 
 		DeviceManager* pDeviveManager;
+
+		Matrix4 texMat;
 	};
 }
 

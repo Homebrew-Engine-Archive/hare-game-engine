@@ -144,6 +144,12 @@ namespace hare_d3d
 		return retPrimType;
 	}
 
+	D3DMATRIX D3DTypeConverter::toD3DMatrix(const Matrix4& mat)
+	{
+		D3DXMATRIX d3dmat;
+		D3DXMatrixTranspose(&d3dmat,(const D3DXMATRIX*)(&mat));
 
+		return d3dmat;
+	}
 
 }

@@ -21,6 +21,7 @@ namespace hare_d3d
 		,pIndexBufferManager(NULL)
 		,pVertexBufferManager(NULL)
 		,pPrimaryWindow(NULL)
+		,texMat(Matrix4::IDENTITY)
 	{
 		pD3DInterface = Direct3DCreate9(D3D_SDK_VERSION);
 		if (!pD3DInterface) {
@@ -70,22 +71,31 @@ namespace hare_d3d
 		SAFE_RELEASE(pD3DInterface)
 	}
 
+	void D3DRenderSystem::initalizeParam()
+	{
+		pD3DDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
+		pD3DDevice->SetRenderState(D3DRS_LIGHTING, FALSE);
+		setShaderParams(curShaderParams);
+		setTextureStage(curTextureStage);
+		pD3DDevice->SetTextureStageState(0, D3DTSS_TEXTURETRANSFORMFLAGS, D3DTTFF_COUNT2 ); 
+		texMat = Matrix4::IDENTITY;
+		pD3DDevice->SetTransform(D3DTS_TEXTURE0, &D3DTypeConverter::toD3DMatrix(texMat));
+
+	}
+
 	void D3DRenderSystem::createDevice(D3DRenderWindow* renderWindow)
 	{
 		HRESULT hr;
 		if (renderWindow->getIsMainWnd()){
 
 			if (pD3DDevice){//D3D设备已经存在 调用原因可能是设备重建
+				initalizeParam();
 				
-				pD3DDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
-				pD3DDevice->SetRenderState(D3DRS_LIGHTING, FALSE);
-				setShaderParams(curShaderParams);
-				setTextureStage(curTextureStage);
-
 				hr = pD3DDevice->GetRenderTarget(0, &(renderWindow->pRenderSurface));
 
 				hr = pD3DDevice->GetDepthStencilSurface(&(renderWindow->pDepthStencilSurface));
 
+				
 				if (FAILED(hr)){
 					assert(false);
 				}
@@ -131,11 +141,7 @@ namespace hare_d3d
 
 			pIndexBufferManager  = new D3DIndexBufferManager(VERTEX_CAPACITY);
 			
-			pD3DDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
-			pD3DDevice->SetRenderState(D3DRS_LIGHTING, FALSE);
-			setShaderParams(curShaderParams);
-			setTextureStage(curTextureStage);
-
+			initalizeParam();
 			//得到渲染面
 			pD3DDevice->GetRenderTarget(0, &(renderWindow->pRenderSurface));
 
@@ -230,6 +236,7 @@ namespace hare_d3d
 		bool bShaderParamsChange = false; //混合参数是否改变 改变了 则先调用渲染 然后设置参数
 		bool bTextureStageChange = false; 
 		bool bRenderTextureChange= false; //当前纹理是否改变
+		Matrix4 tmpTexMat;
 
 		Shader* shader = operation->getShader();
 		if (shader){
@@ -244,11 +251,7 @@ namespace hare_d3d
 					bTextureStageChange = true;
 				}
 
-				//纹理寻址 有点烂 - -!
-				f32 ul, ur, vt, vb;
-				textureMtrl->getUV(ul, vt, ur, vb);
-				operation->setTextureUVMap(ul, vt, ur, vb);
-
+				tmpTexMat = textureMtrl->texMat;
 
 				D3DTexture* texture = (D3DTexture*)textureMtrl->getTexture();
 				if (texture){
@@ -263,26 +266,32 @@ namespace hare_d3d
 			}else{
 				bRenderTextureChange = true;
 				curRenderTexture = NULL;
+				tmpTexMat = Matrix4::IDENTITY;
 			}
 		}else{ //画点和画线模式是否需要设置混合模式
 			bRenderTextureChange = true;
-			curRenderTexture = NULL;		
+			curRenderTexture = NULL;	
+			tmpTexMat = Matrix4::IDENTITY;
 		}
 
-		if (bShaderParamsChange || bTextureStageChange || bRenderTextureChange
+		if ( bRenderTextureChange || bTextureStageChange || bShaderParamsChange
 			|| PrimType != D3DTypeConverter::toD3DPrimtiveType(operation->getOperationType())
-			|| pVertexBufferManager->getVectexCount() >= VERTEX_CAPACITY - operation->getVertexCount()){
+			|| pVertexBufferManager->getVectexCount() >= VERTEX_CAPACITY - operation->getVertexCount()
+			|| texMat != tmpTexMat ){
 			
 			render();
 			
 			PrimType = D3DTypeConverter::toD3DPrimtiveType(operation->getOperationType());
-
+			
+			if (bRenderTextureChange)
+				pD3DDevice->SetTexture(0, curRenderTexture);
 			if (bShaderParamsChange)
 				setShaderParams(curShaderParams);
 			if (bTextureStageChange)
 				setTextureStage(curTextureStage);
-			if (bRenderTextureChange)
-				pD3DDevice->SetTexture(0, curRenderTexture);
+			
+			texMat = tmpTexMat;
+			pD3DDevice->SetTransform(D3DTS_TEXTURE0, &D3DTypeConverter::toD3DMatrix(texMat));
 
 		}
 			
@@ -356,6 +365,9 @@ namespace hare_d3d
 			pD3DDevice->SetSamplerState(0, D3DSAMP_MIPFILTER, bAnisotropicFilter ? D3DTEXF_ANISOTROPIC : D3DTEXF_LINEAR);
 		}
 
+		//textureMap
+		//pD3DDevice->SetTextureStageState(0, D3DTSS_TEXCOORDINDEX, 0);
+		//pD3DDevice->SetTextureStageState(0, D3DTSS_RESULTARG, D3DTA_CURRENT);
 	}
 
 	LPDIRECT3DDEVICE9 D3DRenderSystem::getD3DDevice()

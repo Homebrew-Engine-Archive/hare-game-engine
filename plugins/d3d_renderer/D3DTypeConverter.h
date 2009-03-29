@@ -13,6 +13,7 @@ namespace hare_d3d
 		static D3DTEXTUREADDRESS toD3DTextureAddress(TextureStage::WrapMode wrapMod);
 		static D3DFORMAT    toD3DFormat(HarePixelFormat hpf);
 		static D3DPRIMITIVETYPE toD3DPrimtiveType(RenderUnit::RenderOperationType primtype);
+		static D3DMATRIX toD3DMatrix(const Matrix4& mat);
 	};
 }
 

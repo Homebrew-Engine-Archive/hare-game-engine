@@ -1,4 +1,5 @@
 _("Windows");
+_("Locals");
 _("Watch");
 _("Call Stack");
 _("Debug Output");

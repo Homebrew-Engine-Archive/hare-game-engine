@@ -1,138 +1,146 @@
+#ifndef _WINDOW_H_
+#define _WINDOW_H_
 
+#include "UIPrerequisites.h"
+#include "Event.h"
 
-
-class Window : public EventHandler
+namespace hare_ui
 {
-public:
-
-    void setId(int id) 
-    { 
-        windowId = id; 
-    }
-    int getId() const 
-    { 
-        return windowId; 
-    }
-
-    void setName(const String &name) 
-    { 
-        windowName = name; 
-    }
-    const String& getName() const 
-    { 
-        return windowName; 
-    }
-
-    virtual bool show(bool show = true);
-    bool hide() 
-    { 
-        return show(false); 
-    }
-
-    virtual bool enable(bool enable = true);
-    bool disable()
-    { 
-        return enable(false); 
-    }
-
-    virtual bool isShown() const 
-    { 
-        return shown; 
-    }
-    virtual bool isEnabled() const 
-    { 
-        return enabled; 
-    }
-
-    virtual bool isTopLevel() const
+    class Window : public EventHandler
     {
-        return false;
-    }
+    public:
 
-    Window* getParent() const
-    {
-        return parent;
-    }
+        void setId(int id) 
+        { 
+            windowId = id; 
+        }
+        int getId() const 
+        { 
+            return windowId; 
+        }
 
-    const Window::List& getChildren() const 
-    { 
-        return children; 
-    }
-    
-    Window::List& getChildren() 
-    { 
-        return children; 
-    }
+        void setName(const String &name) 
+        { 
+            windowName = name; 
+        }
+        const String& getName() const 
+        { 
+            return windowName; 
+        }
 
-    Window *findWindow(int id) const;
-    Window *findWindow(const String& name) const;
+        virtual bool show(bool show = true);
+        bool hide() 
+        { 
+            return show(false); 
+        }
 
-    void setSizer(Sizer* sizer);
+        virtual bool enable(bool enable = true);
+        bool disable()
+        { 
+            return enable(false); 
+        }
 
-    Sizer* getSizer() const
-    {
-        return windowSizer;
-    }
+        virtual bool isShown() const 
+        { 
+            return shown; 
+        }
+        virtual bool isEnabled() const 
+        { 
+            return enabled; 
+        }
 
-    void setParentSizer(Sizer* sizer);
+        virtual bool isTopLevel() const
+        {
+            return false;
+        }
 
-    Sizer* getParentSizer() const
-    {
-        return parentSizer;
-    }
+        Window* getParent() const
+        {
+            return parent;
+        }
 
-    void setSize(const SizeF& size)
-    {
-    }
+        const Window::List& getChildren() const 
+        { 
+            return children; 
+        }
 
-    void setPositon(const PointF& pos)
-    { 
-    }
+        Window::List& getChildren() 
+        { 
+            return children; 
+        }
 
-    void captureMouse();
-    void releaseMouse();
+        Window *findWindow(int id) const;
+        Window *findWindow(const String& name) const;
 
-    // get the window which currently captures the mouse or NULL
-    static Window *getCapture();
+        void setSizer(Sizer* sizer);
 
-    // does this window have the capture?
-    virtual bool hasCapture() const
-    { 
-        return (Window*)this == getCapture(); 
-    }
+        Sizer* getSizer() const
+        {
+            return windowSizer;
+        }
 
-    virtual bool hitTest(const PointF& pt) const;
+        void setParentSizer(Sizer* sizer);
 
-    virtual void setMinSize(const SizeN& size) { minSize = size; }
-    virtual void setMaxSize(const SizeN& size) { maxSize = size; }
+        Sizer* getParentSizer() const
+        {
+            return parentSizer;
+        }
 
-    virtual SizeF getMinSize() const { return minSize; }
-    virtual SizeF getMaxSize() const { return maxSize; }
+        void setSize(const SizeF& size)
+        {
+        }
 
-public:
-    virtual void setTitle(const String& title) = 0;
-    virtual String getTitle() const = 0;
+        void setPositon(const PointF& pos)
+        { 
+        }
 
-    virtual void raise() = 0;
-    virtual void lower() = 0;
+        void captureMouse();
+        void releaseMouse();
 
-protected:
-    Sizer* windowSizer; // sizer of this window
-    Sizer* parentSizer; // which sizer this window belongs to
+        // get the window which currently captures the mouse or NULL
+        static Window *getCapture();
 
-    Window::List children;
-    Window* parent;
+        // does this window have the capture?
+        virtual bool hasCapture() const
+        { 
+            return (Window*)this == getCapture(); 
+        }
 
-    static Window* capturedWindow;
+        virtual bool hitTest(const PointF& pt) const;
 
-    bool shown;
-    bool enabled;
+        virtual void setMinSize(const SizeN& size) { minSize = size; }
+        virtual void setMaxSize(const SizeN& size) { maxSize = size; }
 
-    int windowId;
-    String windowName;
+        virtual SizeF getMinSize() const { return minSize; }
+        virtual SizeF getMaxSize() const { return maxSize; }
 
-    SizeF minSize;
-    SizeF maxSize;
+    public:
+        virtual void setTitle(const String& title) = 0;
+        virtual String getTitle() const = 0;
 
-    String themeName;
-};
+        virtual void raise() = 0;
+        virtual void lower() = 0;
+
+    protected:
+        Sizer* windowSizer; // sizer of this window
+        Sizer* parentSizer; // which sizer this window belongs to
+
+        Window::List children;
+        Window* parent;
+
+        static Window* capturedWindow;
+
+        bool shown;
+        bool enabled;
+
+        int windowId;
+        String windowName;
+
+        SizeF minSize;
+        SizeF maxSize;
+
+        String themeName;
+    };
+}
+
+#endif

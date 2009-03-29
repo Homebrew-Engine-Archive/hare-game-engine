@@ -1,5 +1,11 @@
+#include "PCH.h"
+#include "Theme.h"
 
-
-HARE_IMPLEMENT_ABSTRACT_CLASS(Theme, Object, 0)
+namespace hare_ui
 {
+    HARE_IMPLEMENT_ABSTRACT_CLASS(Theme, Object, 0)
+    {
+    }
 }
+
+

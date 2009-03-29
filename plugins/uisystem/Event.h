@@ -34,7 +34,7 @@ namespace hare_ui
         { }
 
         EventTableEntryBase(const EventTableEntryBase& rhs)
-            : id(rhs.m_id),
+            : id(rhs.id),
             lastId(rhs.lastId),
             func(rhs.func),
             userData(rhs.userData)
@@ -135,22 +135,57 @@ namespace hare_ui
     public:
         Event(int winid = 0, EventType commandType = uiEVT_NULL);
 
-        void setEventType(EventType type) { eventType = type; }
-        EventType getEventType() const { return eventType; }
-        void* getEventSender() const { return eventSender; }
-        void setEventSender(void* sender) { eventSender = sender; }
-        int getId() const { return id; }
-        void setId(int Id) { id = Id; }
+        void setEventType(EventType type) 
+        { 
+            eventType = type; 
+        }
+        
+        EventType getEventType() const 
+        { 
+            return eventType; 
+        }
 
-        void skip(bool skip = true) { skipped = skip; }
-        bool isSkipped() const { return skipped; }
+        void* getEventSender() const 
+        { 
+            return eventSender; 
+        }
+        
+        void setEventSender(void* sender) 
+        { 
+            eventSender = sender; 
+        }
+        
+        int getId() const 
+        { 
+            return id; 
+        }
+        
+        void setId(int Id) 
+        { 
+            id = Id; 
+        }
+
+        void skip(bool skip = true) 
+        { 
+            skipped = skip; 
+        }
+        
+        bool isSkipped() const 
+        { 
+            return skipped; 
+        }
 
         virtual Event *clone() const = 0;
 
-        bool isCommandEvent() const { return isCmdEvent; }
+        bool isCommandEvent() const 
+        { 
+            return isCmdEvent; 
+        }
 
         bool shouldPropagate() const
-        { return propagationLevel != uiEVENT_PROPAGATE_NONE; }
+        { 
+            return propagationLevel != uiEVENT_PROPAGATE_NONE; 
+        }
 
         int stopPropagation()
         {

@@ -1,3 +1,4 @@
+#include "PCH.h"
 
 HARE_BEGIN_EVENT_TABLE(Button, Window)
     HARE_EVT_MOUSE_EVENTS(onMouseEvent)

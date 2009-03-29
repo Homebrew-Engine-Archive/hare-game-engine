@@ -20,4 +20,21 @@
 #   endif
 #endif
 
+namespace hare_ui
+{
+    class Window;
+    class Theme;
+    class Sizer;
+    class BoxSizer;
+    class SizerItem;
+    class SizerItemWindow;
+    class SizerItemSizer;
+    class SizerItemSpacer;
+    class SizerSpacer;
+    class Event;
+    class EventHandler;
+    struct EventTable;
+    struct EventTableEntry;
+}
+
 #endif // _UI_PREREQUISITES_H_

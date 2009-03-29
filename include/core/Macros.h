@@ -126,7 +126,7 @@ inline EnumMap* getEnumValue<TYPE>() { \
         pEnumMap = &theEnum; \
     }
 #define HARE_ENUM_VALUE(VALUE) pEnumMap->insert(std::make_pair(#VALUE, VALUE));
-#define HARE_ENUM_END \
+#define HARE_ENUM_END() \
     return pEnumMap; \
 }
 
@@ -137,9 +137,9 @@ enum Bool
 };
 
 HARE_ENUM_BEGIN(Bool)
-HARE_ENUM_VALUE(False)
-HARE_ENUM_VALUE(True)
-HARE_ENUM_END
+    HARE_ENUM_VALUE(False)
+    HARE_ENUM_VALUE(True)
+HARE_ENUM_END()
 
 }
 #endif

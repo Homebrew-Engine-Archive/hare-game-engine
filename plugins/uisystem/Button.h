@@ -1,6 +1,4 @@
 
-
-
 class Button : public Window
 {
 public:
@@ -14,8 +12,13 @@ public:
     }
 
 protected:
+    void onMouseEvent(MouseEvent& event);
+
+protected:
     bool pushed;
     bool hovering;
+
+    HARE_DECLARE_EVENT_TABLE()
 };
 
 class ButtonTheme : public Theme

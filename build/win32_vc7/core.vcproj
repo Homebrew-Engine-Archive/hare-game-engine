@@ -195,6 +195,9 @@
 			<File
 				RelativePath="..\..\core\Timer.cpp">
 			</File>
+			<File
+				RelativePath="..\..\core\Vector2.cpp">
+			</File>
 			<Filter
 				Name="tinyxml"
 				Filter="">
@@ -283,9 +286,6 @@
 				RelativePath="..\..\include\core\ConvertUTF.h">
 			</File>
 			<File
-				RelativePath="..\..\include\core\Core.h">
-			</File>
-			<File
 				RelativePath="..\..\include\core\CorePrerequisites.h">
 			</File>
 			<File
@@ -362,6 +362,9 @@
 				</File>
 			</Filter>
 		</Filter>
+		<File
+			RelativePath="..\..\include\core\Core.h">
+		</File>
 	</Files>
 	<Globals>
 	</Globals>

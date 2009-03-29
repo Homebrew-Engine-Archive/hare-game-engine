@@ -89,6 +89,20 @@ public:
     { 
     }
 
+    void captureMouse();
+    void releaseMouse();
+
+    // get the window which currently captures the mouse or NULL
+    static Window *getCapture();
+
+    // does this window have the capture?
+    virtual bool hasCapture() const
+    { 
+        return (Window*)this == getCapture(); 
+    }
+
+    virtual bool hitTest(const PointF& pt) const;
+
     virtual void setMinSize(const SizeN& size) { minSize = size; }
     virtual void setMaxSize(const SizeN& size) { maxSize = size; }
 

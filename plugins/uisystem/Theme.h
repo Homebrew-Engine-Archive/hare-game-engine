@@ -9,6 +9,7 @@ protected:
 
 class Theme : public Object
 {
+    HARE_DECLARE_ABSTRACT_CLASS(Theme)
 public:
     virtual void drawWindow(Window* window) = 0;
 
@@ -19,11 +20,4 @@ public:
 
 protected:
     String name;
-};
-
-class ThemeRect : public Object
-{
-protected:
-    s32 type;
-    RectF rect;
 };

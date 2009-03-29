@@ -1,4 +1,20 @@
 
+HARE_BEGIN_EVENT_TABLE(Button, Window)
+    HARE_EVT_MOUSE_EVENTS(onMouseEvent)
+HARE_END_EVENT_TABLE()
+
+void Button::onMouseEvent(MouseEvent& event)
+{
+    if (hitTest(event.getPosition()))
+    {
+
+    }
+
+    if (hasCapture())
+    {
+        hovering = true;
+    }
+}
 
 void ButtonTheme::drawWindow(Window* window)
 {
@@ -26,6 +42,5 @@ void ButtonTheme::drawWindow(Window* window)
         rect = &normalRect;
     }
 
-    // TODO: draw material with rect
-    //getCanvas()->drawImage(, material);
+    getCanvas()->drawImage(getPixelRect(), material, rect);
 }

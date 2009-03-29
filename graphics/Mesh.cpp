@@ -47,8 +47,8 @@ namespace hare_graphics
 		for (u32 count1 = 0; count1 < r; ++count1){
 			for (u32 count2 = 0; count2 < c; ++count2){
 				v[count1 * c + count2].diffuse = -1;
-				v[count1 * c + count2].x = unitWidth * count1 + left;
-				v[count1 * c + count2].y = unitWidth * count2 + top;
+				v[count1 * c + count2].x = (f32)unitWidth * count1 + left;
+				v[count1 * c + count2].y = (f32)unitWidth * count2 + top;
 				v[count1 * c + count2].z = z;
 				v[count1 * c + count2].u = (f32)count2 / (c - 1);
 				v[count1 * c + count2].v = (f32)count1 / (r - 1);

@@ -42,5 +42,6 @@
 #include "DynamicLibrary.h"
 #include "Thread.h"
 #include "Matrix4.h"
+#include "Vector2.h"
 
 #endif

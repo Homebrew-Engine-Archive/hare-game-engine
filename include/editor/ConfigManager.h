@@ -33,7 +33,7 @@ namespace hare_core
         HARE_ENUM_VALUE(FI_Circle)
         HARE_ENUM_VALUE(FI_Square)
         HARE_ENUM_VALUE(FI_Simple)
-    HARE_ENUM_END
+    HARE_ENUM_END()
 }
 
 namespace hare_editor

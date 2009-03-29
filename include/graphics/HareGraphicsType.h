@@ -49,9 +49,9 @@ namespace hare_graphics
 
 	struct Vertex
 	{
-		float x, y, z;
-		u32  diffuse;
-		float u, v;
+		f32 x, y, z;
+		u32 diffuse;
+		f32 u, v;
 	};
 }
 

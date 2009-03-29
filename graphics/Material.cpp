@@ -137,13 +137,13 @@ namespace hare_graphics
 			curAngle.y = oscillationRate.y*detTime + oscillationPhase.y;
 
 			PointF aniOffset;
-			aniOffset.x = MathUtil::rSin(MathUtil::toRadian(curAngle.x))*(oscillationAmplitude.x/2.f);
-			aniOffset.y = MathUtil::rSin(MathUtil::toRadian(curAngle.y))*(oscillationAmplitude.y/2.f);
+			aniOffset.x = MathUtil::sinf(MathUtil::toRadian(curAngle.x))*(oscillationAmplitude.x/2.f);
+			aniOffset.y = MathUtil::sinf(MathUtil::toRadian(curAngle.y))*(oscillationAmplitude.y/2.f);
 
 			PointF cur = panDirection * panRate * detTime + aniOffset;
 
-			cur.x = MathUtil::rModf(cur.x);
-			cur.y = MathUtil::rModf(cur.y);
+			cur.x = MathUtil::modff(cur.x);
+			cur.y = MathUtil::modff(cur.y);
 
 			Matrix4 mat(Matrix4::IDENTITY);
 			mat._13 = -cur.x - offset.x;
@@ -192,8 +192,8 @@ namespace hare_graphics
 			curAngle.y = oscillationRate.y*detTime + oscillationPhase.y;
 
 			PointF aniScale;
-			aniScale.x = MathUtil::rSin(MathUtil::toRadian(curAngle.x))*(oscillationAmplitude.x/2.f);
-			aniScale.y = MathUtil::rSin(MathUtil::toRadian(curAngle.y))*(oscillationAmplitude.y/2.f);
+			aniScale.x = MathUtil::sinf(MathUtil::toRadian(curAngle.x))*(oscillationAmplitude.x/2.f);
+			aniScale.y = MathUtil::sinf(MathUtil::toRadian(curAngle.y))*(oscillationAmplitude.y/2.f);
 
 			// move to center.
 			Matrix4 mat;
@@ -252,10 +252,10 @@ namespace hare_graphics
 
 			f32 cur = oscillationRate*detTime + oscillationPhase;
 			f32 degree;
-			degree = rotation + MathUtil::rSin(MathUtil::toRadian(cur))*(oscillationAmplitude/2.f) + speed*detTime;
+			degree = rotation + MathUtil::sinf(MathUtil::toRadian(cur))*(oscillationAmplitude/2.f) + speed*detTime;
 
-			f32 c = MathUtil::rCos(MathUtil::toRadian(degree));
-			f32 s = MathUtil::rSin(MathUtil::toRadian(degree));
+			f32 c = MathUtil::cosf(MathUtil::toRadian(degree));
+			f32 s = MathUtil::sinf(MathUtil::toRadian(degree));
 
 			Matrix4 mat;
 			mat = Matrix4::IDENTITY;

@@ -3,7 +3,7 @@
 
 namespace hare_graphics
 {
-	class Shader;
+	class Material;
 	class Font;
 
 	class GRAPHICS_API Canvas : public Singleton<Canvas>
@@ -19,9 +19,9 @@ namespace hare_graphics
 
 		void drawText(int x, int y, const String& text);
 
-		void drawImage(int x, int y, Shader* shader, f32 z = 0.f);
+		void drawImage(int x, int y, Material* mtrl, f32 z = 0.f);
 
-		void drawImage(const RectF& rect, Shader* shader, f32 rot = 0.f, f32 z = 0.f);
+		void drawImage(const RectF& rect, Material* mtrl, f32 rot = 0.f, f32 z = 0.f);
 
 		void setFont(Font* f);
 	private:

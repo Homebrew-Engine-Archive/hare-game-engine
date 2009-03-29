@@ -59,6 +59,7 @@ namespace hare_graphics
 
 	//材质基类
 	class TextureMtrl;
+	class Shader;
 
 	class GRAPHICS_API Material : public Object
 	{
@@ -68,15 +69,36 @@ namespace hare_graphics
 		virtual ~Material();
 
 		virtual void frameMove() = 0;
+		virtual TextureMtrl* getTextureMtrl() = 0;
+		virtual Shader* getShader() = 0;
+		
+	};
+
+
+	//节点材质
+	//创建这一层抽象类使保存材质文件明确
+	class GRAPHICS_API StandardMtrl : public Material
+	{
+		HARE_DECLARE_ABSTRACT_CLASS(StandardMtrl)
+	public:
+		StandardMtrl();
+		virtual ~StandardMtrl();
+
+
 		virtual TextureMtrl* getTextureMtrl()
 		{
 			return NULL;
 		}
-		
+		virtual Shader* getShader()
+		{
+			return NULL;
+		}
+
 	};
 
+
 	//纹理材质
-	class GRAPHICS_API TextureMtrl : public Material
+	class GRAPHICS_API TextureMtrl : public StandardMtrl
 	{
 		HARE_DECLARE_DYNAMIC_CLASS(TextureMtrl)
 	public:
@@ -146,22 +168,20 @@ namespace hare_graphics
 
 	};
 
-	//节点材质基类
-	class GRAPHICS_API WrapperMtrl : public Material
+	//节点包裹材质基类
+	class GRAPHICS_API WrapperMtrl : public StandardMtrl
 	{
 		HARE_DECLARE_ABSTRACT_CLASS(WrapperMtrl)
 	public:
 		WrapperMtrl();
 		virtual ~WrapperMtrl();
 
-		virtual void frameMove() = 0;
-
-		virtual Material* getSubMtrl()
+		virtual StandardMtrl* getSubMtrl()
 		{
 			return mtrl;
 		}
 
-		virtual void setSubMtrl(Material* m)
+		virtual void setSubMtrl(StandardMtrl* m)
 		{
 			mtrl = m;
 		}
@@ -172,7 +192,7 @@ namespace hare_graphics
 		}
 
 	protected:
-		Material::Ptr mtrl;
+		StandardMtrl::Ptr mtrl;
 	};
 
 	//材质修改器计算纹理坐标

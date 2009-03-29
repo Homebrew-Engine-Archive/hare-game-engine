@@ -30,17 +30,16 @@ namespace hare_graphics
 		virtual u32    getVertexCount() = 0;
 		virtual u32	getPrimCount() = 0;
 		virtual RenderOperationType	getOperationType() = 0;
-		virtual void setTextureUVMap(f32 ul, f32 vt, f32 ur, f32 vb) = 0;
-		void setShader(Shader* s)
+		void setMaterial(Material* m)
 		{
-			shader = s;
+			mtrl = m;
 		}
-		Shader* getShader()
+		Material* getMaterial()
 		{
-			return shader;
+			return mtrl;
 		}
 	protected:
-		Shader::Ptr shader;
+		Material::Ptr mtrl;
 	};
 }
 

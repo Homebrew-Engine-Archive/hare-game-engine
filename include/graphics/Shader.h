@@ -42,16 +42,22 @@ namespace hare_graphics
 
 	//着色器基类
 
-	class GRAPHICS_API Shader : public Object
+	class GRAPHICS_API Shader : public Material
 	{
 		HARE_DECLARE_ABSTRACT_CLASS(Shader)
 	public:
 		Shader();
 		virtual ~Shader();
 
-		virtual void setMaterial(Material* m) = 0;
-		virtual Material* getMaterial() = 0;
+		virtual void frameMove() = 0;
+		virtual void setMaterial(StandardMtrl* m) = 0;
+		virtual StandardMtrl* getMaterial() = 0;
 		virtual TextureMtrl* getTextureMtrl() = 0;
+
+		virtual Shader* getShader()
+		{
+			return this;
+		}
 
 		void setShaderParams(const ShaderParams& s)
 		{
@@ -75,12 +81,18 @@ namespace hare_graphics
 		SimpleShader();
 		virtual ~SimpleShader();
 
-		virtual void setMaterial(Material* m)
+		virtual void frameMove()
+		{
+			if (!mtrl)
+				mtrl->frameMove();
+		}
+
+		virtual void setMaterial(StandardMtrl* m)
 		{
 			mtrl = m;
 		}
 
-		virtual Material* getMaterial()
+		virtual StandardMtrl* getMaterial()
 		{
 			return mtrl;
 		}
@@ -91,7 +103,7 @@ namespace hare_graphics
 		}
 
 	protected:
-		Material::Ptr mtrl;
+		StandardMtrl::Ptr mtrl;
 	};
 
 
@@ -102,13 +114,19 @@ namespace hare_graphics
 		ParticleShader();
 
 		virtual ~ParticleShader();
+		
+		virtual void frameMove()
+		{
+			if (!mtrl)
+				mtrl->frameMove();
+		}
 
-		virtual void setMaterial(Material* m)
+		virtual void setMaterial(StandardMtrl* m)
 		{
 			mtrl = m;
 		}
 
-		virtual Material* getMaterial()
+		virtual StandardMtrl* getMaterial()
 		{
 			return mtrl;
 		}
@@ -131,7 +149,7 @@ namespace hare_graphics
 		}
 
 	protected:
-		Material::Ptr mtrl;
+		StandardMtrl::Ptr mtrl;
 
 	};
 }

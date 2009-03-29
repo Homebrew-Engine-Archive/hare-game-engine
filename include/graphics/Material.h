@@ -98,21 +98,6 @@ namespace hare_graphics
 			return texture;
 		}
 
-		void setUV(f32 left, f32 top, f32 right, f32 bottom)
-		{
-			uleft = left; 
-			uright = right; 
-			vtop = top; 
-			vbottom = bottom;
-		}
-		void getUV(f32& left, f32& top, f32& right, f32& bottom)
-		{
-			left = uleft;
-			top  = vtop;
-			right= uright;
-			bottom=vbottom;
-		}
-
 		void setWrapModU(TextureStage::WrapMode modeU)
 		{
 			textureStage.wrapModeU = modeU;
@@ -153,9 +138,12 @@ namespace hare_graphics
 		}
 	protected:
 		Texture::Ptr texture;
-		f32 uleft, uright, vtop, vbottom;
-
 		TextureStage textureStage;
+	
+	public:
+		Matrix4      texMat;
+
+
 	};
 
 	//节点材质基类
@@ -199,9 +187,15 @@ namespace hare_graphics
 
 		virtual void frameMove();
 	public:
-		PointF  offset;    // 0 - 1
-		PointF  direction;
-		f32     speed;
+		PointF   offset;
+		PointF   panDirection;
+		f32          panRate; 
+
+		PointF   oscillationPhase;
+		PointF   oscillationAmplitude;
+		PointF   oscillationRate;
+	protected:
+		f32          startTime;
 
 	};
 
@@ -215,12 +209,18 @@ namespace hare_graphics
 
 		virtual void frameMove();
 	public:
-		PointF lt;    // 0 - 1
-		PointF scale;
+		PointF	scale;
+		PointF	center;
+
+		PointF	oscillationPhase;
+		PointF	oscillationAmplitude;
+		PointF	oscillationRate;
+	protected:
+		f32			startTime;
 
 	};
 
-	//旋转材质修改器 以后做 - -! (靠 不用矩阵没法转啊) 
+	//旋转材质修改器
 	class GRAPHICS_API RotatorMod : public WrapperMtrl
 	{
 		HARE_DECLARE_DYNAMIC_CLASS(RotatorMod)
@@ -230,9 +230,17 @@ namespace hare_graphics
 
 		virtual void frameMove();
 	public:
-		PointF center; // 0 - 1
-		f32 rotation;
-		f32 speed;
+		PointF	center;
+		f32			rotation;
+		f32			speed;
+
+		f32			oscillationPhase;
+		f32			oscillationAmplitude;
+		f32			oscillationRate;
+
+	protected:
+		f32			startTime;
+
 	};
 
 	//动画材质修改器

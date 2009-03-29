@@ -110,13 +110,13 @@ public:
 	virtual void release() = 0;
 };
 
-class Material
+class StandardMtrl
 {	
 public:
 	virtual void frameMove() = 0;
 };
 
-class TextureMtrl : public Material
+class TextureMtrl : public StandardMtrl
 {
 public:
 	virtual void frameMove();
@@ -127,16 +127,16 @@ public:
 class Shader
 {
 public:
-	virtual void setMaterial(Material* m) = 0;
-	virtual Material* getMaterial() = 0;
+	virtual void setMaterial(StandardMtrl* m) = 0;
+	virtual StandardMtrl* getMaterial() = 0;
 	virtual TextureMtrl* getTextureMtrl() = 0;
 };
 
 class SimpleShader : public Shader
 {
 public:
-	virtual void setMaterial(Material* m);
-	virtual Material* getMaterial();
+	virtual void setMaterial(StandardMtrl* m);
+	virtual StandardMtrl* getMaterial();
 	virtual TextureMtrl* getTextureMtrl();
 };
 
@@ -170,7 +170,7 @@ public:
 	void drawLine(int x1, int y1, int x2, int y2, u32 color, f32 z = 0.f);
 	void drawRect(int l, int t, int r, int b, u32 color, f32 z = 0.f);
 	void drawText(int x, int y, const String& text);
-	void drawImage(int x, int y, Shader* shader, f32 z = 0.f);
+	void drawImage(int x, int y, Material* mtrl, f32 z = 0.f);
 	void setFont(Font* f);
 };
 

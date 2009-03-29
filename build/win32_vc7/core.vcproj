@@ -157,6 +157,12 @@
 				RelativePath="..\..\core\FileSystem.cpp">
 			</File>
 			<File
+				RelativePath="..\..\core\MathUtil.cpp">
+			</File>
+			<File
+				RelativePath="..\..\core\Matrix4.cpp">
+			</File>
+			<File
 				RelativePath="..\..\core\Object.cpp">
 			</File>
 			<File
@@ -299,6 +305,9 @@
 			</File>
 			<File
 				RelativePath="..\..\include\core\MathUtil.h">
+			</File>
+			<File
+				RelativePath="..\..\include\core\Matrix4.h">
 			</File>
 			<File
 				RelativePath="..\..\include\core\Object.h">

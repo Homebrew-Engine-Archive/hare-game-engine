@@ -103,12 +103,12 @@ namespace hare_graphics
 
 	PannerMod::PannerMod()
 		:startTime(0)
-		,offset(Point<f32>::ZERO)
-		,panDirection(Point<f32>::ZERO)
+		,offset(PointF::ZERO)
+		,panDirection(PointF::ZERO)
 		,panRate(0)
-		,oscillationPhase(Point<f32>::ZERO)
-		,oscillationAmplitude(Point<f32>::ZERO)
-		,oscillationRate(Point<f32>::ZERO)
+		,oscillationPhase(PointF::ZERO)
+		,oscillationAmplitude(PointF::ZERO)
+		,oscillationRate(PointF::ZERO)
 	{
 
 	}
@@ -132,15 +132,15 @@ namespace hare_graphics
 
 			f32 detTime = getTime() - startTime;
 
-			Point<f32> curAngle;
+			PointF curAngle;
 			curAngle.x = oscillationRate.x*detTime + oscillationPhase.x;
 			curAngle.y = oscillationRate.y*detTime + oscillationPhase.y;
 
-			Point<f32> aniOffset;
+			PointF aniOffset;
 			aniOffset.x = MathUtil::rSin(MathUtil::toRadian(curAngle.x))*(oscillationAmplitude.x/2.f);
 			aniOffset.y = MathUtil::rSin(MathUtil::toRadian(curAngle.y))*(oscillationAmplitude.y/2.f);
 
-			Point<f32> cur = panDirection * panRate * detTime + aniOffset;
+			PointF cur = panDirection * panRate * detTime + aniOffset;
 
 			cur.x = MathUtil::rModf(cur.x);
 			cur.y = MathUtil::rModf(cur.y);
@@ -160,10 +160,10 @@ namespace hare_graphics
 	ScalerMod::ScalerMod()
 		:startTime(0)
 		,scale(1, 1)
-		,center(Point<f32>::ZERO)
-		,oscillationPhase(Point<f32>::ZERO)
-		,oscillationAmplitude(Point<f32>::ZERO)
-		,oscillationRate(Point<f32>::ZERO)
+		,center(PointF::ZERO)
+		,oscillationPhase(PointF::ZERO)
+		,oscillationAmplitude(PointF::ZERO)
+		,oscillationRate(PointF::ZERO)
 	{
 
 	}
@@ -187,11 +187,11 @@ namespace hare_graphics
 
 			f32 detTime = getTime() - startTime;
 
-			Point<f32> curAngle;
+			PointF curAngle;
 			curAngle.x = oscillationRate.x*detTime + oscillationPhase.x;
 			curAngle.y = oscillationRate.y*detTime + oscillationPhase.y;
 
-			Point<f32> aniScale;
+			PointF aniScale;
 			aniScale.x = MathUtil::rSin(MathUtil::toRadian(curAngle.x))*(oscillationAmplitude.x/2.f);
 			aniScale.y = MathUtil::rSin(MathUtil::toRadian(curAngle.y))*(oscillationAmplitude.y/2.f);
 

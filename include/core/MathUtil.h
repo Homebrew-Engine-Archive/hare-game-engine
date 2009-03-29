@@ -8,6 +8,8 @@ namespace hare_core
 	class CORE_API MathUtil
 	{
 	public:
+		static const f32 PI; 
+
 		template<typename T>
         static bool isPO2(T n)
         {
@@ -26,6 +28,30 @@ namespace hare_core
             ++n;
             return n;
         }
+
+		static f32 rSin(f32 val)
+		{
+			return sin(val);
+		}
+
+		static f32 rCos(f32 val)
+		{
+			return cos(val);
+		}
+
+		template<class T>
+		static T toRadian(T degree)
+		{
+			return (T)(degree * PI / 180.0);
+		}
+
+		static f32 rModf(f32 val, f32* intPart = 0)
+		{
+			f32 dummy; 
+			if (!intPart) intPart = &dummy; 
+			return modff(val, intPart); 
+		}
+
 	};
 }
 

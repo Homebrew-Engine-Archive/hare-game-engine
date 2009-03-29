@@ -57,6 +57,20 @@ namespace hare_core
             return *this;
         }
 
+		TPoint<T>& operator *= ( const T& rhs)
+		{
+			x *= rhs;
+			y *= rhs;
+			return *this;
+		}
+
+		TPoint<T>& operator /= ( const T& rhs)
+		{
+			x /= rhs;
+			y /= rhs;
+			return *this;
+		}		
+
         TPoint<T> operator + () const
         {
             return *this;
@@ -76,6 +90,16 @@ namespace hare_core
         {
             return TPoint<T>(x - rhs.x, y - rhs.y);
         }
+
+		Point<T> operator * ( const T& rhs) const
+		{
+			return Point<T>(x * rhs, y * rhs);
+		}
+
+		Point<T> operator / ( const T& rhs) const
+		{
+			return Point<T>(x / rhs, y / rhs);
+		}
 
         void set(T ix, T iy)
         {

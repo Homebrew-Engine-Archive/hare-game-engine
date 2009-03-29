@@ -74,7 +74,7 @@ namespace hare_graphics
 
 
 				Quad quad;
-				quad.setShader(shader);
+				quad.setMaterial(shader);
 				quad.moveTo(layout_x, layout_y);
 
 				layout_x += charGlyph.bear_advanceX - charGlyph.bear_left;
@@ -83,8 +83,8 @@ namespace hare_graphics
 				quad.setHeight((charGlyph.recGlyph.maxY - charGlyph.recGlyph.minY) * font->getFontTexture()->getHeight());
 				quad.setTextureUVMap(charGlyph.recGlyph);
 				RenderSystem::getSingletonPtr()->render(&quad);		
-				RenderSystem::getSingletonPtr()->render();
 			}		
+			RenderSystem::getSingletonPtr()->render();
 		}
 
 		//Quad quad2;
@@ -97,19 +97,15 @@ namespace hare_graphics
 
 	}
 
-	void Canvas::drawImage(int x, int y, Shader* shader, f32 z)
+	void Canvas::drawImage(int x, int y, Material* mtrl, f32 z)
 	{
-		if (!shader)
-			return;
-
-		Material* mtrl = shader->getMaterial();
 		if (!mtrl)
 			return;
 
 		mtrl->frameMove();
 
 		Quad quad;
-		quad.setShader(shader);
+		quad.setMaterial(mtrl);
 		quad.moveTo((f32)x, (f32)y);
 		quad.setDepth(z);
 		TextureMtrl* texMtrl = mtrl->getTextureMtrl();
@@ -123,20 +119,15 @@ namespace hare_graphics
 		RenderSystem::getSingletonPtr()->render(&quad);	
 	}
 
-	void Canvas::drawImage(const RectF& rect, Shader* shader, f32 rot, f32 z)
+	void Canvas::drawImage(const RectF& rect, Material* mtrl, f32 rot, f32 z)
 	{
-		if (!shader)
-			return;
-
-		Material* mtrl = shader->getMaterial();
-
 		if (!mtrl)
 			return;
 
 		mtrl->frameMove();
 
 		Quad quad;
-		quad.setShader(shader);
+		quad.setMaterial(mtrl);
 		quad.moveTo(rect.minX, rect.minY);
 		quad.setDepth(z);
 		quad.setWidth(rect.width());

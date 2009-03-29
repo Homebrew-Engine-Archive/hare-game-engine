@@ -11,7 +11,7 @@ namespace hare_graphics
 	SimpleSprite::SimpleSprite()
 		:shader(NULL)
 	{
-		quad.setShader(NULL);
+		quad.setMaterial(NULL);
 	}
 	SimpleSprite::~SimpleSprite()
 	{
@@ -34,35 +34,35 @@ namespace hare_graphics
 		texMtrl = new TextureMtrl;
 		texMtrl->setTexture(tex);
 
-		PannerMod*   pannerMtrl;
-		pannerMtrl = new PannerMod;
-		pannerMtrl->offset.x = 0.5f;
-		pannerMtrl->panDirection.x = 0.5f;
-		pannerMtrl->panRate = 0.5f;
-		pannerMtrl->setSubMtrl(texMtrl);
-		
+		//PannerMod*   pannerMtrl;
+		//pannerMtrl = new PannerMod;
+		//pannerMtrl->offset.x = 0.5f;
+		//pannerMtrl->panDirection.x = 0.5f;
+		//pannerMtrl->panRate = 0.5f;
+		//pannerMtrl->setSubMtrl(texMtrl);
+		//
 		ScalerMod*   scaleMtrl;
 		scaleMtrl = new ScalerMod;
 		scaleMtrl->scale.x = 0.5f;
 		scaleMtrl->scale.y = 0.5f;
-		scaleMtrl->center.x = 0.2f;
-		scaleMtrl->center.x = 0.2f;
-		scaleMtrl->setSubMtrl(pannerMtrl);
+		//scaleMtrl->center.x = 0.2f;
+		//scaleMtrl->center.x = 0.2f;
+		scaleMtrl->setSubMtrl(texMtrl);
 
-		RotatorMod* rotatorMod;
-		rotatorMod = new RotatorMod;
-		rotatorMod->center.x = 0.5f;
-		rotatorMod->center.y = 0.5f;
-		rotatorMod->rotation = 10.5f;
-		rotatorMod->speed = 10.5f;
-		rotatorMod->setSubMtrl(scaleMtrl);
+		//RotatorMod* rotatorMod;
+		//rotatorMod = new RotatorMod;
+		//rotatorMod->center.x = 0.5f;
+		//rotatorMod->center.y = 0.5f;
+		//rotatorMod->rotation = 10.5f;
+		//rotatorMod->speed = 10.5f;
+		//rotatorMod->setSubMtrl(scaleMtrl);
 
 		AnimModUnit* animModUnit;
 		animModUnit = new AnimModUnit;
 		animModUnit->frameTime = 1;
 		//animModUnit->setSubMtrl(pannerMtrl);
-		//animModUnit->setSubMtrl(scaleMtrl);
-		animModUnit->setSubMtrl(rotatorMod);
+		animModUnit->setSubMtrl(scaleMtrl);
+		//animModUnit->setSubMtrl(rotatorMod);
 
 		AnimMod* animModMtrl = new AnimMod;
 		animModMtrl->addFrame(animModUnit);
@@ -72,7 +72,7 @@ namespace hare_graphics
 		quad.normalize();
 		quad.setWidth((float)tex->getWidth());
 		quad.setHeight((float)tex->getHeight());
-		quad.setShader(shader);
+		quad.setMaterial(shader);
 		quad.moveTo(100, 100);
 	}
 

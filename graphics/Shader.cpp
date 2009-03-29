@@ -4,7 +4,7 @@
 namespace hare_graphics
 {
 	ShaderParams::ShaderParams()
-		:AlphaBlendEnable(true)
+		:AlphaBlendEnable(false)
 		,SceneBlendOP(SBO_Add)
 		,SceneBlendSrcArg(SBA_Srcalpha)
 		,SceneBlendDesArg(SBA_Invsrcalpha)
@@ -33,7 +33,7 @@ namespace hare_graphics
 		return !((*this) != right);
 	}
 
-	HARE_IMPLEMENT_ABSTRACT_CLASS(Shader, Object, 0)
+	HARE_IMPLEMENT_ABSTRACT_CLASS(Shader, Material, 0)
 	{}
 
 	Shader::Shader()

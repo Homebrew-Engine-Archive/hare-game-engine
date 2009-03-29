@@ -13,7 +13,7 @@ namespace hare_graphics
 		,AlphaBlendArg2(CABA_Diffuse)
 		,wrapModeU(WM_Wrap)
 		,wrapModeV(WM_Wrap)
-		,lodSet(LS_HighQuality)
+		,lodSet(LS_Interface)
 	{
 
 	}
@@ -54,21 +54,26 @@ namespace hare_graphics
 
 	}
 
+	//节点材质
+	HARE_IMPLEMENT_ABSTRACT_CLASS(StandardMtrl, Material, 0)
+	{}
+
+	StandardMtrl::StandardMtrl()
+	{
+
+	}
+
+	StandardMtrl::~StandardMtrl()
+	{
+
+	}
+
 	//纹理材质
-	HARE_IMPLEMENT_DYNAMIC_CLASS(TextureMtrl, Material, 0)
+	HARE_IMPLEMENT_DYNAMIC_CLASS(TextureMtrl, StandardMtrl, 0)
 	{}
 
 	TextureMtrl::TextureMtrl()
 	{
-		textureStage.AlphaBlendOP = TextureStage::CABO_Modulate;
-		textureStage.AlphaBlendArg1 = TextureStage::CABA_Texture;
-		textureStage.AlphaBlendArg2 = TextureStage::CABA_Diffuse;
-		textureStage.ColorBlendOP = TextureStage::CABO_Modulate;
-		textureStage.ColorBlendArg1 = TextureStage::CABA_Texture;
-		textureStage.ColorBlendArg2 = TextureStage::CABA_Diffuse;
-		textureStage.wrapModeU = TextureStage::WM_Wrap;
-		textureStage.wrapModeV = TextureStage::WM_Wrap;
-		textureStage.lodSet = TextureStage::LS_Interface;
 		frameMove();
 	}
 
@@ -82,8 +87,8 @@ namespace hare_graphics
 		texMat = Matrix4::IDENTITY;
 	}
 
-	//结点材质 
-	HARE_IMPLEMENT_ABSTRACT_CLASS(WrapperMtrl, Material, 0)
+	//节点包裹材质 
+	HARE_IMPLEMENT_ABSTRACT_CLASS(WrapperMtrl, StandardMtrl, 0)
 	{}
 
 	WrapperMtrl::WrapperMtrl()

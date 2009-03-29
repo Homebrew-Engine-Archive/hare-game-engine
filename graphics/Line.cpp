@@ -33,11 +33,6 @@ namespace hare_graphics
 		return RenderUnit::ROT_LINE_LIST;
 	}
 
-	void Line::setTextureUVMap(f32 ul, f32 ur, f32 vt, f32 vb)
-	{
-
-	}
-
 	void Line::normalize()
 	{
 		buffer[0].u = buffer[0].x = 0;		

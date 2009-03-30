@@ -113,6 +113,7 @@ namespace hare_editor
 
         workspace = new Workspace;
 
+        // workspace form file system
         wxString dirName;
         bool dirOk = d.GetFirst(&dirName, wxEmptyString, wxDIR_DIRS);
         while (dirOk)
@@ -136,6 +137,7 @@ namespace hare_editor
             dirOk = d.GetNext(&dirName);
         }
 
+        // the saved workspace, compared with the fs workspace
         Workspace::Ptr savedWorkspace = (Workspace*)Object::loadFromXml("workspace.xml");
         if (savedWorkspace)
         {
@@ -146,6 +148,7 @@ namespace hare_editor
                 Project::Ptr prj = workspace->findProject(savedPrj->projectName);
                 if (prj)
                 {
+                    prj->debuggerName = savedPrj->debuggerName;
                     ProjectFile::List::iterator it1 = savedPrj->files.begin();
                     for (; it1 != savedPrj->files.end(); ++it1)
                     {

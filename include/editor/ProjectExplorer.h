@@ -24,7 +24,6 @@ namespace hare_editor
     {
         HARE_DECLARE_DYNAMIC_CLASS(Project)
     public:
-        bool positionBreakPoints();
         ProjectFile::Ptr findFile(const String& name);
 
         String projectName;

@@ -5,37 +5,44 @@
 
 namespace hare_ui
 {
+    enum uiLayoutDirection
+    {
+        uiLayout_Default,
+        uiLayout_LeftToRight,
+        uiLayout_RightToLeft
+    };
+
     enum uiEnumFlags
     {
         // Alignment
-        uiALIGN_DEFAULT             = 0x0000,
-        uiALIGN_CENTER_HORIZONTAL   = 0x0100,
-        uiALIGN_LEFT                = uiALIGN_DEFAULT,
-        uiALIGN_TOP                 = uiALIGN_DEFAULT,
-        uiALIGN_RIGHT               = 0x0200,
-        uiALIGN_BOTTOM              = 0x0400,
-        uiALIGN_CENTER_VERTICAL     = 0x0800,
-        uiALIGN_CENTER              = (uiALIGN_CENTER_HORIZONTAL | uiALIGN_CENTER_VERTICAL),
-        uiALIGN_MASK                = 0x0F00,
+        uiAlign_Default             = 0x0000,
+        uiAlign_Center_Horizontal   = 0x0100,
+        uiAlign_Left                = uiAlign_Default,
+        uiAlign_Top                 = uiAlign_Default,
+        uiAlign_Right               = 0x0200,
+        uiAlign_Bottom              = 0x0400,
+        uiAlign_Center_Vertical     = 0x0800,
+        uiAlign_Center              = (uiAlign_Center_Horizontal | uiAlign_Center_Vertical),
+        uiAlign_Mask                = 0x0F00,
 
         // Direction
-        uiWEST                      = 0x0010,
-        uiEAST                      = 0x0020,
-        uiNORTH                     = 0x0040,
-        uiSOUTH                     = 0x0080,
-        uiALL_DIRECTION             = uiWEST | uiEAST | uiNORTH | uiSOUTH,
+        uiWest                      = 0x0010,
+        uiEast                      = 0x0020,
+        uiNorth                     = 0x0040,
+        uiSouth                     = 0x0080,
+        uiAll_Direction             = uiWest | uiEast | uiNorth | uiSouth,
 
         // Stretch
-        uiEXPAND                    = 0x2000,
-        uiSHAPED                    = 0x4000,
-        uiFIXED_MINSIZE             = 0x8000,
+        uiExpand                    = 0x2000,
+        uiShaped                    = 0x4000,
+        uiFixed_Minsize             = 0x8000,
     };
 
     enum uiOrientation
     {
-        uiHORIZONTAL                = 0x0004,
-        uiVERTICAL                  = 0x0008,
-        uiBOTH                      = uiVERTICAL | uiHORIZONTAL,
+        uiHorizontal                = 0x0004,
+        uiVertical                  = 0x0008,
+        uiBoth                      = uiVertical | uiHorizontal,
     };
 
     class SizerItem : public Object
@@ -98,6 +105,7 @@ namespace hare_ui
 
         virtual SizeF getSize() const;
         virtual SizeF calcMinSize();
+        virtual bool isShown();
     protected:
         Window* window;
     };
@@ -111,6 +119,7 @@ namespace hare_ui
 
         virtual SizeF getSize() const;
         virtual SizeF calcMinSize();
+        virtual bool isShown();
     protected:
         Sizer* sizer;
     };
@@ -124,6 +133,7 @@ namespace hare_ui
 
         virtual SizeF getSize() const;
         virtual SizeF calcMinSize();
+        virtual bool isShown();
     protected:
         SizerSpacer* spacer;
     };
@@ -177,8 +187,8 @@ namespace hare_ui
                     int flag = 0,
                     int border = 0);
 
-        SizerItem* add(int width,
-                    int height,
+        SizerItem* add(f32 width,
+                    f32 height,
                     int proportion = 0,
                     int flag = 0,
                     int border = 0);
@@ -196,8 +206,8 @@ namespace hare_ui
                     int border = 0);
 
         SizerItem* insert(size_t index,
-                    int width,
-                    int height,
+                    f32 width,
+                    f32 height,
                     int proportion = 0,
                     int flag = 0,
                     int border = 0);
@@ -206,7 +216,7 @@ namespace hare_ui
 
         void setContainerWindow(Window *window);
         
-        Window *getContainerWindow() const 
+        Window* getContainerWindow() const 
         { 
             return containerWindow;
         }
@@ -218,10 +228,20 @@ namespace hare_ui
 
         virtual void layout();
 
+        SizeF getSize() const
+        { 
+            return size; 
+        }
+
+        SizeF getMinSize() const
+        {
+            return minSize;
+        }
+
     public:
         virtual void recalcSizes() = 0;
 
-        virtual SizeF calcMin() = 0;
+        virtual SizeF calcMinSize() = 0;
         
     protected:
         Window* containerWindow;

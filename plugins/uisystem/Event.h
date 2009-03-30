@@ -1,11 +1,85 @@
+#ifndef _EVENT_H_
+#define _EVENT_H_
+
+#include "UIPrerequisites.h"
 
 namespace hare_ui
 {
+    enum uiPropagationState
+    {
+        // don't propagate it at all
+        uiEvent_Propagate_None = 0,
+        // propagate it until it is processed
+        uiEvent_Propagate_Max = INT_MAX
+    };
+
     typedef int EventType;
 
-    typedef void (EventHandler::*EventFunction)(Event&);
+    extern UI_API EventType newEventType();
+    
+    // ---------------------------------------------------------------------------
+    // EventHandler
+    // ---------------------------------------------------------------------------
+    class UI_API EventHandler : public Object
+    {
+        HARE_DECLARE_DYNAMIC_CLASS(EventHandler)
 
-    extern EventType newEventType();
+    public:
+        EventHandler();
+        virtual ~EventHandler();
+
+        EventHandler* getNextHandler() const { return nextEvtHandler; }
+        EventHandler* getPrevHandler() const { return prevEvtHandler; }
+        void setNextHandler(EventHandler *handler) { nextEvtHandler = handler; }
+        void setPrevHandler(EventHandler *handler) { prevEvtHandler = handler; }
+
+        void setEvtHandlerEnabled(bool enabled) { handlerEnabled = enabled; }
+        bool getEvtHandlerEnabled() const { return handlerEnabled; }
+
+        // process an event right now
+        virtual bool processEvent(Event& event);
+
+        // add an event to be processed later
+        void addPendingEvent(Event& event);
+
+        void processPendingEvents();
+
+        void connect();
+
+        void disconnect();
+
+        static bool processEventIfMatches(const EventTableEntryBase& entry, 
+            EventHandler* handler, Event& event);
+
+    protected:
+        bool handleDynamicEvent(Event& event);
+        bool handleEvent(Event& event);
+
+    protected:
+        EventHandler* nextEvtHandler;
+        EventHandler* prevEvtHandler;
+
+        bool handlerEnabled;
+
+        typedef std::list<DynamicEventTableEntry*> DynamicEventList;
+
+        DynamicEventList* dynamicEvents;
+
+        typedef std::list<Event*> PendingEventList;
+
+        PendingEventList* pendingEvents;
+
+        typedef std::list<EventHandler*> EventHandlerList;
+
+        static EventHandlerList* pendingEventHandlers;
+
+        static const EventTable eventTable;
+        virtual const EventTable* getEventTable() const;
+    private:
+        static const EventTableEntry eventTableEntries[];
+    };
+
+    typedef void (EventHandler::*EventFunction)(Event&);
 
     // ---------------------------------------------------------------------------
     // EventTable
@@ -80,51 +154,14 @@ namespace hare_ui
         HARE_DECLARE_NO_COPY_CLASS(DynamicEventTableEntry)
     };
 
-    // ---------------------------------------------------------------------------
-    // EventHandler
-    // ---------------------------------------------------------------------------
-    class UI_API EventHandler : public Object
-    {
-    public:
-        EventHandler();
-        virtual ~EventHandler();
 
-        EventHandler* getNextHandler() const { return nextEvtHandler; }
-        EventHandler* getPrevHandler() const { return prevEvtHandler; }
-        void setNextHandler(EventHandler *handler) { nextEvtHandler = handler; }
-        void setPrevHandler(EventHandler *handler) { prevEvtHandler = handler; }
-
-        void setEvtHandlerEnabled(bool enabled) { handlerEnabled = enabled; }
-        bool getEvtHandlerEnabled() const { return handlerEnabled; }
-
-        // process an event right now
-        virtual bool processEvent(Event& event);
-
-        // add an event to be processed later
-        void addPendingEvent(Event& event);
-
-        void processPendingEvents();
-
-        void connect();
-
-        void disconnect();
-
-    protected:
-        EventHandler* nextEvtHandler;
-        EventHandler* prevEvtHandler;
-
-        bool handlerEnabled;
-
-        static const EventTable eventTable;
-    };
-
-    /////////////////////////////////////////////////////////////////////////////////
-
-    /////////////////////////////////////////////////////////////////////////////////
     extern UI_API const EventType uiEVT_NULL;
     extern UI_API const EventType uiEVT_FIRST;
     extern UI_API const EventType uiEVT_USER_FIRST;
 
+    // ---------------------------------------------------------------------------
+    // Event
+    // ---------------------------------------------------------------------------
     class UI_API Event
     {
     private:
@@ -134,6 +171,8 @@ namespace hare_ui
 
     public:
         Event(int winid = 0, EventType commandType = uiEVT_NULL);
+
+        virtual Event *cloneEvent() const = 0;
 
         void setEventType(EventType type) 
         { 
@@ -175,8 +214,6 @@ namespace hare_ui
             return skipped; 
         }
 
-        virtual Event *clone() const = 0;
-
         bool isCommandEvent() const 
         { 
             return isCmdEvent; 
@@ -184,13 +221,13 @@ namespace hare_ui
 
         bool shouldPropagate() const
         { 
-            return propagationLevel != uiEVENT_PROPAGATE_NONE; 
+            return propagationLevel != uiEvent_Propagate_None; 
         }
 
         int stopPropagation()
         {
             int oldLevel = propagationLevel;
-            propagationLevel = uiEVENT_PROPAGATE_NONE;
+            propagationLevel = uiEvent_Propagate_None;
             return oldLevel;
         }
 
@@ -200,9 +237,12 @@ namespace hare_ui
         }
 
     protected:
+        friend class EventHandler;
+
         void* eventSender;
         EventType eventType;
         int id;
+        void* userData;
 
     protected:
         int propagationLevel;
@@ -240,9 +280,6 @@ protected: \
 
 #define HARE_END_EVENT_TABLE() HARE_DECLARE_EVENT_TABLE_ENTRY(uiEVT_NULL, 0, 0, 0, 0) };
 
-
-
-
 #define HARE_EVT_MOUSE_EVENTS(func) \
     HARE_EVT_LEFT_DOWN(func) \
     HARE_EVT_LEFT_UP(func) \
@@ -260,4 +297,4 @@ protected: \
 
 }
 
-
+#endif

@@ -64,7 +64,7 @@ namespace hare_core
     {
         std::ostringstream stream;
         stream.setf(std::ios::fixed, std::ios::floatfield);
-        stream.precision(6);
+        stream.precision(15);
         stream.width(0);
         stream.fill(' ');
         stream << val;

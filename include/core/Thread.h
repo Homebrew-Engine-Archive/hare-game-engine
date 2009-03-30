@@ -93,9 +93,7 @@ namespace hare_core
     class CORE_API Semaphore
     {
     public:
-        enum { MAX_INT = 2147483647 };
-
-        Semaphore(int initialCount = 0, int maxCount = MAX_INT);
+        Semaphore(int initialCount = 0, int maxCount = INT_MAX);
        ~Semaphore();
 
         bool isOk() const;

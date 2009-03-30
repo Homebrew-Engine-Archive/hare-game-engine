@@ -1,5 +1,6 @@
 #include "PCH.h"
 #include "BoxSizer.h"
+#include "Window.h"
 
 namespace hare_ui
 {
@@ -18,10 +19,10 @@ namespace hare_ui
         if (items.size() == 0)
             return;
 
-        int delta = 0;
+        f32 delta = 0;
         if (stretchable)
         {
-            if (orient == uiHORIZONTAL)
+            if (orient == uiHorizontal)
                 delta = size.cx - fixedWidth;
             else
                 delta = size.cy - fixedHeight;
@@ -39,7 +40,7 @@ namespace hare_ui
             {
                 SizeF sz(item->getMinSizeWithBorder());
 
-                if (orient == uiVERTICAL)
+                if (orient == uiVertical)
                 {
                     f32 height = sz.cy;
                     if (item->getProportion())
@@ -52,11 +53,11 @@ namespace hare_ui
                     PointF child_pos(pt);
                     SizeF child_size(sz.cx, height);
 
-                    if (item->getFlag() & (uiEXPAND | uiSHAPED))
+                    if (item->getFlag() & (uiExpand | uiShaped))
                         child_size.cx = size.cx;
-                    else if (item->getFlag() & uiALIGN_RIGHT)
+                    else if (item->getFlag() & uiAlign_Right)
                         child_pos.x += size.cx - sz.cx;
-                    else if (item->getFlag() & uiALIGN_CENTER_HORIZONTAL)
+                    else if (item->getFlag() & uiAlign_Center_Horizontal)
                         child_pos.x += (size.cx - sz.cx) / 2;
 
                     item->setDimension(child_pos, child_size);
@@ -76,11 +77,11 @@ namespace hare_ui
                     PointF child_pos(pt);
                     SizeF child_size(width, sz.cy);
 
-                    if (item->getFlag() & (uiEXPAND | uiSHAPED))
+                    if (item->getFlag() & (uiExpand | uiShaped))
                         child_size.cy = size.cy;
-                    else if (item->getFlag() & uiALIGN_BOTTOM)
+                    else if (item->getFlag() & uiAlign_Bottom)
                         child_pos.y += size.cy - sz.cy;
-                    else if (item->getFlag() & uiALIGN_CENTER_VERTICAL)
+                    else if (item->getFlag() & uiAlign_Center_Vertical)
                         child_pos.y += (size.cy - sz.cy) / 2;
 
                     if (containerWindow)
@@ -96,7 +97,7 @@ namespace hare_ui
         }
     }
 
-    SizeF BoxSizer::calcMin()
+    SizeF BoxSizer::calcMinSize()
     {
         if (items.size() == 0)
             return SizeF();
@@ -113,13 +114,13 @@ namespace hare_ui
 
             if (item->isShown())
             {
-                item->calcMin();
+                item->calcMinSize();
                 stretchable += item->getProportion();
             }
         }
 
         // Total minimum size (width or height) of sizer
-        int maxMinSize = 0;
+        f32 maxMinSize = 0;
         for (SizerItem::List::iterator it = items.begin(); it != items.end(); ++it)
         {
             SizerItem* item = *it;
@@ -128,9 +129,9 @@ namespace hare_ui
             {
                 int stretch = item->getProportion();
                 SizeF sz(item->getMinSizeWithBorder());
-                int minSize;
+                f32 minSize;
 
-                if (orient == uiHORIZONTAL)
+                if (orient == uiHorizontal)
                     minSize = (sz.cx * stretchable + stretch - 1) / stretch;
                 else
                     minSize = (sz.cy * stretchable + stretch - 1) / stretch;
@@ -150,14 +151,14 @@ namespace hare_ui
                 SizeF sz(item->getMinSizeWithBorder());
                 if (item->getProportion() != 0)
                 {
-                    if (orient == uiHORIZONTAL)
+                    if (orient == uiHorizontal)
                         sz.cx = (maxMinSize * item->getProportion()) / stretchable;
                     else
                         sz.cy = (maxMinSize * item->getProportion()) / stretchable;
                 }
                 else
                 {
-                    if (orient == uiVERTICAL)
+                    if (orient == uiVertical)
                     {
                         fixedHeight += sz.cy;
                         fixedWidth = max(fixedWidth, sz.cx);
@@ -169,7 +170,7 @@ namespace hare_ui
                     }
                 }
 
-                if (orient == uiHORIZONTAL)
+                if (orient == uiHorizontal)
                 {
                     minWidth += sz.cx;
                     minHeight = max(minHeight, sz.cy);

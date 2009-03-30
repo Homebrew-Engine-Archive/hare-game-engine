@@ -3,11 +3,18 @@
 
 #include "UIPrerequisites.h"
 #include "Event.h"
+#include "Sizer.h"
 
 namespace hare_ui
 {
+    enum uiWindowIDs
+    {
+        uiID_Any = -1,
+    };
+
     class Window : public EventHandler
     {
+        HARE_DECLARE_ABSTRACT_CLASS(Window)
     public:
 
         void setId(int id) 
@@ -108,15 +115,26 @@ namespace hare_ui
 
         virtual bool hitTest(const PointF& pt) const;
 
-        virtual void setMinSize(const SizeN& size) { minSize = size; }
-        virtual void setMaxSize(const SizeN& size) { maxSize = size; }
+        virtual void setMinSize(const SizeF& size) { minSize = size; }
+        virtual void setMaxSize(const SizeF& size) { maxSize = size; }
 
         virtual SizeF getMinSize() const { return minSize; }
         virtual SizeF getMaxSize() const { return maxSize; }
 
+        SizeF getEffectiveMinSize() const;
+
+        virtual uiLayoutDirection getLayoutDirection() const
+        { 
+            return uiLayout_Default; 
+        }
+
+        virtual f32 adjustForLayoutDirection(f32 x, f32 width, f32 widthTotal) const;
+
     public:
         virtual void setTitle(const String& title) = 0;
         virtual String getTitle() const = 0;
+
+        virtual SizeF getSize() = 0;
 
         virtual void raise() = 0;
         virtual void lower() = 0;

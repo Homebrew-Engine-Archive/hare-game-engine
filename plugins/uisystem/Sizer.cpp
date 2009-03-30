@@ -29,13 +29,13 @@ namespace hare_ui
     {
         SizeF ret = minSize;
 
-        if (flag & uiWEST)
+        if (flag & uiWest)
             ret.cx += border;
-        if (flag & uiEAST)
+        if (flag & uiEast)
             ret.cx += border;
-        if (flag & uiNORTH)
+        if (flag & uiNorth)
             ret.cy += border;
-        if (flag & uiSOUTH)
+        if (flag & uiSouth)
             ret.cy += border;
 
         return ret;
@@ -44,17 +44,20 @@ namespace hare_ui
     // ---------------------------------------------------------------
     // SizerItemWindow
     // ---------------------------------------------------------------
+    HARE_IMPLEMENT_ABSTRACT_CLASS(SizerItemWindow, SizerItem, 0)
+    {
+    }
     SizeF SizerItemWindow::getSize() const
     {   
         SizeF ret = window->getSize();
 
-        if (flag & uiWEST)
+        if (flag & uiWest)
             ret.cx += border;
-        if (flag & uiEAST)
+        if (flag & uiEast)
             ret.cx += border;
-        if (flag & uiNORTH)
+        if (flag & uiNorth)
             ret.cy += border;
-        if (flag & uiSOUTH)
+        if (flag & uiSouth)
             ret.cy += border;
 
         return ret;
@@ -70,43 +73,64 @@ namespace hare_ui
     // ---------------------------------------------------------------
     // SizerItemSizer
     // ---------------------------------------------------------------
-    SizeF SizerItemWindow::getSize() const
+    HARE_IMPLEMENT_ABSTRACT_CLASS(SizerItemSizer, SizerItem, 0)
+    {
+    }
+    SizeF SizerItemSizer::getSize() const
     {   
         SizeF ret = sizer->getSize();
 
-        if (flag & uiWEST)
+        if (flag & uiWest)
             ret.cx += border;
-        if (flag & uiEAST)
+        if (flag & uiEast)
             ret.cx += border;
-        if (flag & uiNORTH)
+        if (flag & uiNorth)
             ret.cy += border;
-        if (flag & uiSOUTH)
+        if (flag & uiSouth)
             ret.cy += border;
 
         return ret;
     }
 
-    SizeF SizerItemWindow::calcMinSize()
+    SizeF SizerItemSizer::calcMinSize()
     {
         minSize = sizer->getMinSize();
 
         return getMinSizeWithBorder();
     }
 
+    bool SizerItemSizer::isShown()
+    {
+        if (sizer->getChildren().size() == 0)
+            return true;
+
+        SizerItem::List::iterator it = sizer->getChildren().begin();
+        for (; it != sizer->getChildren().end(); ++it)
+        {
+            if ((*it)->isShown())
+                return true;
+        }
+
+        return false;
+    }
+
     // ---------------------------------------------------------------
     // SizerItemSpacer
     // ---------------------------------------------------------------
+    HARE_IMPLEMENT_ABSTRACT_CLASS(SizerItemSpacer, SizerItem, 0)
+    {
+    }
     SizeF SizerItemSpacer::getSize() const
     {   
         SizeF ret = spacer->getSize();
 
-        if (flag & uiWEST)
+        if (flag & uiWest)
             ret.cx += border;
-        if (flag & uiEAST)
+        if (flag & uiEast)
             ret.cx += border;
-        if (flag & uiNORTH)
+        if (flag & uiNorth)
             ret.cy += border;
-        if (flag & uiSOUTH)
+        if (flag & uiSouth)
             ret.cy += border;
 
         return ret;
@@ -117,9 +141,17 @@ namespace hare_ui
         return getMinSizeWithBorder();
     }
 
+    bool SizerItemSpacer::isShown()
+    {
+        return spacer->isShown();
+    }
+
     // ---------------------------------------------------------------
     // Sizer
     // ---------------------------------------------------------------
+    HARE_IMPLEMENT_ABSTRACT_CLASS(Sizer, Object, 0)
+    {
+    }
     Sizer::Sizer()
     {
     }
@@ -128,7 +160,7 @@ namespace hare_ui
     {
     }
 
-    SizerItem* Sizer::add(int width, int height, int proportion /* = 0 */, int flag /* = 0 */, int border /* = 0 */)
+    SizerItem* Sizer::add(f32 width, f32 height, int proportion /* = 0 */, int flag /* = 0 */, int border /* = 0 */)
     {
         return insert(items.size(), new SizerItemSpacer(width, height, proportion, flag, border));
     }
@@ -143,7 +175,7 @@ namespace hare_ui
         return insert(items.size(), new SizerItemWindow(window, proportion, flag, border));
     }
 
-    SizerItem* Sizer::insert(size_t index, int width, int height, int proportion /* = 0 */, int flag /* = 0 */, int border /* = 0 */)
+    SizerItem* Sizer::insert(size_t index, f32 width, f32 height, int proportion /* = 0 */, int flag /* = 0 */, int border /* = 0 */)
     {
         return insert(index, new SizerItemSpacer(width, height, proportion, flag, border));
     }
@@ -162,11 +194,13 @@ namespace hare_ui
     {
         if (index >= items.size())
         {
-            items.push_back(item)
+            items.push_back(item);
         }
         else
         {
-            items.insert(items.begin() + index, item);
+            SizerItem::List::iterator it = items.begin();
+            while (index--) it++;
+            items.insert(it, item);
         }
 
         return item;
@@ -174,7 +208,7 @@ namespace hare_ui
 
     void Sizer::layout()
     {
-        calcMin();
+        calcMinSize();
 
         recalcSizes();
     }

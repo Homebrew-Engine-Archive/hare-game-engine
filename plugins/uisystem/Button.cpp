@@ -1,47 +1,52 @@
 #include "PCH.h"
+#include "Button.h"
 
-HARE_BEGIN_EVENT_TABLE(Button, Window)
-    HARE_EVT_MOUSE_EVENTS(onMouseEvent)
-HARE_END_EVENT_TABLE()
-
-void Button::onMouseEvent(MouseEvent& event)
+namespace hare_ui
 {
-    if (hitTest(event.getPosition()))
-    {
+    HARE_BEGIN_EVENT_TABLE(Button, Window)
+//        HARE_EVT_MOUSE_EVENTS(onMouseEvent)
+    HARE_END_EVENT_TABLE()
 
+    void Button::onMouseEvent(MouseEvent& event)
+    {
+        if (hitTest(event.getPosition()))
+        {
+
+        }
+
+        if (hasCapture())
+        {
+            hovering = true;
+        }
     }
 
-    if (hasCapture())
+    void ButtonTheme::drawWindow(Window* window)
     {
-        hovering = true;
+        if (!window)
+            return;
+
+        Button* button = (Button*)window;
+
+        RectF* rect = NULL;
+
+        if (!button->isEnabled())
+        {
+            rect = &disabledRect;
+        }
+        else if (button->isPushed())
+        {
+            rect = &pushedRect;
+        }
+        else if (button->isHovering())
+        {
+            rect = &hoverRect;
+        }
+        else
+        {
+            rect = &normalRect;
+        }
+
+        //getCanvas()->drawImage(getPixelRect(), material, rect);
     }
 }
 
-void ButtonTheme::drawWindow(Window* window)
-{
-    if (!window)
-        return;
-
-    Button* button = (Button*)window;
-
-    RectF* rect = NULL;
-
-    if (!button->isEnabled())
-    {
-        rect = &disabledRect;
-    }
-    else if (button->isPushed())
-    {
-        rect = &pushedRect;
-    }
-    else if (button->isHovering())
-    {
-        rect = &hoverRect;
-    }
-    else
-    {
-        rect = &normalRect;
-    }
-
-    getCanvas()->drawImage(getPixelRect(), material, rect);
-}

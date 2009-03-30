@@ -1,3 +1,7 @@
+#ifndef _BOXSIZER_H_
+#define _BOXSIZER_H_
+
+#include "UIPrerequisites.h"
 #include "Sizer.h"
 
 namespace hare_ui
@@ -6,10 +10,10 @@ namespace hare_ui
     {
         HARE_DECLARE_DYNAMIC_CLASS(BoxSizer)
     public:
-        BoxSizer(int orientation);
+        BoxSizer(int orientation = uiHorizontal);
 
         virtual void recalcSizes();
-        virtual SizeF calcMin();
+        virtual SizeF calcMinSize();
 
         int getOrientation() const
         { 
@@ -31,3 +35,4 @@ namespace hare_ui
     };
 }
 
+#endif

@@ -34,7 +34,9 @@ namespace hare_ui
     class Event;
     class EventHandler;
     struct EventTable;
+    struct EventTableEntryBase;
     struct EventTableEntry;
+    struct DynamicEventTableEntry;
 }
 
 #endif // _UI_PREREQUISITES_H_

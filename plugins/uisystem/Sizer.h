@@ -3,7 +3,7 @@
 
 #include "UIPrerequisites.h"
 
-namespace hare_ui
+namespace hare_core
 {
     enum uiLayoutDirection
     {
@@ -44,7 +44,10 @@ namespace hare_ui
         uiVertical                  = 0x0008,
         uiBoth                      = uiVertical | uiHorizontal,
     };
+}
 
+namespace hare_ui
+{
     class SizerItem : public Object
     {
         HARE_DECLARE_ABSTRACT_CLASS(SizerItem)
@@ -83,13 +86,12 @@ namespace hare_ui
         virtual SizeF getSize() const = 0;
         virtual SizeF calcMinSize() = 0;
         virtual bool isShown() = 0;
-
-        void setDimension(const PointF& pos, const SizeF& size);
+        virtual void setDimension(const PointF& ps, const SizeF& sz);
 
     protected:
-        int proportion;
-        int border;
-        int flag;
+        u32 proportion;
+        u32 border;
+        u32 flag;
 
         PointF pos;
         SizeF minSize;
@@ -106,8 +108,11 @@ namespace hare_ui
         virtual SizeF getSize() const;
         virtual SizeF calcMinSize();
         virtual bool isShown();
+        virtual void setDimension(const PointF& ps, const SizeF& sz);
     protected:
         Window* window;
+    private:
+        SizerItemWindow();
     };
 
     class SizerItemSizer : public SizerItem
@@ -120,8 +125,11 @@ namespace hare_ui
         virtual SizeF getSize() const;
         virtual SizeF calcMinSize();
         virtual bool isShown();
+        virtual void setDimension(const PointF& ps, const SizeF& sz);
     protected:
         Sizer* sizer;
+    private:
+        SizerItemSizer();
     };
 
     class SizerItemSpacer : public SizerItem
@@ -134,8 +142,11 @@ namespace hare_ui
         virtual SizeF getSize() const;
         virtual SizeF calcMinSize();
         virtual bool isShown();
+        virtual void setDimension(const PointF& ps, const SizeF& sz);
     protected:
         SizerSpacer* spacer;
+    private:
+        SizerItemSpacer();
     };
 
     class SizerSpacer
@@ -236,6 +247,20 @@ namespace hare_ui
         SizeF getMinSize() const
         {
             return minSize;
+        }
+
+        void setDimension(const PointF& ps, const SizeF& sz)
+        {
+            position = ps;
+            size = sz;
+            layout();
+        }
+
+        void setDimension(const RectF& rect)
+        {
+            position = rect.ptMin;
+            size.set(rect.width(), rect.height());
+            layout();
         }
 
     public:

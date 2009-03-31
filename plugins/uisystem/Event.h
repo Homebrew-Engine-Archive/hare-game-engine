@@ -255,7 +255,10 @@ namespace hare_ui
     class UI_API MouseEvent : public Event
     {
     public:
-        PointF getPosition() const;
+        PointF getPosition() const
+        {
+            return pos;
+        }
 
     protected:
         PointF pos;

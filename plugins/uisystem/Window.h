@@ -86,7 +86,10 @@ namespace hare_ui
             return windowSizer;
         }
 
-        void setParentSizer(Sizer* sizer);
+        void setParentSizer(Sizer* sizer)
+        {
+            parentSizer = sizer;
+        }
 
         Sizer* getParentSizer() const
         {
@@ -99,6 +102,11 @@ namespace hare_ui
 
         void setPositon(const PointF& pos)
         { 
+        }
+
+        void setDimension(const PointF& ps, const SizeF& sz)
+        {
+
         }
 
         void captureMouse();

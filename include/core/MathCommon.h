@@ -33,38 +33,38 @@ namespace hare_core
             return *this;
         }
 
-        bool operator == ( const TPoint<T>& rhs) const
+        bool operator == (const TPoint<T>& rhs) const
         {
             return x == rhs.x && y == rhs.y;
         }
 
-        bool operator != ( const TPoint<T>& rhs) const
+        bool operator != (const TPoint<T>& rhs) const
         {
             return !(*this == rhs);
         }
 
-        TPoint<T>& operator += ( const TPoint<T>& rhs)
+        TPoint<T>& operator += (const TPoint<T>& rhs)
         {
             x += rhs.x;
             y += rhs.y;
             return *this;
         }
 
-        TPoint<T>& operator -= ( const TPoint<T>& rhs)
+        TPoint<T>& operator -= (const TPoint<T>& rhs)
         {
             x -= rhs.x;
             y -= rhs.y;
             return *this;
         }
 
-		TPoint<T>& operator *= ( const T& rhs)
+		TPoint<T>& operator *= (const T& rhs)
 		{
 			x *= rhs;
 			y *= rhs;
 			return *this;
 		}
 
-		TPoint<T>& operator /= ( const T& rhs)
+		TPoint<T>& operator /= (const T& rhs)
 		{
 			x /= rhs;
 			y /= rhs;
@@ -81,22 +81,22 @@ namespace hare_core
             return TPoint<T>(-x, -y);
         }
 
-        TPoint<T> operator + ( const TPoint<T>& rhs) const
+        TPoint<T> operator + (const TPoint<T>& rhs) const
         {
             return TPoint<T>(x + rhs.x, y + rhs.y);
         }
 
-        TPoint<T> operator - ( const TPoint<T>& rhs) const
+        TPoint<T> operator - (const TPoint<T>& rhs) const
         {
             return TPoint<T>(x - rhs.x, y - rhs.y);
         }
 
-		TPoint<T> operator * ( const T& rhs) const
+		TPoint<T> operator * (const T& rhs) const
 		{
 			return TPoint<T>(x * rhs, y * rhs);
 		}
 
-		TPoint<T> operator / ( const T& rhs) const
+		TPoint<T> operator / (const T& rhs) const
 		{
 			return TPoint<T>(x / rhs, y / rhs);
 		}
@@ -134,12 +134,12 @@ namespace hare_core
             return *this;
         }
 
-        bool operator == ( const TSize<T>& rhs) const
+        bool operator == (const TSize<T>& rhs) const
         {
             return cx == rhs.cx && cy == rhs.cy;
         }
 
-        bool operator != ( const TSize<T>& rhs) const
+        bool operator != (const TSize<T>& rhs) const
         {
             return !(*this == rhs);
         }
@@ -197,13 +197,13 @@ namespace hare_core
 
         TRect() {}
         TRect(T iminX, T iminY, T imaxX, T imaxY) : minX(iminX), minY(iminY), maxX(imaxX), maxY(imaxY) {}
-        TRect(const TPoint<T> &iptMin, const TPoint<T> &iptMax ) : ptMin(iptMin), ptMax(iptMax) {}
+        TRect(const TPoint<T> &iptMin, const TPoint<T> &iptMax) : ptMin(iptMin), ptMax(iptMax) {}
 
-        bool operator == ( const TRect<T>& rhs) const
+        bool operator == (const TRect<T>& rhs) const
         {
             return minX == rhs.minX && maxX == rhs.maxX && minY == rhs.minY && maxY == rhs.maxY;
         }
-        bool operator != ( const TRect<T>& rhs) const
+        bool operator != (const TRect<T>& rhs) const
         {
             return !(*this == rhs);
         }
@@ -321,7 +321,7 @@ namespace hare_core
         }
 
         template<class T2>
-        void scale( T2 w, T2 h)
+        void scale(T2 w, T2 h)
         {
             minX = minX*w;
             minY = minY*h;

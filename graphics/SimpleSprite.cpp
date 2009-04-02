@@ -5,6 +5,7 @@
 #include "Texture.h"
 #include "RenderSystem.h"
 #include "Canvas.h"
+#include "SimpleParticle.h"
 
 namespace hare_graphics
 {
@@ -20,12 +21,6 @@ namespace hare_graphics
 
 	void SimpleSprite::loadFromImage(const String& filename)
 	{
-
-
-
-
-
-
 		Texture* tex;
 		tex = RenderSystem::getSingletonPtr()->createTexture();
 		tex->createFromFile(filename);
@@ -74,16 +69,31 @@ namespace hare_graphics
 		quad.setHeight((float)tex->getHeight());
 		quad.setMaterial(shader);
 		quad.moveTo(100, 100);
+
+
+		tex = RenderSystem::getSingletonPtr()->createTexture();
+		tex->createFromFile(filename);
+		texMtrl = new TextureMtrl;
+		texMtrl->setTexture(tex);
+		ParticleShader* particleMtrl = new ParticleShader;
+		particleMtrl->setMaterial(texMtrl);
+		particle = new SimpleParticle;
+		particle->setMaterial(particleMtrl);
+		particle->fireAt(200, 200);
+
 	}
 
 	void SimpleSprite::beginScene()
 	{
 		shader->getMaterial()->frameMove();
+		//particle->fire();
+		particle->frameMove();
 	}
 
 	void SimpleSprite::renderScene()
 	{
 		RenderSystem::getSingletonPtr()->render(&quad);
+		particle->render();
 	}
 
 	void SimpleSprite::endScene()
@@ -91,8 +101,9 @@ namespace hare_graphics
 
 	}
 
-	void SimpleSprite::move(int x, int y)
+	void SimpleSprite::move(f32 x, f32 y)
 	{
-		quad.move((f32)x, (f32)y);
+		quad.move(x, y);
+		particle->move(x, y);
 	}
 }

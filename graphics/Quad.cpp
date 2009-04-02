@@ -112,4 +112,11 @@ namespace hare_graphics
 	{
 		buffer[0].z = buffer[1].z = buffer[2].z = buffer[3].z = z;
 	}
+
+	void Quad::setColor(u32 color)
+	{
+		buffer[0].diffuse = buffer[1].diffuse = 
+		buffer[2].diffuse = buffer[3].diffuse = color;
+	}
+
 }

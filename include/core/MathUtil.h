@@ -78,6 +78,51 @@ namespace hare_core
             return conv.f32Part * (1.5f - 0.4999f * x * conv.f32Part * conv.f32Part);
         }
 
+		static u32 g_seed;
+
+		static void rand_seed(int seed);
+
+		static int rand_int(int min, int max);
+
+		static f32 rand_float(f32 min, f32 max);
+
+		template <typename T, typename U> inline
+		static bool clampMin( T& val, const U& min_val )
+		{
+			if ( val < min_val )
+			{
+				val = min_val;
+				return ( true );
+			}
+			return ( false );
+		}	
+
+		template <typename T, typename U> inline
+		static bool clampMax( T& val, const U& max_val )
+		{
+			if ( val > max_val )
+			{
+				val = max_val;
+				return ( true );
+			}
+			return ( false );
+		}	
+
+		template <typename T, typename U, typename V> inline
+		static bool clampMinMax( T& val, const U& min_val, const V& max_val )
+		{
+			if ( val < min_val )
+			{
+				val = min_val;
+				return ( true );
+			}
+			else if ( val > max_val )
+			{
+				val = max_val;
+				return ( true );
+			}
+			return ( false );
+		}
 	};
 }
 

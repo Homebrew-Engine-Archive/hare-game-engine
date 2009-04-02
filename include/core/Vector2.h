@@ -5,7 +5,7 @@
 
 namespace hare_core
 {
-    class Vector2
+    class CORE_API Vector2
     {
     public:
         f32	x, y;

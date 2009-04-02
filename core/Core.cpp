@@ -21,6 +21,7 @@ namespace hare_core
     CORE_API void core_init(const char* argv0)
     {
         static FileSystem theFileSystem(argv0);
+		MathUtil::rand_seed(0);
 
 #if HARE_PLATFORM == HARE_PLATFORM_WIN32
         WSADATA wsaData;

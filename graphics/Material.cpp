@@ -99,6 +99,11 @@ namespace hare_graphics
 		}
 	}
 
+	void TextureMtrl::postEdited(Attribute *attr)
+	{
+		postLoaded();
+	}
+
 	//节点包裹材质 
 	HARE_IMPLEMENT_ABSTRACT_CLASS(WrapperMtrl, StandardMtrl, 0)
 	{

@@ -317,4 +317,9 @@ namespace hare_graphics
 		MathUtil::clampMinMax(particleInfo->fAlphaVar,0.f, 1.f);
 	}
 
+	void SimpleParticle::postEdited(Attribute* attr)
+	{
+		postLoaded();
+	}
+
 }

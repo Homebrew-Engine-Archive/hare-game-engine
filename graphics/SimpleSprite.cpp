@@ -86,7 +86,6 @@ namespace hare_graphics
 	void SimpleSprite::beginScene()
 	{
 		shader->getMaterial()->frameMove();
-		//particle->fire();
 		particle->frameMove();
 	}
 

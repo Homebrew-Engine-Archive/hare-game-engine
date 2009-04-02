@@ -1,6 +1,6 @@
 #include "PCH.h"
 #include "Material.h"
-
+#include "RenderSystem.h"
 
 namespace hare_graphics
 {
@@ -70,7 +70,9 @@ namespace hare_graphics
 
 	//纹理材质
 	HARE_IMPLEMENT_DYNAMIC_CLASS(TextureMtrl, StandardMtrl, 0)
-	{}
+	{
+		HARE_META(fileName, String)
+	}
 
 	TextureMtrl::TextureMtrl()
 	{
@@ -85,6 +87,16 @@ namespace hare_graphics
 	void TextureMtrl::frameMove()
 	{
 		texMat = Matrix4::IDENTITY;
+	}
+
+	void TextureMtrl::postLoaded()
+	{
+		if (fileName.empty()){
+			assert(false);
+		}else{
+			texture = RenderSystem::getSingletonPtr()->createTexture();
+			texture->createFromFile(fileName);
+		}
 	}
 
 	//节点包裹材质 

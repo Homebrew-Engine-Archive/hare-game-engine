@@ -48,7 +48,7 @@ namespace hare_graphics
 
 	HARE_IMPLEMENT_DYNAMIC_CLASS(SimpleShader, Shader, 0)
 	{
-		HARE_META(mtrl, StandardMtrl)
+		HARE_OBJ(mtrl, StandardMtrl)
 	}
 
 	SimpleShader::SimpleShader()
@@ -64,7 +64,7 @@ namespace hare_graphics
 
 	HARE_IMPLEMENT_DYNAMIC_CLASS(ParticleShader, Shader, 0)
 	{
-		HARE_META(mtrl, StandardMtrl)
+		HARE_OBJ(mtrl, StandardMtrl)
 	}
 
 	ParticleShader::ParticleShader()

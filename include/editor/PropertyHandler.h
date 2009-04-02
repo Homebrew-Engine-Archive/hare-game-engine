@@ -36,6 +36,7 @@ namespace hare_editor
 
     class ObjectEnumProperty : public wxEnumProperty
     {
+        DECLARE_DYNAMIC_CLASS(ObjectEnumProperty)
     public:
         ObjectEnumProperty(const wxString& label = wxPG_LABEL, const wxString& name = wxPG_LABEL)
             : wxEnumProperty(label, name)

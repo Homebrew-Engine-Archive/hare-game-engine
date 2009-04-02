@@ -107,7 +107,7 @@ namespace hare_graphics
 	//节点包裹材质 
 	HARE_IMPLEMENT_ABSTRACT_CLASS(WrapperMtrl, StandardMtrl, 0)
 	{
-		HARE_META(mtrl, StandardMtrl)
+		HARE_OBJ(mtrl, StandardMtrl)
 	}
 
 	WrapperMtrl::WrapperMtrl()

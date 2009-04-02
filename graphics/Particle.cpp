@@ -4,7 +4,9 @@
 namespace hare_graphics
 {
 	HARE_IMPLEMENT_ABSTRACT_CLASS(Particle, Object, 0)
-	{}
+	{
+        HARE_OBJ(particleMtrl, Material)
+    }
 
 	Particle::Particle()
 		:vLocation(0,0)

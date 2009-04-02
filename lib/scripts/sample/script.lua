@@ -16,9 +16,9 @@ end
 function renderScene()
 	canvas = hare.getCanvas()
 	--canvas:drawImage(500, 600, shader)
-	canvas:drawRect(50, 50, 100, 100, 0xffff0000)
-	canvas:drawLine(0,0, 800, 600, 0xffffffff, 1)
-	canvas:drawRect(50, 50, 600, 500, 0xff00ff00, 0.5)
+	--canvas:drawRect(50, 50, 100, 100, 0xffff0000)
+	--canvas:drawLine(0,0, 800, 600, 0xffffffff, 1)
+	--canvas:drawRect(50, 50, 600, 500, 0xff00ff00, 0.5)
  
 	canvas:drawText(50,50,'abc')
 end

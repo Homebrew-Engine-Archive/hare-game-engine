@@ -111,10 +111,9 @@ namespace hare_graphics
 		ParticleUnit* particleUnit = particleUnits;
 
 		u32 oldColor = getCanvas()->getColor();
-
+		RectF rect;
 		for (int count = 0; count < nParticlesAlive; ++count){
 			getCanvas()->setColor(particleUnit->clColor);
-			RectF rect;
 			rect.minX = particleUnit->vLocation.x;
 			rect.minY = particleUnit->vLocation.y;
 			rect.maxX = rect.minX + width * particleUnit->fSize;
@@ -293,7 +292,7 @@ namespace hare_graphics
 
 	void SimpleParticle::postLoaded()
 	{
-		MathUtil::clampMinMax(particleInfo->nEmission, 0, 1000);
+		/*MathUtil::clampMinMax(particleInfo->nEmission, 0, 1000);
 		MathUtil::clampMinMax(particleInfo->fLifeTime, 0.f, 10.f);
 		MathUtil::clampMinMax(particleInfo->fParticleLifeMin,0.f, 5.f);
 		MathUtil::clampMinMax(particleInfo->fParticleLifeMax,0.f, 5.f);		
@@ -314,7 +313,7 @@ namespace hare_graphics
 		MathUtil::clampMinMax(particleInfo->fSpinEnd,-50.f, 50.f);	
 		MathUtil::clampMinMax(particleInfo->fSpinVar,0.f, 1.f);
 		MathUtil::clampMinMax(particleInfo->fColorVar,0.f, 1.f);		
-		MathUtil::clampMinMax(particleInfo->fAlphaVar,0.f, 1.f);
+		MathUtil::clampMinMax(particleInfo->fAlphaVar,0.f, 1.f);*/
 	}
 
 	void SimpleParticle::postEdited(Attribute* attr)

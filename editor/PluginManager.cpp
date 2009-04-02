@@ -59,7 +59,7 @@ namespace hare_editor
     {
         while (plugins.GetCount())
         {
-            unloadPlugin(plugins[0]);
+            unloadPlugin(plugins[plugins.GetCount() - 1]);
         }
         plugins.Clear();
     }

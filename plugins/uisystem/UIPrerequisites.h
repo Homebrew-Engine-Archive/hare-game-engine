@@ -32,11 +32,17 @@ namespace hare_ui
     class SizerItemSpacer;
     class SizerSpacer;
     class Event;
+    class MouseEvent;
     class EventHandler;
     struct EventTable;
     struct EventTableEntryBase;
     struct EventTableEntry;
     struct DynamicEventTableEntry;
 }
+
+enum uiWindowIDs
+{
+    uiID_Any = -1,
+};
 
 #endif // _UI_PREREQUISITES_H_

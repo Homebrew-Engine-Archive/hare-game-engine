@@ -7,11 +7,6 @@
 
 namespace hare_ui
 {
-    enum uiWindowIDs
-    {
-        uiID_Any = -1,
-    };
-
     class Window : public EventHandler
     {
         HARE_DECLARE_ABSTRACT_CLASS(Window)
@@ -106,7 +101,6 @@ namespace hare_ui
 
         void setDimension(const PointF& ps, const SizeF& sz)
         {
-
         }
 
         void captureMouse();

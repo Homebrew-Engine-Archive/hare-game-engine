@@ -18,10 +18,4 @@ static const PluginInfo fontMIMEHandler = {
     wxT("FontMIMEHandler"),
     wxT("This is a plugin for font editing.") };
 
-static const PluginInfo fontWizard = {
-    wxT("FontWizard"), 
-    wxT("FontWizard"),
-    wxT("This is a plugin for font creation.") };
-
 PluginRegistrant<FontMIMEHandler> regFontMIMEHandler(fontMIMEHandler);
-//PluginRegistrant<FontWizard> regFontWizard(fontWizard);

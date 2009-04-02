@@ -3,8 +3,9 @@
 
 namespace hare_ui
 {
-    HARE_IMPLEMENT_ABSTRACT_CLASS(Window, EventHandler, 0)
+    HARE_IMPLEMENT_ABSTRACT_CLASS(Window, Object, 0)
     {
+        HARE_OBJ_LIST(children, Window)
     }
 
     SizeF Window::getEffectiveMinSize() const

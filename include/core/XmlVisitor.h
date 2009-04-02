@@ -56,247 +56,254 @@ namespace hare_core
         }
 
         template <typename T>
-        void visitMeta(const char* name, T &obj, const char* typeName, u32 flags, EnumMap* enumMap)
+            void visitMeta(const char* name, T &obj, const char* typeName, u32 flags, EnumMap* enumMap)
         {
             switch (action)
             {
             case VA_Load:
-            {
-                TiXmlElement *elem = node->FirstChildElement(name);
-                if (!elem)
-                    return;
+                {
+                    TiXmlElement *elem = node->FirstChildElement(name);
+                    if (!elem)
+                        return;
 
-                String className = elem->Attribute("class");
-                assert(className == typeName);
+                    String className = elem->Attribute("class");
+                    assert(className == typeName);
 
-                const char* val = elem->Attribute("value");
-                assert(val);
-                StringConverter::parse(val, obj);
-                break;
-            }
+                    const char* val = elem->Attribute("value");
+                    assert(val);
+                    StringConverter::parse(val, obj);
+                    break;
+                }
             case VA_Save:
-            {
-                TiXmlElement *elem = node->InsertEndChild(TiXmlElement(name))->ToElement();
-                elem->SetAttribute("class", typeName);
-                elem->SetAttribute("value", StringConverter::toString(obj).c_str());
-                break;
-            }
+                {
+                    TiXmlElement *elem = node->InsertEndChild(TiXmlElement(name))->ToElement();
+                    elem->SetAttribute("class", typeName);
+                    elem->SetAttribute("value", StringConverter::toString(obj).c_str());
+                    break;
+                }
             default:
                 assert(false);
             }
         }
 
         template <typename T>
-        void visitMetaArray(const char* name, std::vector<T> &obj, const char* typeName, u32 flags)
+            void visitMetaArray(const char* name, std::vector<T> &obj, const char* typeName, u32 flags)
         {
             switch (action)
             {
             case VA_Load:
-            {
-                TiXmlElement *elem = node->FirstChildElement(name);
-                if (!elem)
-                    return;
-
-                String className = elem->Attribute("class");
-                assert(className == "meta_array");
-
-                int num = 0;
-                elem->Attribute("number", &num);
-                obj.resize(num);
-
-                XmlVisitor _v = *this;
-                _v.node = elem;
-                for (int i = 0; i < num; ++i)
                 {
-                    _v.visitMeta(StringUtil::format("item%d", i).c_str(), obj[i], typeName, flags, 0);
-                }
-                break;
-            }
-            case VA_Save:
-            {
-                TiXmlElement *elem = node->InsertEndChild(TiXmlElement(name))->ToElement();
+                    TiXmlElement *elem = node->FirstChildElement(name);
+                    if (!elem)
+                        return;
 
-                elem->SetAttribute("class", "meta_array");
-                int num = (int)obj.size();
-                elem->SetAttribute("number", num);
+                    String className = elem->Attribute("class");
+                    assert(className == "meta_array");
 
-                XmlVisitor _v = *this;
-                _v.node = elem;
-                for (int i = 0; i < num; ++i)
-                {
-                    _v.visitMeta(StringUtil::format("item%d", i).c_str(), obj[i], typeName, flags, 0);
-                }
-                break;
-            }
-            default:
-                assert(false);
-            }
-        }
+                    int num = 0;
+                    elem->Attribute("number", &num);
+                    obj.resize(num);
 
-        template <typename T>
-        void visitObject(const char* name, T* &obj, ClassInfo *cls, u32 flags)
-        {
-            switch (action)
-            {
-            case VA_Load:
-            {
-                TiXmlElement *elem = node->FirstChildElement(name);
-
-                if (!elem)
-                    return;
-
-                Object::StoreType store = Object::storeNull;
-                elem->Attribute("store", (int*)&store);
-
-                if (store == Object::storeEmbedded)
-                {
-                    const char* className = elem->Attribute("class");
-                    int _classVersion = 0;
-                    elem->Attribute("version", &_classVersion);
-
-                    ClassInfo *cls = ClassInfo::findClass(className);
-                    if (!cls)
-                    {
-                        HARE_EXCEPT(Exception::ERR_INTERNAL_ERROR,
-                            "Cannot find runtime class : " + String(className), "XmlVisitor::visitObject()");
-                    }
-
-                    obj = (T*)cls->createObject();
-
-                    // read attri.
                     XmlVisitor _v = *this;
                     _v.node = elem;
-                    _v.classVersion = _classVersion;
-                    obj->accept(_v);
-
-                    ((Object*)obj)->postLoaded();
-                }
-                else if (store == Object::storeReference)
-                {
-                    const char* url = elem->Attribute("ref");
-                    assert(url);
-                    obj = (T*)Object::importObject(url);
-                }
-                else
-                {
-                    assert(store == Object::storeNull);
-                }
-                break;
-            }
-            case VA_Save:
-            {
-                TiXmlElement *elem = node->InsertEndChild(TiXmlElement(name))->ToElement();
-
-                if (obj)
-                {
-                    if (obj->getUrl().empty())
+                    for (int i = 0; i < num; ++i)
                     {
-                        elem->SetAttribute("store", (int)Object::storeEmbedded);
-                        elem->SetAttribute("class", cls->className);
-                        elem->SetAttribute("version", cls->classVersion);
+                        _v.visitMeta(StringUtil::format("item%d", i).c_str(), obj[i], typeName, flags, 0);
+                    }
+                    break;
+                }
+            case VA_Save:
+                {
+                    TiXmlElement *elem = node->InsertEndChild(TiXmlElement(name))->ToElement();
 
+                    elem->SetAttribute("class", "meta_array");
+                    int num = (int)obj.size();
+                    elem->SetAttribute("number", num);
+
+                    XmlVisitor _v = *this;
+                    _v.node = elem;
+                    for (int i = 0; i < num; ++i)
+                    {
+                        _v.visitMeta(StringUtil::format("item%d", i).c_str(), obj[i], typeName, flags, 0);
+                    }
+                    break;
+                }
+            default:
+                assert(false);
+            }
+        }
+
+        template <typename T>
+            void visitObject(const char* name, T* &obj, ClassInfo*, u32 flags)
+        {
+            switch (action)
+            {
+            case VA_Load:
+                {
+                    TiXmlElement *elem = node->FirstChildElement(name);
+
+                    if (!elem)
+                        return;
+
+                    Object::StoreType store = Object::storeNull;
+                    elem->Attribute("store", (int*)&store);
+
+                    if (store == Object::storeEmbedded)
+                    {
+                        const char* className = elem->Attribute("class");
+                        int _classVersion = 0;
+                        elem->Attribute("version", &_classVersion);
+
+                        ClassInfo *cls = ClassInfo::findClass(className);
+                        if (!cls)
+                        {
+                            HARE_EXCEPT(Exception::ERR_INTERNAL_ERROR,
+                                "Cannot find runtime class : " + String(className), "XmlVisitor::visitObject()");
+                        }
+                        if (!cls->isDynamic())
+                        {
+                            HARE_EXCEPT(Exception::ERR_INTERNAL_ERROR,
+                                "Cannot instantiate abstract class : " + String(className), "XmlVisitor::visitObject()");
+                        }
+
+                        obj = (T*)cls->createObject();
+
+                        // read attri.
                         XmlVisitor _v = *this;
                         _v.node = elem;
-                        _v.classVersion = cls->classVersion;
+                        _v.classVersion = _classVersion;
                         obj->accept(_v);
+
+                        ((Object*)obj)->postLoaded();
+                    }
+                    else if (store == Object::storeReference)
+                    {
+                        const char* url = elem->Attribute("ref");
+                        assert(url);
+                        obj = (T*)Object::importObject(url);
                     }
                     else
                     {
-                        elem->SetAttribute("store", (int)Object::storeReference);
-                        elem->SetAttribute("ref", obj->getUrl().c_str());
+                        assert(store == Object::storeNull);
                     }
-                    ((Object*)obj)->postSaved();
+                    break;
                 }
-                else
+            case VA_Save:
                 {
-                    elem->SetAttribute("store", (int)Object::storeNull);
+                    TiXmlElement *elem = node->InsertEndChild(TiXmlElement(name))->ToElement();
+
+                    if (obj)
+                    {
+                        ClassInfo* cls = obj->getClassInfo();
+
+                        if (obj->getUrl().empty())
+                        {
+                            elem->SetAttribute("store", (int)Object::storeEmbedded);
+                            elem->SetAttribute("class", cls->className);
+                            elem->SetAttribute("version", cls->classVersion);
+
+                            XmlVisitor _v = *this;
+                            _v.node = elem;
+                            _v.classVersion = cls->classVersion;
+                            obj->accept(_v);
+                        }
+                        else
+                        {
+                            elem->SetAttribute("store", (int)Object::storeReference);
+                            elem->SetAttribute("ref", obj->getUrl().c_str());
+                        }
+                        ((Object*)obj)->postSaved();
+                    }
+                    else
+                    {
+                        elem->SetAttribute("store", (int)Object::storeNull);
+                    }
+                    break;
                 }
-                break;
-            }
             default:
                 assert(false);
             }
         }
 
         template <typename T>
-        void visitObject(const char* name, Pointer<T> &obj, ClassInfo *cls, u32 flags)
+            void visitObject(const char* name, Pointer<T> &obj, ClassInfo *cls, u32 flags)
         {
-            T* tmpObj = 0;
+            T* tmpObj = obj.pointer();
             visitObject(name, tmpObj, cls, flags);
             obj = tmpObj;
         }
 
         template<typename T>
-        void visitObjectArray(const char* name, std::vector<T> &obj, ClassInfo *cls, u32 flags)
+            void visitObjectArray(const char* name, std::vector<T> &obj, ClassInfo *cls, u32 flags)
         {
             _visitObjects<T, std::vector<T> >(name, obj, cls, flags, "object_array");
         }
 
         template<typename T>
-        void visitObjectList(const char* name, std::list<T> &obj, ClassInfo *cls, u32 flags)
+            void visitObjectList(const char* name, std::list<T> &obj, ClassInfo *cls, u32 flags)
         {
             _visitObjects<T, std::list<T> >(name, obj, cls, flags, "object_list");
         }
 
     private:
         /* helper function for loading and saving objectarray / objectlist
-         * T is the smart ptr
-         * U is containtor of T (list / vector)
-         */
+        * T is the smart ptr
+        * U is containtor of T (list / vector)
+        */
         template <typename T, typename U>
-        void _visitObjects(const char* name, U &obj, ClassInfo *cls, u32 flags, const char* clsName)
+            void _visitObjects(const char* name, U &obj, ClassInfo *cls, u32 flags, const char* clsName)
         {
             switch (action)
             {
             case VA_Load:
-            {
-                TiXmlElement *elem = node->FirstChildElement(name);
-                if (!elem)
-                    return; // can not found this element.
-
-                String className = elem->Attribute("class");
-                assert(className == clsName);
-
-                int num = 0;
-                elem->Attribute("number", &num);
-                obj.resize(num);
-
-                typename U::iterator it = obj.begin();
-                for (; it != obj.end(); ++it)
                 {
-                    String itemName = "item" + StringConverter::toString((int)std::distance(obj.begin(), it));
+                    TiXmlElement *elem = node->FirstChildElement(name);
+                    if (!elem)
+                        return; // can not found this element.
 
+                    String className = elem->Attribute("class");
+                    assert(className == clsName);
+
+                    int num = 0;
+                    elem->Attribute("number", &num);
+                    obj.resize(num);
+
+                    typename U::iterator it = obj.begin();
+                    for (; it != obj.end(); ++it)
+                    {
+                        String itemName = "item" + StringConverter::toString((int)std::distance(obj.begin(), it));
+
+                        XmlVisitor _v = *this;
+                        _v.node = elem;
+
+                        typename T::value_type itemObj = 0;
+                        _v.visitObject(itemName.c_str(), itemObj, cls, flags);
+                        *it = itemObj;
+                    }
+                    break;
+                }
+            case VA_Save:
+                {
+                    // write class.
+                    TiXmlElement *elem = node->InsertEndChild(TiXmlElement(name))->ToElement();
+                    elem->SetAttribute("class", clsName);
+
+                    // write num.
+                    int num = (int)obj.size();
+                    elem->SetAttribute("number", num);
+
+                    // write all items.
                     XmlVisitor _v = *this;
                     _v.node = elem;
 
-                    typename T::value_type itemObj = 0;
-                    _v.visitObject(itemName.c_str(), itemObj, cls, flags);
-                    *it = itemObj;
+                    typename U::iterator it = obj.begin();
+                    for (; it != obj.end(); ++it)
+                    {
+                        String itemName = "item" + StringConverter::toString((int)std::distance(obj.begin(), it));
+                        _v.visitObject(itemName.c_str(), (*it).pointerRef(), cls, flags);
+                    }
+                    break;
                 }
-                break;
-            }
-            case VA_Save:
-            {
-                // write class.
-                TiXmlElement *elem = node->InsertEndChild(TiXmlElement(name))->ToElement();
-                elem->SetAttribute("class", clsName);
-
-                // write num.
-                int num = (int)obj.size();
-                elem->SetAttribute("number", num);
-
-                // write all items.
-                XmlVisitor _v = *this;
-                _v.node = elem;
-
-                typename U::iterator it = obj.begin();
-                for (; it != obj.end(); ++it)
-                {
-                    String itemName = "item" + StringConverter::toString((int)std::distance(obj.begin(), it));
-                    _v.visitObject(itemName.c_str(), (*it).pointerRef(), cls, flags);
-                }
-                break;
-            }
             default:
                 assert(false);
             }

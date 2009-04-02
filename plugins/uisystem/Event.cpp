@@ -13,6 +13,20 @@ namespace hare_ui
     const EventType uiEVT_NULL = 0;
     const EventType uiEVT_FIRST = 10000;
     const EventType uiEVT_USER_FIRST = uiEVT_FIRST + 2000;
+
+    const EventType uiEVT_LEFT_DOWN = newEventType();
+    const EventType uiEVT_LEFT_UP = newEventType();
+    const EventType uiEVT_MIDDLE_DOWN = newEventType();
+    const EventType uiEVT_MIDDLE_UP = newEventType();
+    const EventType uiEVT_RIGHT_DOWN = newEventType();
+    const EventType uiEVT_RIGHT_UP = newEventType();
+    const EventType uiEVT_MOTION = newEventType();
+    const EventType uiEVT_LEFT_DCLICK = newEventType();
+    const EventType uiEVT_MIDDLE_DCLICK = newEventType();
+    const EventType uiEVT_RIGHT_DCLICK = newEventType();
+    const EventType uiEVT_LEAVE_WINDOW = newEventType();
+    const EventType uiEVT_ENTER_WINDOW = newEventType();
+    const EventType uiEVT_MOUSEWHEEL = newEventType();
     
     // --------------------------------------------------------
     // Event
@@ -68,10 +82,6 @@ namespace hare_ui
     
     const EventTableEntry EventHandler::eventTableEntries[] =
     { HARE_DECLARE_EVENT_TABLE_ENTRY(uiEVT_NULL, 0, 0, 0, NULL) };
-
-    HARE_IMPLEMENT_DYNAMIC_CLASS(EventHandler, Object, 0)
-    {
-    }
 
     EventHandler::EventHandler()
     {
@@ -237,10 +247,54 @@ namespace hare_ui
         pendingEventHandlers->push_back(this);
     }
 
-    //void processPendingEvents();
+    void EventHandler::processPendingEvents()
+    {
+        size_t n = pendingEvents->size();
+        for (PendingEventList::iterator it = pendingEvents->begin();
+            it != pendingEvents->end(); ++it)
+        {
+            Event* event = *it;
+            pendingEvents->erase(it);
+            processEvent(*event);
+            if (--n == 0)
+                break;
+        }
+    }
 
-    //void connect();
+    void EventHandler::connect(int id, int lastId, int eventType, EventFunction func, 
+        void* userData, EventHandler* eventSink)
+    {
+        DynamicEventTableEntry *entry =
+            new DynamicEventTableEntry(eventType, id, lastId, func, userData, eventSink);
 
-    //void disconnect();
+        if (!dynamicEvents)
+            dynamicEvents = new DynamicEventList;
+
+        dynamicEvents->push_back(entry);
+    }
+
+    void EventHandler::disconnect(int id, int lastId, int eventType, EventFunction func, 
+        void* userData, EventHandler* eventSink)
+    {
+        if (!dynamicEvents)
+            return;
+
+        for (DynamicEventList::iterator it = dynamicEvents->begin();
+            it != dynamicEvents->end(); ++it)
+        {
+            DynamicEventTableEntry* entry = *it;
+
+            if ((entry->id == id) &&
+                ((entry->lastId == lastId) || (lastId == uiID_Any)) &&
+                ((entry->eventType == eventType) || (eventType == uiEVT_NULL)) &&
+                ((entry->func == func) || (func == 0)) &&
+                ((entry->eventSink == eventSink) || (eventSink == 0)) &&
+                ((entry->userData == userData) || (userData == 0)))
+            {
+                delete entry;
+                it = dynamicEvents->erase(it);
+            }
+        }
+    }
 
 }

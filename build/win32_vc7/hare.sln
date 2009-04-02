@@ -39,6 +39,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "uisystem", "uisystem.vcproj
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "particle_editor", "particle_editor.vcproj", "{8966F408-1DA4-4CEC-9CC5-CB0C687FCA33}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfiguration) = preSolution
 		Debug = Debug
@@ -81,6 +85,10 @@ Global
 		{508C8324-5017-4336-A249-2F9741C0AD8D}.Debug.Build.0 = Debug|Win32
 		{508C8324-5017-4336-A249-2F9741C0AD8D}.Release.ActiveCfg = Release|Win32
 		{508C8324-5017-4336-A249-2F9741C0AD8D}.Release.Build.0 = Release|Win32
+		{8966F408-1DA4-4CEC-9CC5-CB0C687FCA33}.Debug.ActiveCfg = Debug|Win32
+		{8966F408-1DA4-4CEC-9CC5-CB0C687FCA33}.Debug.Build.0 = Debug|Win32
+		{8966F408-1DA4-4CEC-9CC5-CB0C687FCA33}.Release.ActiveCfg = Release|Win32
+		{8966F408-1DA4-4CEC-9CC5-CB0C687FCA33}.Release.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 	EndGlobalSection

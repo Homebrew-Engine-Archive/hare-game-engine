@@ -4,7 +4,7 @@
 namespace hare_ui
 {
     HARE_BEGIN_EVENT_TABLE(Button, Window)
-//        HARE_EVT_MOUSE_EVENTS(onMouseEvent)
+        HARE_EVT_MOUSE_EVENTS(onMouseEvent)
     HARE_END_EVENT_TABLE()
 
     void Button::onMouseEvent(MouseEvent& event)

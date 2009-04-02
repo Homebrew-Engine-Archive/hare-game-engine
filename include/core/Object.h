@@ -45,9 +45,10 @@ namespace hare_core
         void* data;
         ClassInfo* classInfo;
         EnumMap* enumMap;
+        Object* owner;
 
         Attribute() : attrType(attrNone), name(0), data(0), flags(0),
-            typeName(0), classInfo(0), enumMap(0)
+            typeName(0), classInfo(0), enumMap(0), owner(0)
         {
         }
 

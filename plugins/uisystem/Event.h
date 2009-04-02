@@ -16,14 +16,39 @@ namespace hare_ui
     typedef int EventType;
 
     extern UI_API EventType newEventType();
+
+    // ---------------------------------------------------------------------------
+    // Event Types
+    // ---------------------------------------------------------------------------
+    extern UI_API const EventType uiEVT_NULL;
+    extern UI_API const EventType uiEVT_FIRST;
+    extern UI_API const EventType uiEVT_USER_FIRST;
+
+    // Mouse Events
+    extern UI_API const EventType uiEVT_LEFT_DOWN;
+    extern UI_API const EventType uiEVT_LEFT_UP;
+    extern UI_API const EventType uiEVT_MIDDLE_DOWN;
+    extern UI_API const EventType uiEVT_MIDDLE_UP;
+    extern UI_API const EventType uiEVT_RIGHT_DOWN;
+    extern UI_API const EventType uiEVT_RIGHT_UP;
+    extern UI_API const EventType uiEVT_MOTION;
+    extern UI_API const EventType uiEVT_LEFT_DCLICK;
+    extern UI_API const EventType uiEVT_MIDDLE_DCLICK;
+    extern UI_API const EventType uiEVT_RIGHT_DCLICK;
+    extern UI_API const EventType uiEVT_LEAVE_WINDOW;
+    extern UI_API const EventType uiEVT_ENTER_WINDOW;
+    extern UI_API const EventType uiEVT_MOUSEWHEEL;
+    // ---------------------------------------------------------------------------
+    // Event Functions
+    // ---------------------------------------------------------------------------
+    typedef void (EventHandler::*EventFunction)(Event&);
+    typedef void (EventHandler::*MouseEventFunction)(MouseEvent&);
     
     // ---------------------------------------------------------------------------
     // EventHandler
     // ---------------------------------------------------------------------------
     class UI_API EventHandler : public Object
     {
-        HARE_DECLARE_DYNAMIC_CLASS(EventHandler)
-
     public:
         EventHandler();
         virtual ~EventHandler();
@@ -44,9 +69,35 @@ namespace hare_ui
 
         void processPendingEvents();
 
-        void connect();
+        void connect(int id, int lastId, int eventType, EventFunction func, 
+            void* userData = 0, EventHandler* eventSink = 0);
 
-        void disconnect();
+        void connect(int id, int eventType, EventFunction func, 
+            void* userData = 0, EventHandler* eventSink = 0)
+        {
+            connect(id, uiID_Any, eventType, func, userData, eventSink);
+        }
+
+        void connect(int eventType, EventFunction func, 
+            void* userData = 0, EventHandler* eventSink = 0)
+        {
+            connect(uiID_Any, uiID_Any, eventType, func, userData, eventSink);
+        }
+
+        void disconnect(int id, int lastId, int eventType, EventFunction func, 
+            void* userData = 0, EventHandler* eventSink = 0);
+
+        void disconnect(int id, int eventType, EventFunction func, 
+            void* userData = 0, EventHandler* eventSink = 0)
+        {
+            disconnect(id, uiID_Any, eventType, func, userData, eventSink);
+        }
+
+        void disconnect(int eventType, EventFunction func, 
+            void* userData = 0, EventHandler* eventSink = 0)
+        {
+            disconnect(uiID_Any, uiID_Any, eventType, func, userData, eventSink);
+        }
 
         static bool processEventIfMatches(const EventTableEntryBase& entry, 
             EventHandler* handler, Event& event);
@@ -78,8 +129,6 @@ namespace hare_ui
     private:
         static const EventTableEntry eventTableEntries[];
     };
-
-    typedef void (EventHandler::*EventFunction)(Event&);
 
     // ---------------------------------------------------------------------------
     // EventTable
@@ -153,11 +202,6 @@ namespace hare_ui
 
         HARE_DECLARE_NO_COPY_CLASS(DynamicEventTableEntry)
     };
-
-
-    extern UI_API const EventType uiEVT_NULL;
-    extern UI_API const EventType uiEVT_FIRST;
-    extern UI_API const EventType uiEVT_USER_FIRST;
 
     // ---------------------------------------------------------------------------
     // Event
@@ -282,6 +326,30 @@ protected: \
     const EventTableEntry theClass::eventTableEntries[] = { \
 
 #define HARE_END_EVENT_TABLE() HARE_DECLARE_EVENT_TABLE_ENTRY(uiEVT_NULL, 0, 0, 0, 0) };
+
+#define __HARE_DECLARE_EVT2(evt, id1, id2, fn) \
+    HARE_DECLARE_EVENT_TABLE_ENTRY(evt, id1, id2, fn, NULL),
+#define __HARE_DECLARE_EVT1(evt, id, fn) \
+    __HARE_DECLARE_EVT2(evt, id, uiID_Any, fn)
+#define __HARE_DECLARE_EVT0(evt, fn) \
+    __HARE_DECLARE_EVT1(evt, uiID_Any, fn)
+
+#define MouseEventHandler(func) \
+    (EventFunction)static_cast<MouseEventFunction>(&func)
+
+#define HARE_EVT_LEFT_DOWN(func)    __HARE_DECLARE_EVT0(uiEVT_LEFT_DOWN,    MouseEventHandler(func))
+#define HARE_EVT_LEFT_UP(func)      __HARE_DECLARE_EVT0(uiEVT_LEFT_UP,      MouseEventHandler(func))
+#define HARE_EVT_MIDDLE_DOWN(func)  __HARE_DECLARE_EVT0(uiEVT_MIDDLE_DOWN,  MouseEventHandler(func))
+#define HARE_EVT_MIDDLE_UP(func)    __HARE_DECLARE_EVT0(uiEVT_MIDDLE_UP,    MouseEventHandler(func))
+#define HARE_EVT_RIGHT_DOWN(func)   __HARE_DECLARE_EVT0(uiEVT_RIGHT_DOWN,   MouseEventHandler(func))
+#define HARE_EVT_RIGHT_UP(func)     __HARE_DECLARE_EVT0(uiEVT_RIGHT_UP,     MouseEventHandler(func))
+#define HARE_EVT_MOTION(func)       __HARE_DECLARE_EVT0(uiEVT_MOTION,       MouseEventHandler(func))
+#define HARE_EVT_LEFT_DCLICK(func)  __HARE_DECLARE_EVT0(uiEVT_LEFT_DCLICK,  MouseEventHandler(func))
+#define HARE_EVT_MIDDLE_DCLICK(func)__HARE_DECLARE_EVT0(uiEVT_MIDDLE_DCLICK,MouseEventHandler(func))
+#define HARE_EVT_RIGHT_DCLICK(func) __HARE_DECLARE_EVT0(uiEVT_RIGHT_DCLICK, MouseEventHandler(func))
+#define HARE_EVT_LEAVE_WINDOW(func) __HARE_DECLARE_EVT0(uiEVT_LEAVE_WINDOW, MouseEventHandler(func))
+#define HARE_EVT_ENTER_WINDOW(func) __HARE_DECLARE_EVT0(uiEVT_ENTER_WINDOW, MouseEventHandler(func))
+#define HARE_EVT_MOUSEWHEEL(func)   __HARE_DECLARE_EVT0(uiEVT_MOUSEWHEEL,   MouseEventHandler(func))
 
 #define HARE_EVT_MOUSE_EVENTS(func) \
     HARE_EVT_LEFT_DOWN(func) \

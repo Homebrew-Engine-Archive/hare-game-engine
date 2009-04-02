@@ -17,7 +17,7 @@ namespace hare_graphics
 		ParticleInfo();
 		virtual ~ParticleInfo();
 
-		int			nEmission;
+		s32			nEmission;
 		f32			fLifeTime;
 
 		f32			fParticleLifeMin;
@@ -104,7 +104,7 @@ namespace hare_graphics
 
 		f32		fTx, fTy;
 
-		int		nParticlesAlive;
+		s32		nParticlesAlive;
 
 		ParticleInfo::Ptr particleInfo;
 		ParticleUnit particleUnits[MAX_PARTICLES];

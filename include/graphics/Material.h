@@ -161,6 +161,9 @@ namespace hare_graphics
 		}
 
 		virtual void postLoaded();
+
+		virtual void postEdited(Attribute *attr);
+
 	protected:
 		Texture::Ptr texture;
 		TextureStage textureStage;

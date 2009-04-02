@@ -96,6 +96,7 @@ namespace hare_graphics
 		virtual void setPosition(f32 x, f32 y);
 
 		virtual void postLoaded();
+		virtual void postEdited(Attribute* attr);
 	protected:
 		f32		fAge;
 		f32		fEmissionResidue;

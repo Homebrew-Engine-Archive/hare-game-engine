@@ -71,7 +71,7 @@ namespace hare_graphics
 	//Œ∆¿Ì≤ƒ÷ 
 	HARE_IMPLEMENT_DYNAMIC_CLASS(TextureMtrl, StandardMtrl, 0)
 	{
-		HARE_META(fileName, String)
+		HARE_META_F(fileName, String, propFSUrl)
 	}
 
 	TextureMtrl::TextureMtrl()

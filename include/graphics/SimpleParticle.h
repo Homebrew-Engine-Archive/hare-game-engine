@@ -104,7 +104,7 @@ namespace hare_graphics
 
 		f32		fTx, fTy;
 
-		s32		nParticlesAlive;
+		int		nParticlesAlive;
 
 		ParticleInfo::Ptr particleInfo;
 		ParticleUnit particleUnits[MAX_PARTICLES];

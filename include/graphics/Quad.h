@@ -28,6 +28,7 @@ namespace hare_graphics
 
 		void normalize();
 		void setDepth(f32 z);
+		void setColor(u32 color);
 
 	public:
 		Vertex buffer[4];

@@ -4,6 +4,7 @@
 #include "Sprite.h"
 #include "Quad.h"
 #include "Shader.h"
+#include "Particle.h"
 
 #include "GraphicsPrerequisites.h"
 
@@ -27,11 +28,11 @@ namespace hare_graphics
 
 		void loadFromImage(const String& filename);
 
-		void move(int x, int y);
+		void move(f32 x, f32 y);
 	protected:
 		Quad			 quad;
 		Shader*		     shader;
-
+		Particle::Ptr    particle;
 	};
 }
 

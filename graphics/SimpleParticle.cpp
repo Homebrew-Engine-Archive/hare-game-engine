@@ -6,7 +6,7 @@ namespace hare_graphics
 {
 	HARE_IMPLEMENT_DYNAMIC_CLASS(ParticleInfo, Object, 0)
 	{
-		HARE_META(nEmission, int)
+		HARE_META(nEmission, s32)
 		HARE_META(fLifeTime, f32)		
 
 		HARE_META(fParticleLifeMin, f32)			

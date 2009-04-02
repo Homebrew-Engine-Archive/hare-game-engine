@@ -114,6 +114,7 @@ namespace hare_graphics
 		void setTexture(Texture* tex)
 		{
 			texture = tex;
+			fileName = texture->getFileName();
 		}
 		Texture* getTexture()
 		{
@@ -158,13 +159,15 @@ namespace hare_graphics
 		{
 			return textureStage;
 		}
+
+		virtual void postLoaded();
 	protected:
 		Texture::Ptr texture;
 		TextureStage textureStage;
 	
 	public:
 		Matrix4      texMat;
-
+		String       fileName;
 
 	};
 
@@ -209,13 +212,13 @@ namespace hare_graphics
 	public:
 		PointF   offset;
 		PointF   panDirection;
-		f32          panRate; 
+		f32      panRate; 
 
 		PointF   oscillationPhase;
 		PointF   oscillationAmplitude;
 		PointF   oscillationRate;
 	protected:
-		f32          startTime;
+		f32      startTime;
 
 	};
 
@@ -236,7 +239,7 @@ namespace hare_graphics
 		PointF	oscillationAmplitude;
 		PointF	oscillationRate;
 	protected:
-		f32			startTime;
+		f32		startTime;
 
 	};
 
@@ -251,15 +254,15 @@ namespace hare_graphics
 		virtual void frameMove();
 	public:
 		PointF	center;
-		f32			rotation;
-		f32			speed;
+		f32		rotation;
+		f32		speed;
 
-		f32			oscillationPhase;
-		f32			oscillationAmplitude;
-		f32			oscillationRate;
+		f32		oscillationPhase;
+		f32		oscillationAmplitude;
+		f32		oscillationRate;
 
 	protected:
-		f32			startTime;
+		f32		startTime;
 
 	};
 

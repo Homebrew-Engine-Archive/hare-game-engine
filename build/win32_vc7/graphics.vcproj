@@ -124,6 +124,9 @@
 				RelativePath="..\..\include\graphics\Filters.h">
 			</File>
 			<File
+				RelativePath="..\..\graphics\HareGraphicsType.cpp">
+			</File>
+			<File
 				RelativePath="..\..\include\graphics\HareGraphicsType.h">
 			</File>
 			<File
@@ -349,6 +352,18 @@
 		<Filter
 			Name="ParticleSystem"
 			Filter="">
+			<File
+				RelativePath="..\..\graphics\Particle.cpp">
+			</File>
+			<File
+				RelativePath="..\..\include\graphics\Particle.h">
+			</File>
+			<File
+				RelativePath="..\..\graphics\SimpleParticle.cpp">
+			</File>
+			<File
+				RelativePath="..\..\include\graphics\SimpleParticle.h">
+			</File>
 		</Filter>
 		<File
 			RelativePath="..\..\include\graphics\Graphics.h">

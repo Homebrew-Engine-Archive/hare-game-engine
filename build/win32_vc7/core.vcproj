@@ -349,6 +349,9 @@
 				RelativePath="..\..\include\core\Types.h">
 			</File>
 			<File
+				RelativePath="..\..\include\core\Vector2.h">
+			</File>
+			<File
 				RelativePath="..\..\include\core\XmlVisitor.h">
 			</File>
 			<Filter

@@ -174,6 +174,8 @@ int main(int argc, char *argv[])
 
 	getHareApp()->shutDown();
 
+
+	//卸载插件时必须最后写在d3d或openGL插件
 	getHareApp()->freePlugin();
 
     core_quit();

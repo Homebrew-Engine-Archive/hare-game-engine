@@ -36,7 +36,7 @@ public:
 	
 	void loadFromImage(const String& filename);
 	
-	void move(int x, int y);
+	void move(f32 x, f32 y);
 };
 
 class SceneListenerBase
@@ -167,10 +167,10 @@ private:
 class Canvas
 {
 public:
-	void drawLine(int x1, int y1, int x2, int y2, u32 color, f32 z = 0.f);
-	void drawRect(int l, int t, int r, int b, u32 color, f32 z = 0.f);
+	void drawLine(int x1, int y1, int x2, int y2);
+	void drawRect(int l, int t, int r, int b);
 	void drawText(int x, int y, const String& text);
-	void drawImage(int x, int y, Material* mtrl, f32 z = 0.f);
+	void drawImage(int x, int y, Material* mtrl);
 	void setFont(Font* f);
 };
 

@@ -28,5 +28,4 @@ namespace hare_ui
 
         return x;
     }
-
 }

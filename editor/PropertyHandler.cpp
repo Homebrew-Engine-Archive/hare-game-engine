@@ -56,47 +56,54 @@ namespace hare_editor
     void bindAttribute(Attribute* attr, PropertyGridPage* page, wxPGProperty* parent);
 
     template <typename T>
-    void doModifyMeta(Attribute* attr, wxVariant& val)
+    void doModifyMeta(Object* object, Attribute* attr, wxVariant& val)
     {
         long value = wxPGVariantToInt(val);
         T* oldData = (T*)attr->data;
         *oldData = (T)value;
+        object->postEdited(attr);
         val = (long)*oldData;
     }
 
     template <>
-    void doModifyMeta<String>(Attribute* attr, wxVariant& val)
+    void doModifyMeta<String>(Object* object, Attribute* attr, wxVariant& val)
     {
         if (val.GetType() == wxT("string"))
         {
             String* oldData = (String*)attr->data;
             *oldData = val.GetString().ToUTF8().data();
+            object->postEdited(attr);
+            val = wxString::FromUTF8(oldData->c_str());
         }
     }
 
     template <>
-    void doModifyMeta<f32>(Attribute* attr, wxVariant& val)
+    void doModifyMeta<f32>(Object* object, Attribute* attr, wxVariant& val)
     {
         double value = 0.0;
         if (wxPGVariantToDouble(val, &value))
         {
             f32* oldData = (f32*)attr->data;
             *oldData = (f32)value;
+            object->postEdited(attr);
+            val = (double)*oldData;
         }
     }
     
     template <>
-    void doModifyMeta<f64>(Attribute* attr, wxVariant& val)
+    void doModifyMeta<f64>(Object* object, Attribute* attr, wxVariant& val)
     {
         double value = 0.0;
         if (wxPGVariantToDouble(val, &value))
         {
             f64* oldData = (f64*)attr->data;
             *oldData = (f64)value;
+            object->postEdited(attr);
+            val = (double)*oldData;
         }
     }
 
-    template <typename T>
+    /*template <typename T>
     void doModifyMetaArray(Attribute* attr, wxVariant& val)
     {
         wxArrayString arr = val.GetArrayString();
@@ -110,7 +117,7 @@ namespace hare_editor
             arr[i] = wxString::FromUTF8(str.c_str());
         }
         val = arr;
-    }
+    }*/
 
     template <typename T>
     wxPGProperty* doBindEnum(const T& value, Attribute* attr, PropertyGridPage* page, wxPGProperty* parent)
@@ -233,7 +240,7 @@ namespace hare_editor
     template <typename T>
     void doBindMetaArray(Attribute* attr, PropertyGridPage* page, wxPGProperty* parent)
     {
-        std::vector<T>* val = (std::vector<T>*)attr->data;
+        /*std::vector<T>* val = (std::vector<T>*)attr->data;
         wxArrayString arr;
         for (size_t i = 0; i < val->size(); ++i)
         {
@@ -245,7 +252,7 @@ namespace hare_editor
         prop->SetClientData(attr);
         prop->SetHelpString(wxString::Format(wxT("[Array:%s]"), wxString::FromUTF8(attr->typeName).c_str()));
         if (attr->hasFlag(Object::propReadOnly))
-            prop->SetFlag(wxPG_PROP_READONLY | wxPG_PROP_DISABLED);
+            prop->SetFlag(wxPG_PROP_READONLY | wxPG_PROP_DISABLED);*/
     }
 
     void reBindObject(Attribute* attr, ObjectEnumProperty* prop)
@@ -268,6 +275,7 @@ namespace hare_editor
         wxString className = wxString::FromUTF8(attr->classInfo->className);
         prop->SetHelpString(className);
         prop->SetClientData(attr);
+
         // for referenced object, we should display the URL after its class name.
         Object* obj = *(Object**)attr->data;
         if (obj && !obj->getUrl().empty()) 
@@ -338,30 +346,31 @@ namespace hare_editor
         case Attribute::attrMeta:
             {
                 if (attr->typeName == String("String"))
-                    doModifyMeta<String>(attr, value);
+                    doModifyMeta<String>(object, attr, value);
                 else if (attr->typeName == String("u8"))
-                    doModifyMeta<u8>(attr, value);
+                    doModifyMeta<u8>(object, attr, value);
                 else if (attr->typeName == String("s8"))
-                    doModifyMeta<s8>(attr, value);
+                    doModifyMeta<s8>(object, attr, value);
                 else if (attr->typeName == String("u16"))
-                    doModifyMeta<u16>(attr, value);
+                    doModifyMeta<u16>(object, attr, value);
                 else if (attr->typeName == String("s16"))
-                    doModifyMeta<s16>(attr, value);
+                    doModifyMeta<s16>(object, attr, value);
                 else if (attr->typeName == String("u32"))
-                    doModifyMeta<u32>(attr, value);
+                    doModifyMeta<u32>(object, attr, value);
                 else if (attr->typeName == String("s32"))
-                    doModifyMeta<s32>(attr, value);
+                    doModifyMeta<s32>(object, attr, value);
                 else if (attr->typeName == String("f32"))
-                    doModifyMeta<f32>(attr, value);
+                    doModifyMeta<f32>(object, attr, value);
                 else if (attr->typeName == String("f64"))
-                    doModifyMeta<f64>(attr, value);
+                    doModifyMeta<f64>(object, attr, value);
 
                 p->SetValue(value);
+                p->RefreshEditor();
             }
             break;
         case Attribute::attrMetaArray:
             {
-                if (attr->typeName == String("String"))
+                /*if (attr->typeName == String("String"))
                     doModifyMetaArray<String>(attr, value);
                 else if (attr->typeName == String("u8"))
                     doModifyMetaArray<u8>(attr, value);
@@ -380,7 +389,7 @@ namespace hare_editor
                 else if (attr->typeName == String("f64"))
                     doModifyMetaArray<f64>(attr, value);
 
-                p->SetValue(value);
+                p->SetValue(value);*/
             }
             break;
         case Attribute::attrObject:
@@ -395,8 +404,6 @@ namespace hare_editor
             }
             break;
         }
-
-        object->postEdited(attr);
     }
 
     void PropertyGridPage::onPageChange(wxPropertyGridEvent& event)
@@ -435,7 +442,7 @@ namespace hare_editor
             break;
         case Attribute::attrMetaArray:
             {
-                if (attr->typeName == String("String"))
+                /*if (attr->typeName == String("String"))
                     doBindMetaArray<String>(attr, page, parent);
                 else if (attr->typeName == String("u8"))
                     doBindMetaArray<u8>(attr, page, parent);
@@ -452,7 +459,7 @@ namespace hare_editor
                 else if (attr->typeName == String("f32"))
                     doBindMetaArray<f32>(attr, page, parent);
                 else if (attr->typeName == String("f64"))
-                    doBindMetaArray<f64>(attr, page, parent);
+                    doBindMetaArray<f64>(attr, page, parent);*/
             }
             break;
         case Attribute::attrObject:

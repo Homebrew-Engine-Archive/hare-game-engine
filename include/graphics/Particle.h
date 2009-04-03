@@ -26,7 +26,7 @@ namespace hare_graphics
 		void   setMaterial(Material* mtrl);
 
 	protected:
-		Vector2       vLocation;
+		Vector2       location;
 		Material::Ptr particleMtrl;
 	};
 }

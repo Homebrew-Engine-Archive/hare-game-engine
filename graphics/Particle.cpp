@@ -9,7 +9,7 @@ namespace hare_graphics
     }
 
 	Particle::Particle()
-		:vLocation(0,0)
+		:location(0,0)
 	{
 
 	}
@@ -26,12 +26,12 @@ namespace hare_graphics
 
 	PointF Particle::getPosition()
 	{
-		return PointF(vLocation.x, vLocation.y);
+		return PointF(location.x, location.y);
 	}
 
 	void Particle::setPosition(f32 x, f32 y)
 	{
-		vLocation.x = x;
-		vLocation.y = y;
+		location.x = x;
+		location.y = y;
 	}
 }

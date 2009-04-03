@@ -80,7 +80,7 @@ namespace hare_graphics
 		particle = new SimpleParticle;
 		particle->setMaterial(particleMtrl);
 		particle->fireAt(200, 200);
-        particle->saveToXml("default.particle");
+        //particle->saveToXml("default.particle");
 
 	}
 

@@ -17,41 +17,41 @@ namespace hare_graphics
 		ParticleInfo();
 		virtual ~ParticleInfo();
 
-		s32			nEmission;
-		f32			fLifeTime;
+		s32			emission;
+		f32			lifeTime;
 
-		f32			fParticleLifeMin;
-		f32			fParticleLifeMax;
+		f32			particleLifeMin;
+		f32			particleLifeMax;
 
-		f32			fDirection;
-		f32			fSpread;
-		bool		bRelative;
+		f32			direction;
+		f32			spread;
+		bool		relative;
 
-		f32			fSpeedMin;
-		f32			fSpeedMax;
+		f32			speedMin;
+		f32			speedMax;
 
-		f32			fGravityMin;
-		f32			fGravityMax;
+		f32			gravityMin;
+		f32			gravityMax;
 
-		f32			fRadialAccelMin;
-		f32			fRadialAccelMax;
+		f32			radialAccelMin;
+		f32			radialAccelMax;
 
-		f32			fTangentialAccelMin;
-		f32			fTangentialAccelMax;
+		f32			tangentialAccelMin;
+		f32			tangentialAccelMax;
 
-		f32			fSizeStart;
-		f32			fSizeEnd;
-		f32			fSizeVar;
+		f32			sizeStart;
+		f32			sizeEnd;
+		f32			sizeVar;
 
-		f32			fSpinStart;
-		f32			fSpinEnd;
-		f32			fSpinVar;
+		f32			spinStart;
+		f32			spinEnd;
+		f32			spinVar;
 
-		u32			clColorStart;
-		u32			clColorEnd;
+		u32			colorStart;
+		u32			colorEnd;
 
-		f32			fColorVar;
-		f32			fAlphaVar;
+		f32			colorVar;
+		f32			alphaVar;
 	};
 
 
@@ -61,24 +61,24 @@ namespace hare_graphics
 	public:
 		struct ParticleUnit
 		{
-			Vector2   vLocation;
-			Vector2   vVelocity;
+			Vector2   location;
+			Vector2   velocity;
 
-			f32	  fGravity;
-			f32	  fRadialAccel;
-			f32	  fTangentialAccel;
+			f32	  gravity;
+			f32	  radialAccel;
+			f32	  tangentialAccel;
 
-			f32	  fSpin;
-			f32	  fSpinDelta;
+			f32	  spin;
+			f32	  spinDelta;
 
-			f32	  fSize;
-			f32	  fSizeDelta;
+			f32	  size;
+			f32	  sizeDelta;
 
-			Color clColor;
-			Color clColorDelta;
+			Color color;
+			Color colorDelta;
 
-			f32	  fAge;
-			f32	  fTerminalAge;
+			f32	  age;
+			f32	  terminalAge;
 		};
 
 	public:
@@ -98,14 +98,14 @@ namespace hare_graphics
 		virtual void postLoaded();
 		virtual void postEdited(Attribute* attr);
 	protected:
-		f32		fAge;
-		f32		fEmissionResidue;
+		f32		age;
+		f32		emissionResidue;
 
-		Vector2	vPrevLocation;
+		Vector2	prevLocation;
 
-		f32		fTx, fTy;
+		f32		tx, ty;
 
-		int		nParticlesAlive;
+		int		particlesAlive;
 
 		ParticleInfo::Ptr particleInfo;
 		ParticleUnit particleUnits[MAX_PARTICLES];

@@ -43,13 +43,13 @@ namespace hare_d3d
 		if (FAILED(hr))
 			assert(false);
 
+		//没有Z pDepthStencilSurface为空
 		hr = pD3DDevice->SetDepthStencilSurface(pDepthStencilSurface);
+		
 		if (FAILED(hr))
 			assert(false);
 
 		SAFE_RELEASE(sur);
-
-		D3DRenderSystem::getSingletonPtr()->clear();
 
 		//重新设置投影矩阵
 		D3DXMATRIX matTEMP;
@@ -76,6 +76,8 @@ namespace hare_d3d
 		D3DRenderSystem::getSingletonPtr()->render();
 
 		D3DRenderSystem::getSingletonPtr()->endFrame();
+
+		D3DRenderSystem::getSingletonPtr()->clear(D3DRenderSystem::getSingletonPtr()->getCurRenderWindow()->getWindowParams().bZbuffer);
 	}
 
 	void D3DTexture::beforeResetDevice()
@@ -181,18 +183,20 @@ namespace hare_d3d
 				const DWORD MultisampleQuality = 0;
 				const bool Discard = TRUE;
 
-				if (FAILED(pD3DDevice->CreateDepthStencilSurface(
-					width,
-					height,
-					curWindowD3Dpp->AutoDepthStencilFormat,
-					MultiSample,
-					MultisampleQuality,
-					Discard,
-					&pDepthStencilSurface,
-					NULL
-					))){
-						return false;
-				}				
+				if (curWindow->getWindowParams().bZbuffer){
+					if (FAILED(pD3DDevice->CreateDepthStencilSurface(
+						width,
+						height,
+						curWindowD3Dpp->AutoDepthStencilFormat,
+						MultiSample,
+						MultisampleQuality,
+						Discard,
+						&pDepthStencilSurface,
+						NULL
+						))){
+							return false;
+						}					
+				}
 			}
 
 			 

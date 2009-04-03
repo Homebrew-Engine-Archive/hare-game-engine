@@ -29,7 +29,7 @@ namespace hare_graphics
 		virtual void render() = 0;
 		virtual void render(RenderUnit* operation) = 0;
 		virtual void endFrame() = 0;
-		virtual void clear() = 0;
+		virtual void clear(bool z) = 0;
 
 		virtual void setShaderParams(const ShaderParams& shaderParams) = 0;
 		virtual void setTextureStage(const TextureStage& textureStage) = 0;

@@ -20,7 +20,7 @@ namespace hare_graphics
 			,width(800)
 			,height(600)
 		{
-			title = "gg";
+			title = "hare";
 		}
 	};
 
@@ -33,21 +33,13 @@ namespace hare_graphics
 
 		virtual ~RenderWindow();
 
-		void setWidth(u32 w)
-		{
-			width = w;
-		}
-		void setHeight(u32 h)
-		{
-			height = h;
-		}
 		u32 getWidth()
 		{
-			return width;
+			return windowParams.width;
 		}
 		u32 getHeight()
 		{
-			return height;
+			return windowParams.height;
 		}
 
 		virtual void create(const WindowParams& params) = 0;
@@ -73,14 +65,17 @@ namespace hare_graphics
 			return isMainWnd;
 		}
 
-
+		const WindowParams& getWindowParams()
+		{
+			return windowParams;
+		}
 
 	protected:
-		u32 width;
-		u32 height;
 		bool isMainWnd;
         bool isExternal;
 
+		WindowParams windowParams;
+		
 		SceneManager* sceneManager;
 	};
 }

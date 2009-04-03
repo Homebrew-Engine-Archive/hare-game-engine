@@ -145,7 +145,8 @@ namespace hare_d3d
 			//µÃµ½äÖÈ¾Ãæ
 			pD3DDevice->GetRenderTarget(0, &(renderWindow->pRenderSurface));
 
-			pD3DDevice->GetDepthStencilSurface(&(renderWindow->pDepthStencilSurface));
+			if (renderWindow->getWindowParams().bZbuffer)
+				pD3DDevice->GetDepthStencilSurface(&(renderWindow->pDepthStencilSurface));
 
 			pPrimaryWindow = renderWindow;
 
@@ -169,15 +170,18 @@ namespace hare_d3d
 
 			renderWindow->pSwapChain->GetBackBuffer(0, D3DBACKBUFFER_TYPE_MONO, &(renderWindow->pRenderSurface));
 		
-			hr = pD3DDevice->CreateDepthStencilSurface(
-				renderWindow->windowParams.width,
-				renderWindow->windowParams.height,
-				renderWindow->D3Dpp.AutoDepthStencilFormat,
-				renderWindow->D3Dpp.MultiSampleType,
-				renderWindow->D3Dpp.MultiSampleQuality,
-				(renderWindow->D3Dpp.Flags & D3DPRESENTFLAG_DISCARD_DEPTHSTENCIL),
-				&(renderWindow->pDepthStencilSurface),
-				NULL);
+			if (renderWindow->getWindowParams().bZbuffer){
+				hr = pD3DDevice->CreateDepthStencilSurface(
+					renderWindow->windowParams.width,
+					renderWindow->windowParams.height,
+					renderWindow->D3Dpp.AutoDepthStencilFormat,
+					renderWindow->D3Dpp.MultiSampleType,
+					renderWindow->D3Dpp.MultiSampleQuality,
+					(renderWindow->D3Dpp.Flags & D3DPRESENTFLAG_DISCARD_DEPTHSTENCIL),
+					&(renderWindow->pDepthStencilSurface),
+					NULL);			
+			}
+
 
 			if (FAILED(hr)){
 				assert(false);
@@ -313,9 +317,19 @@ namespace hare_d3d
 		pD3DDevice->EndScene();
 	}
 
-	void D3DRenderSystem::clear()
+	void D3DRenderSystem::clear(bool z)
 	{
-		pD3DDevice->Clear(0, 0, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, 0, 1, 0);
+		u32 flags;
+		f32 fZ = 0;
+
+		flags = D3DCLEAR_TARGET;
+		if (z){
+			flags |= D3DCLEAR_ZBUFFER;	
+			fZ = 1;
+		}
+
+		pD3DDevice->Clear(0, 0, flags, 0, fZ, 0);
+
 	}
 
 	void D3DRenderSystem::setRenderTarget(RenderTarget* target)

@@ -25,7 +25,7 @@ namespace hare_d3d
 		virtual void render();
 		virtual void render(RenderUnit* operation);
 		virtual void endFrame();
-		virtual void clear();
+		virtual void clear(bool z);
 
 		virtual void setRenderTarget(RenderTarget* target);
 		virtual void setShaderParams(const ShaderParams& shaderParams);

@@ -47,7 +47,6 @@ namespace hare_d3d
 
 		D3DXMATRIX MatProj;
 
-		WindowParams windowParams;
 		//HINSTANCE hInstance;
 	};
 }

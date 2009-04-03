@@ -210,13 +210,11 @@ namespace hare_d3d
 		if (FAILED(hr))
 			assert(false);
 
+		//没有Z pDepthStencilSurface为空
 		hr = pD3DDevice->SetDepthStencilSurface(pDepthStencilSurface);
-	
+
 		if (FAILED(hr))
 			assert(false);
-
-		//先清空d3d场景
-		D3DRenderSystem::getSingletonPtr()->clear();
 
 		D3DXMATRIX matTEMP;
 
@@ -233,27 +231,6 @@ namespace hare_d3d
 		pD3DDevice->SetTransform(D3DTS_VIEW, &MatView);
 		pD3DDevice->SetTransform(D3DTS_PROJECTION, &MatProj);
 
-        //D3DSURFACE_DESC desc;
-        //pRenderSurface->GetDesc(&desc);
-
-        //D3DVIEWPORT9 vp;
-        //vp.X = 0;
-        //vp.Y = 0;
-        //vp.Width = desc.Width;
-        //vp.Height = desc.Height;
-        //vp.MinZ = 0.0f;
-        //vp.MaxZ = 1.0f;
-        //pD3DDevice->SetViewport(&vp);
-
-        //D3DXMATRIX tmp;
-        //D3DXMatrixScaling(&matProj, 1.0f, -1.0f, 1.0f);
-        //D3DXMatrixTranslation(&tmp, -0.5f, +0.5f, 0.0f);
-        //D3DXMatrixMultiply(&matProj, &matProj, &tmp);
-        //D3DXMatrixOrthoOffCenterLH(&tmp, 0.0f, (f32)(windowParams.width), 
-        //    -(f32)windowParams.height, 0.0f, 0.0f, 1.0f);
-        //D3DXMatrixMultiply(&matProj, &matProj, &tmp);
-        //pD3DDevice->SetTransform(D3DTS_PROJECTION, &matProj);
-
 		D3DRenderSystem::getSingletonPtr()->setCurRenderWindow(this);
 
 	}
@@ -265,6 +242,10 @@ namespace hare_d3d
 		D3DRenderSystem::getSingletonPtr()->endFrame();
 
 		swapBuffer();
+
+		//清空d3d场景
+		D3DRenderSystem::getSingletonPtr()->clear(windowParams.bZbuffer);
+
 	}
 
 	void D3DRenderWindow::beforeResetDevice()

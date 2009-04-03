@@ -131,7 +131,7 @@ namespace hare_graphics
 
 		texCache = SystemManager::getSingletonPtr()->createTexture();
 
-		texCache->createRenderToTex(texSize, texSize, HPF_A8R8G8B8);
+		texCache->create(texSize, texSize, HPF_A8R8G8B8);
 
 		ch = L'A';
 		advanceFillCache(ch, ch + 63);

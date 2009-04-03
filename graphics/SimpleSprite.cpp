@@ -92,8 +92,26 @@ namespace hare_graphics
 
 	void SimpleSprite::renderScene()
 	{
+		RenderTarget* target = RenderSystem::getSingletonPtr()->getRenderTarget();
+
 		RenderSystem::getSingletonPtr()->render(&quad);
 		particle->render();
+
+		Texture* tex;
+		tex = RenderSystem::getSingletonPtr()->createTexture();
+		tex->create(256, 256, HPF_A8R8G8B8, true);
+		RenderSystem::getSingletonPtr()->setRenderTarget(tex);
+		
+		RenderSystem::getSingletonPtr()->render(&quad);
+
+		RenderSystem::getSingletonPtr()->setRenderTarget(target);
+
+		TextureMtrl* texMtrl;
+		texMtrl = new TextureMtrl;
+		texMtrl->setTexture(tex);
+
+		getCanvas()->drawImage(300, 300, texMtrl);
+
 	}
 
 	void SimpleSprite::endScene()

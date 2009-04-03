@@ -1,6 +1,6 @@
 #include "PCH.h"
 #include "RenderSystem.h"
-#include "RenderTarget.h"
+#include "RenderWindow.h"
 
 namespace hare_graphics
 {
@@ -34,6 +34,7 @@ namespace hare_graphics
 	void RenderSystem::setCurRenderWindow(RenderWindow* window)
 	{
 		curRenderWindow = window;
+		curRenderTarget = window;
 	}
 
 	RenderTarget* RenderSystem::getRenderTarget()

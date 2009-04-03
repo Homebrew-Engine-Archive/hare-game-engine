@@ -50,18 +50,33 @@ namespace hare_graphics
 		//‰÷»æ
 		it = secondaryWindowList.begin();
 		for (;it != secondaryWindowList.end(); ++it){
-			renderSystem->setRenderTarget( *it );
-			if ((*it)->getSceneManager())
+			RenderWindow* renderWindow = *it;
+
+			renderWindow->active();
+
+			if ((*it)->getSceneManager()){
 				(*it)->getSceneManager()->renderScene();
+			}
+
+			renderWindow->inactive();
+
+			renderWindow->swapBuffer();
+
 		}
 
 		if (pPrimaryWindow){
-			renderSystem->setRenderTarget(pPrimaryWindow);
-			if (pPrimaryWindow->getSceneManager())
+			pPrimaryWindow->active();
+
+			if (pPrimaryWindow->getSceneManager()){
 				pPrimaryWindow->getSceneManager()->renderScene();
+			}
+
+			pPrimaryWindow->inactive();
+
+			pPrimaryWindow->swapBuffer();
 		}
 
-		renderSystem->setRenderTarget(NULL);
+		//renderSystem->setRenderTarget(NULL);
 
 		//‰÷»æ∫Û
 		it = secondaryWindowList.begin();

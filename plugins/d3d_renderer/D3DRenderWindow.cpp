@@ -194,6 +194,9 @@ namespace hare_d3d
 		}else{
 			pSwapChain->Present(NULL, NULL, NULL, NULL, 0);
 		}
+
+		//清空d3d场景
+		D3DRenderSystem::getSingletonPtr()->clear(windowParams.bZbuffer);
 	}
 
 	void D3DRenderWindow::active()
@@ -240,12 +243,6 @@ namespace hare_d3d
 		D3DRenderSystem::getSingletonPtr()->render();
 
 		D3DRenderSystem::getSingletonPtr()->endFrame();
-
-		swapBuffer();
-
-		//清空d3d场景
-		D3DRenderSystem::getSingletonPtr()->clear(windowParams.bZbuffer);
-
 	}
 
 	void D3DRenderWindow::beforeResetDevice()

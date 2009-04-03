@@ -138,6 +138,9 @@
 				RelativePath="..\..\plugins\d3d_renderer\D3DTypeConverter.cpp">
 			</File>
 			<File
+				RelativePath="..\..\plugins\d3d_renderer\D3DUtility.cpp">
+			</File>
+			<File
 				RelativePath="..\..\plugins\d3d_renderer\D3DVertexBufferManager.cpp">
 			</File>
 			<File
@@ -168,6 +171,9 @@
 			</File>
 			<File
 				RelativePath="..\..\plugins\d3d_renderer\D3DTypeConverter.h">
+			</File>
+			<File
+				RelativePath="..\..\plugins\d3d_renderer\D3DUtility.h">
 			</File>
 			<File
 				RelativePath="..\..\plugins\d3d_renderer\D3DVertexBufferManager.h">

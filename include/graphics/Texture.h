@@ -27,7 +27,7 @@ namespace hare_graphics
 
 		virtual ~Texture();
 
-        void createRenderToTex(u32 w, u32 h, HarePixelFormat format, bool isRenderable = false);
+        void create(u32 w, u32 h, HarePixelFormat format, bool isRenderable = false);
         void createFromFile(const String& filename);     
 		
 		void setProjectionSize(f32 w, f32 h);
@@ -55,7 +55,7 @@ namespace hare_graphics
 		virtual void upload(const Image& img, u32 destX = 0, u32 destY = 0) = 0;
 
 		//Gets an image from a texture.
-		virtual void download(Image& img, const RectN *rc = 0) = 0;
+		virtual void download(Image& img, const RectN& rc = RectN(0,0,0,0)) = 0;
         virtual void reCreate() = 0;
 		virtual void release() = 0;
 

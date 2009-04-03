@@ -16,7 +16,7 @@ namespace hare_graphics
 	}
 
 
-	void Texture::createRenderToTex(u32 w, u32 h, HarePixelFormat format, bool isRenderable)
+	void Texture::create(u32 w, u32 h, HarePixelFormat format, bool isRenderable)
 	{
 		size = 0;
 		width = w;	//转换成2的幂次方

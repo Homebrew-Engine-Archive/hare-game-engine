@@ -21,7 +21,7 @@ namespace hare_d3d
 
 		virtual void upload(const Image& img, u32 destX = 0, u32 destY = 0);
 
-		virtual void download(Image& img, const RectN* rc = 0);
+		virtual void download(Image& img, const RectN& rc = RectN(0,0,0,0));
 
 		virtual void reCreate();
 

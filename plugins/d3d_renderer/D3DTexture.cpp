@@ -3,6 +3,7 @@
 #include "D3DRenderSystem.h"
 #include "D3DTypeConverter.h"
 #include "D3DRenderWindow.h"
+#include "D3DUtility.h"
 
 
 namespace hare_d3d
@@ -77,7 +78,7 @@ namespace hare_d3d
 
 		D3DRenderSystem::getSingletonPtr()->endFrame();
 
-		D3DRenderSystem::getSingletonPtr()->clear(D3DRenderSystem::getSingletonPtr()->getCurRenderWindow()->getWindowParams().bZbuffer);
+		//D3DRenderSystem::getSingletonPtr()->clear(D3DRenderSystem::getSingletonPtr()->getCurRenderWindow()->getWindowParams().bZbuffer);
 	}
 
 	void D3DTexture::beforeResetDevice()
@@ -128,9 +129,13 @@ namespace hare_d3d
 
 	}
 
-	void D3DTexture::download(Image &img, const RectN* rc)
+	void D3DTexture::download(Image &img, const RectN& rc)
 	{
-		
+		HRESULT hr;
+		LPDIRECT3DSURFACE9 destSurface;
+		hr = d3dTexture->GetSurfaceLevel(0,&destSurface);
+		D3DUtility::downLoadSurface(destSurface, texPixelFormat, img, rc);
+		SAFE_RELEASE(destSurface);
 	}
 
 	void D3DTexture::reCreate()

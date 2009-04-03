@@ -116,14 +116,21 @@ namespace hare_editor
             unsigned char A = colour.Alpha();
 
             value = (A << 24) | (R << 16) | (G <<  8) | B;
+
+            T* oldData = (T*)attr->data;
+            *oldData = (T)value;
+            attr->owner->postEdited(attr);
+            //
         }
         else
         {
             value = wxPGVariantToInt(val);
+            T* oldData = (T*)attr->data;
+            *oldData = (T)value;
+            attr->owner->postEdited(attr);
+            val = (long)*oldData;
         }
-        T* oldData = (T*)attr->data;
-        *oldData = (T)value;
-        attr->owner->postEdited(attr);
+
     }
 
     template <>

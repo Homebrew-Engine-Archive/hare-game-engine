@@ -133,19 +133,7 @@ namespace hare_graphics
 
 		virtual TextureMtrl* getTextureMtrl()
 		{
-			if (!mtrl)
-				return NULL;
-
-			TextureMtrl* texMtrl = mtrl->getTextureMtrl();
-			if (texMtrl){
-				TextureStage texStage;
-				texStage.AlphaBlendOP   = TextureStage::CABO_Select1;
-				texStage.AlphaBlendArg1 = TextureStage::CABA_Texture;
-
-				texMtrl->setTextureStage(texStage);	
-			}
-
-			return texMtrl;
+			return mtrl != NULL ? mtrl->getTextureMtrl() : NULL;
 		}
 
 	protected:

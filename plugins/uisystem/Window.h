@@ -107,7 +107,10 @@ namespace hare_ui
         void releaseMouse();
 
         // get the window which currently captures the mouse or NULL
-        static Window *getCapture();
+        static Window *getCapture()
+        {
+            return capturedWindow;
+        }
 
         // does this window have the capture?
         virtual bool hasCapture() const

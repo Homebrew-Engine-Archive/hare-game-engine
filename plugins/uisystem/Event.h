@@ -299,13 +299,62 @@ namespace hare_ui
     class UI_API MouseEvent : public Event
     {
     public:
-        PointF getPosition() const
-        {
-            return pos;
+        MouseEvent(EventType commandType);
+
+        MouseEvent(const MouseEvent& rhs) : Event(rhs)
+        { 
+            assign(rhs); 
         }
 
+        bool isControlDown() const { return controlDown; }
+        bool isMetaDown() const { return metaDown; }
+        bool isAltDown() const { return altDown; }
+        bool isShiftDown() const { return shiftDown; }
+        bool isLeftDown() const { return leftDown; }
+        bool isMiddleDown() const { return middleDown; }
+        bool isRightDown() const { return rightDown; }
+
+        bool isEnteringEvent() const 
+        { 
+            return eventType == uiEVT_ENTER_WINDOW; 
+        }
+
+        bool isLeavingEvent() const 
+        { 
+            return eventType == uiEVT_LEAVE_WINDOW;
+        }
+
+        int getWheelDelta() const 
+        {
+            return wheelDelta; 
+        }
+
+        PointF getPosition() const
+        {
+            return position;
+        }
+
+        virtual Event *cloneEvent() const { return new MouseEvent(*this); }
+
+        MouseEvent& operator=(const MouseEvent& rhs) { assign(rhs); return *this; }
+
     protected:
-        PointF pos;
+        void assign(const MouseEvent& rhs);
+
+    protected:
+        friend class UISystem;
+
+        bool leftDown;
+        bool middleDown;
+        bool rightDown;
+
+        bool controlDown;
+        bool shiftDown;
+        bool altDown;
+        bool metaDown;
+
+        int wheelDelta;
+        PointF position;
     };
 
 #define HARE_DECLARE_EVENT_TABLE_ENTRY(type, winid, idLast, fn, data) \

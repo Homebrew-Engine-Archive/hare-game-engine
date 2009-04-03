@@ -53,6 +53,35 @@ namespace hare_ui
     {
     }
 
+    // --------------------------------------------------------
+    // MouseEvent
+    // --------------------------------------------------------
+    MouseEvent::MouseEvent(EventType commandType)
+    {
+        eventType = commandType;
+        metaDown = false;
+        altDown = false;
+        controlDown = false;
+        shiftDown = false;
+        leftDown = false;
+        rightDown = false;
+        middleDown = false;
+        wheelDelta = 0;
+    }
+
+    void MouseEvent::assign(const MouseEvent& rhs)
+    {
+        eventType = rhs.eventType;
+        metaDown = rhs.metaDown;
+        altDown = rhs.altDown;
+        controlDown = rhs.controlDown;
+        shiftDown = rhs.shiftDown;
+        leftDown = rhs.leftDown;
+        rightDown = rhs.rightDown;
+        middleDown = rhs.middleDown;
+        wheelDelta = rhs.wheelDelta;
+        position = rhs.position;
+    }
 
     // --------------------------------------------------------
     // Cache of most recently sent events

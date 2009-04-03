@@ -141,7 +141,7 @@
 				RelativePath="..\..\plugins\uisystem\Theme.cpp">
 			</File>
 			<File
-				RelativePath="..\..\plugins\uisystem\UIManager.cpp">
+				RelativePath="..\..\plugins\uisystem\UISystem.cpp">
 			</File>
 			<File
 				RelativePath="..\..\plugins\uisystem\Window.cpp">
@@ -170,10 +170,10 @@
 				RelativePath="..\..\plugins\uisystem\Theme.h">
 			</File>
 			<File
-				RelativePath="..\..\plugins\uisystem\UIManager.h">
+				RelativePath="..\..\plugins\uisystem\UIPrerequisites.h">
 			</File>
 			<File
-				RelativePath="..\..\plugins\uisystem\UIPrerequisites.h">
+				RelativePath="..\..\plugins\uisystem\UISystem.h">
 			</File>
 			<File
 				RelativePath="..\..\plugins\uisystem\Window.h">

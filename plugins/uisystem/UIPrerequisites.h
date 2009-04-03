@@ -22,6 +22,7 @@
 
 namespace hare_ui
 {
+    class UISystem;
     class Window;
     class Theme;
     class Sizer;

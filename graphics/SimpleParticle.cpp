@@ -36,8 +36,8 @@ namespace hare_graphics
 		HARE_META(fSpinEnd,   f32)			
 		HARE_META(fSpinVar,   f32)		
 
-		HARE_META(clColorStart, u32)		
-		HARE_META(clColorEnd,   u32)	
+		HARE_META_F(clColorStart, u32, propColor)		
+		HARE_META_F(clColorEnd,   u32, propColor)	
 
 		HARE_META(fColorVar, f32)			
 		HARE_META(fAlphaVar, f32)			
@@ -252,22 +252,11 @@ namespace hare_graphics
 
 	void SimpleParticle::moveTo(f32 x, f32 y)
 	{
-		float dx,dy;
+        if (fAge == -2.0f) { vPrevLocation.x = x; vPrevLocation.y = y; }
+        else { vPrevLocation.x = vLocation.x; vPrevLocation.y = vLocation.y; }
 
-		dx = x - vLocation.x;
-		dy = y - vLocation.y;
-
-		for(int i = 0; i < nParticlesAlive; i++)
-		{
-			particleUnits[i].vLocation.x += dx;
-			particleUnits[i].vLocation.y += dy;
-		}
-
-		vPrevLocation.x = vPrevLocation.x + dx;
-		vPrevLocation.y = vPrevLocation.y + dy;
-
-		vLocation.x = x;
-		vLocation.y = y;
+        vLocation.x = x;
+        vLocation.y = y;
 	}
 
 	void SimpleParticle::pause()
@@ -283,11 +272,22 @@ namespace hare_graphics
 
 	void SimpleParticle::setPosition(f32 x, f32 y)
 	{
-		if(fAge == -2.0f) { vPrevLocation.x = x; vPrevLocation.y = y; }
-		else { vPrevLocation.x = vLocation.x; vPrevLocation.y = vLocation.y; }
-	
-		vLocation.x = x;
-		vLocation.y = y;
+        float dx,dy;
+
+        dx = x - vLocation.x;
+        dy = y - vLocation.y;
+
+        for(int i = 0; i < nParticlesAlive; i++)
+        {
+            particleUnits[i].vLocation.x += dx;
+            particleUnits[i].vLocation.y += dy;
+        }
+
+        vPrevLocation.x = vPrevLocation.x + dx;
+        vPrevLocation.y = vPrevLocation.y + dy;
+
+        vLocation.x = x;
+        vLocation.y = y;
 	}
 
 	void SimpleParticle::postLoaded()

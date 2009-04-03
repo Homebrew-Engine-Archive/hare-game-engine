@@ -278,6 +278,7 @@ namespace hare_core
         if (path.empty())
             return false;
 
+        String savePath = path;
         String savedUrl = getUrl();
         setUrl(StringUtil::EMPTY);
 
@@ -301,7 +302,7 @@ namespace hare_core
             doc.Accept(&printer);
 
             FileSystem* fs = FileSystem::getSingletonPtr();
-            FileHandle fh = fs->openFile(path, FM_Write);
+            FileHandle fh = fs->openFile(savePath, FM_Write);
             if (fh)
             {
                 fs->writeFile(fh, printer.CStr(), (int)printer.Size(), 1);
@@ -324,6 +325,7 @@ namespace hare_core
         if (path.empty())
             return false;
 
+        String savePath = path;
         String savedUrl = getUrl();
         setUrl(StringUtil::EMPTY);
 
@@ -345,7 +347,7 @@ namespace hare_core
             stream.seekg(0);
 
             FileSystem* fs = FileSystem::getSingletonPtr();
-            FileHandle fh = fs->openFile(path, FM_Write);
+            FileHandle fh = fs->openFile(savePath, FM_Write);
             if (fh)
             {
                 fs->writeFile(fh, stream.str().c_str(), size, 1);

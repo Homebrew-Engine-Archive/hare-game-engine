@@ -20,13 +20,61 @@
 namespace hare_editor
 {
     IMPLEMENT_DYNAMIC_CLASS(ObjectEnumProperty, wxEnumProperty)
+
+    //-----------------------------------------------------------------------------------
+    // RGBAColourProperty
+    //-----------------------------------------------------------------------------------
+    RGBAColourProperty::RGBAColourProperty(const wxString& label, const wxString& name,
+        const wxColour& value) : wxColourProperty(label, name, value)
+    {
+        AddChild(new wxIntProperty(wxT("R"), wxPG_LABEL, value.Red()));
+        AddChild(new wxIntProperty(wxT("G"), wxPG_LABEL, value.Green()));
+        AddChild(new wxIntProperty(wxT("B"), wxPG_LABEL, value.Blue()));
+        AddChild(new wxIntProperty(wxT("A"), wxPG_LABEL, value.Alpha()));
+    }
+
+    RGBAColourProperty::~RGBAColourProperty()
+    {
+    }
+
+    void RGBAColourProperty::RefreshChildren()
+    {
+        if (!GetCount()) return;
+        wxColour colour;
+        colour << m_value;
+        Item(0)->SetValue(colour.Red());
+        Item(1)->SetValue(colour.Green());
+        Item(2)->SetValue(colour.Blue());
+        Item(3)->SetValue(colour.Alpha());
+    }
+
+    void RGBAColourProperty::ChildChanged(wxVariant& thisValue, int childIndex, wxVariant& childValue) const
+    {
+        wxColour colour;
+        colour << thisValue;
+        long newColour = childValue.GetLong();
+        unsigned char R = colour.Red();
+        unsigned char G = colour.Green();
+        unsigned char B = colour.Blue();
+        unsigned char A = colour.Alpha();
+        switch (childIndex)
+        {
+        case 0: R = newColour; break;
+        case 1: G = newColour; break;
+        case 2: B = newColour; break;
+        case 3: A = newColour; break;
+        }
+        colour.Set(R, G, B, A);
+        thisValue << colour;
+    }
+        
     //-----------------------------------------------------------------------------------
     // FSUrlProperty
     //-----------------------------------------------------------------------------------
     WX_PG_IMPLEMENT_DERIVED_PROPERTY_CLASS(FSUrlProperty, wxLongStringProperty, const wxString&)
 
-    FSUrlProperty::FSUrlProperty(const wxString& name, const wxString& label, const wxString& value)
-        : wxLongStringProperty(name, label, value)
+    FSUrlProperty::FSUrlProperty(const wxString& label, const wxString& name, const wxString& value)
+        : wxLongStringProperty(label, name, value)
     {
         m_flags |= wxPG_NO_ESCAPE;
     }
@@ -39,9 +87,7 @@ namespace hare_editor
     {
         wxSize size(300, 400);
 
-        FileSystemDialog dlg(propGrid,
-            _("FileSystem"),
-            value,
+        FileSystemDialog dlg(propGrid, _("FileSystem"), value,
             wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER,
             propGrid->GetGoodEditorDialogPosition(this, size),
             size);
@@ -59,11 +105,25 @@ namespace hare_editor
     template <typename T>
     void doModifyMeta(Attribute* attr, wxVariant& val)
     {
-        long value = wxPGVariantToInt(val);
+        T value;
+        if (attr->hasFlag(Object::propColor))
+        {
+            wxColour colour;
+            colour << val;
+            unsigned char R = colour.Red();
+            unsigned char G = colour.Green();
+            unsigned char B = colour.Blue();
+            unsigned char A = colour.Alpha();
+
+            value = (A << 24) | (R << 16) | (G <<  8) | B;
+        }
+        else
+        {
+            value = wxPGVariantToInt(val);
+        }
         T* oldData = (T*)attr->data;
         *oldData = (T)value;
         attr->owner->postEdited(attr);
-        val = (long)*oldData;
     }
 
     template <>
@@ -226,6 +286,19 @@ namespace hare_editor
         if (attr->enumMap)
         {
             prop = doBindEnum(*value, attr, page, parent);
+        }
+        else if (attr->hasFlag(Object::propColor))
+        {
+            u32 col = *value;
+            unsigned char A = (col>>24) & 0xFF;
+            unsigned char R = (col>>16) & 0xFF;
+            unsigned char G = (col>>8) & 0xFF;
+            unsigned char B = col & 0xFF;
+            wxColour colour(R, G, B, A);
+            prop = page->AppendIn(parent, new RGBAColourProperty(wxString::FromUTF8(attr->name), wxPG_LABEL, 
+                colour));
+            prop->SetClientData(attr);
+            prop->SetHelpString(wxT("[Color]"));
         }
         else
         {

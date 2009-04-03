@@ -24,6 +24,9 @@ namespace hare_core
         Object* owner;
 
     public:
+        AttVisitor() : owner(0)
+        {
+        }
         void visitEnter(const char* name, bool super, u32 curVersion)
         {
         }
@@ -58,14 +61,14 @@ namespace hare_core
         }
 
         template <typename T>
-        void visitObject(const char* name, T* &obj, ClassInfo *cls, u32 flags)
+        void visitObject(const char* name, T* &obj, ClassInfo*, u32 flags)
         {
             assert(owner);
             Attribute* attr = new Attribute;
             attr->attrType = Attribute::attrObject;
             attr->name = name;
             attr->data = &obj;
-            attr->classInfo = cls;
+            attr->classInfo = obj->getClassInfo();
             attr->flags = flags;
             attr->owner = owner;
             attributes.push_back(attr);

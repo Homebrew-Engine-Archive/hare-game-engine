@@ -77,6 +77,7 @@ namespace hare_core
             propReadOnly        = 1 << 2,   // read only in editor
             propEnumIsFlag      = 1 << 3,   // enum is used as bit flag
             propFSUrl           = 1 << 4,   // string is url of file system
+            propColor           = 1 << 5,   // edit this value as color
         };
 
         bool isA(const ClassInfo* base) const;

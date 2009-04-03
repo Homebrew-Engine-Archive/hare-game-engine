@@ -15,9 +15,13 @@
 
 #include "EditorPrerequisites.h"
 #include <wx/propgrid/manager.h>
+#include <wx/propgrid/advprops.h>
 
 namespace hare_editor
 {
+    // --------------------------------------------------------
+    // PropertyGridPage
+    // --------------------------------------------------------
     class PropertyGridPage : public wxPropertyGridPage
     {
     public:
@@ -34,6 +38,9 @@ namespace hare_editor
         DECLARE_EVENT_TABLE()
     };
 
+    // --------------------------------------------------------
+    // ObjectEnumProperty
+    // --------------------------------------------------------
     class ObjectEnumProperty : public wxEnumProperty
     {
         DECLARE_DYNAMIC_CLASS(ObjectEnumProperty)
@@ -48,11 +55,14 @@ namespace hare_editor
         Attribute::List attributes;
     };
 
+    // --------------------------------------------------------
+    // FSUrlProperty
+    // --------------------------------------------------------
     class FSUrlProperty : public wxLongStringProperty
     {
         DECLARE_DYNAMIC_CLASS(FSUrlProperty)
     public:
-        FSUrlProperty(const wxString& name = wxPG_LABEL, const wxString& label = wxPG_LABEL,
+        FSUrlProperty(const wxString& label = wxPG_LABEL, const wxString& name = wxPG_LABEL,
             const wxString& value = wxEmptyString);
         virtual ~FSUrlProperty();
 
@@ -60,6 +70,21 @@ namespace hare_editor
 
     protected:
         wxString m_dlgMessage;
+    };
+
+    // --------------------------------------------------------
+    // RGBAColourProperty
+    // --------------------------------------------------------
+    class RGBAColourProperty : public wxColourProperty
+    {
+    public:
+        RGBAColourProperty(const wxString& label = wxPG_LABEL,
+            const wxString& name = wxPG_LABEL,
+            const wxColour& value = *wxWHITE);
+
+        virtual ~RGBAColourProperty();
+
+        WX_PG_DECLARE_PARENTAL_METHODS()
     };
     
     void setPropertyGridObject(PropertyGridPage* page, Object* obj);

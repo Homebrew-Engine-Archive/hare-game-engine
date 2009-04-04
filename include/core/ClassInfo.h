@@ -43,6 +43,11 @@ namespace hare_core
             return className;
         }
 
+        const ClassInfo* getBaseClass() const
+        {
+            return baseClass;
+        }
+
         u32 getClassVersion() const
         {
             return classVersion;

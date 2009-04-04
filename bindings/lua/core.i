@@ -1,184 +1,207 @@
 %module hare
 
+typedef unsigned char	u8;
+typedef signed char		s8;
+typedef char			c8;
+typedef unsigned short	u16;
+typedef signed short	s16;
+typedef unsigned int	u32;
+typedef signed int		s32;
+typedef float			f32;
+typedef double			f64;
+
+typedef std::string     String;
+typedef std::vector<String> StringVector;
+
+%typemap(out) Object* {
+	dynamicCastObject(L, $1, $owner); SWIG_arg++;
+}
+
+class Object
+{
+public:
+    bool saveToXml(const String &path);
+    bool saveToBin(const String &path);
+};
+
+Object* importObject(const String &url, bool share = true);
+Object* cloneObject(Object* object);
+
 %{
-#include "core/Core.h"
+
+Object* importObject(const String &url, bool share = true)
+{
+	return Object::importObject(url, share);
+}
+
+Object* cloneObject(Object* object)
+{
+	return Object::cloneObject(object);
+}
+
+void dynamicCastObject(lua_State* L, Object* object, int owner)
+{
+	const ClassInfo* cls = object->getClassInfo();
+	swig_type_info* info = 0;
+	do {
+		String name = String("_p_") + cls->className;
+		info = SWIG_TypeQuery(name.c_str());
+		if (!info) {
+			cls = cls->getBaseClass();
+			info = 0;
+		}
+	} while(!info && cls);
+	
+	SWIG_NewPointerObj(L, (void*)object, info, owner);
+}
 %}
 
-%include "std_string.i"
+typedef void* FileHandle;
 
+enum FileMode
+{
+    FM_Read,
+    FM_Write,
+    FM_Append,
+};
 
-    typedef unsigned char	u8;
-    typedef signed char		s8;
-    typedef char			c8;
-    typedef unsigned short	u16;
-    typedef signed short	s16;
-    typedef unsigned int	u32;
-    typedef signed int		s32;
-    typedef float			f32;
-    typedef double			f64;
+class FileSystem
+{
+public:
+    /**
+    * Adds a directory to the search path.
+    **/
+    bool addSearchPath(const String& dir);
 
-    typedef std::string     String;
-    typedef std::vector<String> StringVector;
+    /**
+    * Removes a directory from the PhysFS search path.
+    **/
+    bool removeSearchPath(const String& dir);
 
-    class Object
-    {
-    public:
-        static Object* importObject(const String &url, bool share = true);
-        static Object* cloneObject(Object *obj);
-        static Object* findByUrl(const String &url);
-        static Object* loadFromXml(const String &url);
-        static Object* loadFromBin(const String &url);
+    /**
+    * Gets the user home directory.
+    **/
+    const char* getUserDir();
 
-        bool saveToXml(const String &path);
-        bool saveToBin(const String &path);
-    };
+    /**
+    * Gets the directory from which the application
+    * was run.
+    **/
+    const char* getBaseDir();
 
-    typedef PHYSFS_File* FileHandle;
+    /**
+    * Gets the last error
+    **/
+    const char* getLastError();
 
-    enum FileMode
-    {
-        FM_Read,
-        FM_Write,
-        FM_Append,
-    };
+    /**
+    * Gets the current write directory, if any. An empty
+    * string will be returned if no directory is set.
+    **/
+    const char* getWriteDir();
 
-    class FileSystem
-    {
-    public:
-        /**
-        * Adds a directory to the search path.
-        **/
-        bool addSearchPath(const String& dir);
+    /**
+    * Sets the current write directory.
+    **/
+    bool setWriteDir(const String& dir);
 
-        /**
-        * Removes a directory from the PhysFS search path.
-        **/
-        bool removeSearchPath(const String& dir);
+    /**
+    * Checks if some file exists in the current search path.
+    * @param path The file (or directory) to check for.
+    **/
+    bool exists(const String& path);
 
-        /**
-        * Gets the user home directory.
-        **/
-        const char* getUserDir();
+    /**
+    * Checks if an existing path is a directory.
+    * @param file The filename to check.
+    **/
+    bool isDir(const String& path);
 
-        /**
-        * Gets the directory from which the application
-        * was run.
-        **/
-        const char* getBaseDir();
+    /**
+    * Checks if an existing path is a file,
+    * @param file The filename to check.
+    **/
+    bool isFile(const String& path);
 
-        /**
-        * Gets the last error
-        **/
-        const char* getLastError();
+    /**
+    * Creates a directory. Write dir must be set.
+    * @param path The directory to create.
+    **/
+    bool mkDir(const String& path);
 
-        /**
-        * Gets the current write directory, if any. An empty
-        * string will be returned if no directory is set.
-        **/
-        const char* getWriteDir();
+    /**
+    * Removes a file (or directory).
+    * @param path The file or directory to remove.
+    **/
+    bool remove(const String& path);
 
-        /**
-        * Sets the current write directory.
-        **/
-        bool setWriteDir(const String& dir);
+    /**
+    * Open a file in the search path.
+    * @param filename The filename (and path) of the file.
+    **/
+    FileHandle openFile(const String& filename, FileMode mode);
 
-        /**
-        * Checks if some file exists in the current search path.
-        * @param path The file (or directory) to check for.
-        **/
-        bool exists(const String& path);
+    /**
+    * Closes a file.
+    * @param file The file to close.
+    **/
+    bool closeFile(FileHandle file);
 
-        /**
-        * Checks if an existing path is a directory.
-        * @param file The filename to check.
-        **/
-        bool isDir(const String& path);
+    /**
+    * Reads count bytes from an open file.
+    * @param file The file handle.
+    * @param count The number of bytes to read. Defaults
+    * to the size of the file.
+    **/
+    int readFile(FileHandle file, char* buffer, int size, int count);
 
-        /**
-        * Checks if an existing path is a file,
-        * @param file The filename to check.
-        **/
-        bool isFile(const String& path);
+    /**
+    * Write the bytes in data to the file. File
+    * must be opened for write.
+    * @param file The file handle to write to.
+    **/
+    int writeFile(FileHandle file, const char* buffer, int size, int count);
 
-        /**
-        * Creates a directory. Write dir must be set.
-        * @param path The directory to create.
-        **/
-        bool mkDir(const String& path);
+    /**
+    * Check if end-of-file is reached.
+    * @return True if EOF, false otherwise.
+    **/
+    bool eof(FileHandle file);
 
-        /**
-        * Removes a file (or directory).
-        * @param path The file or directory to remove.
-        **/
-        bool remove(const String& path);
+    /**
+    * Gets the current position in a file.
+    * @param file An open File.
+    **/
+    int tell(FileHandle file);
 
-        /**
-        * Open a file in the search path.
-        * @param filename The filename (and path) of the file.
-        **/
-        FileHandle openFile(const String& filename, FileMode mode);
+    /**
+    * Seek to a position within a file.
+    * @param pos The position to seek to.
+    **/
+    bool seek(FileHandle file, int pos);
 
-        /**
-        * Closes a file.
-        * @param file The file to close.
-        **/
-        bool closeFile(FileHandle file);
+    /**
+    * Gets the size of a file.
+    * @param file An open File's handle.
+    **/
+    int size(FileHandle file);
 
-        /**
-        * Reads count bytes from an open file.
-        * @param file The file handle.
-        * @param count The number of bytes to read. Defaults
-        * to the size of the file.
-        **/
-        int readFile(FileHandle file, char* buffer, int size, int count);
+public:
+    FileSystem(const char* argv0);
+};
 
-        /**
-        * Write the bytes in data to the file. File
-        * must be opened for write.
-        * @param file The file handle to write to.
-        **/
-        int writeFile(FileHandle file, const char* buffer, int size, int count);
+FileSystem* getFileSystem();
 
-        /**
-        * Check if end-of-file is reached.
-        * @return True if EOF, false otherwise.
-        **/
-        bool eof(FileHandle file);
+class Timer
+{
+public:
+	f32 getDeltaTime();
+	f32 getFPS();
+};
 
-        /**
-        * Gets the current position in a file.
-        * @param file An open File.
-        **/
-        int tell(FileHandle file);
+Timer& getTimer();
+f32 getTime();
 
-        /**
-        * Seek to a position within a file.
-        * @param pos The position to seek to.
-        **/
-        bool seek(FileHandle file, int pos);
-
-        /**
-        * Gets the size of a file.
-        * @param file An open File's handle.
-        **/
-        int size(FileHandle file);
-
-    public:
-        FileSystem(const char* argv0);
-    };
-
-    FileSystem* getFileSystem();
-    
-    class Timer
-    {
-    public:
-		f32 getDeltaTime();
-		f32 getFPS();
-    };
-    
-    Timer& getTimer();
-    f32 getTime();
-
-    void core_init(char* argv0);
-    void core_quit();
+void core_init(char* argv0);
+void core_quit();
 

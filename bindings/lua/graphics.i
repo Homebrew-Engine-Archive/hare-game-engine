@@ -1,11 +1,6 @@
 %module hare
 
-%include "lua_fnptr.i"
-
 %{
-#include "graphics/Graphics.h"
-using namespace hare_core;
-using namespace hare_graphics;
 #include "LuaSceneListener.h"
 %}
 
@@ -61,8 +56,6 @@ public:
 	void setEndSceneListenFunc(SWIGLUA_REF fn);
 
 };
-
-
 
 class SceneManager
 {
@@ -156,7 +149,7 @@ public:
 	void hareRun();
 };
 
-HareApp* getHareApp();	
+HareApp* getHareApp();
 
 class Font : public Object
 {
@@ -185,7 +178,7 @@ public:
 
 TextManager* getTextManager();
 
-class Particle
+class Particle : public Object
 {
 public:
 	Particle();
@@ -201,5 +194,5 @@ public:
 	virtual void stop() = 0;
 
 	virtual PointF getPosition();
-	virtual void   setPosition(f32 x, f32 y);
+	virtual void setPosition(f32 x, f32 y);
 };

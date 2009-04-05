@@ -73,8 +73,6 @@ namespace hare_graphics
 				layout_x += charGlyph.bear_left;
 				layout_y = y - charGlyph.baselineX;
 
-
-
 				Quad quad;
 				quad.setMaterial(shader);
 				quad.moveTo(layout_x, layout_y);

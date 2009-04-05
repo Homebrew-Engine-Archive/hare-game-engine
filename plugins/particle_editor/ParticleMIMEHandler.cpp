@@ -103,7 +103,7 @@ bool ParticleEditorPage::changeParticle(Particle* par)
         parListener.par = parPtr;
         int w, h;
         canvasParticle->GetClientSize(&w, &h);
-        parListener.par->fireAt(w, h);
+        parListener.par->fireAt(w / 2, h / 2);
     }
     
     Manager::getInstancePtr()->getExplorerManager()->removeAllProperties();
@@ -139,6 +139,11 @@ bool ParticleMIMEHandler::openFile(const wxString& filename)
     }
     else
         page->changeParticle(par);
+
+    int index = Manager::getInstancePtr()->getEditorPageManager()->getNotebook()->GetPageIndex(page);
+
+    if (index != -1)
+        Manager::getInstancePtr()->getEditorPageManager()->getNotebook()->SetSelection(index);
 
     return page->isOk();
 }

@@ -29,7 +29,7 @@ namespace hare_editor
     {
         notebook = new wxFlatNotebook(Manager::getInstancePtr()->getAppWindow(), idEditorPageManager,
             wxDefaultPosition, wxDefaultSize, wxNO_FULL_REPAINT_ON_RESIZE | wxCLIP_CHILDREN | 
-            wxFNB_DROPDOWN_TABS_LIST | wxFNB_NO_NAV_BUTTONS);
+            wxFNB_DROPDOWN_TABS_LIST | wxFNB_NO_NAV_BUTTONS | wxFNB_VC8 | wxFNB_DCLICK_CLOSES_TABS);
 
         textEditorStyle = new TextEditorStyle();
     }

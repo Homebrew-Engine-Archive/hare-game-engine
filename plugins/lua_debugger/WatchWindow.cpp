@@ -45,8 +45,8 @@ LuaWatchWindow::LuaWatchWindow(wxWindow* parent, LuaDebugger* dbg)
     Layout();
     sizer->Fit(this);
 
-    treeList->AddColumn(_("Name"), DEFAULT_COL_WIDTH, wxALIGN_LEFT, -1, true, true);
-    treeList->AddColumn(_("Value"), 200);
+    treeList->AddColumn(_("Name"), 150, wxALIGN_LEFT, -1, true, true);
+    treeList->AddColumn(_("Value"), 150);
     treeList->AddColumn(_("Type"));
 
     SetDropTarget(new TextDropTarget(this));

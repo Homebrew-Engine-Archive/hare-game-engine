@@ -3,13 +3,18 @@
 //  Data:    03/08/2009
 //  Author:  littlesome (littlesome@live.cn)
 //-------------------------------------------------------------
-//  
+//
 //-------------------------------------------------------------
 //  This file is part of Hare2D Game Engine.
 //  Copyright (C) All Rights Reserved
 //***************************************************************
-// 
+//
 //***************************************************************
+#ifndef _THREAD_H_
+#define _THREAD_H_
+/*
+#include "CorePrerequisites.h"
+#include <limits.h>     // for INT_MAX
 
 namespace hare_core
 {
@@ -49,7 +54,7 @@ namespace hare_core
     public:
         CriticalSection();
        ~CriticalSection();
-        
+
         void enter();
         void leave();
 
@@ -195,3 +200,6 @@ namespace hare_core
         CriticalSection cs;
     };
 }
+*/
+
+#endif

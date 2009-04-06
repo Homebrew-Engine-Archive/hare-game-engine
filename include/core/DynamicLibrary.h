@@ -3,15 +3,18 @@
 //  Data:    03/03/2009
 //  Author:  littlesome (littlesome@live.cn)
 //-------------------------------------------------------------
-//  
+//
 //-------------------------------------------------------------
 //  This file is part of Hare2D Game Engine.
 //  Copyright (C) All Rights Reserved
 //***************************************************************
-// 
+//
 //***************************************************************
 #ifndef DYNAMICLIBRARY_H
 #define DYNAMICLIBRARY_H
+
+#include "CorePrerequisites.h"
+#include "ReferenceCounted.h"
 
 namespace hare_core
 {

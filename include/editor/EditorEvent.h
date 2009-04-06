@@ -3,12 +3,12 @@
 //  Data:    01/23/2009
 //  Author:  littlesome (littlesome@live.cn)
 //-------------------------------------------------------------
-//  
+//
 //-------------------------------------------------------------
 //  This file is part of Hare2D Game Engine.
 //  Copyright (C) All Rights Reserved
 //***************************************************************
-// 
+//
 //***************************************************************
 #ifndef EDITOREVENT_H
 #define EDITOREVENT_H
@@ -27,14 +27,14 @@ namespace hare_editor
         }
 
         EditorEvent(const EditorEvent& rhs)
-            : wxCommandEvent(rhs), editorPage(rhs.editorPage), 
+            : wxCommandEvent(rhs), editorPage(rhs.editorPage),
             plugin(rhs.plugin), strData(rhs.strData)
         {
         }
 
-        virtual wxEvent *Clone() const 
-        { 
-            return new EditorEvent(*this); 
+        virtual wxEvent *Clone() const
+        {
+            return new EditorEvent(*this);
         }
 
         EditorPage* editorPage;
@@ -57,9 +57,9 @@ namespace hare_editor
         {
         }
 
-        virtual wxEvent *Clone() const 
-        { 
-            return new EditorDockEvent(*this); 
+        virtual wxEvent *Clone() const
+        {
+            return new EditorDockEvent(*this);
         }
 
         wxWindow* window;

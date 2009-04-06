@@ -69,7 +69,7 @@ namespace hare_core
 			x /= rhs;
 			y /= rhs;
 			return *this;
-		}		
+		}
 
         TPoint<T> operator + () const
         {
@@ -183,26 +183,17 @@ namespace hare_core
     public:
         static const TRect<T> ZERO;
 
-        union
-        {
-            struct
-            {
-                T minX, minY, maxX, maxY;
-            };
-            struct
-            {
-                TPoint<T> ptMin, ptMax;
-            };
-        };
+
+        T minX, minY, maxX, maxY;
 
         TRect() {}
         TRect(T iminX, T iminY, T imaxX, T imaxY) : minX(iminX), minY(iminY), maxX(imaxX), maxY(imaxY) {}
-        TRect(const TPoint<T> &iptMin, const TPoint<T> &iptMax) : ptMin(iptMin), ptMax(iptMax) {}
 
         bool operator == (const TRect<T>& rhs) const
         {
             return minX == rhs.minX && maxX == rhs.maxX && minY == rhs.minY && maxY == rhs.maxY;
         }
+
         bool operator != (const TRect<T>& rhs) const
         {
             return !(*this == rhs);
@@ -216,17 +207,10 @@ namespace hare_core
             maxY = imaxY;
         }
 
-        void set(const TPoint<T> &iptMin, const TPoint<T> &iptMax)
-        {
-            ptMin = iptMin;
-            ptMax = iptMax;
-        }
-
         T width() const
         {
             return maxX - minX;
         }
-
 
         T height() const
         {
@@ -281,7 +265,7 @@ namespace hare_core
 
         void moveTo(const TPoint<T> pt)
         {
-            move(pt - ptMin);
+            move(pt.x - minX, pt.y - minY);
         }
 
         void inflate(T iminX, T iminY, T imaxX, T imaxY)

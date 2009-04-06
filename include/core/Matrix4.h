@@ -86,7 +86,6 @@ namespace hare_core
 			_33 = z;
 		}
 
-		inline
 		Matrix4 Matrix4Multiply( const Matrix4 *pM1, const Matrix4 *pM2 ) const;
 
 	};
@@ -325,4 +324,4 @@ namespace hare_core
 	}
 }
 
-#endif 
+#endif

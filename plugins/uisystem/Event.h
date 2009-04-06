@@ -324,7 +324,7 @@ namespace hare_ui
             return eventType == uiEVT_LEAVE_WINDOW;
         }
 
-        int getWheelDelta() const 
+        f32 getWheelDelta() const 
         {
             return wheelDelta; 
         }
@@ -353,7 +353,7 @@ namespace hare_ui
         bool altDown;
         bool metaDown;
 
-        int wheelDelta;
+        f32 wheelDelta;
         PointF position;
     };
 

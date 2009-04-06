@@ -307,7 +307,7 @@ namespace hare_core
 
         bool isPointIn(const TPoint<T> &pt) const
         {
-            return isTPointIn(pt.x, pt.y);
+            return isPointIn(pt.x, pt.y);
         }
 
         bool isRectIn(const TRect<T> rc) const

@@ -14,7 +14,7 @@
 #include "EditorMain.h"
 #include <wx/wxscintilla.h>
 #include <wx/wxFlatNotebook/wxFlatNotebook.h>
-#include <wx/harecanvas.h>
+//#include <wx/harecanvas.h>
 #include <wx/xrc/xmlres.h>
 
 #if defined(__WXGTK__) || defined(__WXMOTIF__) || defined(__WXMAC__) || defined(__WXMGL__) || defined(__WXX11__)
@@ -82,7 +82,7 @@ BEGIN_EVENT_TABLE(EditorFrame, wxFrame)
     EVT_ERASE_BACKGROUND(EditorFrame::onEraseBackground)
     EVT_SIZE(EditorFrame::onSize)
     EVT_CLOSE(EditorFrame::onApplicationClose)
-    
+
     EVT_UPDATE_UI(idFileOpenRecentFileClearHistory, EditorFrame::onFileMenuUpdateUI)
     EVT_UPDATE_UI(idFileSaveAll, EditorFrame::onFileMenuUpdateUI)
     EVT_UPDATE_UI(idFileClose, EditorFrame::onFileMenuUpdateUI)
@@ -115,7 +115,7 @@ BEGIN_EVENT_TABLE(EditorFrame, wxFrame)
     EVT_MENU(idEditFindInFile, EditorFrame::onEditFindInFile)
     EVT_MENU(idEditGoto, EditorFrame::onEditGoto)
     EVT_MENU(idDebugStart, EditorFrame::onDebugStart)
-    
+
     EVT_MENU(idViewToolMain, EditorFrame::onShowToolBar)
     EVT_MENU(idViewExplorer, EditorFrame::onShowToolBar)
     EVT_MENU(idViewToolFullScreen, EditorFrame::onShowToolBar)
@@ -152,8 +152,8 @@ EditorFrame::EditorFrame(wxFrame *frame, const wxString& title)
     }
 
     // create canvas and destroy it, we mush have a window to init graphics moudle
-    wxHareCanvas* canvas = new wxHareCanvas(this);
-    canvas->Hide();
+    //wxHareCanvas* canvas = new wxHareCanvas(this);
+    //canvas->Hide();
 
     layoutManager.SetManagedWindow(this);
 
@@ -217,7 +217,7 @@ void EditorFrame::createIDE()
     // EditorPage Manager
     layoutManager.AddPane(Manager::getInstancePtr()->getEditorPageManager()->getNotebook(),
 		wxAuiPaneInfo().Name(wxT("EditorPagePane")).CenterPane());
-    
+
     // Explorer
     wxSize bestSize = wxSize(clientsize.GetWidth() / 5, clientsize.GetHeight() / 2);
     layoutManager.AddPane(Manager::getInstancePtr()->getExplorerManager()->getNotebook(),
@@ -510,9 +510,8 @@ void EditorFrame::onEditMenuUpdateUI(wxUpdateUIEvent& event)
         return;
     }
 
-    wxMenuBar* mbar = GetMenuBar();
-
-    EditorPage* curPage = Manager::getInstancePtr()->getEditorPageManager()->getActivePage();
+    EditorPageManager* mgr = Manager::getInstancePtr()->getEditorPageManager();
+    EditorPage* curPage = mgr->getActivePage();
 
     bool canUndo = false;
     bool canRedo = false;
@@ -529,7 +528,7 @@ void EditorFrame::onEditMenuUpdateUI(wxUpdateUIEvent& event)
         canCut = !curPage->isReadOnly() && curPage->hasSelection();
     }
 
-    if (event.GetId() == idEditUndo) 
+    if (event.GetId() == idEditUndo)
     {
         event.Enable(canUndo);
     }
@@ -549,8 +548,6 @@ void EditorFrame::onEditMenuUpdateUI(wxUpdateUIEvent& event)
     {
         event.Enable(canPaste);
     }
-    else
-        event.Skip();
 }
 
 void EditorFrame::onToolbarDropDownCreate(wxAuiToolBarEvent& event)
@@ -645,7 +642,7 @@ void EditorFrame::onApplicationClose(wxCloseEvent& event)
 
     Manager::shutdown();
     wxFlatNotebook::CleanUp();
-    
+
     Destroy();
 }
 
@@ -735,7 +732,12 @@ void EditorFrame::onEditSelectAll(wxCommandEvent& event)
 }
 void EditorFrame::onEditFind(wxCommandEvent& event)
 {
-    findReplaceDlg->Center();
+    static bool firstTimeShow = true;
+    if (firstTimeShow)
+    {
+        findReplaceDlg->Center();
+        firstTimeShow = false;
+    }
     findReplaceDlg->Show();
     findReplaceDlg->SetFocus();
 }

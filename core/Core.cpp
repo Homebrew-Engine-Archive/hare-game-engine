@@ -15,6 +15,7 @@
 #include "StringUtil.h"
 #include "CmdLineParser.h"
 #include "Socket.h"
+#include "MathUtil.h"
 
 namespace hare_core
 {

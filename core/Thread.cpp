@@ -3,16 +3,16 @@
 //  Data:    03/08/2009
 //  Author:  littlesome (littlesome@live.cn)
 //-------------------------------------------------------------
-//  
+//
 //-------------------------------------------------------------
 //  This file is part of Hare2D Game Engine.
 //  Copyright (C) All Rights Reserved
 //***************************************************************
-// 
+//
 //***************************************************************
 #include "PCH.h"
 #include "Thread.h"
-
+/*
 #if HARE_PLATFORM == HARE_PLATFORM_WIN32
 #include <windows.h>
 #include <process.h>
@@ -23,7 +23,7 @@ typedef unsigned THREAD_RETVAL;
 namespace hare_core
 {
 #if HARE_PLATFORM == HARE_PLATFORM_WIN32
-    
+
     //---------------------------------------------------------------------
     CriticalSection::CriticalSection()
     {
@@ -212,7 +212,7 @@ namespace hare_core
             return exitCode;
         }
 
-    public:    
+    public:
         HANDLE handle;
         ThreadState state;
         u32 id;
@@ -230,20 +230,20 @@ namespace hare_core
     }
 
     ThreadError Thread::create(u32 stackSize)
-    { 
+    {
         CriticalSectionLocker lock(cs);
 
-        privateData->handle = (HANDLE)_beginthreadex(NULL, stackSize, ThreadData::threadEntry, this, 
+        privateData->handle = (HANDLE)_beginthreadex(NULL, stackSize, ThreadData::threadEntry, this,
             CREATE_SUSPENDED, (u32*)&privateData->id);
 
         if (!privateData->handle)
             return THREAD_NO_RESOURCE;
 
-        return THREAD_NO_ERROR; 
+        return THREAD_NO_ERROR;
     }
 
     ThreadError Thread::run()
-    { 
+    {
         CriticalSectionLocker lock(cs);
 
         if (privateData->state != STATE_NEW)
@@ -251,7 +251,7 @@ namespace hare_core
             return THREAD_RUNNING;
         }
 
-        return resume(); 
+        return resume();
     }
 
     ThreadError Thread::kill()
@@ -285,7 +285,7 @@ namespace hare_core
 
         return THREAD_NO_ERROR;
     }
-    
+
     ThreadError Thread::resume()
     {
         CriticalSectionLocker lock(cs);
@@ -307,7 +307,7 @@ namespace hare_core
     bool Thread::isAlive() const
     {
         CriticalSectionLocker lock((CriticalSection&)cs);
-        
+
         return privateData->state == STATE_RUNNING || privateData->state == STATE_PAUSED;
     }
 
@@ -332,8 +332,8 @@ namespace hare_core
         return privateData->id;
     }
 
-    Thread::ExitCode Thread::waitExit() 
-    { 
+    Thread::ExitCode Thread::waitExit()
+    {
         ExitCode exitCode = (ExitCode)-1;
 
         if (privateData->state == STATE_PAUSED || privateData->state == STATE_NEW)
@@ -359,7 +359,7 @@ namespace hare_core
             Sleep(1);
         }
 
-        return exitCode; 
+        return exitCode;
     }
 
     bool Thread::testDestroy()
@@ -374,9 +374,9 @@ namespace hare_core
     class ConditionData
     {
     public:
-        ConditionData(Mutex& mutex) 
+        ConditionData(Mutex& mutex)
             : numWaiters(0), mutexRef(mutex) {}
-    public:    
+    public:
         int numWaiters;
         CriticalSection csWaiters;
         Mutex& mutexRef;
@@ -489,6 +489,4 @@ namespace hare_core
 
 }
 
-
-
-
+*/

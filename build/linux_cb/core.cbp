@@ -29,14 +29,19 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="../../core/Core.cpp" />
+		<Unit filename="../../core/DynamicLibrary.cpp" />
 		<Unit filename="../../core/Exception.cpp" />
 		<Unit filename="../../core/FileSystem.cpp" />
+		<Unit filename="../../core/MathUtil.cpp" />
+		<Unit filename="../../core/Matrix4.cpp" />
 		<Unit filename="../../core/Object.cpp" />
 		<Unit filename="../../core/PCH.cpp" />
 		<Unit filename="../../core/Socket.cpp" />
 		<Unit filename="../../core/StringConverter.cpp" />
 		<Unit filename="../../core/StringUtil.cpp" />
+		<Unit filename="../../core/Thread.cpp" />
 		<Unit filename="../../core/Timer.cpp" />
+		<Unit filename="../../core/Vector2.cpp" />
 		<Unit filename="../../core/tinyxml/tinystr.cpp" />
 		<Unit filename="../../core/tinyxml/tinyxml.cpp" />
 		<Unit filename="../../core/tinyxml/tinyxmlerror.cpp" />
@@ -49,11 +54,13 @@
 		<Unit filename="../../include/core/ConvertUTF.h" />
 		<Unit filename="../../include/core/Core.h" />
 		<Unit filename="../../include/core/CorePrerequisites.h" />
+		<Unit filename="../../include/core/DynamicLibrary.h" />
 		<Unit filename="../../include/core/Exception.h" />
 		<Unit filename="../../include/core/FileSystem.h" />
 		<Unit filename="../../include/core/Macros.h" />
 		<Unit filename="../../include/core/MathCommon.h" />
 		<Unit filename="../../include/core/MathUtil.h" />
+		<Unit filename="../../include/core/Matrix4.h" />
 		<Unit filename="../../include/core/Object.h" />
 		<Unit filename="../../include/core/PCH.h" />
 		<Unit filename="../../include/core/Platform.h" />
@@ -64,8 +71,10 @@
 		<Unit filename="../../include/core/StdHeaders.h" />
 		<Unit filename="../../include/core/StringConverter.h" />
 		<Unit filename="../../include/core/StringUtil.h" />
+		<Unit filename="../../include/core/Thread.h" />
 		<Unit filename="../../include/core/Timer.h" />
 		<Unit filename="../../include/core/Types.h" />
+		<Unit filename="../../include/core/Vector2.h" />
 		<Unit filename="../../include/core/XmlVisitor.h" />
 		<Unit filename="../../include/core/tinyxml/tinystr.h" />
 		<Unit filename="../../include/core/tinyxml/tinyxml.h" />

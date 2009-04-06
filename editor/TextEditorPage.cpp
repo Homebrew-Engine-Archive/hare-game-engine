@@ -38,7 +38,7 @@ namespace hare_editor
     #define BREAKPOINT_STYLE    wxSCI_MARK_CIRCLE
     #define DEBUG_MARKER        4
     #define DEBUG_STYLE         wxSCI_MARK_ARROW
-    
+
     #define MARGIN_LINENUMBER   0
     #define MARGIN_SYMBOL       1
     #define MARGIN_FOLDING      2
@@ -609,7 +609,11 @@ namespace hare_editor
 
     bool TextEditorPage::canPaste() const
     {
+#if defined ( __WXGTK__ )
+        return !isReadOnly();   //WXGTK BUG
+#else
         return !isReadOnly() && getControl()->CanPaste();
+#endif
     }
 
     bool TextEditorPage::hasSelection() const

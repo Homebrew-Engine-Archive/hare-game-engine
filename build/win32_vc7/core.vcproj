@@ -33,7 +33,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="physfs.lib wsock32.lib"
+				AdditionalDependencies="physfs.lib wsock32.lib winmm.lib"
 				OutputFile="$(OutDir)/core_d.dll"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="..\..\lib;..\..\ext\physfs\debug"
@@ -130,15 +130,9 @@
 				RelativePath="..\..\core\ConfigFile.cpp">
 			</File>
 			<File
-				RelativePath="..\..\core\ConvertUTF.c">
+				RelativePath="..\..\core\ConvertUTF.cpp">
 				<FileConfiguration
 					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="0"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="0"/>

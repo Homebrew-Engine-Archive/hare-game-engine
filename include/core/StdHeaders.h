@@ -1,5 +1,7 @@
-#ifndef _STDHEADERS_H_
-#define _STDHEADERS_H_
+#ifndef _STD_HEADERS_H_
+#define _STD_HEADERS_H_
+
+#include "Platform.h"
 
 #include <cassert>
 #include <cstdio>

@@ -2,10 +2,6 @@
 #define _CORE_PREREQUISITES_H_
 
 #include "Platform.h"
-#include "StdHeaders.h"
-#include "Types.h"
-#include "Pointer.h"
-#include "Macros.h"
 
 #if HARE_PLATFORM == HARE_PLATFORM_WIN32
 #   if defined(HARE_STATIC_LIB)
@@ -26,6 +22,11 @@
 #   endif
 #endif
 
+#include "StdHeaders.h"
+#include "Types.h"
+#include "Pointer.h"
+#include "Macros.h"
+
 namespace hare_core
 {
     class ReferenceCounted;
@@ -40,6 +41,7 @@ namespace hare_core
     class Exception;
     class CmdLineParser;
     template<typename T> class Singleton;
+    class Timer;
 }
 
 #endif // _PREREQUISITES_H_

@@ -4,10 +4,9 @@
 // Windows Platform
 #if HARE_PLATFORM == HARE_PLATFORM_WIN32
 #	define WIN32_LEAN_AND_MEAN		// Exclude rarely-used stuff from Windows headers
-#	include "windows.h"
+#	include <windows.h>
 #	include <windowsx.h>
-#	include "mmsystem.h"
-#	pragma comment ( lib, "winmm" )
+#	include <mmsystem.h>
 #endif
 
 namespace hare_core
@@ -18,16 +17,16 @@ namespace hare_core
 
 	#if HARE_PLATFORM == HARE_PLATFORM_WIN32
 		// defaults are for timeGetTime()
-		
+
 		static bool sInitialized             = false;
 		static bool sPrecisionTimerAvailable = false;
 		static double sTimerSecondsConversion  = 0.001;		// 1 msec
-		
+
 		// get multipliers
 		if ( !sInitialized )
 		{
 			sInitialized = true;
-			
+
 			LARGE_INTEGER freq;
 			if ( ::QueryPerformanceFrequency( &freq ) )
 			{
@@ -35,7 +34,7 @@ namespace hare_core
 				sTimerSecondsConversion = 1.0 / freq.QuadPart;
 			}
 		}
-		
+
 		// query time
 		LARGE_INTEGER counter;
 		double seconds;
@@ -47,12 +46,12 @@ namespace hare_core
 		{
 			seconds = ::timeGetTime();
 		}
-		
+
 		// convert the polled value to seconds
 		cur = (f32)( seconds * sTimerSecondsConversion );
 
 	#else // #if OO_PLATFORM == OO_PLATFORM_WIN32
-		
+
 		cur = (f32)clock() / CLOCKS_PER_SEC;
 
 	#endif

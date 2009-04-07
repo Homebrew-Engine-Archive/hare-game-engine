@@ -8,11 +8,11 @@ namespace hare_core
         if (v)
         {
             Vector2 s = *this, t = *v;
-            s.normalize(); 
+            s.normalize();
             t.normalize();
             return MathUtil::acosf(s.dot(&t));
         }
-        else 
+        else
             return MathUtil::atan2f(y, x);
     }
 
@@ -23,7 +23,7 @@ namespace hare_core
         v.x = x * MathUtil::cosf(a) - y * MathUtil::sinf(a);
         v.y = x * MathUtil::sinf(a) + y * MathUtil::cosf(a);
 
-        x = v.x; 
+        x = v.x;
         y = v.y;
 
         return this;

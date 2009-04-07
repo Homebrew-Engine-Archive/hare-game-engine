@@ -13,8 +13,8 @@
 #ifndef _MACROS_H_
 #define _MACROS_H_
 
-namespace hare_core
-{
+#include "MathCommon.h"
+
 /*-----------------------------------------------------------------------*/
 /*  some commonly used macros						            		 */
 /*-----------------------------------------------------------------------*/
@@ -112,11 +112,6 @@ public:                                                                   \
 #define HARE_OBJ_ARRAY(DATA, TYPE)          HARE_OBJ_ARRAY_F(DATA, TYPE, 0)
 #define HARE_OBJ_LIST(DATA, TYPE)           HARE_OBJ_LIST_F(DATA, TYPE, 0)
 
-typedef std::map<String, s32> EnumMap;
-
-template <typename T>
-inline EnumMap* getEnumValue() { return 0; }
-
 #define HARE_ENUM_BEGIN(TYPE) \
 template <> \
 inline EnumMap* getEnumValue<TYPE>() { \
@@ -130,16 +125,23 @@ inline EnumMap* getEnumValue<TYPE>() { \
     return pEnumMap; \
 }
 
-enum Bool
+namespace hare_core
 {
-    False,
-    True,
-};
+    typedef std::map<String, s32> EnumMap;
 
-HARE_ENUM_BEGIN(Bool)
-    HARE_ENUM_VALUE(False)
-    HARE_ENUM_VALUE(True)
-HARE_ENUM_END()
+    template <typename T>
+    inline EnumMap* getEnumValue() { return 0; }
 
+    enum Bool
+    {
+        False,
+        True,
+    };
+
+    HARE_ENUM_BEGIN(Bool)
+        HARE_ENUM_VALUE(False)
+        HARE_ENUM_VALUE(True)
+    HARE_ENUM_END()
 }
+
 #endif

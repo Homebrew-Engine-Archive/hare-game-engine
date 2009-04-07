@@ -3,17 +3,17 @@
 //  Data:    02/01/2009
 //  Author:  littlesome (littlesome@live.cn)
 //-------------------------------------------------------------
-//  
+//
 //-------------------------------------------------------------
 //  This file is part of Hare2D Game Engine.
 //  Copyright (C) All Rights Reserved
 //***************************************************************
-// 
+//
 //***************************************************************
 #include "PCH.h"
 #include "ConfigFile.h"
 
-namespace hare_core 
+namespace hare_core
 {
     ConfigFile::ConfigFile()
     {
@@ -62,7 +62,7 @@ namespace hare_core
                     else
                     {
                         currentSettings = seci->second;
-                    } 
+                    }
                 }
                 else
                 {
@@ -80,10 +80,10 @@ namespace hare_core
             }
         }
     }
-    
+
     void ConfigFile::clear()
     {
-        for (SettingsBySection::iterator seci = settings.begin(); 
+        for (SettingsBySection::iterator seci = settings.begin();
             seci != settings.end(); ++seci)
         {
             delete seci->second;

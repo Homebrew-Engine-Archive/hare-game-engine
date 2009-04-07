@@ -3,12 +3,12 @@
 //  Data:    03/03/2009
 //  Author:  littlesome (littlesome@live.cn)
 //-------------------------------------------------------------
-//  
+//
 //-------------------------------------------------------------
 //  This file is part of Hare2D Game Engine.
 //  Copyright (C) All Rights Reserved
 //***************************************************************
-// 
+//
 //***************************************************************
 #include "PCH.h"
 #include "DynamicLibrary.h"
@@ -43,7 +43,7 @@
 
         void* DynamicLibrary::getSymbol(const String& name)
         {
-            return GetProcAddress((HINSTANCE)handle, name.c_str());
+            return (void*)GetProcAddress((HINSTANCE)handle, name.c_str());
         }
 
         void DynamicLibrary::unload(void* libHandle)
@@ -61,7 +61,7 @@
             NSObjectFileImageReturnCode ret;
 
             ret = NSCreateObjectFileImageFromFile(path.c_str(), &img);
-            if (ret == NSObjectFileImageSuccess) 
+            if (ret == NSObjectFileImageSuccess)
             {
                 handle = NSLinkModule(img, path.c_str(), NSLINKMODULE_OPTION_PRIVATE |
                     NSLINKMODULE_OPTION_RETURN_ON_ERROR);

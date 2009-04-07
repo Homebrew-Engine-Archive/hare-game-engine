@@ -5,23 +5,16 @@
 
 namespace hare_core
 {
-
-	CORE_API f32 getTime();
+    CORE_API Timer& getTimer();
+    CORE_API f32 getTime();
 
 	class CORE_API Timer
 	{
 	public:
-		Timer()
-			:deltaTime(0)
-			,frameCount(0)
-			,FPS(0)
+		Timer() : deltaTime(0.0f), FPS(0), frameCount(0)
 		{
-			curTime = getTime(); 
+			curTime = getTime();
 			oldFPSTime = curTime;
-		}
-		~Timer()
-		{
-
 		}
 
 		f32 getDeltaTime()
@@ -34,7 +27,6 @@ namespace hare_core
 			return FPS;
 		}
 
-		//主程序 每帧都调用一次
 		void update()
 		{
 			f32 cur = getTime();
@@ -42,8 +34,9 @@ namespace hare_core
 			curTime = cur;
 
 			frameCount++;
-			
-			if (curTime - oldFPSTime > 1){
+
+			if (curTime - oldFPSTime > 1)
+			{
 				FPS = frameCount / (curTime - oldFPSTime);
 				oldFPSTime = curTime;
 				frameCount = 0;
@@ -54,15 +47,9 @@ namespace hare_core
 		f32 deltaTime;
 		f32 curTime;
 		f32 FPS;
-		u32 frameCount; 
-
-		f32 oldFPSTime;//用于计算fps
-
-
+		u32 frameCount;
+		f32 oldFPSTime;
 	};
-
-	CORE_API Timer& getTimer();
-
 }
 
 #endif

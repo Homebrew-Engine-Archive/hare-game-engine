@@ -8,7 +8,7 @@ namespace hare_core
 	class CORE_API MathUtil
 	{
 	public:
-		static const f32 PI; 
+		static const f32 PI;
 
 		template<typename T>
         static inline bool isPO2(T n)
@@ -18,7 +18,7 @@ namespace hare_core
 
         static inline u32 firstPO2From(u32 n)
         {
-            --n;            
+            --n;
             n |= n >> 16;
             n |= n >> 8;
             n |= n >> 4;
@@ -61,9 +61,9 @@ namespace hare_core
 
 		static inline f32 modff(f32 val, f32* intPart = 0)
 		{
-			f32 dummy; 
-			if (!intPart) intPart = &dummy; 
-            return ::modff(val, intPart); 
+			f32 dummy;
+			if (!intPart) intPart = &dummy;
+            return ::modff(val, intPart);
 		}
 
         static inline f32 fastInvsqrt(f32 x)
@@ -95,7 +95,7 @@ namespace hare_core
 				return ( true );
 			}
 			return ( false );
-		}	
+		}
 
 		template <typename T, typename U> inline
 		static bool clampMax( T& val, const U& max_val )
@@ -106,7 +106,7 @@ namespace hare_core
 				return ( true );
 			}
 			return ( false );
-		}	
+		}
 
 		template <typename T, typename U, typename V> inline
 		static bool clampMinMax( T& val, const U& min_val, const V& max_val )

@@ -3,17 +3,21 @@
 //  Data:    01/29/2009
 //  Author:  littlesome (littlesome@live.cn)
 //-------------------------------------------------------------
-//  
+//
 //-------------------------------------------------------------
 //  This file is part of Hare2D Game Engine.
 //  Copyright (C) All Rights Reserved
 //***************************************************************
-// 
+//
 //***************************************************************
 #ifndef FILESYSTEM_EXPLORER_H
 #define FILESYSTEM_EXPLORER_H
 
 #include "EditorPrerequisites.h"
+#include <wx/panel.h>
+#include <wx/stattext.h>
+#include <wx/imaglist.h>
+#include <wx/dialog.h>
 
 namespace hare_editor
 {

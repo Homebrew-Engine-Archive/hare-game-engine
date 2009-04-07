@@ -3,17 +3,18 @@
 //  Data:    02/28/2009
 //  Author:  littlesome (littlesome@live.cn)
 //-------------------------------------------------------------
-//  
+//
 //-------------------------------------------------------------
 //  This file is part of Hare2D Game Engine.
 //  Copyright (C) All Rights Reserved
 //***************************************************************
-// 
+//
 //***************************************************************
 #ifndef FINDREPLACEPANEL_H
 #define FINDREPLACEPANEL_H
 
 #include "EditorPrerequisites.h"
+#include <wx/dialog.h>
 
 namespace hare_editor
 {

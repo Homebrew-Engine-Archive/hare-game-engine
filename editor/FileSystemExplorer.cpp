@@ -20,6 +20,7 @@
 #include <wx/textctrl.h>
 #include <wx/xrc/xmlres.h>
 #include <wx/imaglist.h>
+#include <wx/menu.h>
 
 namespace hare_editor
 {
@@ -186,7 +187,7 @@ namespace hare_editor
             }
         }
 
-        if ((listCtrl->GetWindowStyleFlag() & wxLC_REPORT) && 
+        if ((listCtrl->GetWindowStyleFlag() & wxLC_REPORT) &&
             listCtrl->GetItemCount() > 0)
         {
             listCtrl->SetColumnWidth(0, wxLIST_AUTOSIZE);
@@ -200,7 +201,7 @@ namespace hare_editor
     FileSystemExplorer::FileSystemExplorer(wxWindow *parent)
      : FileSystemPanel(parent)
     {
-        Connect(wxEVT_COMMAND_LIST_ITEM_ACTIVATED, 
+        Connect(wxEVT_COMMAND_LIST_ITEM_ACTIVATED,
             wxListEventHandler(FileSystemExplorer::onDoubleClicked), 0, this);
     }
 
@@ -236,7 +237,7 @@ namespace hare_editor
     // ---------------------------------------------------------------
     // FileSystemExplorer
     // ---------------------------------------------------------------
-    FileSystemDialog::FileSystemDialog(wxWindow *parent, 
+    FileSystemDialog::FileSystemDialog(wxWindow *parent,
         const wxString& message, const wxString& defaultPath, long style,
         const wxPoint& pos, const wxSize& size, const wxString& name)
      : wxDialog(parent, wxID_ANY, message, pos, size, style, name)
@@ -247,7 +248,7 @@ namespace hare_editor
         SetSizer(sizer);
         Layout();
 
-        panel->Connect(wxEVT_COMMAND_LIST_ITEM_ACTIVATED, 
+        panel->Connect(wxEVT_COMMAND_LIST_ITEM_ACTIVATED,
             wxListEventHandler(FileSystemDialog::onDoubleClicked), 0, this);
 
         SetPath(defaultPath);

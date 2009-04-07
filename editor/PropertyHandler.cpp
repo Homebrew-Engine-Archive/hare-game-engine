@@ -13,9 +13,9 @@
 #include "PCH.h"
 #include "PropertyHandler.h"
 #include "FileSystemExplorer.h"
-#include <wx/propgrid/propgrid.h>
 #include <wx/propgrid/propdev.h>
 #include <wx/propgrid/manager.h>
+#include <wx/propgrid/propgrid.h>
 
 namespace hare_editor
 {
@@ -67,7 +67,7 @@ namespace hare_editor
         colour.Set(R, G, B, A);
         thisValue << colour;
     }
-        
+
     //-----------------------------------------------------------------------------------
     // FSUrlProperty
     //-----------------------------------------------------------------------------------
@@ -78,9 +78,9 @@ namespace hare_editor
     {
         m_flags |= wxPG_NO_ESCAPE;
     }
-    
-    FSUrlProperty::~FSUrlProperty() 
-    { 
+
+    FSUrlProperty::~FSUrlProperty()
+    {
     }
 
     bool FSUrlProperty::OnButtonClick(wxPropertyGrid* propGrid, wxString& value)
@@ -157,7 +157,7 @@ namespace hare_editor
             val = (double)*oldData;
         }
     }
-    
+
     template <>
     void doModifyMeta<f64>(Attribute* attr, wxVariant& val)
     {
@@ -199,12 +199,12 @@ namespace hare_editor
         }
         if (attr->hasFlag(Object::propEnumIsFlag))
         {
-            prop = page->AppendIn(parent, new wxFlagsProperty(wxString::FromUTF8(attr->name), wxPG_LABEL, 
+            prop = page->AppendIn(parent, new wxFlagsProperty(wxString::FromUTF8(attr->name), wxPG_LABEL,
                 choices, (long)value));
         }
         else
         {
-            prop = page->AppendIn(parent, new wxEnumProperty(wxString::FromUTF8(attr->name), wxPG_LABEL, 
+            prop = page->AppendIn(parent, new wxEnumProperty(wxString::FromUTF8(attr->name), wxPG_LABEL,
                 choices, (long)value));
         }
         prop->SetHelpString(wxT("[enum]"));
@@ -224,7 +224,7 @@ namespace hare_editor
         }
         else
         {
-            prop = page->AppendIn(parent, new wxIntProperty(wxString::FromUTF8(attr->name), wxPG_LABEL, 
+            prop = page->AppendIn(parent, new wxIntProperty(wxString::FromUTF8(attr->name), wxPG_LABEL,
                 *value));
             prop->SetAttribute(wxPG_ATTR_MIN, std::numeric_limits<T>::min());
             prop->SetAttribute(wxPG_ATTR_MAX, std::numeric_limits<T>::max());
@@ -245,13 +245,13 @@ namespace hare_editor
 
         if (attr->hasFlag(Object::propFSUrl))
         {
-            prop = page->AppendIn(parent, new FSUrlProperty(wxString::FromUTF8(attr->name), wxPG_LABEL, 
+            prop = page->AppendIn(parent, new FSUrlProperty(wxString::FromUTF8(attr->name), wxPG_LABEL,
                 wxString::FromUTF8(value->c_str())));
             prop->SetFlag(wxPG_PROP_NOEDITOR);
         }
         else
         {
-            prop = page->AppendIn(parent, new wxStringProperty(wxString::FromUTF8(attr->name), wxPG_LABEL, 
+            prop = page->AppendIn(parent, new wxStringProperty(wxString::FromUTF8(attr->name), wxPG_LABEL,
                 wxString::FromUTF8(value->c_str())));
         }
         prop->SetClientData(attr);
@@ -264,7 +264,7 @@ namespace hare_editor
     void doBindMeta<f32>(Attribute* attr, PropertyGridPage* page, wxPGProperty* parent)
     {
         f32* value = (f32*)attr->data;
-        wxPGProperty* prop = page->AppendIn(parent, new wxFloatProperty(wxString::FromUTF8(attr->name), wxPG_LABEL, 
+        wxPGProperty* prop = page->AppendIn(parent, new wxFloatProperty(wxString::FromUTF8(attr->name), wxPG_LABEL,
             *value));
         prop->SetClientData(attr);
         prop->SetHelpString(wxT("[f32]"));
@@ -276,7 +276,7 @@ namespace hare_editor
     void doBindMeta<f64>(Attribute* attr, PropertyGridPage* page, wxPGProperty* parent)
     {
         f64* value = (f64*)attr->data;
-        wxPGProperty* prop = page->AppendIn(parent, new wxFloatProperty(wxString::FromUTF8(attr->name), wxPG_LABEL, 
+        wxPGProperty* prop = page->AppendIn(parent, new wxFloatProperty(wxString::FromUTF8(attr->name), wxPG_LABEL,
             *value));
         prop->SetClientData(attr);
         prop->SetHelpString(wxT("[f64]"));
@@ -302,14 +302,14 @@ namespace hare_editor
             unsigned char G = (col>>8) & 0xFF;
             unsigned char B = col & 0xFF;
             wxColour colour(R, G, B, A);
-            prop = page->AppendIn(parent, new RGBAColourProperty(wxString::FromUTF8(attr->name), wxPG_LABEL, 
+            prop = page->AppendIn(parent, new RGBAColourProperty(wxString::FromUTF8(attr->name), wxPG_LABEL,
                 colour));
             prop->SetClientData(attr);
             prop->SetHelpString(wxT("[Color]"));
         }
         else
         {
-            prop = page->AppendIn(parent, new wxUIntProperty(wxString::FromUTF8(attr->name), wxPG_LABEL, 
+            prop = page->AppendIn(parent, new wxUIntProperty(wxString::FromUTF8(attr->name), wxPG_LABEL,
                 *value));
             prop->SetClientData(attr);
             prop->SetHelpString(wxT("[u32]"));
@@ -328,7 +328,7 @@ namespace hare_editor
             String strVal = StringConverter::toString((*val)[i]);
             arr.Add(wxString::FromUTF8(strVal.c_str()));
         }
-        wxPGProperty* prop = page->AppendIn(parent, new wxArrayStringProperty(wxString::FromUTF8(attr->name), 
+        wxPGProperty* prop = page->AppendIn(parent, new wxArrayStringProperty(wxString::FromUTF8(attr->name),
             wxPG_LABEL, arr));
         prop->SetClientData(attr);
         prop->SetHelpString(wxString::Format(wxT("[Array:%s]"), wxString::FromUTF8(attr->typeName).c_str()));
@@ -359,7 +359,7 @@ namespace hare_editor
 
         // for referenced object, we should display the URL after its class name.
         Object* obj = *(Object**)attr->data;
-        if (obj && !obj->getUrl().empty()) 
+        if (obj && !obj->getUrl().empty())
         {
             wxString lable = className + wxT(" [") + wxString::FromUTF8(obj->getUrl().c_str()) + wxT("]");
             int newID = prop->AppendChoice(lable, i);
@@ -466,7 +466,7 @@ namespace hare_editor
             }
             break;
         }
-        
+
         // notify each parent that we are modified
         Object* owner = attr->owner;
         wxPGProperty* parent = p->GetParent();
@@ -537,7 +537,7 @@ namespace hare_editor
 
             }
             break;
-        }        
+        }
     }
 
     void setPropertyGridObject(PropertyGridPage* page, Object* obj)

@@ -10,6 +10,11 @@
 //***************************************************************
 //
 //***************************************************************
+#ifndef _PCH_H_
+#define _PCH_H_
+
+#include <core/Core.h>
+
 #ifdef WX_PRECOMP
 #include "wx_pch.h"
 #endif
@@ -25,5 +30,8 @@
 #if HARE_COMPILER == HARE_COMPILER_MSVC
 // disable: "<type> needs to have dll-interface to be used by clients'
 #pragma warning(disable : 4251)
-
 #endif
+
+#include <wx/wxscintilla.h>
+
+#endif //_PCH_H_

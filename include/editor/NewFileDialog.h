@@ -3,12 +3,12 @@
 //  Data:    01/26/2009
 //  Author:  littlesome (littlesome@live.cn)
 //-------------------------------------------------------------
-//  
+//
 //-------------------------------------------------------------
 //  This file is part of Hare2D Game Engine.
 //  Copyright (C) All Rights Reserved
 //***************************************************************
-// 
+//
 //***************************************************************
 #ifndef NEWFILEDIALOG_H
 #define NEWFILEDIALOG_H
@@ -16,6 +16,7 @@
 #include "EditorPrerequisites.h"
 #include <wx/treectrl.h>
 #include <wx/listctrl.h>
+#include <wx/dialog.h>
 
 namespace hare_editor
 {

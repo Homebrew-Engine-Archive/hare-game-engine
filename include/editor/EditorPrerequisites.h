@@ -1,7 +1,7 @@
 #ifndef EDITOR_PREREQUISITES_H
 #define EDITOR_PREREQUISITES_H
 
-#include "core/Core.h"
+#include <core/Core.h>
 using namespace hare_core;
 
 #if HARE_PLATFORM == HARE_PLATFORM_WIN32

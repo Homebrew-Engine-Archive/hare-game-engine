@@ -13,7 +13,7 @@
 #ifndef _PCH_H_
 #define _PCH_H_
 
-#include "Platform.h"
+#include "Platforms.h"
 
 #if HARE_PLATFORM == HARE_PLATFORM_WIN32 || HARE_PLATFORM == HARE_PLATFORM_APPLE
 

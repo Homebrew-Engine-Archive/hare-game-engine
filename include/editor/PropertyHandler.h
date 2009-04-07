@@ -33,7 +33,7 @@ namespace hare_editor
         void onPropertyChanging(wxPropertyGridEvent& event);
         void onPropertyChange(wxPropertyGridEvent& event);
         void onPageChange(wxPropertyGridEvent& event);
-    
+
     private:
         DECLARE_EVENT_TABLE()
     };
@@ -86,7 +86,7 @@ namespace hare_editor
 
         WX_PG_DECLARE_PARENTAL_METHODS()
     };
-    
+
     void setPropertyGridObject(PropertyGridPage* page, Object* obj);
 }
 

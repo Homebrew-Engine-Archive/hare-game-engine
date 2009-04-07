@@ -16,6 +16,7 @@
 #include "EditorPrerequisites.h"
 #include "ProjectFile.h"
 #include <wx/treectrl.h>
+#include <wx/panel.h>
 
 
 namespace hare_editor
@@ -66,7 +67,7 @@ namespace hare_editor
 
     private:
         wxTreeCtrl* projectTree;
-        
+
         wxImageList* imageList;
 
         wxTreeItemId root;

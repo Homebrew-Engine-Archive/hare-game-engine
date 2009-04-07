@@ -13,7 +13,7 @@
 #ifndef _CORE_H_
 #define _CORE_H_
 
-#include "Platform.h"
+#include "Platforms.h"
 
 #if HARE_HAVE_CONFIG_H
 #   include "config.h"

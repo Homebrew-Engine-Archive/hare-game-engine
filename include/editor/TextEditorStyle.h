@@ -3,12 +3,12 @@
 //  Data:    01/03/2009
 //  Author:  littlesome (littlesome@live.cn)
 //-------------------------------------------------------------
-//  
+//
 //-------------------------------------------------------------
 //  This file is part of Hare2D Game Engine.
 //  Copyright (C) All Rights Reserved
 //***************************************************************
-// 
+//
 //***************************************************************
 #ifndef _TEXTEDITORSTYLE_H_
 #define _TEXTEDITORSTYLE_H_
@@ -16,6 +16,7 @@
 #include "EditorPrerequisites.h"
 #include "core/Core.h"
 #include <wx/string.h>
+#include <wx/hashmap.h>
 
 namespace hare_editor
 {
@@ -60,16 +61,16 @@ namespace hare_editor
         wxArrayString getAllLanguages();
 
         HighlightLanguage getLanguageFromFileName(const wxString& filename);
-        
+
         HighlightLanguage apply(TextEditorPage* editor, HighlightLanguage lang = HL_AUTO);
         void apply(HighlightLanguage lang, wxScintilla* control);
-        
+
         bool addOption(HighlightLanguage lang, OptionColour* option);
         OptionColour* getOptionByName(HighlightLanguage lang, const wxString& name);
         OptionColour* getOptionByValue(HighlightLanguage lang, int value);
         OptionColour* getOptionByIndex(HighlightLanguage lang, int index);
         int getOptionCount(HighlightLanguage lang);
-        
+
         void save();
         bool reset(HighlightLanguage lang);
 

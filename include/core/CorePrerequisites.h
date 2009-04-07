@@ -1,7 +1,7 @@
 #ifndef _CORE_PREREQUISITES_H_
 #define _CORE_PREREQUISITES_H_
 
-#include "Platform.h"
+#include "Platforms.h"
 
 #if HARE_PLATFORM == HARE_PLATFORM_WIN32
 #   if defined(HARE_STATIC_LIB)

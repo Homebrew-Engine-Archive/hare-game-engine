@@ -17,6 +17,13 @@
 #include <wx/propgrid/manager.h>
 #include <wx/propgrid/propgrid.h>
 
+#ifdef min
+#undef min
+#endif
+#ifdef max
+#undef max
+#endif
+
 namespace hare_editor
 {
     IMPLEMENT_DYNAMIC_CLASS(ObjectEnumProperty, wxEnumProperty)

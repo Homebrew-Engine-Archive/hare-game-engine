@@ -19,7 +19,7 @@
 
 namespace hare_core
 {
-    void core_init(const char* argv0)
+    void CORE_API core_init(const char* argv0)
     {
         static FileSystem theFileSystem(argv0);
 		MathUtil::rand_seed(0);
@@ -31,7 +31,7 @@ namespace hare_core
 #endif
     }
 
-    void core_quit()
+    void CORE_API core_quit()
     {
 #if HARE_PLATFORM == HARE_PLATFORM_WIN32
         WSACleanup();

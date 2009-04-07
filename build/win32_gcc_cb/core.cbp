@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="core" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="core">
+				<Option output="..\..\lib\core_d" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="..\..\lib" />
+				<Option type="3" />
+				<Option compiler="gcc" />
+				<Option createStaticLib="1" />
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-Wno-deprecated" />
+			<Add option="-DCORE_EXPORTS" />
+			<Add directory="..\..\include" />
+			<Add directory="..\..\include\core" />
+			<Add directory="..\..\include\core\tinyxml" />
+			<Add directory="..\..\ext\physfs" />
+		</Compiler>
+		<Linker>
+			<Add library="physfs" />
+			<Add library="wsock32" />
+			<Add library="winmm" />
+			<Add directory="..\..\ext\physfs\debug" />
+		</Linker>
+		<Unit filename="..\..\core\ClassInfo.cpp" />
+		<Unit filename="..\..\core\CmdLineParser.cpp" />
+		<Unit filename="..\..\core\ConfigFile.cpp" />
+		<Unit filename="..\..\core\ConvertUTF.cpp" />
+		<Unit filename="..\..\core\Core.cpp" />
+		<Unit filename="..\..\core\DynamicLibrary.cpp" />
+		<Unit filename="..\..\core\Exception.cpp" />
+		<Unit filename="..\..\core\FileSystem.cpp" />
+		<Unit filename="..\..\core\MathUtil.cpp" />
+		<Unit filename="..\..\core\Matrix4.cpp" />
+		<Unit filename="..\..\core\Object.cpp" />
+		<Unit filename="..\..\core\PCH.cpp" />
+		<Unit filename="..\..\core\Socket.cpp" />
+		<Unit filename="..\..\core\StringConverter.cpp" />
+		<Unit filename="..\..\core\StringUtil.cpp" />
+		<Unit filename="..\..\core\Thread.cpp" />
+		<Unit filename="..\..\core\Timer.cpp" />
+		<Unit filename="..\..\core\Vector2.cpp" />
+		<Unit filename="..\..\core\tinyxml\tinystr.cpp" />
+		<Unit filename="..\..\core\tinyxml\tinyxml.cpp" />
+		<Unit filename="..\..\core\tinyxml\tinyxmlerror.cpp" />
+		<Unit filename="..\..\core\tinyxml\tinyxmlparser.cpp" />
+		<Unit filename="..\..\include\core\AttVisitor.h" />
+		<Unit filename="..\..\include\core\BinVisitor.h" />
+		<Unit filename="..\..\include\core\ClassInfo.h" />
+		<Unit filename="..\..\include\core\CmdLineParser.h" />
+		<Unit filename="..\..\include\core\ConfigFile.h" />
+		<Unit filename="..\..\include\core\ConvertUTF.h" />
+		<Unit filename="..\..\include\core\Core.h" />
+		<Unit filename="..\..\include\core\CorePrerequisites.h" />
+		<Unit filename="..\..\include\core\DynamicLibrary.h" />
+		<Unit filename="..\..\include\core\Exception.h" />
+		<Unit filename="..\..\include\core\FileSystem.h" />
+		<Unit filename="..\..\include\core\Macros.h" />
+		<Unit filename="..\..\include\core\MathCommon.h" />
+		<Unit filename="..\..\include\core\MathUtil.h" />
+		<Unit filename="..\..\include\core\Matrix4.h" />
+		<Unit filename="..\..\include\core\Object.h" />
+		<Unit filename="..\..\include\core\PCH.h">
+			<Option compile="1" />
+			<Option weight="0" />
+		</Unit>
+		<Unit filename="..\..\include\core\Platform.h" />
+		<Unit filename="..\..\include\core\Pointer.h" />
+		<Unit filename="..\..\include\core\ReferenceCounted.h" />
+		<Unit filename="..\..\include\core\Singleton.h" />
+		<Unit filename="..\..\include\core\Socket.h" />
+		<Unit filename="..\..\include\core\StdHeaders.h" />
+		<Unit filename="..\..\include\core\StringConverter.h" />
+		<Unit filename="..\..\include\core\StringUtil.h" />
+		<Unit filename="..\..\include\core\Thread.h" />
+		<Unit filename="..\..\include\core\Timer.h" />
+		<Unit filename="..\..\include\core\Types.h" />
+		<Unit filename="..\..\include\core\Vector2.h" />
+		<Unit filename="..\..\include\core\XmlVisitor.h" />
+		<Unit filename="..\..\include\core\tinyxml\tinystr.h" />
+		<Unit filename="..\..\include\core\tinyxml\tinyxml.h" />
+		<Extensions>
+			<code_completion />
+			<debugger />
+			<envvars />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

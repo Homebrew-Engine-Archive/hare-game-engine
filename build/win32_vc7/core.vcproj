@@ -310,7 +310,7 @@
 				RelativePath="..\..\include\core\PCH.h">
 			</File>
 			<File
-				RelativePath="..\..\include\core\Platform.h">
+				RelativePath="..\..\include\core\Platforms.h">
 			</File>
 			<File
 				RelativePath="..\..\include\core\Pointer.h">

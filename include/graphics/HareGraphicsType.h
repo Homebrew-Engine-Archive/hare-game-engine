@@ -1,5 +1,5 @@
-#ifndef HAREGRAPHICSTYPE
-#define HAREGRAPHICSTYPE
+#ifndef _HAREGRAPHICSTYPE_H_
+#define _HAREGRAPHICSTYPE_H_
 
 namespace hare_graphics
 {
@@ -18,22 +18,28 @@ namespace hare_graphics
 		HarePixelFormat format;
 	};
 
-	#pragma pack(push, 1)
-
-	template <HarePixelFormat PIXEL_FORMAT>
+#if HARE_PLATFORM == HARE_PLATFORM_WIN32
+#   pragma pack(push, 1)
+#else
+#   pragma pack(1)
+#endif
+	
+    template <HarePixelFormat PIXEL_FORMAT>
 	struct HarePixelType { };
 
-
 	template <>
-	struct HarePixelType<HPF_A8R8G8B8> { 
+	struct HarePixelType<HPF_A8R8G8B8> {
 		union {
 			struct { u8 b, g, r, a; };
-			u32    clr;
+			u32 clr;
 		};
 	};
 
-	#pragma pack(pop)
-
+#if HARE_PLATFORM == HARE_PLATFORM_WIN32
+#   pragma pack(pop)
+#else
+#   pragma pack()
+#endif
 
 	template<HarePixelFormat FROM_T, HarePixelFormat TO_T>
 	inline void ConvertPixelFormat(const HarePixelType<FROM_T>& from, HarePixelType<TO_T>& to)

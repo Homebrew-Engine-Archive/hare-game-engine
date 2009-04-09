@@ -27,7 +27,7 @@ namespace hare_core
     typedef double			f64;
 
     typedef std::string     String;
-    typedef std::wstring    WString;
+    typedef std::basic_string<wchar_t> WString;
     typedef std::vector<String> StringVector;
 
     typedef TPoint<f32>     PointF;

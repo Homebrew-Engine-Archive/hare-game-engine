@@ -13,8 +13,7 @@
 #           define CORE_API __declspec(dllimport)
 #       endif
 #   endif
-#endif
-#if HARE_PLATFORM == HARE_PLATFORM_LINUX || HARE_PLATFORM == HARE_PLATFORM_APPLE
+#elif HARE_PLATFORM == HARE_PLATFORM_LINUX || HARE_PLATFORM == HARE_PLATFORM_APPLE || HARE_PLATFORM == HARE_PLATFORM_PSP
 #   if defined(HARE_GCC_VISIBILITY)
 #       define CORE_API  __attribute__ ((visibility("default")))
 #   else

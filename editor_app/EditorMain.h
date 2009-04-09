@@ -65,14 +65,11 @@ public:
     void onEditFindInFile(wxCommandEvent& event);
     void onEditGoto(wxCommandEvent& event);
 
-    void onDebugStart(wxCommandEvent& event);
-
     void onShowToolBar(wxCommandEvent& event);
     void onToggleFullScreen(wxCommandEvent& event);
     bool onDropFiles(wxCoord x, wxCoord y, const wxArrayString& filenames);
 
     void onToolbarDropDownCreate(wxAuiToolBarEvent& event);
-    void onToolbarDropDownDebug(wxAuiToolBarEvent& event);
     
     void onFileMenuUpdateUI(wxUpdateUIEvent& event);
     void onEditMenuUpdateUI(wxUpdateUIEvent& event);

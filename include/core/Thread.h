@@ -12,7 +12,7 @@
 //***************************************************************
 #ifndef _THREAD_H_
 #define _THREAD_H_
-/*
+
 #include "CorePrerequisites.h"
 #include <limits.h>     // for INT_MAX
 
@@ -200,6 +200,5 @@ namespace hare_core
         CriticalSection cs;
     };
 }
-*/
 
 #endif

@@ -14,6 +14,10 @@
 #include "Socket.h"
 #include "StringUtil.h"
 
+#ifndef INADDR_NONE
+#   define INADDR_NONE 0xffffffff
+#endif
+
 namespace hare_core
 {
     String ISocket::getErrorMsg(bool clear)

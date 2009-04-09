@@ -14,7 +14,7 @@
 #include "EditorMain.h"
 #include <wx/wxscintilla.h>
 #include <wx/wxFlatNotebook/wxFlatNotebook.h>
-//#include <wx/harecanvas.h>
+#include <wx/harecanvas.h>
 #include <wx/xrc/xmlres.h>
 
 #if defined(__WXGTK__) || defined(__WXMOTIF__) || defined(__WXMAC__) || defined(__WXMGL__) || defined(__WXX11__)
@@ -69,12 +69,7 @@ int idViewExplorer = XRCID("idViewExplorer");
 int idViewToolMain = XRCID("idViewToolMain");
 int idViewToolbars = XRCID("idViewToolbars");
 int idViewToolFullScreen = XRCID("idViewToolFullScreen");
-
 int idViewFullScreen = XRCID("idViewFullScreen");
-
-int idDebugStart = XRCID("idDebugStart");
-
-int idMainToolbarChoice = wxNewId();    // select the active project
 
 // add more IDs here
 
@@ -105,6 +100,7 @@ BEGIN_EVENT_TABLE(EditorFrame, wxFrame)
     EVT_MENU_RANGE(wxID_FILE1, wxID_FILE9, EditorFrame::onFileReopen)
     EVT_MENU_RANGE(wxID_FILE10, wxID_FILE19, EditorFrame::onFileReopenProject)
     EVT_MENU(idFileExit, EditorFrame::onFileQuit)
+
     EVT_MENU(idEditUndo, EditorFrame::onEditUndo)
     EVT_MENU(idEditRedo, EditorFrame::onEditRedo)
     EVT_MENU(idEditCut, EditorFrame::onEditCut)
@@ -114,7 +110,6 @@ BEGIN_EVENT_TABLE(EditorFrame, wxFrame)
     EVT_MENU(idEditFind, EditorFrame::onEditFind)
     EVT_MENU(idEditFindInFile, EditorFrame::onEditFindInFile)
     EVT_MENU(idEditGoto, EditorFrame::onEditGoto)
-    EVT_MENU(idDebugStart, EditorFrame::onDebugStart)
 
     EVT_MENU(idViewToolMain, EditorFrame::onShowToolBar)
     EVT_MENU(idViewExplorer, EditorFrame::onShowToolBar)
@@ -123,7 +118,6 @@ BEGIN_EVENT_TABLE(EditorFrame, wxFrame)
     EVT_MENU(idViewFullScreen, EditorFrame::onToggleFullScreen)
 
     EVT_AUITOOLBAR_TOOL_DROPDOWN(idFileNew, EditorFrame::onToolbarDropDownCreate)
-    EVT_AUITOOLBAR_TOOL_DROPDOWN(idDebugStart, EditorFrame::onToolbarDropDownDebug)
 END_EVENT_TABLE()
 
 EditorFrame::EditorFrame(wxFrame *frame, const wxString& title)
@@ -152,8 +146,8 @@ EditorFrame::EditorFrame(wxFrame *frame, const wxString& title)
     }
 
     // create canvas and destroy it, we mush have a window to init graphics moudle
-    //wxHareCanvas* canvas = new wxHareCanvas(this);
-    //canvas->Hide();
+    wxHareCanvas* canvas = new wxHareCanvas(this);
+    canvas->Hide();
 
     layoutManager.SetManagedWindow(this);
 
@@ -285,11 +279,6 @@ void EditorFrame::createToolBar()
     bmp.LoadFile(fullPath + wxT("find_in_file.png"), wxBITMAP_TYPE_PNG);
     mainToolBar->AddTool(idEditFindInFile, _("FineInFile"), bmp, _("FineInFile"));
     mainToolBar->AddSeparator();
-    bmp.LoadFile(fullPath + wxT("start.png"), wxBITMAP_TYPE_PNG);
-    mainToolBar->AddTool(idDebugStart, _("Start"), bmp, _("Start"));
-    mainToolBar->SetToolDropDown(idDebugStart, true);
-
-    mainToolBar->AddControl(new wxChoice(mainToolBar, idMainToolbarChoice));
 
     mainToolBar->Realize();
     mainToolBar->SetInitialSize();
@@ -581,25 +570,6 @@ void EditorFrame::onToolbarDropDownCreate(wxAuiToolBarEvent& event)
     }
 }
 
-void EditorFrame::onToolbarDropDownDebug(wxAuiToolBarEvent& event)
-{
-    if (event.IsDropDownClicked())
-    {
-        wxAuiToolBar* tb = static_cast<wxAuiToolBar*>(event.GetEventObject());
-
-        tb->SetToolSticky(event.GetId(), true);
-
-        wxRect rect = tb->GetToolRect(event.GetId());
-        wxPoint pt = tb->ClientToScreen(rect.GetBottomLeft());
-
-        wxMenu menuPopup;
-        // PopupMenu
-
-        // make sure the button is "un-stuck"
-        tb->SetToolSticky(event.GetId(), false);
-    }
-}
-
 void EditorFrame::onEraseBackground(wxEraseEvent& event)
 {
     // for flicker-free display
@@ -749,26 +719,7 @@ void EditorFrame::onEditGoto(wxCommandEvent& event)
 {
 
 }
-void EditorFrame::onDebugStart(wxCommandEvent& event)
-{
-    Manager* man = Manager::getInstancePtr();
-    ProjectExplorer* pe = man->getExplorerManager()->getProjectExplorer();
-    Project* prj = pe->getActiveProject();
-    if (prj)
-    {
-        prj->debuggerName = "LuaDebugger";
 
-        if (!prj->debuggerName.empty())
-        {
-            EditorPlugin* plugin = man->getPluginManager()->findPluginByName(wxString::FromUTF8(prj->debuggerName.c_str()));
-            if (plugin && plugin->getType() == EPT_Debugger)
-            {
-                DebuggerPlugin* debugger = (DebuggerPlugin*)plugin;
-                debugger->start();
-            }
-        }
-    }
-}
 void EditorFrame::_doOpenFile()
 {
     AppConfigFile* appConfig = Manager::getInstancePtr()->getConfigManager()->getAppConfigFile();

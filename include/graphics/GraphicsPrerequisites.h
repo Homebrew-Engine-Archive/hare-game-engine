@@ -14,7 +14,7 @@
 #       endif
 #   endif
 #endif
-#if HARE_PLATFORM == HARE_PLATFORM_LINUX || HARE_PLATFORM == HARE_PLATFORM_APPLE
+#if HARE_PLATFORM == HARE_PLATFORM_LINUX || HARE_PLATFORM == HARE_PLATFORM_APPLE || HARE_PLATFORM == HARE_PLATFORM_PSP
 #   if defined(HARE_GCC_VISIBILITY)
 #       define GRAPHICS_API  __attribute__ ((visibility("default")))
 #   else

@@ -19,7 +19,7 @@ namespace hare_core
 {
     typedef HashMap<String, ClassInfo*> ClassNameMap;
     typedef Object* (*ObjectConstructorFunc)();
-
+    
     class CORE_API ClassInfo
     {
     public:

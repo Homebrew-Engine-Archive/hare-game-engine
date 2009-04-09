@@ -1,7 +1,6 @@
 #ifndef RENDERSYSTEM
 #define RENDERSYSTEM
 
-
 #include "GraphicsPrerequisites.h"
 #include "Material.h"
 #include "Shader.h"

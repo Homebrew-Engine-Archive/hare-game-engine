@@ -1,7 +1,6 @@
 #ifndef SHADER
 #define SHADER
 
-
 #include "GraphicsPrerequisites.h"
 //×ÅÉ«Æ÷
 #include "Material.h"

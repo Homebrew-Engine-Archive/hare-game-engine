@@ -16,6 +16,7 @@
 #define HARE_PLATFORM_WIN32     1
 #define HARE_PLATFORM_LINUX     2
 #define HARE_PLATFORM_APPLE     3
+#define HARE_PLATFORM_PSP       4
 
 #define HARE_COMPILER_MSVC      1
 #define HARE_COMPILER_GNUC      2
@@ -27,8 +28,10 @@
 #   define HARE_PLATFORM HARE_PLATFORM_WIN32
 #elif defined(__APPLE_CC__)
 #   define HARE_PLATFORM HARE_PLATFORM_APPLE
-#else
+#elif defined(__LINUX__)
 #   define HARE_PLATFORM HARE_PLATFORM_LINUX
+#else
+#   define HARE_PLATFORM HARE_PLATFORM_PSP
 #endif
 
 /* Determine the current architecture
@@ -56,16 +59,16 @@
 #endif
 
 #if HARE_COMPILER == HARE_COMPILER_GNUC && HARE_COMP_VER >= 310 && !defined(STLPORT)
-#   define HashMap ::__gnu_cxx::hash_map
+#   define HashMap __gnu_cxx::hash_map
 #else
 #   if HARE_COMPILER == HARE_COMPILER_MSVC
 #       if HARE_COMP_VER > 1300 && !defined(_STLP_MSVC)
-#           define HashMap ::stdext::hash_map
+#           define HashMap stdext::hash_map
 #       else
-#           define HashMap ::std::hash_map
+#           define HashMap std::hash_map
 #       endif
 #   else
-#       define HashMap ::std::hash_map
+#       define HashMap std::hash_map
 #   endif
 #endif
 

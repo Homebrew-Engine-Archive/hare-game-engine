@@ -12,15 +12,9 @@ namespace hare_graphics
 
 	Canvas::Canvas()
 		:font(NULL)
-		,color(-1)
 		,z(0)
+        ,color(-1)
 	{
-		
-	}
-
-	Canvas::~Canvas()
-	{
-
 	}
 
 	void Canvas::drawLine(int x1, int y1, int x2, int y2)

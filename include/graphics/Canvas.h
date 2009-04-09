@@ -1,5 +1,5 @@
-#ifndef CANVAS
-#define CANVAS
+#ifndef _CANVAS_H_
+#define _CANVAS_H_
 
 namespace hare_graphics
 {
@@ -11,7 +11,6 @@ namespace hare_graphics
 		HARE_DECLARE_SINGLETON(Canvas)
 	public:
 		Canvas();
-		~Canvas();
 
 		void drawLine(int x1, int y1, int x2, int y2);
 
@@ -34,6 +33,7 @@ namespace hare_graphics
 		void setZ(f32 z);
 
 		f32  getZ();
+
 	private:
 		Font* font;
 		f32   z;
@@ -42,6 +42,5 @@ namespace hare_graphics
 
 	GRAPHICS_API Canvas* getCanvas();
 }
-
 
 #endif

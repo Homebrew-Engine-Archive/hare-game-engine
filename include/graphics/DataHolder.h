@@ -9,25 +9,25 @@ namespace hare_graphics
 	{
 	public:
 		DataHolder();
-		DataHolder(void* data, u32 size){ set(data, size); }
+		DataHolder(u8* data, u32 size){ set(data, size); }
 		virtual ~DataHolder();
 
-		void set(void* data, u32 size);
+		void set(u8* data, u32 size);
 
 		void allocate(u32 size);
 		void clear();
 
 		void* getData() const {
-			return m_data;
+			return data;
 		}
 
 		u32 getSize() const { 
-			return m_size; 
+			return size; 
 		}
 
 	protected:
-		void* m_data;
-		u32 m_size;
+		u8* data;
+		u32 size;
 	};
 }
 

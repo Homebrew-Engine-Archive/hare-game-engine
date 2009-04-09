@@ -12,7 +12,7 @@
 //***************************************************************
 #include "PCH.h"
 #include "Thread.h"
-/*
+
 #if HARE_PLATFORM == HARE_PLATFORM_WIN32
 #include <windows.h>
 #include <process.h>
@@ -488,5 +488,3 @@ namespace hare_core
     }
 
 }
-
-*/

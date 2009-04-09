@@ -14,6 +14,8 @@ namespace hare_graphics
 		{
 			CABO_Modulate,
 			CABO_Select1,
+			CABO_Add,
+			CABO_BlendTexAlpha,
 		};
 
 		enum ColorAlphaBlendArgument

@@ -146,6 +146,13 @@ namespace hare_graphics
 			ps.Scale((MyPixelType*)imageData.getData(), imageInfo.width, imageInfo.height, (MyPixelType*)newImage.getImageData(), newImage.getWidth(), newImage.getHeight());
 			}
 			break;
+		case HPF_A8B8G8R8:{
+			typedef HarePixelType<HPF_A8B8G8R8> MyPixelType;
+			C2PassScale<CBoxFilter, MyPixelType> ps;
+
+			ps.Scale((MyPixelType*)imageData.getData(), imageInfo.width, imageInfo.height, (MyPixelType*)newImage.getImageData(), newImage.getWidth(), newImage.getHeight());
+		
+			}
 		default:
 			return false;
 		}

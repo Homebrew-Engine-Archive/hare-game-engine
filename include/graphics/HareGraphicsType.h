@@ -6,8 +6,9 @@ namespace hare_graphics
 	enum HarePixelFormat
 	{
 		HPF_UnKnow,
-		HPF_BYTE_LA, //◊÷ÃÂ”√
+		HPF_BYTE_LA, //for font
 		HPF_A8R8G8B8,
+		HPF_A8B8G8R8,//fuck this type
 		HPF_Count,
 	};
 
@@ -35,6 +36,14 @@ namespace hare_graphics
 		};
 	};
 
+	template <>
+	struct HarePixelType<HPF_A8B8G8R8> {
+		union {
+			struct { u8 r, g, b, a; }; 
+			u32 clr;
+		};
+	};
+
 #if HARE_PLATFORM == HARE_PLATFORM_WIN32
 #   pragma pack(pop)
 #else
@@ -51,6 +60,24 @@ namespace hare_graphics
 	inline void ConvertPixelFormat(const HarePixelType<HPF_A8R8G8B8>& from, HarePixelType<HPF_A8R8G8B8>& to)
 	{
 		to = from;
+	}
+
+	template<>
+	inline void ConvertPixelFormat(const HarePixelType<HPF_A8R8G8B8>& from, HarePixelType<HPF_A8B8G8R8>& to)
+	{
+		to.a = from.a;
+		to.r = from.r;
+		to.g = from.g;
+		to.b = from.b;
+	}
+
+	template<>
+	inline void ConvertPixelFormat(const HarePixelType<HPF_A8B8G8R8>& from, HarePixelType<HPF_A8R8G8B8>& to)
+	{
+		to.a = from.a;
+		to.r = from.r;
+		to.g = from.g;
+		to.b = from.b;
 	}
 
 	struct Vertex

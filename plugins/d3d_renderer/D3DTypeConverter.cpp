@@ -60,6 +60,12 @@ namespace hare_d3d
 		case TextureStage::CABO_Select1:
 			d3dTextureOp = D3DTOP_SELECTARG1;
 			break;
+		case TextureStage::CABO_Add:
+			d3dTextureOp = D3DTOP_ADD;
+			break;
+		case TextureStage::CABO_BlendTexAlpha:
+			d3dTextureOp = D3DTOP_BLENDTEXTUREALPHA;
+			break;
 		default:
 			assert(false);
 		}

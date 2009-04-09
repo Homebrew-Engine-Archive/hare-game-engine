@@ -15,6 +15,12 @@ namespace hare_graphics
                 bytesPerPixel = 4;
                 break;
             }
+		case HPF_A8B8G8R8:
+			{
+				imageFormat = IL_RGBA;
+				bytesPerPixel = 4;
+				break;
+			}
         default:assert(false);
         }
     }
@@ -29,7 +35,12 @@ namespace hare_graphics
             case IL_BGRA:
                 hpf = HPF_A8R8G8B8;
                 break;
+			case IL_RGBA:
+				hpf = HPF_A8B8G8R8;
+				break;
+			default:assert(false);
             }
+			break;
         default:assert(false);
         }
     }
@@ -153,34 +164,8 @@ namespace hare_graphics
 		u32 imageSize = ilGetInteger( IL_IMAGE_WIDTH ) * ilGetInteger( IL_IMAGE_HEIGHT ) * ilGetInteger( IL_IMAGE_BYTES_PER_PIXEL );
 		output.allocate( imageSize );
 
-		// converts pixel format.
-		struct _ARGB { u8 a, r, g, b; };
-		struct _RGBA { u8 r, g, b, a; };
-		struct _BGRA { u8 b, g, r, a; };	// NOTE: match with PF_A8R8G8B8
-		struct _BGR { u8 b, g, r; };		// NOTE: match with PF_R8G8B8
-		struct _RGB { u8 r, g, b; };
-		int pixels = info.width * info.height;
-		if (imagformat == IL_RGBA && bytesPerPixel == 4) {
-			// RGBA to BGRA
-			_RGBA *from = (_RGBA*)data;//ilGetData();
-			_RGBA temp;
-			_BGRA *to = (_BGRA*)output.getData();
-			for (int i = 0; i < pixels; i ++) {
-				temp = *from;
-				to->a = temp.a;
-				to->r = temp.r;
-				to->g = temp.g;
-				to->b = temp.b;
-
-				from ++;
-				to ++;
-			}
-			info.format = HPF_A8R8G8B8;
-		}
-		else {
-			memcpy(output.getData(), data, imageSize); //ilGetData(), ImageSize);
-			toHarePixelFormat(info.format, imagformat, bytesPerPixel );
-		}
+		memcpy(output.getData(), data, imageSize); //ilGetData(), ImageSize);
+		toHarePixelFormat(info.format, imagformat, bytesPerPixel );
 
 		//for windows Í¼Æ¬·­×ª
 		//if (ilImg->Data != data)

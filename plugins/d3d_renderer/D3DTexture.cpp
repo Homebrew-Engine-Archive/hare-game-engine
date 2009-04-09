@@ -244,6 +244,10 @@ namespace hare_d3d
 				return false;
 			}
 
+			//以后为image添加函数可以从一种格式的图片转换为另一种格式的图片例如 rgb 转为 argb
+			int PixelFB = GraphicsUtil::getPixelFormatBytes(img.getPixelFormat());
+			assert(PixelFB == 4);
+
 			D3DLOCKED_RECT d3dlr;//D3DPOOL_MANAGED系统内存池可以lock
 
 			d3dTexture->LockRect(0, &d3dlr, 0, 0);
@@ -251,12 +255,19 @@ namespace hare_d3d
 			u8 *pDestBuf = (u8*)d3dlr.pBits;
 
 			u8 *pSrcBuf  = (u8*)img.getImageData();
-			//以后为image添加函数可以从一种格式的图片转换为另一种格式的图片例如 rgb 转为 argb
-			int PixelFB = GraphicsUtil::getPixelFormatBytes(img.getPixelFormat());
-			assert(PixelFB == 4);
 
-			//memcpy(pDestBuf, img.getImageData(), width * height * 4);
-			
+			//swap R and B 
+			if (img.getPixelFormat() == HPF_A8B8G8R8){
+				HarePixelType<HPF_A8B8G8R8>* tmpData = (HarePixelType<HPF_A8B8G8R8>*)pSrcBuf;
+				for (u32 count = 0; count < img.getWidth() * img.getHeight(); ++count){
+					u8 tmp;
+					tmp        = tmpData->r;
+					tmpData->r = tmpData->b;
+					tmpData->b = tmp;
+					tmpData++;
+				}
+			}
+
 			for (u32 y = 0; y < srcHeight; ++y){
 				memcpy(pDestBuf + y * PO2Width * PixelFB, pSrcBuf + y * srcWidth * PixelFB, srcWidth * PixelFB);
 			}

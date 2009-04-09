@@ -37,6 +37,8 @@ namespace hare_graphics
 		{
 		case HPF_A8R8G8B8: 
             return 4;
+		case HPF_A8B8G8R8:
+			return 4;
 		case HPF_BYTE_LA: 
             return 2;
 		default:

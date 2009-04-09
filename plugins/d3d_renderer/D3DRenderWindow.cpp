@@ -225,11 +225,12 @@ namespace hare_d3d
 		D3DXMatrixTranslation(&matTEMP, -0.5f, windowParams.height + 0.5f, 0.0f);
 		D3DXMatrixMultiply(&MatProj, &MatProj, &matTEMP);
 
-		D3DXMatrixOrthoOffCenterLH(&matTEMP, 0, (f32)windowParams.width, 0, 
+		D3DXMatrixOrthoOffCenterRH(&matTEMP, 0, (f32)windowParams.width, 0, 
 			(f32)windowParams.height, 0.0f, 1.0f);//正交投影
 
 		D3DXMatrixMultiply(&MatProj, &MatProj, &matTEMP);
 		D3DXMatrixIdentity(&MatView);
+
 
 		pD3DDevice->SetTransform(D3DTS_VIEW, &MatView);
 		pD3DDevice->SetTransform(D3DTS_PROJECTION, &MatProj);

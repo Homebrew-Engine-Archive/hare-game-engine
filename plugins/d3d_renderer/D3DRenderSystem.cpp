@@ -339,15 +339,17 @@ namespace hare_d3d
 
 	void D3DRenderSystem::setShaderParams(const ShaderParams& shaderParams)
 	{
+		//pD3DDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, true);
 		pD3DDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, shaderParams.AlphaBlendEnable);
 		pD3DDevice->SetRenderState(D3DRS_BLENDOP, D3DTypeConverter::toD3DSceneBlendOperation(shaderParams.SceneBlendOP));
 		pD3DDevice->SetRenderState(D3DRS_SRCBLEND, D3DTypeConverter::toD3DSceneBlendArgument(shaderParams.SceneBlendSrcArg));
 		pD3DDevice->SetRenderState(D3DRS_DESTBLEND, D3DTypeConverter::toD3DSceneBlendArgument(shaderParams.SceneBlendDesArg));
+		//pD3DDevice->SetRenderState(D3DRS_ALPHATESTENABLE, false);
 		pD3DDevice->SetRenderState(D3DRS_ALPHATESTENABLE, shaderParams.AlphaTestEnable);
 		pD3DDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATEREQUAL);
 		pD3DDevice->SetRenderState(D3DRS_ALPHAREF, shaderParams.AlphaRef);
 		
-		//pD3DDevice->SetRenderState(D3DRS_ZENABLE, D3DZB_FALSE);
+		//pD3DDevice->SetRenderState(D3DRS_ZENABLE, D3DZB_TRUE);
 	}
 
 	void D3DRenderSystem::setTextureStage(const TextureStage& textureStage)
@@ -357,8 +359,8 @@ namespace hare_d3d
 		pD3DDevice->SetTextureStageState(0, D3DTSS_ALPHAARG2, D3DTypeConverter::toD3DTextureArgument(textureStage.AlphaBlendArg2));
 	
 		pD3DDevice->SetTextureStageState(0, D3DTSS_COLOROP, D3DTypeConverter::toD3DTextureOperation(textureStage.ColorBlendOP));
-		pD3DDevice->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTypeConverter::toD3DTextureArgument(textureStage.ColorBlendArg1));
-		pD3DDevice->SetTextureStageState(0, D3DTSS_ALPHAARG2, D3DTypeConverter::toD3DTextureArgument(textureStage.ColorBlendArg2));
+		pD3DDevice->SetTextureStageState(0, D3DTSS_COLORARG1, D3DTypeConverter::toD3DTextureArgument(textureStage.ColorBlendArg1));
+		pD3DDevice->SetTextureStageState(0, D3DTSS_COLORARG2, D3DTypeConverter::toD3DTextureArgument(textureStage.ColorBlendArg2));
 
 		if (textureStage.wrapModeU == TextureStage::WM_Shadow && textureStage.wrapModeV == TextureStage::WM_Shadow){
 			if (D3DPTADDRESSCAPS_BORDER & d3dCaps.TextureAddressCaps){

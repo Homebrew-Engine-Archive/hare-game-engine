@@ -10,5 +10,4 @@ namespace hare_graphics
 		HARE_META(B, f32)
 		HARE_META(A, f32)
 	}
-
 }

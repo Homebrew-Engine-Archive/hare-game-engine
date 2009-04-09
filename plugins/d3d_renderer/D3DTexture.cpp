@@ -252,7 +252,7 @@ namespace hare_d3d
 
 			u8 *pSrcBuf  = (u8*)img.getImageData();
 			//以后为image添加函数可以从一种格式的图片转换为另一种格式的图片例如 rgb 转为 argb
-			int PixelFB = GraphicsUtil::GetPixelFormatBytes(img.getPixelFormat());
+			int PixelFB = GraphicsUtil::getPixelFormatBytes(img.getPixelFormat());
 			assert(PixelFB == 4);
 
 			//memcpy(pDestBuf, img.getImageData(), width * height * 4);

@@ -61,5 +61,4 @@ namespace hare_graphics
 		assert(count > 3);
 		buffer.allocate(count * sizeof(Vertex));
 	}
-
 }

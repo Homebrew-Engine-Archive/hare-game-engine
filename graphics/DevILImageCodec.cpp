@@ -4,8 +4,6 @@
 #include "IL/il.h"
 //#include "IL/devil_internal_exports.h"
 
-
-
 namespace hare_graphics
 {
 	struct RegisterDataBase
@@ -167,5 +165,4 @@ namespace hare_graphics
 
 		return true;
 	}
-
 }

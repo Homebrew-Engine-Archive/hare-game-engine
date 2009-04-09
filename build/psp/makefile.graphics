@@ -8,7 +8,6 @@ PSPDIR = $(shell psp-config --psp-prefix)
 OBJS = \
 		$(SRC_DIR)/Canvas.o \
 		$(SRC_DIR)/DataHolder.o \
-		#$(SRC_DIR)/DevILImageCodec.o \
 		$(SRC_DIR)/Font.o \
 		$(SRC_DIR)/GraphicsUtil.o \
 		$(SRC_DIR)/HareApp.o \

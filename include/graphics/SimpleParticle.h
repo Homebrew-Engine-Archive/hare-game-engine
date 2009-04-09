@@ -113,5 +113,4 @@ namespace hare_graphics
 	};
 }
 
-
 #endif

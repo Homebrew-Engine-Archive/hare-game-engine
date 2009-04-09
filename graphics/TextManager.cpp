@@ -61,5 +61,4 @@ namespace hare_graphics
 	{
 		return TextManager::getSingletonPtr();
 	}
-
 }

@@ -73,14 +73,3 @@ namespace hare_graphics
 		return 0;
 	}
 }
-
-
-
-
-
-
-
-
-
-
-

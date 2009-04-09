@@ -30,5 +30,4 @@ using namespace hare_core;
 #include "Font.h"
 #include "TextManager.h"
 
-
 #endif

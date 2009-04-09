@@ -320,5 +320,4 @@ namespace hare_graphics
 	{
 		postLoaded();
 	}
-
 }

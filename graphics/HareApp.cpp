@@ -5,7 +5,6 @@
 #include "TextManager.h"
 #include "Canvas.h"
 
-
 namespace hare_graphics
 {		
 	HareApp hareApp;
@@ -80,6 +79,4 @@ namespace hare_graphics
 	{
 		return HareApp::getSingletonPtr();
 	}
-
-
 }

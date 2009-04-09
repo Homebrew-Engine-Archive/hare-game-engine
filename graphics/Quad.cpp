@@ -1,9 +1,6 @@
 #include "PCH.h"
 #include "Quad.h"
 
-
-
-
 namespace hare_graphics
 {
 	Quad::Quad()
@@ -118,5 +115,4 @@ namespace hare_graphics
 		buffer[0].diffuse = buffer[1].diffuse = 
 		buffer[2].diffuse = buffer[3].diffuse = color;
 	}
-
 }

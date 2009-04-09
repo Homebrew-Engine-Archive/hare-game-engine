@@ -163,4 +163,3 @@ namespace hare_graphics
 		return *this;
 	}
 }
-

@@ -46,6 +46,4 @@ namespace hare_graphics
 	{
 		return curRenderWindow;
 	}
-
-
 }

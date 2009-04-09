@@ -77,5 +77,4 @@ namespace hare_graphics
 	{
 
 	}
-
 }

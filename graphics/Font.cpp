@@ -33,9 +33,9 @@ namespace hare_graphics
 	Font::Font(const String& ttfName, f32 ttfSize, u32 ttfResolution, u32 cacheSize)
 		:fontFile(ttfName)
 		,fontSize(ttfSize)
-		,resolution(ttfResolution)
 		,cacheBufferSize(cacheSize)
-		,bInitalize(false)
+        ,resolution(ttfResolution)
+        ,bInitalize(false)
 	{
 		fontResource = new FontResource;
 

@@ -86,12 +86,12 @@ namespace hare_graphics
 	}
 
 	SimpleParticle::SimpleParticle()
-		:prevLocation(0,0)
+		:age(-2.0f)
+        ,emissionResidue(0)
+        ,prevLocation(0,0)
 		,tx(0)
 		,ty(0)
-		,emissionResidue(0)
 		,particlesAlive(0)
-		,age(-2.0f)
 	{
 		particleInfo = new ParticleInfo;
 	}

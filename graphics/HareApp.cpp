@@ -12,8 +12,8 @@ namespace hare_graphics
 	HARE_IMPLEMENT_SINGLETON(HareApp)
 
 	HareApp::HareApp()
-		:graphicsSystemManager(NULL)
-		,plugin(NULL)
+		: plugin(NULL)
+		, graphicsSystemManager(NULL)
 	{
 
 	}

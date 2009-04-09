@@ -29,8 +29,8 @@ namespace hare_graphics
 
 	template <>
 	struct HarePixelType<HPF_A8R8G8B8> {
-		union {
-			struct { u8 b, g, r, a; };
+        union {
+            struct { u8 b, g, r, a; }; 
 			u32 clr;
 		};
 	};

@@ -1,9 +1,7 @@
 #ifndef FREEIMAGECODEC
 #define FREEIMAGECODEC
 
-
 #include "ImageCodec.h"
-
 
 namespace hare_graphics
 {

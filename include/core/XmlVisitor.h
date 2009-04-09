@@ -145,8 +145,8 @@ namespace hare_core
                     if (!elem)
                         return;
 
-                    Object::StoreType store = Object::storeNull;
-                    elem->Attribute("store", (int*)&store);
+                    int store = Object::storeNull;
+                    elem->Attribute("store", &store);
 
                     if (store == Object::storeEmbedded)
                     {

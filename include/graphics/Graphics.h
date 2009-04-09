@@ -5,7 +5,6 @@
 using namespace hare_core;
 
 #include "HareApp.h"
-#include "GraphicsPrerequisites.h"
 #include "HareGraphicsType.h"
 #include "Image.h"
 #include "DataHolder.h"

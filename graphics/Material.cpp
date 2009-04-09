@@ -126,13 +126,13 @@ namespace hare_graphics
 	{}
 
 	PannerMod::PannerMod()
-		:startTime(0)
-		,offset(PointF::ZERO)
-		,panDirection(PointF::ZERO)
-		,panRate(0)
-		,oscillationPhase(PointF::ZERO)
-		,oscillationAmplitude(PointF::ZERO)
-		,oscillationRate(PointF::ZERO)
+        :offset(PointF::ZERO)
+        ,panDirection(PointF::ZERO)
+        ,panRate(0)
+        ,oscillationPhase(PointF::ZERO)
+        ,oscillationAmplitude(PointF::ZERO)
+        ,oscillationRate(PointF::ZERO)
+		,startTime(0)
 	{
 
 	}
@@ -182,12 +182,12 @@ namespace hare_graphics
 	{}
 
 	ScalerMod::ScalerMod()
-		:startTime(0)
-		,scale(1, 1)
+		:scale(1, 1)
 		,center(PointF::ZERO)
 		,oscillationPhase(PointF::ZERO)
 		,oscillationAmplitude(PointF::ZERO)
 		,oscillationRate(PointF::ZERO)
+        ,startTime(0)
 	{
 
 	}

@@ -5,8 +5,8 @@ namespace hare_graphics
 {
 	RenderWindow::RenderWindow()
 		:isMainWnd(false)
-		,sceneManager(NULL)
         ,isExternal(false)
+		,sceneManager(NULL)
 	{
 	}
 

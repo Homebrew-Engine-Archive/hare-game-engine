@@ -39,7 +39,7 @@ namespace hare_graphics
 		imageInfo.width = width;
 		imageInfo.height= height;
 		imageInfo.format= format;
-		u32 size = width * height * GraphicsUtil::GetPixelFormatBytes(format);
+		u32 size = width * height * GraphicsUtil::getPixelFormatBytes(format);
 		imageData.allocate(size);
 	}
 
@@ -119,17 +119,17 @@ namespace hare_graphics
 		return imageData.getData();
 	}
 
-	u32  Image::getImageSize() const
+	u32 Image::getImageSize() const
 	{
 		return imageData.getSize();
 	}
 
-	u32  Image::getRowStride() const
+	u32 Image::getRowStride() const
 	{
-		return GraphicsUtil::GetPixelFormatBytes(getPixelFormat()) * imageInfo.width;
+		return GraphicsUtil::getPixelFormatBytes(getPixelFormat()) * imageInfo.width;
 	}
 
-	bool  Image::scale(int newWidth, int newHeight)
+	bool Image::scale(int newWidth, int newHeight)
 	{
 		if (!imageData.getData() || newWidth < 0 || newHeight < 0)
 			return false;

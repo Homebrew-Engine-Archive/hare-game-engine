@@ -2,10 +2,38 @@
 #include "DevILImageCodec.h"
 #include "GraphicsUtil.h"
 #include "IL/il.h"
-//#include "IL/devil_internal_exports.h"
 
 namespace hare_graphics
 {
+    static void toDevILFormat(const HarePixelFormat& hpf, int &imageFormat, int& bytesPerPixel)
+    {
+        switch (hpf)
+        {
+        case HPF_A8R8G8B8:
+            {
+                imageFormat = IL_BGRA;
+                bytesPerPixel = 4;
+                break;
+            }
+        default:assert(false);
+        }
+    }
+
+    static void toHarePixelFormat(HarePixelFormat& hpf, int imageFormat, int bytesPerPixel)
+    {
+        switch (bytesPerPixel)
+        {
+        case 4:
+            switch (imageFormat)
+            {
+            case IL_BGRA:
+                hpf = HPF_A8R8G8B8;
+                break;
+            }
+        default:assert(false);
+        }
+    }
+
 	struct RegisterDataBase
 	{
 		char* type;
@@ -24,7 +52,7 @@ namespace hare_graphics
 	{
 		if (!isInitialised){
 			ilInit();
-			ilEnable( IL_FILE_OVERWRITE );
+			ilEnable(IL_FILE_OVERWRITE);
 			isInitialised = true;
 		}
 	}
@@ -72,7 +100,7 @@ namespace hare_graphics
 		ilBindImage(imageID);
 
 		int imageFormat, bytesPerPixel;
-		GraphicsUtil::HarePixelFormat2DevILFormat(info.format, imageFormat, bytesPerPixel);
+		toDevILFormat(info.format, imageFormat, bytesPerPixel);
 
 		// ¨¬?3? image ¦Ì?¨ºy?Y
 		ILboolean ret = ilTexImage(info.width, info.height, 1, bytesPerPixel, imageFormat, IL_UNSIGNED_BYTE, input.getData());
@@ -151,7 +179,7 @@ namespace hare_graphics
 		}
 		else {
 			memcpy(output.getData(), data, imageSize); //ilGetData(), ImageSize);
-			GraphicsUtil::DevILFormat2HarePixelFormat(info.format, imagformat, bytesPerPixel );
+			toHarePixelFormat(info.format, imagformat, bytesPerPixel );
 		}
 
 		//for windows Í¼Æ¬·­×ª

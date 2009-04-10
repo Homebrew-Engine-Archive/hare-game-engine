@@ -20,5 +20,12 @@ using namespace hare_graphics;
 
 #include <GL/glx.h>
 #include <GL/gl.h>
+#include "GL/glew.h"
+#include "GL/glxew.h"
+
+#if HARE_PLATFORM == HARE_PLATFORM_WIN32
+#include "GL/wglew.h"
+#endif
+
 
 #endif

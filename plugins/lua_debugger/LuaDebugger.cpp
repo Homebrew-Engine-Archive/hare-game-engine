@@ -3,12 +3,12 @@
 //  Data:    01/03/2009
 //  Author:  littlesome (littlesome@live.cn)
 //-------------------------------------------------------------
-//  
+//
 //-------------------------------------------------------------
 //  This file is part of Hare2D Game Engine.
 //  Copyright (C) All Rights Reserved
 //***************************************************************
-// 
+//
 //***************************************************************
 #include "PCH.h"
 #include "LuaDebugger.h"
@@ -83,8 +83,8 @@ HARE_IMPLEMENT_DYNAMIC_CLASS(LuaDebuggerConfig, Object, 0)
 }
 
 LuaDebuggerConfig::LuaDebuggerConfig()
- : remoteDebug(false), hostName("localhost"), 
-   portNumber(9981), appPath("hare_lua") 
+ : remoteDebug(false), hostName("localhost"),
+   portNumber(9981), appPath("hare_lua")
 {
 }
 
@@ -155,7 +155,7 @@ void LuaDebuggerProcess::OnTerminate(int pid, int status)
 //   LuaDebuggerEvent
 // ------------------------------------------------------------------------
 LuaDebuggerEvent::LuaDebuggerEvent(const LuaDebuggerEvent& event)
- : wxEvent(event), lineNumber(event.lineNumber), fileName(event.fileName), 
+ : wxEvent(event), lineNumber(event.lineNumber), fileName(event.fileName),
    strMessage(event.strMessage), debugData(event.debugData), stackRef(event.stackRef)
 {
 }
@@ -171,8 +171,8 @@ LuaDebuggerEvent::LuaDebuggerEvent(wxEventType eventType,
 //   LuaDebugger
 // ------------------------------------------------------------------------
 LuaDebugger::LuaDebugger()
- : debuggeeProcess(NULL), debuggeePID(-1), serverSocket(0), thread(0), acceptedSocket(0), 
-   callStackWindow(0), watchWindow(0), outputWindow(0), localWindow(0), currStackLevel(0), 
+ : debuggeeProcess(NULL), debuggeePID(-1), serverSocket(0), thread(0), acceptedSocket(0),
+   callStackWindow(0), watchWindow(0), outputWindow(0), localWindow(0), currStackLevel(0),
    state(Debugger_Stoped)
 {
 }
@@ -224,7 +224,7 @@ void LuaDebugger::onAttach()
     if (!config)
         config = new LuaDebuggerConfig();
 
-    Manager::getInstancePtr()->registerEvent(editorEVT_APP_BEFORE_SHUTDOWN, 
+    Manager::getInstancePtr()->registerEvent(editorEVT_APP_BEFORE_SHUTDOWN,
         new TEventHandler<LuaDebugger, EditorEvent>(this, &LuaDebugger::onAppBeforeShutdown));
 }
 
@@ -257,7 +257,7 @@ void LuaDebugger::onAppBeforeShutdown(EditorEvent& event)
 {
     stopDebugger();
 
-    // IMPORTANT!!! wxExecute post a message to the message queue, 
+    // IMPORTANT!!! wxExecute post a message to the message queue,
     // MUST process it before exit. 3-15-2009 lituo
     while (wxTheApp->Pending() && wxTheApp->Dispatch());
 
@@ -270,7 +270,7 @@ void LuaDebugger::onAppBeforeShutdown(EditorEvent& event)
         wxProcess::Kill(debuggeePID, wxSIGKILL, wxKILL_CHILDREN);
     }
 
-    while (wxTheApp->Pending() && wxTheApp->Dispatch()); 
+    while (wxTheApp->Pending() && wxTheApp->Dispatch());
 
     if (config)
         config->saveToXml("lua_debugger.xml");
@@ -311,7 +311,7 @@ bool LuaDebugger::buildToolBar(wxAuiToolBar* toolBar)
     toolBar->AddTool(idLuaDebugCallStack, _("Call Stack"), bmp, wxEmptyString);
     bmp.LoadFile(fullPath + wxT("output.png"), wxBITMAP_TYPE_PNG);
     toolBar->AddTool(idLuaDebugOutput, _("Debug Output"), bmp, wxEmptyString);
-    
+
     return true;
 }
 
@@ -424,7 +424,7 @@ bool LuaDebugger::start()
             ret = startDebuggee() > 0;
         else
         {
-            wxString cmd = wxString::Format(wxT("Remote debugging mode, start debuggee with '-debug %s:%d'\n"), 
+            wxString cmd = wxString::Format(wxT("Remote debugging mode, start debuggee with '-debug %s:%d'\n"),
                 config->getHostName().c_str(),
                 config->getPortNumber());
             outputWindow->append(cmd, Log_Info);
@@ -451,12 +451,12 @@ bool LuaDebugger::step()
         startCmd = StartCmd_StepIn;
     }
     else
-    {   
+    {
         ret = checkSocketConnected(true, wxT("Debugger Step")) && checkSocketWrite(
             SocketHelper::writeCmd(getSocket(), LUA_DEBUGGER_CMD_DEBUG_STEP),
             wxT("Debugger Step"));
-        
-        if (ret) 
+
+        if (ret)
         {
             clearEditorDebugMark();
             state = Debugger_Running;
@@ -481,7 +481,7 @@ bool LuaDebugger::stepOver()
             SocketHelper::writeCmd(getSocket(), LUA_DEBUGGER_CMD_DEBUG_STEPOVER),
             wxT("Debugger StepOver"));
 
-        if (ret) 
+        if (ret)
         {
             clearEditorDebugMark();
             state = Debugger_Running;
@@ -496,7 +496,7 @@ bool LuaDebugger::stepOut()
     bool ret = checkSocketConnected(true, wxT("Debugger StepOut")) && checkSocketWrite(
         SocketHelper::writeCmd(getSocket(), LUA_DEBUGGER_CMD_DEBUG_STEPOUT),
         wxT("Debugger StepOut"));
-    
+
     if (ret)
     {
         clearEditorDebugMark();
@@ -660,7 +660,7 @@ bool LuaDebugger::startDebugger()
     else
     {
         LuaDebuggerEvent debugEvent(wxEVT_LUA_DEBUGGER_ERROR, this);
-        debugEvent.strMessage = serverSocket->getErrorMsg(true);
+        debugEvent.strMessage = serverSocket->getErrorMsg(true) + "\n";
         AddPendingEvent(debugEvent);
 
         delete serverSocket;
@@ -689,7 +689,7 @@ bool LuaDebugger::stopDebugger()
         if (!accSocket->shutdown(SD_BOTH))
         {
             LuaDebuggerEvent debugEvent(wxEVT_LUA_DEBUGGER_ERROR, this);
-            debugEvent.strMessage = acceptedSocket->getErrorMsg(true);
+            debugEvent.strMessage = acceptedSocket->getErrorMsg(true) + "\n";
             AddPendingEvent(debugEvent);
         }
 
@@ -714,7 +714,7 @@ bool LuaDebugger::stopDebugger()
             !closeSocket.shutdown(SD_BOTH))
         {
             LuaDebuggerEvent debugEvent(wxEVT_LUA_DEBUGGER_ERROR, this);
-            debugEvent.strMessage = serverSocket->getErrorMsg(true);
+            debugEvent.strMessage = serverSocket->getErrorMsg(true) + "\n";
             AddPendingEvent(debugEvent);
         }
 
@@ -764,7 +764,7 @@ void LuaDebugger::threadFunction()
     if (!acceptedSocket)
     {
         LuaDebuggerEvent debugEvent(wxEVT_LUA_DEBUGGER_ERROR, this);
-        debugEvent.strMessage = serverSocket->getErrorMsg(true);
+        debugEvent.strMessage = serverSocket->getErrorMsg(true) + "\n";
         AddPendingEvent(debugEvent);
     }
     else
@@ -905,7 +905,7 @@ int LuaDebugger::handleDebuggeeEvent(int event_type)
             Object* debugData = 0;
 
             if (checkSocketRead(
-                SocketHelper::readInt(getSocket(), stackRef) && 
+                SocketHelper::readInt(getSocket(), stackRef) &&
                 SocketHelper::readObject(getSocket(), debugData),
                 wxT("Debugger LUA_DEBUGGEE_EVENT_STACK_ENTRY_ENUM")))
             {
@@ -953,7 +953,7 @@ int LuaDebugger::handleDebuggeeEvent(int event_type)
 
             break;
         }
-    default : 
+    default :
         return -1; // don't know this event?
     }
 
@@ -1049,12 +1049,12 @@ void LuaDebugger::syncEditor(const String& fileName, int lineNumber)
     clearEditorDebugMark();
 
     Project* project = Manager::getInstancePtr()->getExplorerManager()->getProjectExplorer()->getActiveProject();
-    
+
     String baseName;
     StringVector strs = StringUtil::split(fileName, "\\/");
     if (strs.size() > 0)
         baseName = strs[strs.size() - 1];
-    
+
     ProjectFile* pf = project ? project->findFile(baseName) : 0;
 
     wxString file = Manager::getInstancePtr()->getAppDir() + wxT("scripts/") + wxString::FromUTF8(fileName.c_str());

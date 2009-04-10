@@ -79,6 +79,7 @@ bool LuaDebuggee::debugHook(int event)
         if (resetRequested)
         {
             wait = true;
+            stop();
             exit(-1);
         }
         else
@@ -154,7 +155,6 @@ bool LuaDebuggee::start()
 void LuaDebuggee::stop()
 {
     // close socket and kill thread
-
     notifyExit();
 
     if (connected)

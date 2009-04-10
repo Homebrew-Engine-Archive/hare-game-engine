@@ -33,7 +33,7 @@
     #pragma hdrstop
 #endif
 
-
+#include <wx/app.h>
 #include <wx/treebase.h>
 #include <wx/timer.h>
 #include <wx/textctrl.h>
@@ -4755,10 +4755,10 @@ bool wxTreeListCtrl::GetBoundingRect(const wxTreeItemId& item, wxRect& rect,
 { return m_main_win->GetBoundingRect(item, rect, textOnly); }
 
 void wxTreeListCtrl::EditLabel (const wxTreeItemId& item, int column)
-{ 
+{
     if (!GetColumn(column).IsEditable())
         return;
-    m_main_win->EditLabel (item, column); 
+    m_main_win->EditLabel (item, column);
 }
 
 int wxTreeListCtrl::OnCompareItems(const wxTreeItemId& item1,

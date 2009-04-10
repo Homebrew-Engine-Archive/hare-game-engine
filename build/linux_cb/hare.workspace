@@ -9,5 +9,8 @@
 		<Project filename="graphics.cbp">
 			<Depends filename="core.cbp" />
 		</Project>
+		<Project filename="lua_debugger.cbp">
+			<Depends filename="editor.cbp" />
+		</Project>
 	</Workspace>
 </CodeBlocks_workspace_file>

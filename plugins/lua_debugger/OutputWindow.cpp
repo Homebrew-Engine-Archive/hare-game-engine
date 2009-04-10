@@ -1,5 +1,5 @@
 #include "PCH.h"
-#include "outputWindow.h"
+#include "OutputWindow.h"
 #include "LuaDebugger.h"
 
 BEGIN_EVENT_TABLE(LuaOutputWindow, wxPanel)

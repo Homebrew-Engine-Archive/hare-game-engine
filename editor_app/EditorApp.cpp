@@ -84,7 +84,7 @@ bool EditorApp::OnInit()
     StringVector plugins = plugin.getMultiSetting("Plugin");
     for (size_t i = 0; i < plugins.size(); ++i)
     {
-        getHareApp()->loadPlugin(pluginDir + plugins[i]);
+        //getHareApp()->loadPlugin(pluginDir + plugins[i]);
     }
 
     FileSystem* fs = FileSystem::getSingletonPtr();
@@ -97,7 +97,7 @@ bool EditorApp::OnInit()
     fs->setWriteDir(editorDir);
     fs->addSearchPath(editorDir);
 
-    getHareApp()->startUp();
+    //getHareApp()->startUp();
 
     if (!wxApp::OnInit())
         return false;
@@ -114,9 +114,9 @@ int EditorApp::OnExit()
 {
     Manager::free();
 
-    getHareApp()->shutDown();
+    //getHareApp()->shutDown();
 
-    getHareApp()->freePlugin();
+    //getHareApp()->freePlugin();
 
     core_quit();
 
@@ -125,7 +125,7 @@ int EditorApp::OnExit()
 
 void EditorApp::OnIdle(wxIdleEvent& event)
 {
-    getHareApp()->hareRunFrame();
+    //getHareApp()->hareRunFrame();
 
     event.RequestMore();
 }

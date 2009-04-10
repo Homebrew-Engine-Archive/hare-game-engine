@@ -43,11 +43,34 @@ namespace hare_core
         MutexError unlock();
 
     protected:
+        friend class Condition;
         void *privateData;
 
         HARE_DECLARE_NO_COPY_CLASS(Mutex)
     };
 
+    class CORE_API MutexLocker
+    {
+    public:
+        MutexLocker(Mutex& mutexRef)
+            : ok(false), mutex(mutexRef)
+        {
+            ok = (mutex.lock() == MUTEX_NO_ERROR);
+        }
+
+       ~MutexLocker()
+        {
+            if ( isOk() ) mutex.unlock();
+        }
+
+        bool isOk() const { return ok; }
+
+    private:
+        bool ok;
+        Mutex& mutex;
+
+        HARE_DECLARE_NO_COPY_CLASS(MutexLocker)
+    };
 
     class CORE_API CriticalSection
     {
@@ -63,7 +86,6 @@ namespace hare_core
 
         HARE_DECLARE_NO_COPY_CLASS(CriticalSection)
     };
-
 
     class CORE_API CriticalSectionLocker
     {
@@ -161,7 +183,7 @@ namespace hare_core
         //static Thread* currentThread();
         //static bool isMainThread();
         //static void yield();
-        //static void sleep(u32 milliseconds);
+        static void sleep(u32 milliseconds);
         //static int getCPUCount();
         //static int getCurrentId();
         //static bool setConcurrency(int level);
@@ -190,9 +212,7 @@ namespace hare_core
 
     public:
         virtual void* entry() = 0;
-        virtual void onExit()
-        {
-        }
+        virtual void onExit() {}
 
     private:
         friend class ThreadData;

@@ -11,6 +11,7 @@
 				<Option working_dir="../../lib" />
 				<Option type="1" />
 				<Option compiler="gcc" />
+				<Option parameters="-game test -debug localhost:9981" />
 				<Compiler>
 					<Add option="-g" />
 				</Compiler>
@@ -19,15 +20,25 @@
 		<Compiler>
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
+			<Add option="-Wno-deprecated" />
 			<Add directory="../../include" />
 		</Compiler>
 		<Linker>
 			<Add library="lua" />
 			<Add library="core" />
+			<Add library="graphics" />
 			<Add library="dl" />
 			<Add directory="../../lib" />
 		</Linker>
+		<Unit filename="../../bindings/lua/LuaDebugData.cpp" />
+		<Unit filename="../../bindings/lua/LuaDebugData.h" />
+		<Unit filename="../../bindings/lua/LuaDebugDefines.h" />
+		<Unit filename="../../bindings/lua/LuaDebuggee.cpp" />
+		<Unit filename="../../bindings/lua/LuaDebuggee.h" />
+		<Unit filename="../../bindings/lua/LuaSceneListener.h" />
+		<Unit filename="../../bindings/lua/SocketHelper.h" />
 		<Unit filename="../../bindings/lua/core.i" />
+		<Unit filename="../../bindings/lua/graphics.i" />
 		<Unit filename="../../bindings/lua/hare.i">
 			<Option compile="1" />
 			<Option weight="0" />

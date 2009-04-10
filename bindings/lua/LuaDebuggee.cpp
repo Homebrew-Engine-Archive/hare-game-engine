@@ -127,7 +127,7 @@ bool LuaDebuggee::debugHook(int event)
 bool LuaDebuggee::start()
 {
     // create socket thread (connect to debug server and wait for debug command)
-   
+
     if (debugThread)
         return true;
 
@@ -140,9 +140,9 @@ bool LuaDebuggee::start()
         {
             return false;
         }
-        
+
         runCondition.wait();
-        
+
         running = true;
 
         return true;
@@ -160,7 +160,7 @@ void LuaDebuggee::stop()
     if (connected)
     {
         socket.shutdown(SD_BOTH);
-        Sleep(100);
+        Thread::sleep(100);
         socket.close();
     }
 
@@ -177,7 +177,7 @@ bool LuaDebuggee::isConnected(bool wait) const
         if (connected)
             break;
 
-        Sleep(100);
+        Thread::sleep(100);
     }
     return connected;
 }
@@ -351,7 +351,7 @@ bool LuaDebuggee::addBreakPoint(const String &fileName, int lineNumber)
 bool LuaDebuggee::removeBreakPoint(const String &fileName, int lineNumber)
 {
     CriticalSectionLocker locker(breakPointsCS);
-    return breakPoints.erase(toBreakPoint(fileName, lineNumber)) > 0;  
+    return breakPoints.erase(toBreakPoint(fileName, lineNumber)) > 0;
 }
 
 bool LuaDebuggee::clearAllBreakPoints()
@@ -364,7 +364,7 @@ bool LuaDebuggee::clearAllBreakPoints()
 bool LuaDebuggee::step()
 {
     nextOperation = DEBUG_STEP;
-    
+
     if (!running)
         runCondition.signal();
     else if (stopped)
@@ -473,7 +473,7 @@ bool LuaDebuggee::evaluateExpr(int stackRef, const String& expr)
     enterLuaCriticalSection();
     debugData.evaluateExpr(state, stackRef, expr);
     leaveLuaCriticalSection();
-    
+
     return notifyEvaluateExpr(debugData);
 }
 
@@ -488,14 +488,14 @@ bool LuaDebuggee::notifyBreak(const String &fileName, int lineNumber)
 
 bool LuaDebuggee::notifyPrint(const String &errorMsg)
 {
-    return isConnected() && 
+    return isConnected() &&
         SocketHelper::writeCmd(&socket, LUA_DEBUGGEE_EVENT_PRINT) &&
         SocketHelper::writeString(&socket, errorMsg);
 }
 
 bool LuaDebuggee::notifyError(const String &errorMsg)
 {
-    return isConnected() && 
+    return isConnected() &&
         SocketHelper::writeCmd(&socket, LUA_DEBUGGEE_EVENT_ERROR) &&
         SocketHelper::writeString(&socket, errorMsg);
 }

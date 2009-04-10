@@ -16,19 +16,16 @@ namespace hare_core
 		f32 cur;
 
 	#if HARE_PLATFORM == HARE_PLATFORM_WIN32
-		// defaults are for timeGetTime()
-
-		static bool sInitialized             = false;
+		static bool sInitialized = false;
 		static bool sPrecisionTimerAvailable = false;
-		static double sTimerSecondsConversion  = 0.001;		// 1 msec
+		static double sTimerSecondsConversion  = 0.001;
 
-		// get multipliers
-		if ( !sInitialized )
+		if (!sInitialized)
 		{
 			sInitialized = true;
 
 			LARGE_INTEGER freq;
-			if ( ::QueryPerformanceFrequency( &freq ) )
+			if (::QueryPerformanceFrequency(&freq))
 			{
 				sPrecisionTimerAvailable = true;
 				sTimerSecondsConversion = 1.0 / freq.QuadPart;
@@ -38,9 +35,9 @@ namespace hare_core
 		// query time
 		LARGE_INTEGER counter;
 		double seconds;
-		if ( sPrecisionTimerAvailable && ::QueryPerformanceCounter( &counter ) )
+		if (sPrecisionTimerAvailable && ::QueryPerformanceCounter(&counter))
 		{
-			seconds = static_cast<double> ( counter.QuadPart);
+			seconds = static_cast<double>(counter.QuadPart);
 		}
 		else
 		{
@@ -48,7 +45,7 @@ namespace hare_core
 		}
 
 		// convert the polled value to seconds
-		cur = (f32)( seconds * sTimerSecondsConversion );
+		cur = (f32)(seconds * sTimerSecondsConversion);
 
 	#else // #if OO_PLATFORM == OO_PLATFORM_WIN32
 

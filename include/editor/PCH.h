@@ -32,6 +32,4 @@
 #pragma warning(disable : 4251)
 #endif
 
-#include <wx/wxscintilla.h>
-
 #endif //_PCH_H_

@@ -36,6 +36,9 @@
 				<Option additional_output="../../lib/libwxScintilla.so;../../lib/libwxPropGrid.so;" />
 				<Option type="3" />
 				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-DWXMAKINGDLL_TL" />
+				</Compiler>
 				<Linker>
 					<Add library="core" />
 					<Add library="wxScintilla" />
@@ -55,6 +58,7 @@
 		<Compiler>
 			<Add option="-Wall" />
 			<Add option="`wx-config --cflags`" />
+			<Add option="-Wno-deprecated" />
 			<Add directory="../../include" />
 			<Add directory="../../include/editor" />
 			<Add directory="../../include/editor/wxFlatNotebook/include" />
@@ -62,12 +66,19 @@
 			<Add directory="../../editor/wxScintilla/src/scintilla/include" />
 			<Add directory="../../include/editor/wxScintilla/include" />
 			<Add directory="../../include/editor/wxPropGrid/include" />
+			<Add directory="../../include/editor/wxTreeListCtrl/include" />
 		</Compiler>
 		<Linker>
 			<Add option="`wx-config --libs`" />
 			<Add directory="../../lib" />
 		</Linker>
+		<Unit filename="../../editor/CompilerPlugin.cpp">
+			<Option target="editor" />
+		</Unit>
 		<Unit filename="../../editor/ConfigManager.cpp">
+			<Option target="editor" />
+		</Unit>
+		<Unit filename="../../editor/DebuggerPlugin.cpp">
 			<Option target="editor" />
 		</Unit>
 		<Unit filename="../../editor/EditorEvent.cpp">
@@ -95,6 +106,9 @@
 			<Option target="editor" />
 		</Unit>
 		<Unit filename="../../editor/FindReplaceDialog.cpp">
+			<Option target="editor" />
+		</Unit>
+		<Unit filename="../../editor/MIMEHandlerPlugin.cpp">
 			<Option target="editor" />
 		</Unit>
 		<Unit filename="../../editor/NewFileDialog.cpp">
@@ -511,6 +525,9 @@
 		<Unit filename="../../editor/wxScintilla/src/wxscintilla.cpp">
 			<Option target="wxScintilla" />
 		</Unit>
+		<Unit filename="../../editor/wxTreeListCtrl/src/treelistctrl.cpp">
+			<Option target="editor" />
+		</Unit>
 		<Unit filename="../../editor_app/EditorApp.cpp">
 			<Option target="editor_app" />
 		</Unit>
@@ -529,7 +546,16 @@
 		<Unit filename="../../editor_app/PCH.h">
 			<Option target="editor_app" />
 		</Unit>
+		<Unit filename="../../include/editor/CompilerPlugin.h">
+			<Option target="editor" />
+		</Unit>
 		<Unit filename="../../include/editor/ConfigManager.h">
+			<Option target="editor" />
+		</Unit>
+		<Unit filename="../../include/editor/DebuggerPlugin.h">
+			<Option target="editor" />
+		</Unit>
+		<Unit filename="../../include/editor/Editor.h">
 			<Option target="editor" />
 		</Unit>
 		<Unit filename="../../include/editor/EditorEvent.h">
@@ -560,6 +586,12 @@
 			<Option target="editor" />
 		</Unit>
 		<Unit filename="../../include/editor/FindReplaceDialog.h">
+			<Option target="editor" />
+		</Unit>
+		<Unit filename="../../include/editor/MIMEHandlerPlugin.h">
+			<Option target="editor" />
+		</Unit>
+		<Unit filename="../../include/editor/Manager.h">
 			<Option target="editor" />
 		</Unit>
 		<Unit filename="../../include/editor/NewFileDialog.h">
@@ -651,6 +683,9 @@
 		</Unit>
 		<Unit filename="../../include/editor/wxScintilla/include/wx/wxscintilla.h">
 			<Option target="wxScintilla" />
+		</Unit>
+		<Unit filename="../../include/editor/wxTreeListCtrl/include/wx/treelistctrl.h">
+			<Option target="editor" />
 		</Unit>
 		<Extensions>
 			<code_completion />

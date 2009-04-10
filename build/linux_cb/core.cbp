@@ -15,19 +15,19 @@
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
+			<Add option="-Wno-deprecated" />
 			<Add directory="../../include" />
 			<Add directory="../../include/core" />
 			<Add directory="../../include/core/tinyxml" />
 		</Compiler>
 		<Linker>
 			<Add library="physfs" />
+			<Add library="pthread" />
 		</Linker>
 		<Unit filename="../../core/ClassInfo.cpp" />
 		<Unit filename="../../core/CmdLineParser.cpp" />
 		<Unit filename="../../core/ConfigFile.cpp" />
-		<Unit filename="../../core/ConvertUTF.c">
-			<Option compilerVar="CC" />
-		</Unit>
+		<Unit filename="../../core/ConvertUTF.cpp" />
 		<Unit filename="../../core/Core.cpp" />
 		<Unit filename="../../core/DynamicLibrary.cpp" />
 		<Unit filename="../../core/Exception.cpp" />
@@ -63,7 +63,7 @@
 		<Unit filename="../../include/core/Matrix4.h" />
 		<Unit filename="../../include/core/Object.h" />
 		<Unit filename="../../include/core/PCH.h" />
-		<Unit filename="../../include/core/Platform.h" />
+		<Unit filename="../../include/core/Platforms.h" />
 		<Unit filename="../../include/core/Pointer.h" />
 		<Unit filename="../../include/core/ReferenceCounted.h" />
 		<Unit filename="../../include/core/Singleton.h" />

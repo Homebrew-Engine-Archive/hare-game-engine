@@ -10,7 +10,7 @@ static const wxChar* LUA_TYPE_NAME[] = {
 };
 
 BEGIN_EVENT_TABLE(LuaLocalWindow, wxPanel)
-EVT_TREE_ITEM_EXPANDED(wxID_ANY, onTreeItemExpanded)
+    EVT_TREE_ITEM_EXPANDED(wxID_ANY, LuaLocalWindow::onTreeItemExpanded)
 END_EVENT_TABLE()
 
 LuaLocalWindow::LuaLocalWindow(wxWindow* parent, LuaDebugger* dbg)
@@ -18,8 +18,8 @@ LuaLocalWindow::LuaLocalWindow(wxWindow* parent, LuaDebugger* dbg)
 {
     wxBoxSizer* sizer = new wxBoxSizer(wxVERTICAL);
 
-    treeList = new wxTreeListCtrl(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, 
-        wxTR_HIDE_ROOT | wxTR_EDIT_LABELS | wxTR_FULL_ROW_HIGHLIGHT | 
+    treeList = new wxTreeListCtrl(this, wxID_ANY, wxDefaultPosition, wxDefaultSize,
+        wxTR_HIDE_ROOT | wxTR_EDIT_LABELS | wxTR_FULL_ROW_HIGHLIGHT |
         wxTR_ROW_LINES | wxTR_COLUMN_LINES | wxTR_HAS_BUTTONS);
     sizer->Add(treeList, 1, wxALIGN_LEFT | wxALIGN_TOP | wxEXPAND, 0);
     SetSizer(sizer);

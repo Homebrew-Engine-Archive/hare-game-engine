@@ -15,7 +15,6 @@
 
 #include "EditorPrerequisites.h"
 #include "TManager.h"
-#include "core/Core.h"
 #include <wx/string.h>
 
 namespace hare_core
@@ -42,7 +41,7 @@ namespace hare_editor
     {
         HARE_DECLARE_DYNAMIC_CLASS(AppConfigFile)
     public:
-		
+
 		wxString getOpenFilePath();
 		wxString getOpenFileFilters();
         wxString getDefaultEncoding();
@@ -55,13 +54,13 @@ namespace hare_editor
 		void setOpenFileFilters(const wxString& value);
 		void setOpenFileFilterIndex(int value);
         void setLayout(const wxString& value);
-	
+
 	private:
-        
+
         String openFilePath;
         String openFileFilters;
         int openFileFilterIndex;
-        
+
         String defaultEncoding;
         String font;
 
@@ -76,7 +75,7 @@ namespace hare_editor
         u8 fold_preprocessor;
         u8 fold_indicator;
 	public:
-        
+
         AppConfigFile();
     };
 

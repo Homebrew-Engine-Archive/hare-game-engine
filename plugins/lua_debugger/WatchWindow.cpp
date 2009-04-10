@@ -26,10 +26,10 @@ private:
 };
 
 BEGIN_EVENT_TABLE(LuaWatchWindow, wxPanel)
-    EVT_TREE_KEY_DOWN(wxID_ANY, onTreeKeyDown)
-    EVT_TREE_END_LABEL_EDIT(wxID_ANY, onTreeEndLabelEdit)
-    EVT_TREE_BEGIN_LABEL_EDIT(wxID_ANY, onTreeBeginLabelEdit)
-    EVT_TREE_ITEM_EXPANDED(wxID_ANY, onTreeItemExpanded)
+    EVT_TREE_KEY_DOWN(wxID_ANY, LuaWatchWindow::onTreeKeyDown)
+    EVT_TREE_END_LABEL_EDIT(wxID_ANY, LuaWatchWindow::onTreeEndLabelEdit)
+    EVT_TREE_BEGIN_LABEL_EDIT(wxID_ANY, LuaWatchWindow::onTreeBeginLabelEdit)
+    EVT_TREE_ITEM_EXPANDED(wxID_ANY, LuaWatchWindow::onTreeItemExpanded)
 END_EVENT_TABLE()
 
 LuaWatchWindow::LuaWatchWindow(wxWindow* parent, LuaDebugger* dbg)
@@ -37,8 +37,8 @@ LuaWatchWindow::LuaWatchWindow(wxWindow* parent, LuaDebugger* dbg)
 {
     wxBoxSizer* sizer = new wxBoxSizer(wxVERTICAL);
 
-    treeList = new wxTreeListCtrl(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, 
-        wxTR_HIDE_ROOT | wxTR_EDIT_LABELS | wxTR_FULL_ROW_HIGHLIGHT | 
+    treeList = new wxTreeListCtrl(this, wxID_ANY, wxDefaultPosition, wxDefaultSize,
+        wxTR_HIDE_ROOT | wxTR_EDIT_LABELS | wxTR_FULL_ROW_HIGHLIGHT |
         wxTR_ROW_LINES | wxTR_COLUMN_LINES | wxTR_HAS_BUTTONS);
     sizer->Add(treeList, 1, wxALIGN_LEFT | wxALIGN_TOP | wxEXPAND, 0);
     SetSizer(sizer);
@@ -166,7 +166,7 @@ void LuaWatchWindow::updateTableData(const String& tableName, LuaDebugData* debu
             if (text == wxString::FromUTF8(tableName.c_str()))
             {
                 treeList->DeleteChildren(child);
-                
+
                 for (size_t i = 0; i < debugData->items.size(); ++i)
                 {
                     wxString key = wxString::FromUTF8(debugData->items[i]->itemKey.c_str());

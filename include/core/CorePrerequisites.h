@@ -41,6 +41,13 @@ namespace hare_core
     class CmdLineParser;
     template<typename T> class Singleton;
     class Timer;
+    class Mutex;
+    class MutexLocker;
+    class CriticalSection;
+    class CriticalSectionLocker;
+    class Semaphore;
+    class Condition;
+    class Thread;
 }
 
 #endif // _PREREQUISITES_H_

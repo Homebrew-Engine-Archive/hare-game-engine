@@ -1,7 +1,7 @@
 #ifndef EDITOR_PREREQUISITES_H
 #define EDITOR_PREREQUISITES_H
 
-#include <core/Core.h>
+#include "core/Core.h"
 using namespace hare_core;
 
 #if HARE_PLATFORM == HARE_PLATFORM_WIN32
@@ -14,13 +14,14 @@ using namespace hare_core;
 #           define EDITOR_API __declspec(dllimport)
 #       endif
 #   endif
-#endif
-#if HARE_PLATFORM == HARE_PLATFORM_LINUX || HARE_PLATFORM == HARE_PLATFORM_APPLE
+#elif HARE_PLATFORM == HARE_PLATFORM_LINUX || HARE_PLATFORM == HARE_PLATFORM_APPLE
 #   if defined(HARE_GCC_VISIBILITY)
 #       define EDITOR_API  __attribute__ ((visibility("default")))
 #   else
 #       define EDITOR_API
 #   endif
+#else
+#   error "only support win32 & linux & apple"
 #endif
 
 namespace hare_editor

@@ -28,7 +28,7 @@
 #   define HARE_PLATFORM HARE_PLATFORM_WIN32
 #elif defined(__APPLE_CC__)
 #   define HARE_PLATFORM HARE_PLATFORM_APPLE
-#elif defined(__LINUX__)
+#elif defined(__LINUX__) || defined(__linux__)
 #   define HARE_PLATFORM HARE_PLATFORM_LINUX
 #else
 #   define HARE_PLATFORM HARE_PLATFORM_PSP

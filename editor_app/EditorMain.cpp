@@ -14,8 +14,11 @@
 #include "EditorMain.h"
 #include <wx/wxscintilla.h>
 #include <wx/wxFlatNotebook/wxFlatNotebook.h>
-#include <wx/harecanvas.h>
 #include <wx/xrc/xmlres.h>
+
+#if HARE_PLATFORM == HARE_PLATFORM_WIN32
+#   include <wx/harecanvas.h>
+#endif
 
 #if defined(__WXGTK__) || defined(__WXMOTIF__) || defined(__WXMAC__) || defined(__WXMGL__) || defined(__WXX11__)
 #include "editor.xpm"
@@ -145,10 +148,11 @@ EditorFrame::EditorFrame(wxFrame *frame, const wxString& title)
         }
     }
 
-    // create canvas and destroy it, we mush have a window to init graphics moudle
+#if HARE_PLATFORM == HARE_PLATFORM_WIN32
+    // create canvas and hide it, we mush have a window to init graphics moudle
     wxHareCanvas* canvas = new wxHareCanvas(this);
     canvas->Hide();
-
+#endif
     layoutManager.SetManagedWindow(this);
 
     registerEvents();

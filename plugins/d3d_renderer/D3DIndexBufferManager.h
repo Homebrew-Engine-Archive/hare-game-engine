@@ -1,26 +1,25 @@
-#ifndef D3DINDEXBUFFERMANAGER
-#define D3DINDEXBUFFERMANAGER
+#ifndef _D3DINDEXBUFFERMANAGER_H_
+#define _D3DINDEXBUFFERMANAGER_H_
 
 #include "DeviceManager.h"
 
-namespace hare_d3d
+
+class D3DIndexBufferManager : public Singleton<D3DIndexBufferManager> , public DeviceObject 
 {
-	class D3DIndexBufferManager : public Singleton<D3DIndexBufferManager> , public DeviceObject 
-	{
-		HARE_DECLARE_SINGLETON(D3DIndexBufferManager)
-	public:
-		D3DIndexBufferManager(u32 size);
-		virtual ~D3DIndexBufferManager();
+	HARE_DECLARE_SINGLETON(D3DIndexBufferManager)
+public:
+	D3DIndexBufferManager(u32 size);
+	virtual ~D3DIndexBufferManager();
 
-		virtual void beforeResetDevice();
-		virtual void afterResetDevice();
+	virtual void beforeResetDevice();
+	virtual void afterResetDevice();
 
-		void release();
-	private:
-		const u32 IndexBufferSize;
+	void release();
+private:
+	const u32 IndexBufferSize;
 
-		LPDIRECT3DINDEXBUFFER9 d3dIndexBuffer;
-	};
-}
+	LPDIRECT3DINDEXBUFFER9 d3dIndexBuffer;
+};
+
 
 #endif

@@ -4,76 +4,71 @@
 
 
 
+HARE_IMPLEMENT_SINGLETON(D3DIndexBufferManager)
 
-namespace hare_d3d
+D3DIndexBufferManager::D3DIndexBufferManager(u32 size)
+	:IndexBufferSize(size)
+	,d3dIndexBuffer(NULL)
 {
+    DeviceManager::getSingletonPtr()->registerDeviceObject(this);
+	afterResetDevice();
+}
 
-	HARE_IMPLEMENT_SINGLETON(D3DIndexBufferManager)
+D3DIndexBufferManager::~D3DIndexBufferManager()
+{
+    DeviceManager::getSingletonPtr()->unregisterDeviceObject(this);
+	release();
+}
 
-	D3DIndexBufferManager::D3DIndexBufferManager(u32 size)
-		:IndexBufferSize(size)
-		,d3dIndexBuffer(NULL)
-	{
-        DeviceManager::getSingletonPtr()->registerDeviceObject(this);
-		afterResetDevice();
+void D3DIndexBufferManager::beforeResetDevice()
+{
+	release();
+}
+
+void D3DIndexBufferManager::afterResetDevice()
+{
+	if (d3dIndexBuffer){
+		return ;
 	}
 
-	D3DIndexBufferManager::~D3DIndexBufferManager()
-	{
-        DeviceManager::getSingletonPtr()->unregisterDeviceObject(this);
-		release();
+	LPDIRECT3DDEVICE9 d3dDevice = static_cast<D3DRenderSystem*>(RenderSystem::getSingletonPtr())->getD3DDevice();
+	assert(d3dDevice);
+
+	if (FAILED(d3dDevice->CreateIndexBuffer(
+		IndexBufferSize * 3, // 
+		D3DUSAGE_WRITEONLY, 
+		D3DFMT_INDEX16, 
+		D3DPOOL_DEFAULT, 
+		&d3dIndexBuffer,
+		NULL))){
+		assert(false);
 	}
 
-	void D3DIndexBufferManager::beforeResetDevice()
-	{
-		release();
+	WORD *pIndices, n = 0;
+
+	if (FAILED(d3dIndexBuffer->Lock(0, 0, (void**)&pIndices, 0))){
+		assert(false);
 	}
 
-	void D3DIndexBufferManager::afterResetDevice()
+	for(u32 i = 0; i < IndexBufferSize / 4; i++)
 	{
-		if (d3dIndexBuffer){
-			return ;
-		}
-
-		LPDIRECT3DDEVICE9 d3dDevice = static_cast<D3DRenderSystem*>(RenderSystem::getSingletonPtr())->getD3DDevice();
-		assert(d3dDevice);
-
-		if (FAILED(d3dDevice->CreateIndexBuffer(
-			IndexBufferSize * 3, // 
-			D3DUSAGE_WRITEONLY, 
-			D3DFMT_INDEX16, 
-			D3DPOOL_DEFAULT, 
-			&d3dIndexBuffer,
-			NULL))){
-			assert(false);
-		}
-
-		WORD *pIndices, n = 0;
-
-		if (FAILED(d3dIndexBuffer->Lock(0, 0, (void**)&pIndices, 0))){
-			assert(false);
-		}
-
-		for(u32 i = 0; i < IndexBufferSize / 4; i++)
-		{
-			*pIndices++ = n;
-			*pIndices++ = n + 1;
-			*pIndices++ = n + 2;
-			*pIndices++ = n + 2;
-			*pIndices++ = n + 3;
-			*pIndices++ = n;
-			n += 4;
-		}
-
-		d3dIndexBuffer->Unlock();
-		d3dDevice->SetIndices(d3dIndexBuffer);
-
+		*pIndices++ = n;
+		*pIndices++ = n + 1;
+		*pIndices++ = n + 2;
+		*pIndices++ = n + 2;
+		*pIndices++ = n + 3;
+		*pIndices++ = n;
+		n += 4;
 	}
 
-	void D3DIndexBufferManager::release()
-	{
-		SAFE_RELEASE(d3dIndexBuffer);
-		LPDIRECT3DDEVICE9 pD3DDevice = static_cast<D3DRenderSystem*>(RenderSystem::getSingletonPtr())->getD3DDevice();
-		pD3DDevice->SetIndices(NULL);
-	}
+	d3dIndexBuffer->Unlock();
+	d3dDevice->SetIndices(d3dIndexBuffer);
+
+}
+
+void D3DIndexBufferManager::release()
+{
+	SAFE_RELEASE(d3dIndexBuffer);
+	LPDIRECT3DDEVICE9 pD3DDevice = static_cast<D3DRenderSystem*>(RenderSystem::getSingletonPtr())->getD3DDevice();
+	pD3DDevice->SetIndices(NULL);
 }

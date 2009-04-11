@@ -1,29 +1,24 @@
-#ifndef D3DSYSTEMMANAGER
-#define D3DSYSTEMMANAGER
+#ifndef _D3DSYSTEMMANAGER_H_
+#define _D3DSYSTEMMANAGER_H_
 
-
-namespace hare_d3d
+class D3DSystemManager : public SystemManager
 {
+public:
+	D3DSystemManager();
 
+	virtual ~D3DSystemManager();
 
-	class D3DSystemManager : public SystemManager
-	{
-	public:
-		D3DSystemManager();
+	virtual RenderWindow* createRenderWindow(const WindowParams& params);
 
-		virtual ~D3DSystemManager();
+	virtual void destoryRenderWindow(RenderWindow* renderWindow);
 
-		virtual RenderWindow* createRenderWindow(const WindowParams& params);
+	virtual Texture* createTexture();
 
-		virtual void destoryRenderWindow(RenderWindow* renderWindow);
+	virtual void hareRun();
 
-		virtual Texture* createTexture();
+	virtual void hareRunFrame();
 
-		virtual void hareRun();
+};
 
-		virtual void hareRunFrame();
-
-	};
-}
 
 #endif

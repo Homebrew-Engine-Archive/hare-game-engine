@@ -1,13 +1,12 @@
 #ifndef _D3DUTILITY_H_
 #define _D3DUTILITY_H_
 
-namespace hare_d3d
+
+class D3DUtility
 {
-	class D3DUtility
-	{
-	public:
-		static void downLoadSurface(LPDIRECT3DSURFACE9 d3dSur, HarePixelFormat format, Image& desImg, const RectN& rc = RectN(0,0,0,0));
-	};
-}
+public:
+	static void downLoadSurface(LPDIRECT3DSURFACE9 d3dSur, HarePixelFormat format, Image& desImg, const RectN& rc = RectN(0,0,0,0));
+};
+
 
 #endif

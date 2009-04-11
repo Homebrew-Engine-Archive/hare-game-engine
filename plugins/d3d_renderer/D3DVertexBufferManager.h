@@ -1,48 +1,47 @@
-#ifndef D3DVECTEXBUFFERMANAGER
-#define D3DVECTEXBUFFERMANAGER
+#ifndef _D3DVECTEXBUFFERMANAGER_H_
+#define _D3DVECTEXBUFFERMANAGER_H_
 
 #include "DeviceManager.h"
 
-namespace hare_d3d
+
+class D3DVertexBufferManager : public Singleton<D3DVertexBufferManager> , public DeviceObject 
 {
-	class D3DVertexBufferManager : public Singleton<D3DVertexBufferManager> , public DeviceObject 
-	{
-		HARE_DECLARE_SINGLETON(D3DVertexBufferManager)
+	HARE_DECLARE_SINGLETON(D3DVertexBufferManager)
 
-		friend class D3DRenderSystem;
-	public:
+	friend class D3DRenderSystem;
+public:
 
-		D3DVertexBufferManager(u32 size, u32 FVF);
-		virtual ~D3DVertexBufferManager();
+	D3DVertexBufferManager(u32 size, u32 FVF);
+	virtual ~D3DVertexBufferManager();
 
-		virtual void beforeResetDevice();
-		virtual void afterResetDevice();
+	virtual void beforeResetDevice();
+	virtual void afterResetDevice();
 
-		void lockBuffer();
-		void unlockBuffer();
-		void writeBuffer(Vertex* buffer, u32 vertexCnt, u32 primCnt);
-		//void readBuffer(Vertex* buffer, u32 size);
+	void lockBuffer();
+	void unlockBuffer();
+	void writeBuffer(Vertex* buffer, u32 vertexCnt, u32 primCnt);
+	//void readBuffer(Vertex* buffer, u32 size);
 
-		u32 getVectexCount();
-		u32 getPrimCount();
+	u32 getVectexCount();
+	u32 getPrimCount();
 
-		void release();
+	void release();
 
-	private:
-		Vertex* vertexBuffer;
+private:
+	Vertex* vertexBuffer;
 
-		bool isLock;
+	bool isLock;
 
-		LPDIRECT3DVERTEXBUFFER9 d3dVectexBuffer;
+	LPDIRECT3DVERTEXBUFFER9 d3dVectexBuffer;
 
-		u32 vertexCount;
+	u32 vertexCount;
 
-		u32 primCount;
+	u32 primCount;
 
-		const u32 bufferSize;
+	const u32 bufferSize;
 
-		const u32 vertexFVF;
-	};
-}
+	const u32 vertexFVF;
+};
+
 
 #endif

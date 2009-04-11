@@ -127,9 +127,6 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
 			<File
-				RelativePath="..\..\plugins\gl_renderer\Win32\GLPlugin.h">
-			</File>
-			<File
 				RelativePath="..\..\plugins\gl_renderer\Win32\GLRenderSystem.h">
 			</File>
 			<File
@@ -162,9 +159,6 @@
 				RelativePath="..\..\plugins\gl_renderer\Win32\PCH.h">
 			</File>
 		</Filter>
-		<File
-			RelativePath="..\..\plugins\gl_renderer\Win32\GLRenderPrerequisites.h">
-		</File>
 	</Files>
 	<Globals>
 	</Globals>

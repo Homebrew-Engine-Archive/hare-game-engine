@@ -1397,7 +1397,7 @@
 
     //
     // Actually implement the editor dialog adapter
-    // Naturally, in f32 code this would have to come
+    // Naturally, in float code this would have to come
     // before wxPGProperty::GetEditorDialog()
     // implementation.
     //
@@ -1536,7 +1536,7 @@
             //  Macros are used to maintain only one actual validator instance
             //  (ie. on a second call, function exits within the first macro).
             //
-            //  For f32 examples, search props.cpp for ::DoGetValidator, it should
+            //  For float examples, search props.cpp for ::DoGetValidator, it should
             //  have several.
             //
         }

@@ -48,12 +48,12 @@ namespace hare_graphics
 		texMtrl->setTexture(font->getFontTexture());
 		//shader->setShaderParams(font->getFontExtParams());
 		shader->setMaterial(texMtrl);
-		f32 layout_x = (f32)x;
-		f32 layout_y = 0;
+		float layout_x = (float)x;
+		float layout_y = 0;
 		
-		for (u32 batchCount = 0; batchCount <= wstr.size() / font->getCacheBufferSize(); ++batchCount){
+		for (uint32 batchCount = 0; batchCount <= wstr.size() / font->getCacheBufferSize(); ++batchCount){
 			
-			u32 batchNum;
+			uint32 batchNum;
 			
 			if (batchCount == wstr.size() / font->getCacheBufferSize()){
 				batchNum = wstr.size() % font->getCacheBufferSize();
@@ -61,7 +61,7 @@ namespace hare_graphics
 				batchNum = font->getCacheBufferSize();
 			}
 
-			for (u32 count = batchCount * font->getCacheBufferSize(); count < batchCount * font->getCacheBufferSize() + batchNum; ++count){
+			for (uint32 count = batchCount * font->getCacheBufferSize(); count < batchCount * font->getCacheBufferSize() + batchNum; ++count){
 				CharGlyph charGlyph = font->getCharGlyph(wstr[count]);
 
 				layout_x += charGlyph.bear_left;
@@ -101,15 +101,15 @@ namespace hare_graphics
 
 		Quad quad;
 		quad.setMaterial(mtrl);
-		quad.moveTo((f32)x, (f32)y);
+		quad.moveTo((float)x, (float)y);
 		quad.setDepth(z);
 		quad.setColor(color);
 		TextureMtrl* texMtrl = mtrl->getTextureMtrl();
 		if (texMtrl){
 			Texture* tex = texMtrl->getTexture();
 			if (tex){
-				quad.setWidth((f32)tex->getWidth());
-				quad.setHeight((f32)tex->getHeight());
+				quad.setWidth((float)tex->getWidth());
+				quad.setHeight((float)tex->getHeight());
 			}
 		}
 		RenderSystem::getSingletonPtr()->render(&quad);	
@@ -132,22 +132,22 @@ namespace hare_graphics
 		RenderSystem::getSingletonPtr()->render(&quad);		
 	}
 
-	void Canvas::drawImage(const RectF& rect, Material* mtrl, f32 rot, const RectF& uvRect, const PointF& center)
+	void Canvas::drawImage(const RectF& rect, Material* mtrl, float rot, const RectF& uvRect, const PointF& center)
 	{
 		if (!mtrl)
 			return;
 
 		mtrl->frameMove();
 
-		f32 width  = (f32)mtrl->getTextureMtrl()->getTexture()->getWidth();
-		f32 height = (f32)mtrl->getTextureMtrl()->getTexture()->getHeight();
-		f32 origoX = center.x * width;
-		f32 origoY = center.y * height;
-		f32 hscale = rect.width() / width;
-		f32 vscale = rect.height()/ height;
+		float width  = (float)mtrl->getTextureMtrl()->getTexture()->getWidth();
+		float height = (float)mtrl->getTextureMtrl()->getTexture()->getHeight();
+		float origoX = center.x * width;
+		float origoY = center.y * height;
+		float hscale = rect.width() / width;
+		float vscale = rect.height()/ height;
 
-		f32 tx1, ty1, tx2, ty2;
-		f32 sint, cost;
+		float tx1, ty1, tx2, ty2;
+		float sint, cost;
 
 		if(vscale == 0.0f) vscale = hscale;
 
@@ -199,22 +199,22 @@ namespace hare_graphics
 		font = f;
 	}
 
-	void Canvas::setColor(u32 c)
+	void Canvas::setColor(uint32 c)
 	{
 		color = c;
 	}
 
-	void Canvas::setZ(f32 z)
+	void Canvas::setZ(float z)
 	{
 		this->z = z;
 	}
 
-	u32  Canvas::getColor()
+	uint32  Canvas::getColor()
 	{
 		return color;
 	}
 
-	f32  Canvas::getZ()
+	float  Canvas::getZ()
 	{
 		return z;
 	}

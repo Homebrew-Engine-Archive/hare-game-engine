@@ -8,7 +8,7 @@ namespace hare_graphics
 	class FreeImageCodec : public ImageCodec
 	{
 	public:
-		FreeImageCodec(const String& type, u32 freeImgTypeID);//在freeimage里 FREE_IMAGE_FORMAT 作为typeID
+		FreeImageCodec(const String& type, uint32 freeImgTypeID);//在freeimage里 FREE_IMAGE_FORMAT 作为typeID
 		virtual ~FreeImageCodec();
 
 		virtual const String& getType();

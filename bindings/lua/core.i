@@ -1,15 +1,12 @@
 %module hare
 
-typedef unsigned char	u8;
-typedef signed char		s8;
+typedef unsigned char	uint8;
+typedef signed char		int8;
 typedef char			c8;
-typedef unsigned short	u16;
-typedef signed short	s16;
-typedef unsigned int	u32;
-typedef signed int		s32;
-typedef float			f32;
-typedef double			f64;
-
+typedef unsigned short	uint16;
+typedef signed short	int16;
+typedef unsigned int	uint32;
+typedef signed int		int32;
 typedef std::string     String;
 typedef std::vector<String> StringVector;
 
@@ -195,12 +192,12 @@ FileSystem* getFileSystem();
 class Timer
 {
 public:
-	f32 getDeltaTime();
-	f32 getFPS();
+	float getDeltaTime();
+	float getFPS();
 };
 
 Timer& getTimer();
-f32 getTime();
+float getTime();
 
 void core_init(char* argv0);
 void core_quit();

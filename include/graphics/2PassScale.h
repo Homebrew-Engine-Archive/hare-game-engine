@@ -17,11 +17,11 @@ namespace hare_graphics
 	typedef struct
 	{
 	ContributionType *ContribRow; // Row (or column) of contribution weights
-	u32 WindowSize,              // Filter window size (of affecting source pixels)
+	uint32 WindowSize,              // Filter window size (of affecting source pixels)
 			LineLength;              // Length of line (no. or rows / cols)
 	} LineContribType;               // Contribution information for an entire line (row or column)
 
-	typedef bool (*ProgressAnbAbortCallBack)(u8 bPercentComplete);
+	typedef bool (*ProgressAnbAbortCallBack)(uint8 bPercentComplete);
 
 	template <class FilterClass, class ColorType> //仅支持 argb 和 rgb
 	class C2PassScale
@@ -35,67 +35,67 @@ namespace hare_graphics
 
 		ColorType * AllocAndScale (
 			ColorType   *pOrigImage,
-			u32        uOrigWidth,
-			u32        uOrigHeight,
-			u32        uNewWidth,
-			u32        uNewHeight);
+			uint32        uOrigWidth,
+			uint32        uOrigHeight,
+			uint32        uNewWidth,
+			uint32        uNewHeight);
 
 		ColorType * Scale (
 			ColorType   *pOrigImage,
-			u32        uOrigWidth,
-			u32        uOrigHeight,
+			uint32        uOrigWidth,
+			uint32        uOrigHeight,
 			ColorType   *pDstImage,
-			u32        uNewWidth,
-			u32        uNewHeight);
+			uint32        uNewWidth,
+			uint32        uNewHeight);
 
 	private:
 
 		ProgressAnbAbortCallBack    m_Callback;
 		bool                        m_bCanceled;
 
-		LineContribType *AllocContributions (   u32 uLineLength,
-												u32 uWindowSize);
+		LineContribType *AllocContributions (   uint32 uLineLength,
+												uint32 uWindowSize);
 
 		void FreeContributions (LineContribType * p);
 
-		LineContribType *CalcContributions (    u32    uLineSize,
-												u32    uSrcSize,
+		LineContribType *CalcContributions (    uint32    uLineSize,
+												uint32    uSrcSize,
 												double  dScale);
 
 		void ScaleRow ( ColorType           *pSrc,
-						u32                uSrcWidth,
+						uint32                uSrcWidth,
 						ColorType           *pRes,
-						u32                uResWidth,
-						u32                uRow,
+						uint32                uResWidth,
+						uint32                uRow,
 						LineContribType    *Contrib);
 
 		void HorizScale (   ColorType           *pSrc,
-							u32                uSrcWidth,
-							u32                uSrcHeight,
+							uint32                uSrcWidth,
+							uint32                uSrcHeight,
 							ColorType           *pDst,
-							u32                uResWidth,
-							u32                uResHeight);
+							uint32                uResWidth,
+							uint32                uResHeight);
 
 		void ScaleCol ( ColorType           *pSrc,
-						u32                uSrcWidth,
+						uint32                uSrcWidth,
 						ColorType           *pRes,
-						u32                uResWidth,
-						u32                uResHeight,
-						u32                uCol,
+						uint32                uResWidth,
+						uint32                uResHeight,
+						uint32                uCol,
 						LineContribType    *Contrib);
 
 		void VertScale (    ColorType           *pSrc,
-							u32                uSrcWidth,
-							u32                uSrcHeight,
+							uint32                uSrcWidth,
+							uint32                uSrcHeight,
 							ColorType           *pDst,
-							u32                uResWidth,
-							u32                uResHeight);
+							uint32                uResWidth,
+							uint32                uResHeight);
 	};
 
 	template <class FilterClass, class ColorType>
 	LineContribType *
 	C2PassScale<FilterClass, ColorType>::
-	AllocContributions (u32 uLineLength, u32 uWindowSize)
+	AllocContributions (uint32 uLineLength, uint32 uWindowSize)
 	{
 		LineContribType *res = new LineContribType;
 			// Init structure header
@@ -103,7 +103,7 @@ namespace hare_graphics
 		res->LineLength = uLineLength;
 			// Allocate list of contributions
 		res->ContribRow = new ContributionType[uLineLength];
-		for (u32 u = 0 ; u < uLineLength ; u++)
+		for (uint32 u = 0 ; u < uLineLength ; u++)
 		{
 			// Allocate contributions for every pixel
 			res->ContribRow[u].Weights = new double[uWindowSize];
@@ -116,7 +116,7 @@ namespace hare_graphics
 	C2PassScale<FilterClass, ColorType>::
 	FreeContributions (LineContribType * p)
 	{
-		for (u32 u = 0; u < p->LineLength; u++)
+		for (uint32 u = 0; u < p->LineLength; u++)
 		{
 			// Free contribs for every pixel
 			delete [] p->ContribRow[u].Weights;
@@ -128,7 +128,7 @@ namespace hare_graphics
 	template <class FilterClass, class ColorType>
 	LineContribType *
 	C2PassScale<FilterClass, ColorType>::
-	CalcContributions (u32 uLineSize, u32 uSrcSize, double dScale)
+	CalcContributions (uint32 uLineSize, uint32 uSrcSize, double dScale)
 	{
 		FilterClass CurFilter;
 
@@ -152,7 +152,7 @@ namespace hare_graphics
 		// Allocate a new line contributions strucutre
 		LineContribType *res = AllocContributions (uLineSize, iWindowSize);
 
-		for (u32 u = 0; u < uLineSize; u++)
+		for (uint32 u = 0; u < uLineSize; u++)
 		{   // Scan through line of contributions
 			double dCenter = (double)u / dScale;   // Reverse mapping
 			// Find the significant edge points that affect the pixel
@@ -196,17 +196,17 @@ namespace hare_graphics
 	void
 	C2PassScale<FilterClass, ColorType>::
 	ScaleRow (  ColorType           *pSrc,
-				u32                uSrcWidth,
+				uint32                uSrcWidth,
 				ColorType           *pRes,
-				u32                uResWidth,
-				u32                uRow,
+				uint32                uResWidth,
+				uint32                uRow,
 				LineContribType    *Contrib)
 	{
 		ColorType *pSrcRow = &(pSrc[uRow * uSrcWidth]);
 		ColorType *pDstRow = &(pRes[uRow * uResWidth]);
 
 
-		for (u32 x = 0; x < uResWidth; x++)
+		for (uint32 x = 0; x < uResWidth; x++)
 		{   // Loop through row
 			HarePixelType<HPF_A8R8G8B8> clr = {0,0,0,0};
 			int iLeft = Contrib->ContribRow[x].Left;    // Retrieve left boundries
@@ -235,11 +235,11 @@ namespace hare_graphics
 	void
 	C2PassScale<FilterClass, ColorType>::
 	HorizScale (    ColorType           *pSrc,
-					u32                uSrcWidth,
-					u32                uSrcHeight,
+					uint32                uSrcWidth,
+					uint32                uSrcHeight,
 					ColorType           *pDst,
-					u32                uResWidth,
-					u32                uResHeight)
+					uint32                uResWidth,
+					uint32                uResHeight)
 	{
 		printf ("Performing horizontal scaling...\n");
 		if (uResWidth == uSrcWidth)
@@ -248,14 +248,14 @@ namespace hare_graphics
 		}
 		// Allocate and calculate the contributions
 		LineContribType * Contrib = CalcContributions (uResWidth, uSrcWidth, double(uResWidth) / double(uSrcWidth));
-		for (u32 u = 0; u < uResHeight; u++)
+		for (uint32 u = 0; u < uResHeight; u++)
 		{   // Step through rows
 			if (NULL != m_Callback)
 			{
 				//
 				// Progress and report callback supplied
 				//
-				if (!m_Callback (u8(double(u) / double (uResHeight) * 50.0)))
+				if (!m_Callback (uint8(double(u) / double (uResHeight) * 50.0)))
 				{
 					//
 					// User wished to abort now
@@ -280,14 +280,14 @@ namespace hare_graphics
 	void
 	C2PassScale<FilterClass, ColorType>::
 	ScaleCol (  ColorType           *pSrc,
-				u32                uSrcWidth,
+				uint32                uSrcWidth,
 				ColorType           *pRes,
-				u32                uResWidth,
-				u32                uResHeight,
-				u32                uCol,
+				uint32                uResWidth,
+				uint32                uResHeight,
+				uint32                uCol,
 				LineContribType    *Contrib)
 	{
-		for (u32 y = 0; y < uResHeight; y++)
+		for (uint32 y = 0; y < uResHeight; y++)
 		{    // Loop through column
 			HarePixelType<HPF_A8R8G8B8> clr = {0,0,0,0};
 			int iLeft = Contrib->ContribRow[y].Left;    // Retrieve left boundries
@@ -316,11 +316,11 @@ namespace hare_graphics
 	void
 	C2PassScale<FilterClass, ColorType>::
 	VertScale ( ColorType           *pSrc,
-				u32                uSrcWidth,
-				u32                uSrcHeight,
+				uint32                uSrcWidth,
+				uint32                uSrcHeight,
 				ColorType           *pDst,
-				u32                uResWidth,
-				u32                uResHeight)
+				uint32                uResWidth,
+				uint32                uResHeight)
 	{
 		printf ("Performing vertical scaling...");
 
@@ -330,14 +330,14 @@ namespace hare_graphics
 		}
 		// Allocate and calculate the contributions
 		LineContribType * Contrib = CalcContributions (uResHeight, uSrcHeight, double(uResHeight) / double(uSrcHeight));
-		for (u32 u = 0; u < uResWidth; u++)
+		for (uint32 u = 0; u < uResWidth; u++)
 		{   // Step through columns
 			if (NULL != m_Callback)
 			{
 				//
 				// Progress and report callback supplied
 				//
-				if (!m_Callback (u8(double(u) / double (uResWidth) * 50.0) + 50))
+				if (!m_Callback (uint8(double(u) / double (uResWidth) * 50.0) + 50))
 				{
 					//
 					// User wished to abort now
@@ -363,10 +363,10 @@ namespace hare_graphics
 	C2PassScale<FilterClass, ColorType>::
 	AllocAndScale (
 		ColorType   *pOrigImage,
-		u32        uOrigWidth,
-		u32        uOrigHeight,
-		u32        uNewWidth,
-		u32        uNewHeight)
+		uint32        uOrigWidth,
+		uint32        uOrigHeight,
+		uint32        uNewWidth,
+		uint32        uNewHeight)
 	{
 		// Scale source image horizontally into temporary image
 		m_bCanceled = false;
@@ -405,11 +405,11 @@ namespace hare_graphics
 	C2PassScale<FilterClass, ColorType>::
 	Scale (
 		ColorType   *pOrigImage,
-		u32        uOrigWidth,
-		u32        uOrigHeight,
+		uint32        uOrigWidth,
+		uint32        uOrigHeight,
 		ColorType   *pDstImage,
-		u32        uNewWidth,
-		u32        uNewHeight)
+		uint32        uNewWidth,
+		uint32        uNewHeight)
 	{
 		// Scale source image horizontally into temporary image
 		m_bCanceled = false;

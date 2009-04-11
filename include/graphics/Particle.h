@@ -15,14 +15,14 @@ namespace hare_graphics
 		virtual void render() = 0;
 		virtual void frameMove() = 0;
 		virtual void fire() = 0;
-		virtual void fireAt(f32 x, f32 y) = 0;
-		virtual void move(f32 offsetX, f32 offsetY) = 0;
-		virtual void moveTo(f32 x, f32 y) = 0;
+		virtual void fireAt(float x, float y) = 0;
+		virtual void move(float offsetX, float offsetY) = 0;
+		virtual void moveTo(float x, float y) = 0;
 		virtual void pause() = 0;
 		virtual void stop() = 0;
 
 		virtual PointF getPosition();
-		virtual void   setPosition(f32 x, f32 y);
+		virtual void   setPosition(float x, float y);
 		void   setMaterial(Material* mtrl);
 
 	protected:

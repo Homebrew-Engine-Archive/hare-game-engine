@@ -9,9 +9,9 @@ namespace hare_core
     class CORE_API Vector2
     {
     public:
-        f32	x, y;
+        float	x, y;
 
-        Vector2(f32 _x, f32 _y)
+        Vector2(float _x, float _y)
         {
             x = _x;
             y = _y;
@@ -62,36 +62,36 @@ namespace hare_core
             return (x != v.x || y != v.y);
         }
 
-        Vector2	operator/(const f32 scalar)	const
+        Vector2	operator/(const float scalar)	const
         {
             return Vector2( x / scalar, y / scalar);
         }
 
-        Vector2	operator*(const f32 scalar) const
+        Vector2	operator*(const float scalar) const
         {
             return Vector2(x * scalar, y * scalar);
         }
 
-        Vector2& operator*=(const f32 scalar)
+        Vector2& operator*=(const float scalar)
         {
             x *= scalar;
             y *= scalar;
             return *this;
         }
 
-        f32	dot(const Vector2 *v) const
+        float	dot(const Vector2 *v) const
         {
             return x*v->x + y*v->y;
         }
 
-        f32	length() const
+        float	length() const
         {
             return MathUtil::sqrtf(dot(this));
         }
 
-        f32	angle(const Vector2 *v = 0) const;
+        float	angle(const Vector2 *v = 0) const;
 
-        void clamp(const f32 max)
+        void clamp(const float max)
         {
             if (length() > max)
             {
@@ -103,26 +103,26 @@ namespace hare_core
 
         Vector2* normalize()
         {
-            f32 rc = MathUtil::fastInvsqrt(dot(this));
+            float rc = MathUtil::fastInvsqrt(dot(this));
             x *= rc;
             y *= rc;
             return this;
         }
 
-        Vector2* rotate(f32 a);
+        Vector2* rotate(float a);
     };
 
-    inline Vector2 operator*(const f32 s, const Vector2 &v)
+    inline Vector2 operator*(const float s, const Vector2 &v)
     {
         return v * s;
     }
 
-    inline f32 operator^(const Vector2 &v, const Vector2 &u)
+    inline float operator^(const Vector2 &v, const Vector2 &u)
     {
         return v.angle(&u);
     }
 
-    inline f32 operator%(const Vector2 &v, const Vector2 &u)
+    inline float operator%(const Vector2 &v, const Vector2 &u)
     {
         return v.dot(&u);
     }

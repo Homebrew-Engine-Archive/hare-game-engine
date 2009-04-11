@@ -33,14 +33,14 @@ namespace hare_core
             attrObjectList,
         };
 
-        bool hasFlag(u32 flag) const
+        bool hasFlag(uint32 flag) const
         {
             return (flags & flag) == flag;
         }
 
         AttributeType attrType;
         const char* name;
-        u32 flags;
+        uint32 flags;
         const char* typeName;
         void* data;
         ClassInfo* classInfo;

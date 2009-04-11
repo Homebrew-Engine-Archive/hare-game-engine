@@ -8,7 +8,7 @@ namespace hare_core
 	class CORE_API MathUtil
 	{
 	public:
-		static const f32 PI;
+		static const float PI;
 
 		template<typename T>
         static inline bool isPO2(T n)
@@ -16,7 +16,7 @@ namespace hare_core
             return (n & (n-1)) == 0;
         }
 
-        static inline u32 firstPO2From(u32 n)
+        static inline uint32 firstPO2From(uint32 n)
         {
             --n;
             n |= n >> 16;
@@ -28,27 +28,27 @@ namespace hare_core
             return n;
         }
 
-		static inline f32 sinf(f32 val)
+		static inline float sinf(float val)
 		{
             return ::sinf(val);
 		}
 
-		static inline f32 cosf(f32 val)
+		static inline float cosf(float val)
 		{
             return ::cosf(val);
 		}
 
-        static inline f32 acosf(f32 val)
+        static inline float acosf(float val)
         {
             return ::acosf(val);
         }
 
-        static inline f32 atan2f(f32 x, f32 y)
+        static inline float atan2f(float x, float y)
         {
             return ::atan2f(x, y);
         }
 
-        static inline f32 sqrtf(f32 val)
+        static inline float sqrtf(float val)
         {
             return ::sqrtf(val);
         }
@@ -59,18 +59,18 @@ namespace hare_core
 			return (T)(degree * PI / 180.0);
 		}
 
-		static inline f32 modff(f32 val, f32* intPart = 0)
+		static inline float modff(float val, float* intPart = 0)
 		{
-			f32 dummy;
+			float dummy;
 			if (!intPart) intPart = &dummy;
             return ::modff(val, intPart);
 		}
 
-        static inline f32 fastInvsqrt(f32 x)
+        static inline float fastInvsqrt(float x)
         {
             union {
-                s32 s32Part;
-                f32 f32Part;
+                int32 s32Part;
+                float f32Part;
             } conv;
 
             conv.f32Part = x;
@@ -78,13 +78,13 @@ namespace hare_core
             return conv.f32Part * (1.5f - 0.4999f * x * conv.f32Part * conv.f32Part);
         }
 
-		static u32 g_seed;
+		static uint32 g_seed;
 
 		static void rand_seed(int seed);
 
 		static int rand_int(int min, int max);
 
-		static f32 rand_float(f32 min, f32 max);
+		static float rand_float(float min, float max);
 
 		template <typename T, typename U> inline
 		static bool clampMin( T& val, const U& min_val )

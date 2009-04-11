@@ -13,12 +13,12 @@ namespace hare_ui
     };
     MouseClickTracker clickTrackers[MouseButtonMax];
 
-    bool UISystem::notifyMousePosition(f32 posX, f32 posY)
+    bool UISystem::notifyMousePosition(float posX, float posY)
     {
         return notifyMouseMove(posX - mousePos.x, posY - mousePos.y);
     }
 
-    bool UISystem::notifyMouseMove(f32 deltaX, f32 deltaY)
+    bool UISystem::notifyMouseMove(float deltaX, float deltaY)
     {
         updateWindowContainingMouse();
 
@@ -37,7 +37,7 @@ namespace hare_ui
         return false;
     }
 
-    bool UISystem::notifyMouseWheel(f32 delta)
+    bool UISystem::notifyMouseWheel(float delta)
     {
         MouseEvent event(uiEVT_MOUSEWHEEL);
         event.wheelDelta = delta;
@@ -153,11 +153,11 @@ namespace hare_ui
     }
 
     //bool UIManager::notifyMouseLeaves();
-    //bool UIManager::notifyMouseWheel(f32 delta);
+    //bool UIManager::notifyMouseWheel(float delta);
 
     //bool UIManager::notifyMouseEvent();
     //
-    //bool UIManager::notifyKeyDown(u32 key);
-    //bool UIManager::notifyKeyUp(u32 key);
-    //bool UIManager::notifyChar(u32 cp);
+    //bool UIManager::notifyKeyDown(uint32 key);
+    //bool UIManager::notifyKeyUp(uint32 key);
+    //bool UIManager::notifyChar(uint32 cp);
 }

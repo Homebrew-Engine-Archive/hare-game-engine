@@ -66,14 +66,14 @@ public:                                                                   \
     }                                                                     \
     void name::accept(XmlVisitor &visitor, bool super) {                  \
         base::accept(visitor, true);                                      \
-        u32 savedVer = visitor.classVersion;                              \
+        uint32 savedVer = visitor.classVersion;                              \
         visitor.visitEnter(#name, super, CLASS_INFO.classVersion);        \
         name##_accept(visitor);                                           \
         visitor.classVersion = savedVer;                                  \
     }                                                                     \
     void name::accept(BinVisitor &visitor, bool super) {                  \
         base::accept(visitor, true);                                      \
-        u32 savedVer = visitor.classVersion;                              \
+        uint32 savedVer = visitor.classVersion;                              \
         visitor.visitEnter(#name, super, CLASS_INFO.classVersion);        \
         name##_accept(visitor);                                           \
         visitor.classVersion = savedVer;                                  \
@@ -127,7 +127,7 @@ inline EnumMap* getEnumValue<TYPE>() { \
 
 namespace hare_core
 {
-    typedef std::map<String, s32> EnumMap;
+    typedef std::map<String, int32> EnumMap;
 
     template <typename T>
     inline EnumMap* getEnumValue() { return 0; }

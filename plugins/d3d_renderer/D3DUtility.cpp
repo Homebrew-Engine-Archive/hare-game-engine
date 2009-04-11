@@ -12,7 +12,7 @@ void D3DUtility::downLoadSurface(LPDIRECT3DSURFACE9 d3dSur, HarePixelFormat form
 	D3DSURFACE_DESC desc;
 	d3dSur->GetDesc(&desc);
 
-	assert(desc.Width >= (u32)rc.width() && desc.Height >= (u32)rc.height());
+	assert(desc.Width >= (uint32)rc.width() && desc.Height >= (uint32)rc.height());
 	assert(D3DTypeConverter::toD3DFormat(format) == desc.Format);
 
 	RectN rect;
@@ -51,10 +51,10 @@ void D3DUtility::downLoadSurface(LPDIRECT3DSURFACE9 d3dSur, HarePixelFormat form
 		hr = destSurface->LockRect(&lockedRect, &winrc, D3DLOCK_READONLY);
 
 		int desRowStride = desImg.getRowStride();
-		u8* desData = (u8*)desImg.getImageData();
+		uint8* desData = (uint8*)desImg.getImageData();
 
-		const u8* srcData = (const u8*)lockedRect.pBits + (desImg.getHeight() - 1) * lockedRect.Pitch;
-		for (u32 i = 0; i < desImg.getHeight(); ++i) {
+		const uint8* srcData = (const uint8*)lockedRect.pBits + (desImg.getHeight() - 1) * lockedRect.Pitch;
+		for (uint32 i = 0; i < desImg.getHeight(); ++i) {
 			memcpy(desData, srcData, desRowStride);
 
 			desData += desRowStride;
@@ -74,10 +74,10 @@ void D3DUtility::downLoadSurface(LPDIRECT3DSURFACE9 d3dSur, HarePixelFormat form
 		hr = d3dSur->LockRect(&lockedRect, &winrc, D3DLOCK_READONLY);
 
 		int desRowStride = desImg.getRowStride();
-		u8* desData = (u8*)desImg.getImageData();
+		uint8* desData = (uint8*)desImg.getImageData();
 
-		const u8* srcData = (const u8*)lockedRect.pBits + (desImg.getHeight() - 1) * lockedRect.Pitch;
-		for (u32 i = 0; i < desImg.getHeight(); ++i) {
+		const uint8* srcData = (const uint8*)lockedRect.pBits + (desImg.getHeight() - 1) * lockedRect.Pitch;
+		for (uint32 i = 0; i < desImg.getHeight(); ++i) {
 			memcpy(desData, srcData, desRowStride);
 
 			desData += desRowStride;

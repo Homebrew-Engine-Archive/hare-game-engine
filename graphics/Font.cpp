@@ -13,9 +13,9 @@ namespace hare_graphics
     HARE_IMPLEMENT_DYNAMIC_CLASS(Font, Object, 0)
     {
         HARE_META_F(fontFile, String, propFSUrl)
-        HARE_META(fontSize, f32)
-        HARE_META(cacheBufferSize, u32)
-        HARE_META(resolution, u32)
+        HARE_META(fontSize, float)
+        HARE_META(cacheBufferSize, uint32)
+        HARE_META(resolution, uint32)
     }
 
 	struct FontResource
@@ -30,7 +30,7 @@ namespace hare_graphics
 		fontResource = new FontResource;
 	}
 
-	Font::Font(const String& ttfName, f32 ttfSize, u32 ttfResolution, u32 cacheSize)
+	Font::Font(const String& ttfName, float ttfSize, uint32 ttfResolution, uint32 cacheSize)
 		:fontFile(ttfName)
 		,fontSize(ttfSize)
 		,cacheBufferSize(cacheSize)
@@ -120,8 +120,8 @@ namespace hare_graphics
 		maxCharWidth = max(max_width, max_height);
 
 		//纹理尺寸
-		u32 texSize = MathUtil::firstPO2From(
-            (u32)MathUtil::sqrtf((f32)cacheBufferSize) * maxCharWidth);
+		uint32 texSize = MathUtil::firstPO2From(
+            (uint32)MathUtil::sqrtf((float)cacheBufferSize) * maxCharWidth);
 
 		//纹理每行装的字符数
 		numCharPerLine = texSize / maxCharWidth;
@@ -171,37 +171,37 @@ namespace hare_graphics
 		return fontFile;
 	}
 
-	void Font::setFontSize(f32 ttfSize)
+	void Font::setFontSize(float ttfSize)
 	{
 		fontSize = ttfSize;
 	}
 
-	f32 Font::getFontSize()
+	float Font::getFontSize()
 	{
 		return fontSize;
 	}
 
-	void Font::setFontResolution(u32 ttfResolution)
+	void Font::setFontResolution(uint32 ttfResolution)
 	{
 		resolution = ttfResolution;
 	}
 
-	u32 Font::getFontResolution()
+	uint32 Font::getFontResolution()
 	{
 		return resolution;
 	}
 
-	void Font::setCacheSize(u32 cacheSize)
+	void Font::setCacheSize(uint32 cacheSize)
 	{
 		cacheBufferSize = cacheSize;
 	}
 
-	u32 Font::getCacheBufferSize()
+	uint32 Font::getCacheBufferSize()
 	{
 		return cacheBufferSize;		
 	}
 
-	const CharGlyph& Font::getCharGlyph(u32 codePoint)
+	const CharGlyph& Font::getCharGlyph(uint32 codePoint)
 	{
 
 		std::deque<CachedChar>::iterator it = cacheCharQueue.begin();
@@ -251,7 +251,7 @@ namespace hare_graphics
 	}
 
 
-	void Font::addCharGlyph(u32 codePoint)
+	void Font::addCharGlyph(uint32 codePoint)
 	{
 		assert(cacheCharQueue.size() <= cacheBufferSize);
 
@@ -282,7 +282,7 @@ namespace hare_graphics
 
 		texCache->upload(clearImg, willBeFillCachedPos.x, willBeFillCachedPos.y);
 
-		u8* buffer = fontResource->face->glyph->bitmap.buffer;
+		uint8* buffer = fontResource->face->glyph->bitmap.buffer;
 
 		int char_width = 0;
 		int char_height = 0;
@@ -299,7 +299,7 @@ namespace hare_graphics
 			img.create(maxCharWidth, maxCharWidth, HPF_A8R8G8B8);
 			
 			for (int count1 = 0; count1 < fontResource->face->glyph->bitmap.rows; ++count1){
-				u8* destBuffer = (u8*)img.getImageData() + img.getRowStride() * count1;
+				uint8* destBuffer = (uint8*)img.getImageData() + img.getRowStride() * count1;
 				for (int count2 = 0; count2 < fontResource->face->glyph->bitmap.width; ++count2){
 					*(destBuffer)   = *(buffer);//B
 					*(destBuffer+1) = *(buffer);//G
@@ -319,16 +319,16 @@ namespace hare_graphics
 		}
 
 		willBeFillCachedPos.codePoint = codePoint;
-		willBeFillCachedPos.charGlyph.recGlyph.minX = (f32)(willBeFillCachedPos.x) / (f32)texCache->getWidth();
-		willBeFillCachedPos.charGlyph.recGlyph.minY = (f32)(willBeFillCachedPos.y) / (f32)texCache->getHeight();
-		willBeFillCachedPos.charGlyph.recGlyph.maxX = (f32)(willBeFillCachedPos.x + char_width)  / (f32)texCache->getWidth();
-		willBeFillCachedPos.charGlyph.recGlyph.maxY = (f32)(willBeFillCachedPos.y + char_height) / (f32)texCache->getHeight();
-		willBeFillCachedPos.charGlyph.baselineX = (f32)(fontResource->face->glyph->metrics.horiBearingY)    / PER_WIDTH;
-		willBeFillCachedPos.charGlyph.bear_left = (f32)(fontResource->face->glyph->metrics.horiBearingX)    / PER_WIDTH;
-		willBeFillCachedPos.charGlyph.bear_advanceX = (f32)(fontResource->face->glyph->metrics.horiAdvance) / PER_WIDTH;
-		willBeFillCachedPos.charGlyph.baselineY = (f32)(fontResource->face->glyph->metrics.vertBearingX)    / PER_WIDTH;
-		willBeFillCachedPos.charGlyph.bear_top = (f32)(fontResource->face->glyph->metrics.vertBearingY)     / PER_WIDTH;
-		willBeFillCachedPos.charGlyph.bear_advanceY = (f32)(fontResource->face->glyph->metrics.vertAdvance) / PER_WIDTH;
+		willBeFillCachedPos.charGlyph.recGlyph.minX = (float)(willBeFillCachedPos.x) / (float)texCache->getWidth();
+		willBeFillCachedPos.charGlyph.recGlyph.minY = (float)(willBeFillCachedPos.y) / (float)texCache->getHeight();
+		willBeFillCachedPos.charGlyph.recGlyph.maxX = (float)(willBeFillCachedPos.x + char_width)  / (float)texCache->getWidth();
+		willBeFillCachedPos.charGlyph.recGlyph.maxY = (float)(willBeFillCachedPos.y + char_height) / (float)texCache->getHeight();
+		willBeFillCachedPos.charGlyph.baselineX = (float)(fontResource->face->glyph->metrics.horiBearingY)    / PER_WIDTH;
+		willBeFillCachedPos.charGlyph.bear_left = (float)(fontResource->face->glyph->metrics.horiBearingX)    / PER_WIDTH;
+		willBeFillCachedPos.charGlyph.bear_advanceX = (float)(fontResource->face->glyph->metrics.horiAdvance) / PER_WIDTH;
+		willBeFillCachedPos.charGlyph.baselineY = (float)(fontResource->face->glyph->metrics.vertBearingX)    / PER_WIDTH;
+		willBeFillCachedPos.charGlyph.bear_top = (float)(fontResource->face->glyph->metrics.vertBearingY)     / PER_WIDTH;
+		willBeFillCachedPos.charGlyph.bear_advanceY = (float)(fontResource->face->glyph->metrics.vertAdvance) / PER_WIDTH;
 
 		//将 新加入的到cache的字放到队列的首位
 		cacheCharQueue.push_front(willBeFillCachedPos);
@@ -340,9 +340,9 @@ namespace hare_graphics
 
 	}
 
-	void Font::advanceFillCache(u32 codePointBegin, u32 codePointEnd)
+	void Font::advanceFillCache(uint32 codePointBegin, uint32 codePointEnd)
 	{
-		for (u32 count = codePointBegin; count <= codePointEnd; ++count){
+		for (uint32 count = codePointBegin; count <= codePointEnd; ++count){
 			try{
 				addCharGlyph(count);
 			}catch(...){

@@ -21,7 +21,7 @@ namespace hare_graphics
 		static ImageCodec* getCodec(const String& extension);
 
 	public:
-		ImageCodec(const String& type, u32 devILTypeID);
+		ImageCodec(const String& type, uint32 devILTypeID);
 		virtual ~ImageCodec(void);
 
 		virtual const String& getType() = 0;
@@ -31,7 +31,7 @@ namespace hare_graphics
 	
 	protected:
 		String codecType;
-		u32    typeID;
+		uint32    typeID;
 	};
 }
 

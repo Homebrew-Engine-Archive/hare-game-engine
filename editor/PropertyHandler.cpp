@@ -153,26 +153,26 @@ namespace hare_editor
     }
 
     template <>
-    void doModifyMeta<f32>(Attribute* attr, wxVariant& val)
+    void doModifyMeta<float>(Attribute* attr, wxVariant& val)
     {
         double value = 0.0;
         if (wxPGVariantToDouble(val, &value))
         {
-            f32* oldData = (f32*)attr->data;
-            *oldData = (f32)value;
+            float* oldData = (float*)attr->data;
+            *oldData = (float)value;
             attr->owner->postEdited(attr);
             val = (double)*oldData;
         }
     }
 
     template <>
-    void doModifyMeta<f64>(Attribute* attr, wxVariant& val)
+    void doModifyMeta<double>(Attribute* attr, wxVariant& val)
     {
         double value = 0.0;
         if (wxPGVariantToDouble(val, &value))
         {
-            f64* oldData = (f64*)attr->data;
-            *oldData = (f64)value;
+            double* oldData = (double*)attr->data;
+            *oldData = (double)value;
             attr->owner->postEdited(attr);
             val = (double)*oldData;
         }
@@ -268,34 +268,34 @@ namespace hare_editor
     }
 
     template <>
-    void doBindMeta<f32>(Attribute* attr, PropertyGridPage* page, wxPGProperty* parent)
+    void doBindMeta<float>(Attribute* attr, PropertyGridPage* page, wxPGProperty* parent)
     {
-        f32* value = (f32*)attr->data;
+        float* value = (float*)attr->data;
         wxPGProperty* prop = page->AppendIn(parent, new wxFloatProperty(wxString::FromUTF8(attr->name), wxPG_LABEL,
             *value));
         prop->SetClientData(attr);
-        prop->SetHelpString(wxT("[f32]"));
+        prop->SetHelpString(wxT("[float]"));
         if (attr->hasFlag(Object::propReadOnly))
             prop->SetFlag(wxPG_PROP_READONLY | wxPG_PROP_DISABLED);
     }
 
     template <>
-    void doBindMeta<f64>(Attribute* attr, PropertyGridPage* page, wxPGProperty* parent)
+    void doBindMeta<double>(Attribute* attr, PropertyGridPage* page, wxPGProperty* parent)
     {
-        f64* value = (f64*)attr->data;
+        double* value = (double*)attr->data;
         wxPGProperty* prop = page->AppendIn(parent, new wxFloatProperty(wxString::FromUTF8(attr->name), wxPG_LABEL,
             *value));
         prop->SetClientData(attr);
-        prop->SetHelpString(wxT("[f64]"));
+        prop->SetHelpString(wxT("[double]"));
         if (attr->hasFlag(Object::propReadOnly))
             prop->SetFlag(wxPG_PROP_READONLY | wxPG_PROP_DISABLED);
     }
 
     // unsigned int does not work with wxVariant ;(
     template <>
-    void doBindMeta<u32>(Attribute* attr, PropertyGridPage* page, wxPGProperty* parent)
+    void doBindMeta<uint32>(Attribute* attr, PropertyGridPage* page, wxPGProperty* parent)
     {
-        u32* value = (u32*)attr->data;
+        uint32* value = (uint32*)attr->data;
         wxPGProperty* prop = 0;
         if (attr->enumMap)
         {
@@ -303,7 +303,7 @@ namespace hare_editor
         }
         else if (attr->hasFlag(Object::propColor))
         {
-            u32 col = *value;
+            uint32 col = *value;
             unsigned char A = (col>>24) & 0xFF;
             unsigned char R = (col>>16) & 0xFF;
             unsigned char G = (col>>8) & 0xFF;
@@ -319,7 +319,7 @@ namespace hare_editor
             prop = page->AppendIn(parent, new wxUIntProperty(wxString::FromUTF8(attr->name), wxPG_LABEL,
                 *value));
             prop->SetClientData(attr);
-            prop->SetHelpString(wxT("[u32]"));
+            prop->SetHelpString(wxT("[uint32]"));
         }
         if (attr->hasFlag(Object::propReadOnly))
             prop->SetFlag(wxPG_PROP_READONLY | wxPG_PROP_DISABLED);
@@ -436,22 +436,22 @@ namespace hare_editor
             {
                 if (attr->typeName == String("String"))
                     doModifyMeta<String>(attr, value);
-                else if (attr->typeName == String("u8"))
-                    doModifyMeta<u8>(attr, value);
-                else if (attr->typeName == String("s8"))
-                    doModifyMeta<s8>(attr, value);
-                else if (attr->typeName == String("u16"))
-                    doModifyMeta<u16>(attr, value);
-                else if (attr->typeName == String("s16"))
-                    doModifyMeta<s16>(attr, value);
-                else if (attr->typeName == String("u32"))
-                    doModifyMeta<u32>(attr, value);
-                else if (attr->typeName == String("s32"))
-                    doModifyMeta<s32>(attr, value);
-                else if (attr->typeName == String("f32"))
-                    doModifyMeta<f32>(attr, value);
-                else if (attr->typeName == String("f64"))
-                    doModifyMeta<f64>(attr, value);
+                else if (attr->typeName == String("uint8"))
+                    doModifyMeta<uint8>(attr, value);
+                else if (attr->typeName == String("int8"))
+                    doModifyMeta<int8>(attr, value);
+                else if (attr->typeName == String("uint16"))
+                    doModifyMeta<uint16>(attr, value);
+                else if (attr->typeName == String("int16"))
+                    doModifyMeta<int16>(attr, value);
+                else if (attr->typeName == String("uint32"))
+                    doModifyMeta<uint32>(attr, value);
+                else if (attr->typeName == String("int32"))
+                    doModifyMeta<int32>(attr, value);
+                else if (attr->typeName == String("float"))
+                    doModifyMeta<float>(attr, value);
+                else if (attr->typeName == String("double"))
+                    doModifyMeta<double>(attr, value);
                 else
                     assert(false);
 
@@ -511,22 +511,22 @@ namespace hare_editor
             {
                 if (attr->typeName == String("String"))
                     doBindMeta<String>(attr, page, parent);
-                else if (attr->typeName == String("u8"))
-                    doBindMeta<u8>(attr, page, parent);
-                else if (attr->typeName == String("s8"))
-                    doBindMeta<s8>(attr, page, parent);
-                else if (attr->typeName == String("u16"))
-                    doBindMeta<u16>(attr, page, parent);
-                else if (attr->typeName == String("s16"))
-                    doBindMeta<s16>(attr, page, parent);
-                else if (attr->typeName == String("u32"))
-                    doBindMeta<u32>(attr, page, parent);
-                else if (attr->typeName == String("s32"))
-                    doBindMeta<s32>(attr, page, parent);
-                else if (attr->typeName == String("f32"))
-                    doBindMeta<f32>(attr, page, parent);
-                else if (attr->typeName == String("f64"))
-                    doBindMeta<f64>(attr, page, parent);
+                else if (attr->typeName == String("uint8"))
+                    doBindMeta<uint8>(attr, page, parent);
+                else if (attr->typeName == String("int8"))
+                    doBindMeta<int8>(attr, page, parent);
+                else if (attr->typeName == String("uint16"))
+                    doBindMeta<uint16>(attr, page, parent);
+                else if (attr->typeName == String("int16"))
+                    doBindMeta<int16>(attr, page, parent);
+                else if (attr->typeName == String("uint32"))
+                    doBindMeta<uint32>(attr, page, parent);
+                else if (attr->typeName == String("int32"))
+                    doBindMeta<int32>(attr, page, parent);
+                else if (attr->typeName == String("float"))
+                    doBindMeta<float>(attr, page, parent);
+                else if (attr->typeName == String("double"))
+                    doBindMeta<double>(attr, page, parent);
             }
             break;
         case Attribute::attrMetaArray:

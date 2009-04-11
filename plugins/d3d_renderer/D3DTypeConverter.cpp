@@ -71,9 +71,9 @@ D3DTEXTUREOP D3DTypeConverter::toD3DTextureOperation(TextureStage::ColorAlphaBle
 	return d3dTextureOp;
 }
 
-u32 D3DTypeConverter::toD3DTextureArgument(TextureStage::ColorAlphaBlendArgument texArg)
+uint32 D3DTypeConverter::toD3DTextureArgument(TextureStage::ColorAlphaBlendArgument texArg)
 {
-	u32 d3dTextureArg;
+	uint32 d3dTextureArg;
 	switch(texArg)
 	{
 	case TextureStage::CBBA_Current:

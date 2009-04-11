@@ -17,41 +17,41 @@ namespace hare_graphics
 		ParticleInfo();
 		virtual ~ParticleInfo();
 
-		s32			emission;
-		f32			lifeTime;
+		int32			emission;
+		float			lifeTime;
 
-		f32			particleLifeMin;
-		f32			particleLifeMax;
+		float			particleLifeMin;
+		float			particleLifeMax;
 
-		f32			direction;
-		f32			spread;
+		float			direction;
+		float			spread;
 		bool		relative;
 
-		f32			speedMin;
-		f32			speedMax;
+		float			speedMin;
+		float			speedMax;
 
-		f32			gravityMin;
-		f32			gravityMax;
+		float			gravityMin;
+		float			gravityMax;
 
-		f32			radialAccelMin;
-		f32			radialAccelMax;
+		float			radialAccelMin;
+		float			radialAccelMax;
 
-		f32			tangentialAccelMin;
-		f32			tangentialAccelMax;
+		float			tangentialAccelMin;
+		float			tangentialAccelMax;
 
-		f32			sizeStart;
-		f32			sizeEnd;
-		f32			sizeVar;
+		float			sizeStart;
+		float			sizeEnd;
+		float			sizeVar;
 
-		f32			spinStart;
-		f32			spinEnd;
-		f32			spinVar;
+		float			spinStart;
+		float			spinEnd;
+		float			spinVar;
 
-		u32			colorStart;
-		u32			colorEnd;
+		uint32			colorStart;
+		uint32			colorEnd;
 
-		f32			colorVar;
-		f32			alphaVar;
+		float			colorVar;
+		float			alphaVar;
 	};
 
 
@@ -64,21 +64,21 @@ namespace hare_graphics
 			Vector2   location;
 			Vector2   velocity;
 
-			f32	  gravity;
-			f32	  radialAccel;
-			f32	  tangentialAccel;
+			float	  gravity;
+			float	  radialAccel;
+			float	  tangentialAccel;
 
-			f32	  spin;
-			f32	  spinDelta;
+			float	  spin;
+			float	  spinDelta;
 
-			f32	  size;
-			f32	  sizeDelta;
+			float	  size;
+			float	  sizeDelta;
 
 			Color color;
 			Color colorDelta;
 
-			f32	  age;
-			f32	  terminalAge;
+			float	  age;
+			float	  terminalAge;
 		};
 
 	public:
@@ -88,22 +88,22 @@ namespace hare_graphics
 		virtual void render();
 		virtual void frameMove();
 		virtual void fire();
-		virtual void fireAt(f32 x, f32 y);
-		virtual void move(f32 offsetX, f32 offsetY);
-		virtual void moveTo(f32 x, f32 y);
+		virtual void fireAt(float x, float y);
+		virtual void move(float offsetX, float offsetY);
+		virtual void moveTo(float x, float y);
 		virtual void pause();
 		virtual void stop();
-		virtual void setPosition(f32 x, f32 y);
+		virtual void setPosition(float x, float y);
 
 		virtual void postLoaded();
 		virtual void postEdited(Attribute* attr);
 	protected:
-		f32		age;
-		f32		emissionResidue;
+		float		age;
+		float		emissionResidue;
 
 		Vector2	prevLocation;
 
-		f32		tx, ty;
+		float		tx, ty;
 
 		int		particlesAlive;
 

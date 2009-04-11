@@ -29,7 +29,7 @@ wxHareCanvas::wxHareCanvas(wxWindow *parent, wxWindowID id, bool hasZBuffer, con
     Create(parent, id, pos, size, style, name);
 
     WindowParams params;
-    params.hwnd = (u32)GetHWND();
+    params.hwnd = (uint32)GetHWND();
     params.bFullScreen = false;
     params.width = size.GetWidth() > 0 ? size.GetWidth() : 800;
     params.height = size.GetHeight() > 0 ? size.GetHeight() : 600;

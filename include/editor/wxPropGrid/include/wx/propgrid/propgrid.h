@@ -1879,7 +1879,7 @@ public:
 #endif
 
     /** Constructor.
-        f32 used property classes should have constructor of this style:
+        float used property classes should have constructor of this style:
 
         @code
 

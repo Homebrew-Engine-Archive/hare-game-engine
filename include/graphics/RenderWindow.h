@@ -9,10 +9,10 @@ namespace hare_graphics
 {
 	struct GRAPHICS_API WindowParams
     {
-		u32    hwnd;
+		uint32    hwnd;
 		bool   bFullScreen;
-		u32    width;
-		u32    height;
+		uint32    width;
+		uint32    height;
 		bool   bZbuffer;
 		String title;
 		WindowParams()
@@ -33,18 +33,18 @@ namespace hare_graphics
 
 		virtual ~RenderWindow();
 
-		u32 getWidth()
+		uint32 getWidth()
 		{
 			return windowParams.width;
 		}
-		u32 getHeight()
+		uint32 getHeight()
 		{
 			return windowParams.height;
 		}
 
 		virtual void create(const WindowParams& params) = 0;
 
-		virtual void resize(u32 w, u32 h) = 0;
+		virtual void resize(uint32 w, uint32 h) = 0;
 
 		virtual void swapBuffer() = 0;
 

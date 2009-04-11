@@ -35,9 +35,9 @@ public:
 
 	LPDIRECT3D9 getD3DInterface();
 
-	static const u32 VERTEX_CAPACITY;
+	static const uint32 VERTEX_CAPACITY;
 
-	static const u32 VERTEX_FVF;
+	static const uint32 VERTEX_FVF;
 protected:
 	void initalizeParam();
 

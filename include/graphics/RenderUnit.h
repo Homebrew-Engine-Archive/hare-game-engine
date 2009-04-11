@@ -28,8 +28,8 @@ namespace hare_graphics
 		virtual ~RenderUnit();
 
 		virtual Vertex* getBuffer() = 0;
-		virtual u32     getVertexCount() = 0;
-		virtual u32	    getPrimCount() = 0;
+		virtual uint32     getVertexCount() = 0;
+		virtual uint32	    getPrimCount() = 0;
 		virtual RenderOperationType	getOperationType() = 0;
 		void setMaterial(Material* m)
 		{

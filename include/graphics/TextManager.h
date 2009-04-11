@@ -14,15 +14,15 @@ namespace hare_graphics
 		TextManager();
 		~TextManager();
 
-		Font* createFont(const String& name, f32 size);
+		Font* createFont(const String& name, float size);
 		void  destroyFont(Font* f);
 
-		void setFontResolution(u32 resolution);
-		void setCacheSize(u32 cacheSize);
+		void setFontResolution(uint32 resolution);
+		void setCacheSize(uint32 cacheSize);
 	private:
 		std::list<Font*> fontList;
-		u32 fontResolution;
-		u32 fontCacheSize;
+		uint32 fontResolution;
+		uint32 fontCacheSize;
 	};
 
 	GRAPHICS_API TextManager* getTextManager();

@@ -16,13 +16,13 @@ namespace hare_graphics
 	}
 
 
-	void Texture::create(u32 w, u32 h, HarePixelFormat format, bool isRenderable)
+	void Texture::create(uint32 w, uint32 h, HarePixelFormat format, bool isRenderable)
 	{
 		size = 0;
 		width = w;	//转换成2的幂次方
 		height = h;	//转换成2的幂次方
-		projectionWidth = (f32)w;//默认设置投影宽度
-		projectionHeight= (f32)h;//默认设置投影高度
+		projectionWidth = (float)w;//默认设置投影宽度
+		projectionHeight= (float)h;//默认设置投影高度
 		fileName = "";
 		texPixelFormat = format;//动态纹理像素格式
 
@@ -48,7 +48,7 @@ namespace hare_graphics
 		reCreate();
 	}
 
-	void Texture::setProjectionSize(f32 w, f32 h)
+	void Texture::setProjectionSize(float w, float h)
 	{
 		projectionWidth = w;
 		projectionHeight= h;

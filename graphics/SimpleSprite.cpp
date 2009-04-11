@@ -119,7 +119,7 @@ namespace hare_graphics
 
 	}
 
-	void SimpleSprite::move(f32 x, f32 y)
+	void SimpleSprite::move(float x, float y)
 	{
 		quad.move(x, y);
 		particle->move(x, y);

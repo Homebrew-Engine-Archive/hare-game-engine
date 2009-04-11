@@ -11,12 +11,12 @@ namespace hare_core
 	public:
 		union {
 			struct {
-				f32        _11, _12, _13, _14;
-				f32        _21, _22, _23, _24;
-				f32        _31, _32, _33, _34;
-				f32        _41, _42, _43, _44;
+				float        _11, _12, _13, _14;
+				float        _21, _22, _23, _24;
+				float        _31, _32, _33, _34;
+				float        _41, _42, _43, _44;
 			};
-			f32 m[4][4];
+			float m[4][4];
 		};
 
 		static const Matrix4 ZERO;
@@ -24,33 +24,33 @@ namespace hare_core
 
 	public:
 		Matrix4() {};
-		Matrix4( const f32 * );
+		Matrix4( const float * );
 		Matrix4( const Matrix4& );
-		Matrix4( f32 _f11, f32 _f12, f32 _f13, f32 _f14,
-			f32 _f21, f32 _f22, f32 _f23, f32 _f24,
-			f32 _f31, f32 _f32, f32 _f33, f32 _f34,
-			f32 _f41, f32 _f42, f32 _f43, f32 _f44 );
+		Matrix4( float _f11, float _f12, float _f13, float _f14,
+			float _f21, float _f22, float _f23, float _f24,
+			float _f31, float _f32, float _f33, float _f34,
+			float _f41, float _f42, float _f43, float _f44 );
 
 
-		void set( f32 _f11, f32 _f12, f32 _f13, f32 _f14,
-							f32 _f21, f32 _f22, f32 _f23, f32 _f24,
-							f32 _f31, f32 _f32, f32 _f33, f32 _f34,
-							f32 _f41, f32 _f42, f32 _f43, f32 _f44 );
+		void set( float _f11, float _f12, float _f13, float _f14,
+							float _f21, float _f22, float _f23, float _f24,
+							float _f31, float _f32, float _f33, float _f34,
+							float _f41, float _f42, float _f43, float _f44 );
 
 
-		f32& operator () ( u32 Row, u32 Col );
-		f32  operator () ( u32 Row, u32 Col ) const;
+		float& operator () ( uint32 Row, uint32 Col );
+		float  operator () ( uint32 Row, uint32 Col ) const;
 
 
-		operator f32* ();
-		operator const f32* () const;
+		operator float* ();
+		operator const float* () const;
 
 
 		Matrix4& operator *= ( const Matrix4& );
 		Matrix4& operator += ( const Matrix4& );
 		Matrix4& operator -= ( const Matrix4& );
-		Matrix4& operator *= ( f32 );
-		Matrix4& operator /= ( f32 );
+		Matrix4& operator *= ( float );
+		Matrix4& operator /= ( float );
 
 
 		Matrix4 operator + () const;
@@ -60,9 +60,9 @@ namespace hare_core
 		Matrix4 operator * ( const Matrix4& ) const;
 		Matrix4 operator + ( const Matrix4& ) const;
 		Matrix4 operator - ( const Matrix4& ) const;
-		Matrix4 operator * ( f32 ) const;
-		Matrix4 operator / ( f32 ) const;
-		friend Matrix4 operator * ( f32, const Matrix4& );
+		Matrix4 operator * ( float ) const;
+		Matrix4 operator / ( float ) const;
+		friend Matrix4 operator * ( float, const Matrix4& );
 
 		bool operator == ( const Matrix4& ) const;
 		bool operator != ( const Matrix4& ) const;
@@ -76,10 +76,10 @@ namespace hare_core
 		inline void transpose();
 
 		/// 创建平移矩阵。
-		inline void makeTranslation(f32 x, f32 y, f32 z);
+		inline void makeTranslation(float x, float y, float z);
 
 		/// 创建缩放矩阵。
-		inline void makeScaling(f32 x, f32 y, f32 z) {
+		inline void makeScaling(float x, float y, float z) {
 			*this = Matrix4::IDENTITY;
 			_11 = x;
 			_22 = y;
@@ -94,7 +94,7 @@ namespace hare_core
 	// Inline Functions
 
 	inline
-	Matrix4::Matrix4( const f32* pf )
+	Matrix4::Matrix4( const float* pf )
 	{
 		memcpy(&_11, pf, sizeof(Matrix4));
 	}
@@ -106,10 +106,10 @@ namespace hare_core
 	}
 
 	inline
-	Matrix4::Matrix4( f32 _f11, f32 _f12, f32 _f13, f32 _f14,
-							f32 _f21, f32 _f22, f32 _f23, f32 _f24,
-							f32 _f31, f32 _f32, f32 _f33, f32 _f34,
-							f32 _f41, f32 _f42, f32 _f43, f32 _f44 )
+	Matrix4::Matrix4( float _f11, float _f12, float _f13, float _f14,
+							float _f21, float _f22, float _f23, float _f24,
+							float _f31, float _f32, float _f33, float _f34,
+							float _f41, float _f42, float _f43, float _f44 )
 	{
 		_11 = _f11; _12 = _f12; _13 = _f13; _14 = _f14;
 		_21 = _f21; _22 = _f22; _23 = _f23; _24 = _f24;
@@ -118,10 +118,10 @@ namespace hare_core
 	}
 
 	inline
-		void Matrix4::set( f32 _f11, f32 _f12, f32 _f13, f32 _f14,
-							f32 _f21, f32 _f22, f32 _f23, f32 _f24,
-							f32 _f31, f32 _f32, f32 _f33, f32 _f34,
-							f32 _f41, f32 _f42, f32 _f43, f32 _f44 )
+		void Matrix4::set( float _f11, float _f12, float _f13, float _f14,
+							float _f21, float _f22, float _f23, float _f24,
+							float _f31, float _f32, float _f33, float _f34,
+							float _f41, float _f42, float _f43, float _f44 )
 	{
 		_11 = _f11; _12 = _f12; _13 = _f13; _14 = _f14;
 		_21 = _f21; _22 = _f22; _23 = _f23; _24 = _f24;
@@ -131,14 +131,14 @@ namespace hare_core
 
 
 	// access grants
-	inline f32&
-	Matrix4::operator () ( u32 iRow, u32 iCol )
+	inline float&
+	Matrix4::operator () ( uint32 iRow, uint32 iCol )
 	{
 		return m[iRow][iCol];
 	}
 
-	inline f32
-	Matrix4::operator () ( u32 iRow, u32 iCol ) const
+	inline float
+	Matrix4::operator () ( uint32 iRow, uint32 iCol ) const
 	{
 		return m[iRow][iCol];
 	}
@@ -146,15 +146,15 @@ namespace hare_core
 
 	// casting operators
 	inline
-	Matrix4::operator f32* ()
+	Matrix4::operator float* ()
 	{
-		return (f32 *) &_11;
+		return (float *) &_11;
 	}
 
 	inline
-	Matrix4::operator const f32* () const
+	Matrix4::operator const float* () const
 	{
-		return (const f32 *) &_11;
+		return (const float *) &_11;
 	}
 
 
@@ -187,7 +187,7 @@ namespace hare_core
 	}
 
 	inline Matrix4&
-	Matrix4::operator *= ( f32 f )
+	Matrix4::operator *= ( float f )
 	{
 		_11 *= f; _12 *= f; _13 *= f; _14 *= f;
 		_21 *= f; _22 *= f; _23 *= f; _24 *= f;
@@ -197,9 +197,9 @@ namespace hare_core
 	}
 
 	inline Matrix4&
-	Matrix4::operator /= ( f32 f )
+	Matrix4::operator /= ( float f )
 	{
-		f32 fInv = 1.0f / f;
+		float fInv = 1.0f / f;
 		_11 *= fInv; _12 *= fInv; _13 *= fInv; _14 *= fInv;
 		_21 *= fInv; _22 *= fInv; _23 *= fInv; _24 *= fInv;
 		_31 *= fInv; _32 *= fInv; _33 *= fInv; _34 *= fInv;
@@ -249,7 +249,7 @@ namespace hare_core
 	}
 
 	inline Matrix4
-	Matrix4::operator * ( f32 f ) const
+	Matrix4::operator * ( float f ) const
 	{
 		return Matrix4(_11 * f, _12 * f, _13 * f, _14 * f,
 						_21 * f, _22 * f, _23 * f, _24 * f,
@@ -258,9 +258,9 @@ namespace hare_core
 	}
 
 	inline Matrix4
-	Matrix4::operator / ( f32 f ) const
+	Matrix4::operator / ( float f ) const
 	{
-		f32 fInv = 1.0f / f;
+		float fInv = 1.0f / f;
 		return Matrix4(_11 * fInv, _12 * fInv, _13 * fInv, _14 * fInv,
 						_21 * fInv, _22 * fInv, _23 * fInv, _24 * fInv,
 						_31 * fInv, _32 * fInv, _33 * fInv, _34 * fInv,
@@ -268,7 +268,7 @@ namespace hare_core
 	}
 
 	inline Matrix4
-	operator * ( f32 f, const Matrix4& mat )
+	operator * ( float f, const Matrix4& mat )
 	{
 		return Matrix4(f * mat._11, f * mat._12, f * mat._13, f * mat._14,
 						f * mat._21, f * mat._22, f * mat._23, f * mat._24,
@@ -314,7 +314,7 @@ namespace hare_core
 		(*this) = out;
 	}
 
-	inline void Matrix4::makeTranslation(f32 x, f32 y, f32 z)
+	inline void Matrix4::makeTranslation(float x, float y, float z)
 	{
 		identity();
 

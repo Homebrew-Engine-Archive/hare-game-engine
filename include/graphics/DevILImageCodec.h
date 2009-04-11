@@ -9,7 +9,7 @@ namespace hare_graphics
 	class GRAPHICS_API DevILImageCodec : public ImageCodec
 	{
 	public:
-		DevILImageCodec(const String& type, u32 devILTypeID); //在devil里 ILenum是ID
+		DevILImageCodec(const String& type, uint32 devILTypeID); //在devil里 ILenum是ID
 		virtual ~DevILImageCodec(void);
 
 		virtual const String& getType();

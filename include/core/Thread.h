@@ -127,7 +127,7 @@ namespace hare_core
 
         SemaphoreError wait();
         SemaphoreError tryWait();
-        SemaphoreError waitTimeout(u32 milliseconds);
+        SemaphoreError waitTimeout(uint32 milliseconds);
         SemaphoreError post();
 
     private:
@@ -154,7 +154,7 @@ namespace hare_core
 
         ConditionError wait();
 
-        ConditionError waitTimeout(u32 milliseconds);
+        ConditionError waitTimeout(uint32 milliseconds);
 
         ConditionError signal();
 
@@ -183,7 +183,7 @@ namespace hare_core
         //static Thread* currentThread();
         //static bool isMainThread();
         //static void yield();
-        static void sleep(u32 milliseconds);
+        static void sleep(uint32 milliseconds);
         //static int getCPUCount();
         //static int getCurrentId();
         //static bool setConcurrency(int level);
@@ -194,7 +194,7 @@ namespace hare_core
         Thread();
         virtual ~Thread();
 
-        ThreadError create(u32 stackSize = 0);
+        ThreadError create(uint32 stackSize = 0);
         ThreadError run();
 
         ExitCode waitExit();

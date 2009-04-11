@@ -48,7 +48,7 @@ namespace hare_graphics
 	struct RegisterDataBase
 	{
 		char* type;
-		u32  devILTypeID;
+		uint32  devILTypeID;
 	};
 
 	RegisterDataBase registerDataBase[] =
@@ -85,7 +85,7 @@ namespace hare_graphics
 	}
 
 
-	DevILImageCodec::DevILImageCodec(const String& type, u32 devILTypeID)
+	DevILImageCodec::DevILImageCodec(const String& type, uint32 devILTypeID)
 		:ImageCodec(type, devILTypeID)
 	{
 		initializion();
@@ -161,7 +161,7 @@ namespace hare_graphics
 		//	data = iGetFlipped(ilImg);
 		//}
 
-		u32 imageSize = ilGetInteger( IL_IMAGE_WIDTH ) * ilGetInteger( IL_IMAGE_HEIGHT ) * ilGetInteger( IL_IMAGE_BYTES_PER_PIXEL );
+		uint32 imageSize = ilGetInteger( IL_IMAGE_WIDTH ) * ilGetInteger( IL_IMAGE_HEIGHT ) * ilGetInteger( IL_IMAGE_BYTES_PER_PIXEL );
 		output.allocate( imageSize );
 
 		memcpy(output.getData(), data, imageSize); //ilGetData(), ImageSize);

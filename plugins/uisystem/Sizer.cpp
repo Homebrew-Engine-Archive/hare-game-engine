@@ -30,9 +30,9 @@ namespace hare_ui
     // ---------------------------------------------------------------
     HARE_IMPLEMENT_ABSTRACT_CLASS(SizerItem, Object, 0)
     {
-        HARE_META(proportion, u32)
-        HARE_META(border, u32)
-        HARE_ENUM_F(flag, u32, uiEnumFlags, propEnumIsFlag)
+        HARE_META(proportion, uint32)
+        HARE_META(border, uint32)
+        HARE_ENUM_F(flag, uint32, uiEnumFlags, propEnumIsFlag)
     }
 
     SizerItem::SizerItem(int prop, int flg, int bdr)
@@ -72,12 +72,12 @@ namespace hare_ui
 
         if (flag & uiShaped)
         {
-            f32 ratio = minSize.cx / minSize.cy;
-            f32 tw = tsize.cy * ratio;
+            float ratio = minSize.cx / minSize.cy;
+            float tw = tsize.cy * ratio;
 
             if (tw > tsize.cx)
             {
-                f32 th = tsize.cx / ratio;
+                float th = tsize.cx / ratio;
                 if (flag & uiAlign_Center_Vertical)
                     tpos.y += (tsize.cy - th) / 2;
                 else if (flag & uiAlign_Bottom)
@@ -257,7 +257,7 @@ namespace hare_ui
     {
     }
 
-    SizerItemSpacer::SizerItemSpacer(f32 w, f32 h, int prop, int flg, int bdr)
+    SizerItemSpacer::SizerItemSpacer(float w, float h, int prop, int flg, int bdr)
         : SizerItem(prop, flg, bdr)
     {
         spacer = new SizerSpacer(SizeF(w, h));
@@ -314,7 +314,7 @@ namespace hare_ui
     {
     }
 
-    SizerItem* Sizer::add(f32 width, f32 height, int proportion /* = 0 */, int flag /* = 0 */, int border /* = 0 */)
+    SizerItem* Sizer::add(float width, float height, int proportion /* = 0 */, int flag /* = 0 */, int border /* = 0 */)
     {
         return insert(items.size(), new SizerItemSpacer(width, height, proportion, flag, border));
     }
@@ -329,7 +329,7 @@ namespace hare_ui
         return insert(items.size(), new SizerItemWindow(window, proportion, flag, border));
     }
 
-    SizerItem* Sizer::insert(size_t index, f32 width, f32 height, int proportion /* = 0 */, int flag /* = 0 */, int border /* = 0 */)
+    SizerItem* Sizer::insert(size_t index, float width, float height, int proportion /* = 0 */, int flag /* = 0 */, int border /* = 0 */)
     {
         return insert(index, new SizerItemSpacer(width, height, proportion, flag, border));
     }

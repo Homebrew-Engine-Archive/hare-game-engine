@@ -24,11 +24,11 @@ namespace hare_core
             VA_Save,
         };
         std::iostream *stream;
-        u32 classVersion;
+        uint32 classVersion;
         VisitorAction action;
 
     public:
-        void visitEnter(const char* name, bool super, u32 curVersion)
+        void visitEnter(const char* name, bool super, uint32 curVersion)
         {
             if (super)
             {
@@ -37,11 +37,11 @@ namespace hare_core
                 {
                 case VA_Load:
                     // load the version into classVersion
-                    visitMeta<u32>(header.c_str(), classVersion, "u32", 0, 0);
+                    visitMeta<uint32>(header.c_str(), classVersion, "uint32", 0, 0);
                     break;
                 case VA_Save:
                     // save the current version
-                    visitMeta<u32>(header.c_str(), curVersion, "u32", 0, 0);
+                    visitMeta<uint32>(header.c_str(), curVersion, "uint32", 0, 0);
                     break;
                 default:
                     assert(false);
@@ -50,7 +50,7 @@ namespace hare_core
         }
 
         template <typename T>
-        void visitMeta(const char* name, T &obj, const char* typeName, u32 flags, EnumMap* enumMap)
+        void visitMeta(const char* name, T &obj, const char* typeName, uint32 flags, EnumMap* enumMap)
         {
             switch (action)
             {
@@ -70,7 +70,7 @@ namespace hare_core
         }
 
         template <typename T>
-        void visitMetaArray(const char* name, std::vector<T> &obj, const char* typeName, u32 flags)
+        void visitMetaArray(const char* name, std::vector<T> &obj, const char* typeName, uint32 flags)
         {
             switch (action)
             {
@@ -96,7 +96,7 @@ namespace hare_core
         }
 
         template <typename T>
-        void visitObject(const char* name, T* &obj, ClassInfo *cls, u32 flags)
+        void visitObject(const char* name, T* &obj, ClassInfo *cls, uint32 flags)
         {
             switch (action)
             {
@@ -112,7 +112,7 @@ namespace hare_core
                     String className;
                     _visitMetaString(stream, className);
 
-                    u32 _classVersion = 0;
+                    uint32 _classVersion = 0;
                     int objSize = 0;
 
                     stream->read((char*)&_classVersion, sizeof(_classVersion));
@@ -195,7 +195,7 @@ namespace hare_core
         }
 
         template <typename T>
-        void visitObject(const char* name, Pointer<T> &obj, ClassInfo *cls, u32 flags)
+        void visitObject(const char* name, Pointer<T> &obj, ClassInfo *cls, uint32 flags)
         {
             T* tmpObj = 0;
             visitObject(name, tmpObj, cls, flags);
@@ -203,13 +203,13 @@ namespace hare_core
         }
 
         template<typename T>
-        void visitObjectArray(const char* name, std::vector<T> &obj, ClassInfo *cls, u32 flags)
+        void visitObjectArray(const char* name, std::vector<T> &obj, ClassInfo *cls, uint32 flags)
         {
             _visitObjects<T, std::vector<T> >(name, obj, cls, flags);
         }
 
         template<typename T>
-        void visitObjectList(const char* name, std::list<T> &obj, ClassInfo *cls, u32 flags)
+        void visitObjectList(const char* name, std::list<T> &obj, ClassInfo *cls, uint32 flags)
         {
             _visitObjects<T, std::list<T> >(name, obj, cls, flags);
         }
@@ -246,7 +246,7 @@ namespace hare_core
         }
 
         template <typename T, typename U>
-        inline void _visitObjects(const char* name, U& obj, ClassInfo* cls, u32 flags)
+        inline void _visitObjects(const char* name, U& obj, ClassInfo* cls, uint32 flags)
         {
             switch (action)
             {
@@ -285,13 +285,13 @@ namespace hare_core
     };
 
     template <>
-    inline void BinVisitor::visitMeta(const char* name, String &obj, const char* typeName, u32 flags, EnumMap* enumMap)
+    inline void BinVisitor::visitMeta(const char* name, String &obj, const char* typeName, uint32 flags, EnumMap* enumMap)
     {
         _visitMetaString(stream, obj);
     }
 
     template <>
-    inline void BinVisitor::visitMetaArray<String>(const char* name, StringVector &obj, const char* typeName, u32 flags)
+    inline void BinVisitor::visitMetaArray<String>(const char* name, StringVector &obj, const char* typeName, uint32 flags)
     {
         switch (action)
         {

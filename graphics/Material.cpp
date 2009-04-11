@@ -154,7 +154,7 @@ namespace hare_graphics
 				startTime = getTime();
 			}
 
-			f32 detTime = getTime() - startTime;
+			float detTime = getTime() - startTime;
 
 			PointF curAngle;
 			curAngle.x = oscillationRate.x*detTime + oscillationPhase.x;
@@ -209,7 +209,7 @@ namespace hare_graphics
 				startTime = getTime();
 			}
 
-			f32 detTime = getTime() - startTime;
+			float detTime = getTime() - startTime;
 
 			PointF curAngle;
 			curAngle.x = oscillationRate.x*detTime + oscillationPhase.x;
@@ -272,14 +272,14 @@ namespace hare_graphics
 				startTime = getTime();
 			}
 
-			f32 detTime = getTime() - startTime;
+			float detTime = getTime() - startTime;
 
-			f32 cur = oscillationRate*detTime + oscillationPhase;
-			f32 degree;
+			float cur = oscillationRate*detTime + oscillationPhase;
+			float degree;
 			degree = rotation + MathUtil::sinf(MathUtil::toRadian(cur))*(oscillationAmplitude/2.f) + speed*detTime;
 
-			f32 c = MathUtil::cosf(MathUtil::toRadian(degree));
-			f32 s = MathUtil::sinf(MathUtil::toRadian(degree));
+			float c = MathUtil::cosf(MathUtil::toRadian(degree));
+			float s = MathUtil::sinf(MathUtil::toRadian(degree));
 
 			Matrix4 mat;
 			mat = Matrix4::IDENTITY;
@@ -342,7 +342,7 @@ namespace hare_graphics
 
 	void AnimMod::frameMove()
 	{
-		static f32 frameStartTime = 0;
+		static float frameStartTime = 0;
 
 		if (!mtrl)
 			return;

@@ -27,12 +27,12 @@ namespace hare_core
         AttVisitor() : owner(0)
         {
         }
-        void visitEnter(const char* name, bool super, u32 curVersion)
+        void visitEnter(const char* name, bool super, uint32 curVersion)
         {
         }
 
         template <typename T>
-        void visitMeta(const char* name, T &obj, const char* typeName, u32 flags, EnumMap* enumMap)
+        void visitMeta(const char* name, T &obj, const char* typeName, uint32 flags, EnumMap* enumMap)
         {
             assert(owner);
             Attribute* attr = new Attribute;
@@ -47,7 +47,7 @@ namespace hare_core
         }
 
         template <typename T>
-        void visitMetaArray(const char* name, std::vector<T> &obj, const char* typeName, u32 flags)
+        void visitMetaArray(const char* name, std::vector<T> &obj, const char* typeName, uint32 flags)
         {
             assert(owner);
             Attribute* attr = new Attribute;
@@ -61,7 +61,7 @@ namespace hare_core
         }
 
         template <typename T>
-        void visitObject(const char* name, T* &obj, ClassInfo*, u32 flags)
+        void visitObject(const char* name, T* &obj, ClassInfo*, uint32 flags)
         {
             assert(owner);
             Attribute* attr = new Attribute;
@@ -75,13 +75,13 @@ namespace hare_core
         }
 
         template <typename T>
-        void visitObject(const char* name, Pointer<T> &obj, ClassInfo *cls, u32 flags)
+        void visitObject(const char* name, Pointer<T> &obj, ClassInfo *cls, uint32 flags)
         {
             visitObject(name, obj.pointerRef(), cls, flags);
         }
 
         template<typename T>
-        void visitObjectArray(const char* name, std::vector<T> &obj, ClassInfo *cls, u32 flags)
+        void visitObjectArray(const char* name, std::vector<T> &obj, ClassInfo *cls, uint32 flags)
         {
             assert(owner);
             Attribute* attr = new Attribute;
@@ -95,7 +95,7 @@ namespace hare_core
         }
 
         template<typename T>
-        void visitObjectList(const char* name, std::list<T> &obj, ClassInfo *cls, u32 flags)
+        void visitObjectList(const char* name, std::list<T> &obj, ClassInfo *cls, uint32 flags)
         {
             assert(owner);
             Attribute* attr = new Attribute;

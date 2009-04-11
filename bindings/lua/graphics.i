@@ -31,7 +31,7 @@ public:
 	
 	void loadFromImage(const String& filename);
 	
-	void move(f32 x, f32 y);
+	void move(float x, float y);
 };
 
 class SceneListenerBase
@@ -69,10 +69,10 @@ public:
 
 struct WindowParams
 {
-	u32    hwnd;
+	uint32    hwnd;
 	bool   bFullScreen;
-	u32    width;
-	u32    height;
+	uint32    width;
+	uint32    height;
 	bool   bZbuffer;
 	String title;
 };
@@ -88,7 +88,7 @@ public:
 	
 	virtual void create(const WindowParams& params) = 0;
 
-	virtual void resize(u32 w, u32 h) = 0;
+	virtual void resize(uint32 w, uint32 h) = 0;
 
 	virtual void swapBuffer() = 0;
 
@@ -172,7 +172,7 @@ Canvas* getCanvas();
 class TextManager
 {
 public:
-	Font* createFont(const String& name, f32 size);
+	Font* createFont(const String& name, float size);
 	void  destroyFont(Font* f);
 };
 
@@ -187,12 +187,12 @@ public:
 	virtual void render() = 0;
 	virtual void frameMove() = 0;
 	virtual void fire() = 0;
-	virtual void fireAt(f32 x, f32 y) = 0;
-	virtual void move(f32 offsetX, f32 offsetY) = 0;
-	virtual void moveTo(f32 x, f32 y) = 0;
+	virtual void fireAt(float x, float y) = 0;
+	virtual void move(float offsetX, float offsetY) = 0;
+	virtual void moveTo(float x, float y) = 0;
 	virtual void pause() = 0;
 	virtual void stop() = 0;
 
 	virtual PointF getPosition();
-	virtual void setPosition(f32 x, f32 y);
+	virtual void setPosition(float x, float y);
 };

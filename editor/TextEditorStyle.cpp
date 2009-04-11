@@ -23,18 +23,18 @@ namespace hare_editor
     HARE_IMPLEMENT_DYNAMIC_CLASS(OptionColour, Object, 0)
     {
         HARE_META(name, String)
-        HARE_META(value, s32)
+        HARE_META(value, int32)
         HARE_META(fore, String)
         HARE_META(back, String)
-        HARE_ENUM(bold, u8, Bool)
-        HARE_ENUM(italics, u8, Bool)
-        HARE_ENUM(underlined, u8, Bool)
+        HARE_ENUM(bold, uint8, Bool)
+        HARE_ENUM(italics, uint8, Bool)
+        HARE_ENUM(underlined, uint8, Bool)
     }
 
     HARE_IMPLEMENT_DYNAMIC_CLASS(OptionSet, Object, 0)
     {
         HARE_META(lang, String)
-        HARE_META(lexer, s32)
+        HARE_META(lexer, int32)
         HARE_OBJ_ARRAY(colours, OptionColour)
         HARE_META_ARRAY(keywords, String)
         HARE_META_ARRAY(fileMasks, String)
@@ -149,7 +149,7 @@ namespace hare_editor
 
         for (OptionSetsMap::iterator it = setsMap.begin(); it != setsMap.end(); ++it)
         {
-            for (u32 i = 0; i < it->second->fileMasks.size(); ++i)
+            for (uint32 i = 0; i < it->second->fileMasks.size(); ++i)
             {
                 wxString mask = wxString::FromUTF8(it->second->fileMasks[i].c_str());
                 if (lfname.Matches(mask))
@@ -197,7 +197,7 @@ namespace hare_editor
 
         OptionSet::Ptr curSet = setsMap[lang];
 
-        for (u32 i = 0; i < curSet->colours.size(); ++i)
+        for (uint32 i = 0; i < curSet->colours.size(); ++i)
         {
             OptionColour::Ptr opt = curSet->colours[i];
             doApplyStyle(control, opt->value, opt);
@@ -205,7 +205,7 @@ namespace hare_editor
 
         control->SetLexer(curSet->lexer);
         control->SetStyleBits(control->GetStyleBitsNeeded());
-        for (u32 i = 0; i <= wxSCI_KEYWORDSET_MAX && i < curSet->keywords.size(); ++i)
+        for (uint32 i = 0; i <= wxSCI_KEYWORDSET_MAX && i < curSet->keywords.size(); ++i)
         {
             control->SetKeyWords(i, wxString::FromUTF8(curSet->keywords[i].c_str()));
         }
@@ -243,7 +243,7 @@ namespace hare_editor
         if (lang == HL_NONE)
             return 0;
         OptionSet::Ptr curSet = setsMap[lang];
-        for (u32 i = 0; i < curSet->colours.size(); ++i)
+        for (uint32 i = 0; i < curSet->colours.size(); ++i)
         {
             OptionColour::Ptr opt = curSet->colours[i];
             if (opt->value == value)

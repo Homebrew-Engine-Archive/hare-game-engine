@@ -8,7 +8,7 @@ class D3DIndexBufferManager : public Singleton<D3DIndexBufferManager> , public D
 {
 	HARE_DECLARE_SINGLETON(D3DIndexBufferManager)
 public:
-	D3DIndexBufferManager(u32 size);
+	D3DIndexBufferManager(uint32 size);
 	virtual ~D3DIndexBufferManager();
 
 	virtual void beforeResetDevice();
@@ -16,7 +16,7 @@ public:
 
 	void release();
 private:
-	const u32 IndexBufferSize;
+	const uint32 IndexBufferSize;
 
 	LPDIRECT3DINDEXBUFFER9 d3dIndexBuffer;
 };

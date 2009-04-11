@@ -17,7 +17,7 @@ namespace hare_core
 {
     ClassNameMap* ClassInfo::classMap = 0;
 
-    ClassInfo::ClassInfo(const char* name, u32 version, u32 size, ClassInfo* base,
+    ClassInfo::ClassInfo(const char* name, uint32 version, uint32 size, ClassInfo* base,
         ObjectConstructorFunc ctor)
             : className(name)
             , classVersion(version)

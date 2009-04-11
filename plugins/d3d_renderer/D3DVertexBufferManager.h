@@ -11,7 +11,7 @@ class D3DVertexBufferManager : public Singleton<D3DVertexBufferManager> , public
 	friend class D3DRenderSystem;
 public:
 
-	D3DVertexBufferManager(u32 size, u32 FVF);
+	D3DVertexBufferManager(uint32 size, uint32 FVF);
 	virtual ~D3DVertexBufferManager();
 
 	virtual void beforeResetDevice();
@@ -19,11 +19,11 @@ public:
 
 	void lockBuffer();
 	void unlockBuffer();
-	void writeBuffer(Vertex* buffer, u32 vertexCnt, u32 primCnt);
-	//void readBuffer(Vertex* buffer, u32 size);
+	void writeBuffer(Vertex* buffer, uint32 vertexCnt, uint32 primCnt);
+	//void readBuffer(Vertex* buffer, uint32 size);
 
-	u32 getVectexCount();
-	u32 getPrimCount();
+	uint32 getVectexCount();
+	uint32 getPrimCount();
 
 	void release();
 
@@ -34,13 +34,13 @@ private:
 
 	LPDIRECT3DVERTEXBUFFER9 d3dVectexBuffer;
 
-	u32 vertexCount;
+	uint32 vertexCount;
 
-	u32 primCount;
+	uint32 primCount;
 
-	const u32 bufferSize;
+	const uint32 bufferSize;
 
-	const u32 vertexFVF;
+	const uint32 vertexFVF;
 };
 
 

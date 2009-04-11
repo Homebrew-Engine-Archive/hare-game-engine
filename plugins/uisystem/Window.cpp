@@ -22,7 +22,7 @@ namespace hare_ui
         return min;
     }
 
-    f32 Window::adjustForLayoutDirection(f32 x, f32 width, f32 widthTotal) const
+    float Window::adjustForLayoutDirection(float x, float width, float widthTotal) const
     {
         if (getLayoutDirection() == uiLayout_RightToLeft)
         {

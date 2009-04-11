@@ -6,7 +6,7 @@
 namespace hare_core
 {
     CORE_API Timer& getTimer();
-    CORE_API f32 getTime();
+    CORE_API float getTime();
 
 	class CORE_API Timer
 	{
@@ -17,19 +17,19 @@ namespace hare_core
 			oldFPSTime = curTime;
 		}
 
-		f32 getDeltaTime()
+		float getDeltaTime()
 		{
 			return deltaTime;
 		}
 
-		f32 getFPS()
+		float getFPS()
 		{
 			return FPS;
 		}
 
 		void update()
 		{
-			f32 cur = getTime();
+			float cur = getTime();
 			deltaTime = cur - curTime;
 			curTime = cur;
 
@@ -44,11 +44,11 @@ namespace hare_core
 		}
 
 	private:
-		f32 deltaTime;
-		f32 curTime;
-		f32 FPS;
-		u32 frameCount;
-		f32 oldFPSTime;
+		float deltaTime;
+		float curTime;
+		float FPS;
+		uint32 frameCount;
+		float oldFPSTime;
 	};
 }
 

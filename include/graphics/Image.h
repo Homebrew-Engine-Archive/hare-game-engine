@@ -15,20 +15,20 @@ namespace hare_graphics
 		Image(const Image& rhs);
 		virtual ~Image();
 
-		void create(u32 width, u32 height, HarePixelFormat format);
+		void create(uint32 width, uint32 height, HarePixelFormat format);
 		void destory();
 
 		bool loadFromFile(const String& fileName);
 		bool loadFromMemery(const DataHolder& input, const String& type);
 		bool saveToFile(const String& fileName);
 
-		u32 getWidth() const;
-		u32 getHeight() const;
+		uint32 getWidth() const;
+		uint32 getHeight() const;
 		HarePixelFormat getPixelFormat() const;
 
 		void* getImageData() const;
-		u32  getImageSize() const;
-		u32  getRowStride() const;//一行的size
+		uint32  getImageSize() const;
+		uint32  getRowStride() const;//一行的size
 
 		bool  scale(int newWidth, int newHeight);
 

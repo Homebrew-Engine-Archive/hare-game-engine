@@ -89,9 +89,9 @@ namespace hare_ui
         virtual void setDimension(const PointF& ps, const SizeF& sz);
 
     protected:
-        u32 proportion;
-        u32 border;
-        u32 flag;
+        uint32 proportion;
+        uint32 border;
+        uint32 flag;
 
         PointF pos;
         SizeF minSize;
@@ -136,7 +136,7 @@ namespace hare_ui
     {
         HARE_DECLARE_DYNAMIC_CLASS(SizerItemSpacer)
     public:
-        SizerItemSpacer(f32 w, f32 h, int prop, int flg, int bdr);
+        SizerItemSpacer(float w, float h, int prop, int flg, int bdr);
         virtual ~SizerItemSpacer();
 
         virtual SizeF getSize() const;
@@ -198,8 +198,8 @@ namespace hare_ui
                     int flag = 0,
                     int border = 0);
 
-        SizerItem* add(f32 width,
-                    f32 height,
+        SizerItem* add(float width,
+                    float height,
                     int proportion = 0,
                     int flag = 0,
                     int border = 0);
@@ -217,8 +217,8 @@ namespace hare_ui
                     int border = 0);
 
         SizerItem* insert(size_t index,
-                    f32 width,
-                    f32 height,
+                    float width,
+                    float height,
                     int proportion = 0,
                     int flag = 0,
                     int border = 0);

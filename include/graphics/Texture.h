@@ -27,19 +27,19 @@ namespace hare_graphics
 
 		virtual ~Texture();
 
-        void create(u32 w, u32 h, HarePixelFormat format, bool isRenderable = false);
+        void create(uint32 w, uint32 h, HarePixelFormat format, bool isRenderable = false);
         void createFromFile(const String& filename);     
 		
-		void setProjectionSize(f32 w, f32 h);
+		void setProjectionSize(float w, float h);
 
-		u32 getWidth(){
+		uint32 getWidth(){
             return width;
         }
-        u32 getHeight(){
+        uint32 getHeight(){
             return height;
         }
 
-		u32 getSize() {
+		uint32 getSize() {
 			return size;
 		}
 
@@ -52,7 +52,7 @@ namespace hare_graphics
 		}
 
 		//Copies an image to the texture.
-		virtual void upload(const Image& img, u32 destX = 0, u32 destY = 0) = 0;
+		virtual void upload(const Image& img, uint32 destX = 0, uint32 destY = 0) = 0;
 
 		//Gets an image from a texture.
 		virtual void download(Image& img, const RectN& rc = RectN(0,0,0,0)) = 0;
@@ -62,14 +62,14 @@ namespace hare_graphics
     protected:
         String fileName;
 
-		u32 width;
-		u32 height;
-        u32 size;
+		uint32 width;
+		uint32 height;
+        uint32 size;
 
 		HarePixelFormat texPixelFormat;
 
-		f32 projectionWidth;
-		f32 projectionHeight;
+		float projectionWidth;
+		float projectionHeight;
 
         bool bIsRenderable;
 		bool bFromImage;

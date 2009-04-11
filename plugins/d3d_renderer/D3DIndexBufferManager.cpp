@@ -6,7 +6,7 @@
 
 HARE_IMPLEMENT_SINGLETON(D3DIndexBufferManager)
 
-D3DIndexBufferManager::D3DIndexBufferManager(u32 size)
+D3DIndexBufferManager::D3DIndexBufferManager(uint32 size)
 	:IndexBufferSize(size)
 	,d3dIndexBuffer(NULL)
 {
@@ -50,7 +50,7 @@ void D3DIndexBufferManager::afterResetDevice()
 		assert(false);
 	}
 
-	for(u32 i = 0; i < IndexBufferSize / 4; i++)
+	for(uint32 i = 0; i < IndexBufferSize / 4; i++)
 	{
 		*pIndices++ = n;
 		*pIndices++ = n + 1;

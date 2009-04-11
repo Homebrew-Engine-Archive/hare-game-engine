@@ -3,7 +3,7 @@
 
 namespace hare_core
 {
-    f32 Vector2::angle(const Vector2 *v) const
+    float Vector2::angle(const Vector2 *v) const
     {
         if (v)
         {
@@ -16,7 +16,7 @@ namespace hare_core
             return MathUtil::atan2f(y, x);
     }
 
-    Vector2* Vector2::rotate(f32 a)
+    Vector2* Vector2::rotate(float a)
     {
         Vector2 v;
 

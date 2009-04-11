@@ -133,7 +133,7 @@ namespace hare_ui
             return uiLayout_Default; 
         }
 
-        virtual f32 adjustForLayoutDirection(f32 x, f32 width, f32 widthTotal) const;
+        virtual float adjustForLayoutDirection(float x, float width, float widthTotal) const;
 
     public:
         virtual void setTitle(const String& title) = 0;

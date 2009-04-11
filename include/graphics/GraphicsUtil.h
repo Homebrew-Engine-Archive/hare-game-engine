@@ -9,7 +9,7 @@ namespace hare_graphics
 	class GRAPHICS_API GraphicsUtil
 	{
 	public:
-		static u32 getPixelFormatBytes(HarePixelFormat hpf);
+		static uint32 getPixelFormatBytes(HarePixelFormat hpf);
 	};
 
 }

@@ -31,7 +31,7 @@ namespace hare_graphics
 	//	//}
 	//}
 
-	u32 GraphicsUtil::getPixelFormatBytes(HarePixelFormat hpf)
+	uint32 GraphicsUtil::getPixelFormatBytes(HarePixelFormat hpf)
 	{
 		switch(hpf)
 		{

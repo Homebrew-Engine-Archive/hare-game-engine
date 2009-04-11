@@ -15,7 +15,7 @@ namespace hare_graphics
 		clear();
 	}
 
-	void DataHolder::set(u8* data, u32 size)
+	void DataHolder::set(uint8* data, uint32 size)
 	{
 		assert(data && size >  0);
 
@@ -26,13 +26,13 @@ namespace hare_graphics
 
 	}
 
-	void DataHolder::allocate(u32 size)
+	void DataHolder::allocate(uint32 size)
 	{
 		assert(size);
 
 		clear();
 
-		this->data = new u8[size];
+		this->data = new uint8[size];
 		this->size = size;
 		memset(this->data, 0, this->size);
 	}

@@ -14,7 +14,7 @@ public:
 
 	virtual void create(const WindowParams& params);
 
-	virtual void resize(u32 w, u32 h);
+	virtual void resize(uint32 w, uint32 h);
 
 	virtual void swapBuffer();
 

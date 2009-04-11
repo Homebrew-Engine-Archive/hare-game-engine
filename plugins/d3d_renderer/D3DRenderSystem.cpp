@@ -7,9 +7,9 @@
 #include "D3DTypeConverter.h"
 
 
-const u32 D3DRenderSystem::VERTEX_CAPACITY = 4096;
+const uint32 D3DRenderSystem::VERTEX_CAPACITY = 4096;
 
-const u32 D3DRenderSystem::VERTEX_FVF = (D3DFVF_XYZ|D3DFVF_DIFFUSE|D3DFVF_TEX1);
+const uint32 D3DRenderSystem::VERTEX_FVF = (D3DFVF_XYZ|D3DFVF_DIFFUSE|D3DFVF_TEX1);
 
 D3DRenderSystem::D3DRenderSystem()
 	:pD3DDevice(NULL)
@@ -322,8 +322,8 @@ void D3DRenderSystem::endFrame()
 
 void D3DRenderSystem::clear(bool z)
 {
-	u32 flags;
-	f32 fZ = 0;
+	uint32 flags;
+	float fZ = 0;
 
 	flags = D3DCLEAR_TARGET;
 	if (z){

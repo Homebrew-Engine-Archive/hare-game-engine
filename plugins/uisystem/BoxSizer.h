@@ -28,10 +28,10 @@ namespace hare_ui
     protected:
         int orient;
         int stretchable;
-        f32 minWidth;
-        f32 minHeight;
-        f32 fixedWidth;
-        f32 fixedHeight;
+        float minWidth;
+        float minHeight;
+        float fixedWidth;
+        float fixedHeight;
     };
 }
 

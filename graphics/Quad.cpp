@@ -19,12 +19,12 @@ namespace hare_graphics
 		return buffer;
 	}
 
-	u32 Quad::getVertexCount()
+	uint32 Quad::getVertexCount()
 	{
 		return 4;
 	}
 
-	u32 Quad::getPrimCount()
+	uint32 Quad::getPrimCount()
 	{
 		return 2;
 	}
@@ -82,7 +82,7 @@ namespace hare_graphics
 		buffer[0].diffuse = buffer[1].diffuse = 
 		buffer[2].diffuse = buffer[3].diffuse = -1;
 	}
-	void Quad::setTextureUVMap(f32 ul, f32 vt, f32 ur, f32 vb)
+	void Quad::setTextureUVMap(float ul, float vt, float ur, float vb)
 	{
 		buffer[0].u = ul;	
 		buffer[0].v = vt;		
@@ -106,12 +106,12 @@ namespace hare_graphics
 		buffer[3].v = rc.minY;	
 	}
 
-	void Quad::setDepth(f32 z)
+	void Quad::setDepth(float z)
 	{
 		buffer[0].z = buffer[1].z = buffer[2].z = buffer[3].z = z;
 	}
 
-	void Quad::setColor(u32 color)
+	void Quad::setColor(uint32 color)
 	{
 		buffer[0].diffuse = buffer[1].diffuse = 
 		buffer[2].diffuse = buffer[3].diffuse = color;

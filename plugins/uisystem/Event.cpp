@@ -165,7 +165,7 @@ namespace hare_ui
     bool EventHandler::handleEvent(Event& event)
     {
         const EventTable* tablePtr = getEventTable();
-        u16 val = u16(((u32)tablePtr ^ event.getEventType()) & 0xffff);
+        uint16 val = uint16(((uint32)tablePtr ^ event.getEventType()) & 0xffff);
         int idx = val & (EventCacheHashMax - 1);
         InternalEventCache* cache = &eventCache[idx];
 

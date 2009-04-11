@@ -25,7 +25,7 @@ namespace hare_graphics
 		fontList.clear();
 	}
 
-	Font* TextManager::createFont(const String& name, f32 size)
+	Font* TextManager::createFont(const String& name, float size)
 	{
 		Font* font;
 		try{
@@ -47,12 +47,12 @@ namespace hare_graphics
 		}
 	}
 
-	void TextManager::setFontResolution(u32 resolution)
+	void TextManager::setFontResolution(uint32 resolution)
 	{
 		fontResolution = resolution;
 	}
 
-	void TextManager::setCacheSize(u32 cacheSize)
+	void TextManager::setCacheSize(uint32 cacheSize)
 	{
 		fontCacheSize = cacheSize;
 	}

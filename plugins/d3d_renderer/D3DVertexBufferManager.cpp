@@ -6,7 +6,7 @@
 
 HARE_IMPLEMENT_SINGLETON(D3DVertexBufferManager)
 
-D3DVertexBufferManager::D3DVertexBufferManager(u32 size, u32 FVF)
+D3DVertexBufferManager::D3DVertexBufferManager(uint32 size, uint32 FVF)
 	:bufferSize(size)
 	,vertexFVF(FVF)
 	,d3dVectexBuffer(NULL)
@@ -69,7 +69,7 @@ void D3DVertexBufferManager::unlockBuffer()
 	}
 }
 
-void D3DVertexBufferManager::writeBuffer(Vertex* buffer, u32 vertexCnt, u32 primCnt)
+void D3DVertexBufferManager::writeBuffer(Vertex* buffer, uint32 vertexCnt, uint32 primCnt)
 {
 	assert(isLock);
 	memcpy(vertexBuffer + vertexCount, buffer, vertexCnt * sizeof(Vertex));
@@ -77,18 +77,18 @@ void D3DVertexBufferManager::writeBuffer(Vertex* buffer, u32 vertexCnt, u32 prim
 	primCount += primCnt;
 }
 
-//void D3DVertexBufferManager::readBuffer(Vertex* buffer, u32 size)
+//void D3DVertexBufferManager::readBuffer(Vertex* buffer, uint32 size)
 //{
 //	assert(isLock);
 //	memcpy(buffer, vertexBuffer, size);
 //}
 
-u32 D3DVertexBufferManager::getVectexCount()
+uint32 D3DVertexBufferManager::getVectexCount()
 {
 	return vertexCount;
 }
 
-u32 D3DVertexBufferManager::getPrimCount()
+uint32 D3DVertexBufferManager::getPrimCount()
 {
 	return primCount;
 }

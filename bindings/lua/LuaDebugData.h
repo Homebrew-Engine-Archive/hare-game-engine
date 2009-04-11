@@ -26,8 +26,8 @@ class LuaDebugItem : public Object
     HARE_DECLARE_DYNAMIC_CLASS(LuaDebugItem)
 
 public:
-    LuaDebugItem(const String& key, u8 keyType, const String& value,
-        u8 valueType, const String& source, s32 idx, s32 flg)
+    LuaDebugItem(const String& key, uint8 keyType, const String& value,
+        uint8 valueType, const String& source, int32 idx, int32 flg)
         : itemKey(key), itemKeyType(keyType), itemValue(value), itemValueType(valueType), 
           itemSource(source), index(idx), flag(flg) {}
 
@@ -36,12 +36,12 @@ public:
 
 public:
     String   itemKey;
-    u8       itemKeyType;
+    uint8       itemKeyType;
     String   itemValue;
-    u8       itemValueType;
+    uint8       itemValueType;
     String   itemSource;
-    s32      index;
-    s32      flag;
+    int32      index;
+    int32      flag;
 };
 
 class LuaDebugData : public Object

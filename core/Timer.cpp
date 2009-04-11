@@ -11,9 +11,9 @@
 
 namespace hare_core
 {
-	f32 getTime()
+	float getTime()
 	{
-		f32 cur;
+		float cur;
 
 	#if HARE_PLATFORM == HARE_PLATFORM_WIN32
 		static bool sInitialized = false;
@@ -45,16 +45,16 @@ namespace hare_core
 		}
 
 		// convert the polled value to seconds
-		cur = (f32)(seconds * sTimerSecondsConversion);
+		cur = (float)(seconds * sTimerSecondsConversion);
 
 	#else // #if OO_PLATFORM == OO_PLATFORM_WIN32
 
-		cur = (f32)clock() / CLOCKS_PER_SEC;
+		cur = (float)clock() / CLOCKS_PER_SEC;
 
 	#endif
 
 		// avoid the case of Utility::GetTime() returning the time which may smaller the last one, really weired.
-		static f32 last = 0.f;
+		static float last = 0.f;
 
 		if (last >= cur)
 			return last;

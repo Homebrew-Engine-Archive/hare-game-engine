@@ -18,7 +18,7 @@ public:
 
 	virtual void afterResetDevice();
 
-	virtual void upload(const Image& img, u32 destX = 0, u32 destY = 0);
+	virtual void upload(const Image& img, uint32 destX = 0, uint32 destY = 0);
 
 	virtual void download(Image& img, const RectN& rc = RectN(0,0,0,0));
 

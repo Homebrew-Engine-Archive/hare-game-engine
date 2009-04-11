@@ -4,12 +4,12 @@
 HARE_IMPLEMENT_DYNAMIC_CLASS(LuaDebugItem, Object, 0)
 {
     HARE_META(itemKey, String)
-    HARE_META(itemKeyType, u8)
+    HARE_META(itemKeyType, uint8)
     HARE_META(itemValue, String)
-    HARE_META(itemValueType, u8)
+    HARE_META(itemValueType, uint8)
     HARE_META(itemSource, String)
-    HARE_META(index, s32)
-    HARE_META(flag, s32)
+    HARE_META(index, int32)
+    HARE_META(flag, int32)
 }
 
 HARE_IMPLEMENT_DYNAMIC_CLASS(LuaDebugData, Object, 0)

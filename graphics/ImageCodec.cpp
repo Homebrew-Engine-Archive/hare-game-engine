@@ -5,7 +5,7 @@ namespace hare_graphics
 {
 	std::map<String, ImageCodec*> ImageCodec::codecMap;
 
-	ImageCodec::ImageCodec(const String& type, u32 devILTypeID)
+	ImageCodec::ImageCodec(const String& type, uint32 devILTypeID)
 		:codecType(type)
 		,typeID(devILTypeID)
 	{

@@ -55,7 +55,7 @@ namespace hare_core
         {}
 
         // Get the port used for the socket, -1 if not initialized
-        s32 getPortNumber() const
+        int32 getPortNumber() const
         {
             return portNumber;
         }
@@ -71,10 +71,10 @@ namespace hare_core
 
         // Read the number of bytes length into buffer from the socket
         //  the buffer must be large enough to hold the data.
-        virtual int read(char *buffer, u32 length) = 0;
+        virtual int read(char *buffer, uint32 length) = 0;
 
         // Write the whole buffer of number of bytes length to the socket
-        virtual int write(const char *buffer, u32 length) = 0;
+        virtual int write(const char *buffer, uint32 length) = 0;
 
         virtual String getErrorMsg(bool clear);
 
@@ -85,7 +85,7 @@ namespace hare_core
     protected:
         String errorMsg;
         String address;         // The address for the socket to use
-        s32 portNumber;         // The port that's used, else -1
+        int32 portNumber;         // The port that's used, else -1
     };
 
 #if HARE_PLATFORM == HARE_PLATFORM_WIN32
@@ -114,7 +114,7 @@ namespace hare_core
 
         // Create a listening socket, using the specified port number
         //   server: bind and listen for client connections
-        bool listen(u16 port, int backLog = 100);
+        bool listen(uint16 port, int backLog = 100);
 
         // Accept a connection, returning an accepted socket.
         //   server: block until accepting a connection from a client
@@ -122,7 +122,7 @@ namespace hare_core
 
         // Connect to a given host and port number
         //   client: connect a client to a server
-        bool connect(const String &address, u16 port);
+        bool connect(const String &address, uint16 port);
 
         // Get the socket state
         SocketState getState() const { return sockState; }
@@ -145,10 +145,10 @@ namespace hare_core
         }
 
         // Read the whole buffer of byte size length into buffer from the socket
-        virtual int read(char *buffer, u32 length);
+        virtual int read(char *buffer, uint32 length);
 
         // Write the whole buffer of byte size length to the socket
-        virtual int write(const char *buffer, u32 length);
+        virtual int write(const char *buffer, uint32 length);
 
         // Get the last/current error message using the system error
         //   either errno in Unix or WSAGetLastError in MSW, doesn't clear error

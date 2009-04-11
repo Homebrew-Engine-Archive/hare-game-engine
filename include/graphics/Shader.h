@@ -33,7 +33,7 @@ namespace hare_graphics
 		SceneBlendArgument    SceneBlendDesArg;
 
 		bool AlphaTestEnable;
-		u8   AlphaRef;
+		uint8   AlphaRef;
 
 		bool operator != (const ShaderParams& right);
 		bool operator == (const ShaderParams& right);

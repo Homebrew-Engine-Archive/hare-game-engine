@@ -31,10 +31,10 @@ namespace hare_editor
     public:
         String fileName;
         bool editorOpen;
-        s32 editorPos;
-        s32 editorTopLine;
-        s32 editorTabPos;
-        std::vector<s32> breakPoints;
+        int32 editorPos;
+        int32 editorTopLine;
+        int32 editorTabPos;
+        std::vector<int32> breakPoints;
 
         wxFileName fname;
         wxTreeItemId treeId;

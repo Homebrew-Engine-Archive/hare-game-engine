@@ -106,7 +106,7 @@ void D3DRenderWindow::create(const WindowParams& params)
 
         RegisterClass(&wc);
 
-        u32 style = WS_OVERLAPPEDWINDOW;
+        uint32 style = WS_OVERLAPPEDWINDOW;
         if (params.bFullScreen){
             style = WS_POPUP;
         }
@@ -141,9 +141,9 @@ void D3DRenderWindow::create(const WindowParams& params)
 
 	windowParams = params;
 
-	windowParams.hwnd = (u32)hwnd;
+	windowParams.hwnd = (uint32)hwnd;
 
-	SetWindowLongPtr(hwnd, GWLP_USERDATA, (u32)this);
+	SetWindowLongPtr(hwnd, GWLP_USERDATA, (uint32)this);
 
 	//配置信息以后加
 	//从配置文件中得到 D3Dpp
@@ -170,7 +170,7 @@ void D3DRenderWindow::destoryWindow()
 	}
 }
 
-void D3DRenderWindow::resize(u32 w, u32 h)
+void D3DRenderWindow::resize(uint32 w, uint32 h)
 {
 	assert(w > 0 && h > 0);
 
@@ -228,8 +228,8 @@ void D3DRenderWindow::active()
 	D3DXMatrixTranslation(&matTEMP, -0.5f, windowParams.height + 0.5f, 0.0f);
 	D3DXMatrixMultiply(&MatProj, &MatProj, &matTEMP);
 
-	D3DXMatrixOrthoOffCenterRH(&matTEMP, 0, (f32)windowParams.width, 0, 
-		(f32)windowParams.height, 0.0f, 1.0f);//正交投影
+	D3DXMatrixOrthoOffCenterRH(&matTEMP, 0, (float)windowParams.width, 0, 
+		(float)windowParams.height, 0.0f, 1.0f);//正交投影
 
 	D3DXMatrixMultiply(&MatProj, &MatProj, &matTEMP);
 	D3DXMatrixIdentity(&MatView);

@@ -69,11 +69,11 @@ namespace hare_editor
         String language;
 
     public:
-        u8 show_folds;
-        u8 fold_xml;
-        u8 fold_comments;
-        u8 fold_preprocessor;
-        u8 fold_indicator;
+        uint8 show_folds;
+        uint8 fold_xml;
+        uint8 fold_comments;
+        uint8 fold_preprocessor;
+        uint8 fold_indicator;
 	public:
 
         AppConfigFile();

@@ -78,7 +78,7 @@ namespace hare_core
         }
     }
 
-    bool Socket::listen(u16 port, int backLog)
+    bool Socket::listen(uint16 port, int backLog)
     {
         portNumber = port;
 
@@ -141,7 +141,7 @@ namespace hare_core
         return new Socket(acceptedSocket, fromAddr);
     }
 
-    bool Socket::connect(const String &addr, u16 port)
+    bool Socket::connect(const String &addr, uint16 port)
     {
         portNumber = port;
         hostent *host = NULL;
@@ -200,7 +200,7 @@ namespace hare_core
     }
 
     // Write data to an open socket, repeat until all data has been sent.
-    int Socket::write(const char *buffer, u32 length)
+    int Socket::write(const char *buffer, uint32 length)
     {
         if ((sockState != SOCKET_Connected) && (sockState != SOCKET_Accepted))
         {
@@ -208,9 +208,9 @@ namespace hare_core
             return 0;
         }
 
-        u32 len = length;
+        uint32 len = length;
         const char *buf = buffer;
-        u32 num_written = 0;
+        uint32 num_written = 0;
 
         while (num_written < len)
         {
@@ -229,7 +229,7 @@ namespace hare_core
     }
 
     // Read data from an open socket, repeat reading until all data has been read
-    int Socket::read(char *buffer, u32 length)
+    int Socket::read(char *buffer, uint32 length)
     {
         if ((sockState != SOCKET_Connected) && (sockState != SOCKET_Accepted))
         {

@@ -93,7 +93,7 @@ void D3DTexture::afterResetDevice()
 	doCreate();
 }
 
-void D3DTexture::upload(const Image &img, u32 destX, u32 destY)
+void D3DTexture::upload(const Image &img, uint32 destX, uint32 destY)
 {
 	assert(img.getImageData() != NULL && destX >= 0 && destY >= 0 && destX < width && destY < height);
 
@@ -209,10 +209,10 @@ bool D3DTexture::doCreate()
 		assert(!fileName.empty());
 		img.loadFromFile(fileName);
 
-		u32 srcWidth = img.getWidth();
-		u32 srcHeight= img.getHeight();
+		uint32 srcWidth = img.getWidth();
+		uint32 srcHeight= img.getHeight();
 
-		u32 PO2Width, PO2Height;
+		uint32 PO2Width, PO2Height;
 		if (!MathUtil::isPO2(srcWidth) || !MathUtil::isPO2(srcHeight)) {
 
 			PO2Width  = MathUtil::firstPO2From(srcWidth);
@@ -251,15 +251,15 @@ bool D3DTexture::doCreate()
 
 		d3dTexture->LockRect(0, &d3dlr, 0, 0);
 	
-		u8 *pDestBuf = (u8*)d3dlr.pBits;
+		uint8 *pDestBuf = (uint8*)d3dlr.pBits;
 
-		u8 *pSrcBuf  = (u8*)img.getImageData();
+		uint8 *pSrcBuf  = (uint8*)img.getImageData();
 
 		//swap R and B 
 		if (img.getPixelFormat() == HPF_A8B8G8R8){
 			HarePixelType<HPF_A8B8G8R8>* tmpData = (HarePixelType<HPF_A8B8G8R8>*)pSrcBuf;
-			for (u32 count = 0; count < img.getWidth() * img.getHeight(); ++count){
-				u8 tmp;
+			for (uint32 count = 0; count < img.getWidth() * img.getHeight(); ++count){
+				uint8 tmp;
 				tmp        = tmpData->r;
 				tmpData->r = tmpData->b;
 				tmpData->b = tmp;
@@ -267,7 +267,7 @@ bool D3DTexture::doCreate()
 			}
 		}
 
-		for (u32 y = 0; y < srcHeight; ++y){
+		for (uint32 y = 0; y < srcHeight; ++y){
 			memcpy(pDestBuf + y * PO2Width * PixelFB, pSrcBuf + y * srcWidth * PixelFB, srcWidth * PixelFB);
 		}
 

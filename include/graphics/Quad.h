@@ -14,10 +14,10 @@ namespace hare_graphics
 		virtual ~Quad();
 
 		virtual Vertex* getBuffer();
-		virtual u32 getVertexCount();
-		virtual u32	getPrimCount();
+		virtual uint32 getVertexCount();
+		virtual uint32	getPrimCount();
 		virtual RenderUnit::RenderOperationType	getOperationType();
-		virtual void setTextureUVMap(f32 ul, f32 vt, f32 ur, f32 vb);
+		virtual void setTextureUVMap(float ul, float vt, float ur, float vb);
 		virtual void setTextureUVMap(const RectF& rc);
 
 		void move(float dx, float dy);
@@ -27,8 +27,8 @@ namespace hare_graphics
 		void setHeight(float h);
 
 		void normalize();
-		void setDepth(f32 z);
-		void setColor(u32 color);
+		void setDepth(float z);
+		void setColor(uint32 color);
 
 	public:
 		Vertex buffer[4];

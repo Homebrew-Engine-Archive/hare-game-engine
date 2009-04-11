@@ -17,15 +17,15 @@ namespace hare_ui
     class UI_API UISystem : public Singleton<UISystem>
     {
     public:
-        bool notifyMouseMove(f32 deltaX, f32 deltaY);
-        bool notifyMouseWheel(f32 delta);
-        bool notifyMousePosition(f32 posX, f32 posY);
+        bool notifyMouseMove(float deltaX, float deltaY);
+        bool notifyMouseWheel(float delta);
+        bool notifyMousePosition(float posX, float posY);
         bool notifyMouseButtonUp(MouseButton button);
         bool notifyMouseButtonDown(MouseButton button);
 
-        bool notifyKeyDown(u32 key);
-        bool notifyKeyUp(u32 key);
-        bool notifyChar(u32 cp);
+        bool notifyKeyDown(uint32 key);
+        bool notifyKeyUp(uint32 key);
+        bool notifyChar(uint32 cp);
 
         Window* getWindowFromPoint(const PointF& pt);
 

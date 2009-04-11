@@ -23,7 +23,7 @@ namespace hare_core
     class CORE_API ClassInfo
     {
     public:
-        ClassInfo(const char* name, u32 version, u32 size, ClassInfo* base,
+        ClassInfo(const char* name, uint32 version, uint32 size, ClassInfo* base,
                   ObjectConstructorFunc ctor);
 
         ~ClassInfo();
@@ -48,12 +48,12 @@ namespace hare_core
             return baseClass;
         }
 
-        u32 getClassVersion() const
+        uint32 getClassVersion() const
         {
             return classVersion;
         }
 
-        u32 getSize() const
+        uint32 getSize() const
         {
             return objectSize;
         }
@@ -74,8 +74,8 @@ namespace hare_core
 
     public:
         const char*             className;
-        u32                     classVersion;
-        u32                     objectSize;
+        uint32                     classVersion;
+        uint32                     objectSize;
         ObjectConstructorFunc   objectConstructor;
     private:
         const ClassInfo*        baseClass;

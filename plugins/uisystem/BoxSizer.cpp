@@ -19,7 +19,7 @@ namespace hare_ui
         if (items.size() == 0)
             return;
 
-        f32 delta = 0;
+        float delta = 0;
         if (stretchable)
         {
             if (orient == uiHorizontal)
@@ -42,7 +42,7 @@ namespace hare_ui
 
                 if (orient == uiVertical)
                 {
-                    f32 height = sz.cy;
+                    float height = sz.cy;
                     if (item->getProportion())
                     {
                         height = (delta * item->getProportion()) / oldStretchable;
@@ -66,7 +66,7 @@ namespace hare_ui
                 }
                 else
                 {
-                    f32 width = sz.cx;
+                    float width = sz.cx;
                     if (item->getProportion())
                     {
                         width = (delta * item->getProportion()) / oldStretchable;
@@ -120,7 +120,7 @@ namespace hare_ui
         }
 
         // Total minimum size (width or height) of sizer
-        f32 maxMinSize = 0;
+        float maxMinSize = 0;
         for (SizerItem::List::iterator it = items.begin(); it != items.end(); ++it)
         {
             SizerItem* item = *it;
@@ -129,7 +129,7 @@ namespace hare_ui
             {
                 int stretch = item->getProportion();
                 SizeF sz(item->getMinSizeWithBorder());
-                f32 minSize;
+                float minSize;
 
                 if (orient == uiHorizontal)
                     minSize = (sz.cx * stretchable + stretch - 1) / stretch;

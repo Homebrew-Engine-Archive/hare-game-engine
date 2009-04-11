@@ -217,13 +217,13 @@ namespace hare_graphics
 	public:
 		PointF   offset;
 		PointF   panDirection;
-		f32      panRate; 
+		float      panRate; 
 
 		PointF   oscillationPhase;
 		PointF   oscillationAmplitude;
 		PointF   oscillationRate;
 	protected:
-		f32      startTime;
+		float      startTime;
 
 	};
 
@@ -244,7 +244,7 @@ namespace hare_graphics
 		PointF	oscillationAmplitude;
 		PointF	oscillationRate;
 	protected:
-		f32		startTime;
+		float		startTime;
 
 	};
 
@@ -259,15 +259,15 @@ namespace hare_graphics
 		virtual void frameMove();
 	public:
 		PointF	center;
-		f32		rotation;
-		f32		speed;
+		float		rotation;
+		float		speed;
 
-		f32		oscillationPhase;
-		f32		oscillationAmplitude;
-		f32		oscillationRate;
+		float		oscillationPhase;
+		float		oscillationAmplitude;
+		float		oscillationRate;
 
 	protected:
-		f32		startTime;
+		float		startTime;
 
 	};
 
@@ -283,7 +283,7 @@ namespace hare_graphics
 
 		virtual void frameMove();
 	public:
-		f32 frameTime;
+		float frameTime;
 	};
 
 

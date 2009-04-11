@@ -33,13 +33,13 @@ namespace hare_graphics
 		
 	}
 
-	void Image::create(u32 width, u32 height, HarePixelFormat format)
+	void Image::create(uint32 width, uint32 height, HarePixelFormat format)
 	{
 		destory();
 		imageInfo.width = width;
 		imageInfo.height= height;
 		imageInfo.format= format;
-		u32 size = width * height * GraphicsUtil::getPixelFormatBytes(format);
+		uint32 size = width * height * GraphicsUtil::getPixelFormatBytes(format);
 		imageData.allocate(size);
 	}
 
@@ -99,12 +99,12 @@ namespace hare_graphics
 		return imageCodec->codeToFile(imageData, fileName, imageInfo);
 	}
 
-	u32 Image::getWidth() const
+	uint32 Image::getWidth() const
 	{
 		return imageInfo.width;
 	}
 
-	u32 Image::getHeight() const
+	uint32 Image::getHeight() const
 	{
 		return imageInfo.height;
 	}
@@ -119,12 +119,12 @@ namespace hare_graphics
 		return imageData.getData();
 	}
 
-	u32 Image::getImageSize() const
+	uint32 Image::getImageSize() const
 	{
 		return imageData.getSize();
 	}
 
-	u32 Image::getRowStride() const
+	uint32 Image::getRowStride() const
 	{
 		return GraphicsUtil::getPixelFormatBytes(getPixelFormat()) * imageInfo.width;
 	}

@@ -22,22 +22,22 @@ namespace hare_graphics
 
 		void drawImage(const RectF& rect, Material* mtrl, const RectF& uvRect = RectF(0,0,1,1));
 
-		void drawImage(const RectF& rect, Material* mtrl, f32 rot, const RectF& uvRect = RectF(0,0,1,1), const PointF& center = PointF(0.5f, 0.5f));
+		void drawImage(const RectF& rect, Material* mtrl, float rot, const RectF& uvRect = RectF(0,0,1,1), const PointF& center = PointF(0.5f, 0.5f));
 
 		void setFont(Font* f);
 
-		void setColor(u32 c);
+		void setColor(uint32 c);
 
-		u32  getColor();
+		uint32  getColor();
 
-		void setZ(f32 z);
+		void setZ(float z);
 
-		f32  getZ();
+		float  getZ();
 
 	private:
 		Font* font;
-		f32   z;
-		u32   color;
+		float   z;
+		uint32   color;
 	};
 
 	GRAPHICS_API Canvas* getCanvas();

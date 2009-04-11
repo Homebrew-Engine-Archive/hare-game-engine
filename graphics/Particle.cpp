@@ -29,7 +29,7 @@ namespace hare_graphics
 		return PointF(location.x, location.y);
 	}
 
-	void Particle::setPosition(f32 x, f32 y)
+	void Particle::setPosition(float x, float y)
 	{
 		location.x = x;
 		location.y = y;

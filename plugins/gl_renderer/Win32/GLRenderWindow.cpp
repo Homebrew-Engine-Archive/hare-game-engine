@@ -102,7 +102,7 @@ void GLRenderWindow::create(const WindowParams& params)
             }
         }
 
-        u32 style = WS_OVERLAPPEDWINDOW;
+        uint32 style = WS_OVERLAPPEDWINDOW;
         if (bFullScreen){
             style = WS_POPUP;
         }
@@ -137,11 +137,11 @@ void GLRenderWindow::create(const WindowParams& params)
 
     windowParams = params;
 
-    windowParams.hwnd = (u32)hwnd;
+    windowParams.hwnd = (uint32)hwnd;
 
     windowParams.bFullScreen = bFullScreen;
 
-    SetWindowLongPtr(hwnd, GWLP_USERDATA, (u32)this);
+    SetWindowLongPtr(hwnd, GWLP_USERDATA, (uint32)this);
 
     //get information from config
     initalizeGLConfigParam();
@@ -164,7 +164,7 @@ void GLRenderWindow::setProjection()
     glViewport (0, 0, windowParams.width, windowParams.height);
 }
 
-void GLRenderWindow::resize(u32 w, u32 h)
+void GLRenderWindow::resize(uint32 w, uint32 h)
 {
     windowParams.width = w;
     windowParams.height= h;

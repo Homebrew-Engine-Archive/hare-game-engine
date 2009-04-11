@@ -45,9 +45,9 @@ namespace hare_core
         return val;
     }
 
-    // f32 -> String
+    // float -> String
     template <>
-    inline String StringConverter::toString(const f32& val)
+    inline String StringConverter::toString(const float& val)
     {
         std::ostringstream stream;
         stream.setf(std::ios::fixed, std::ios::floatfield);
@@ -58,9 +58,9 @@ namespace hare_core
         return stream.str();
     }
 
-    // f64 -> String
+    // double -> String
     template <>
-    inline String StringConverter::toString(const f64& val)
+    inline String StringConverter::toString(const double& val)
     {
         std::ostringstream stream;
         stream.setf(std::ios::fixed, std::ios::floatfield);
@@ -79,37 +79,37 @@ namespace hare_core
         return val;
     }
 
-    // u8 -> String
+    // uint8 -> String
     template <>
-    inline String StringConverter::toString(const u8& val)
+    inline String StringConverter::toString(const uint8& val)
     {
-        return toString(u32(val));
+        return toString(uint32(val));
     }
 
-    // String -> u8
+    // String -> uint8
     template <>
-    inline u8& StringConverter::parse(const String& str, u8& val)
+    inline uint8& StringConverter::parse(const String& str, uint8& val)
     {
-        u32 val_u32 = 0;
+        uint32 val_u32 = 0;
         parse(str, val_u32);
-        val = (u8)val_u32;
+        val = (uint8)val_u32;
         return val;
     }
 
-    // s8 -> String
+    // int8 -> String
     template <>
-    inline String StringConverter::toString(const s8& val)
+    inline String StringConverter::toString(const int8& val)
     {
-        return toString(s32(val));
+        return toString(int32(val));
     }
 
-    // String -> s8
+    // String -> int8
     template <>
-    inline s8& StringConverter::parse(const String& str, s8& val)
+    inline int8& StringConverter::parse(const String& str, int8& val)
     {
-        s32 val_s32 = 0;
-        parse(str, val_s32);
-        val = (s8)val_s32;
+        int32 val_int32 = 0;
+        parse(str, val_int32);
+        val = (int8)val_int32;
         return val;
     }
 

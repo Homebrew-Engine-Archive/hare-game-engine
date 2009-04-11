@@ -6,41 +6,41 @@ namespace hare_graphics
 {
 	HARE_IMPLEMENT_DYNAMIC_CLASS(ParticleInfo, Object, 0)
 	{
-		HARE_META(emission, s32)
-		HARE_META(lifeTime, f32)		
+		HARE_META(emission, int32)
+		HARE_META(lifeTime, float)		
 
-		HARE_META(particleLifeMin, f32)			
-		HARE_META(particleLifeMax, f32)			
+		HARE_META(particleLifeMin, float)			
+		HARE_META(particleLifeMax, float)			
 
-		HARE_META(direction, f32)			
-		HARE_META(spread,    f32)			
+		HARE_META(direction, float)			
+		HARE_META(spread,    float)			
 		HARE_META(relative,  bool)		
 
-		HARE_META(speedMin, f32)			
-		HARE_META(speedMax, f32)			
+		HARE_META(speedMin, float)			
+		HARE_META(speedMax, float)			
 
-		HARE_META(gravityMin, f32)			
-		HARE_META(gravityMax, f32)			
+		HARE_META(gravityMin, float)			
+		HARE_META(gravityMax, float)			
 
-		HARE_META(radialAccelMin, f32)			
-		HARE_META(radialAccelMax, f32)			
+		HARE_META(radialAccelMin, float)			
+		HARE_META(radialAccelMax, float)			
 
-		HARE_META(tangentialAccelMin, f32)			
-		HARE_META(tangentialAccelMax, f32)			
+		HARE_META(tangentialAccelMin, float)			
+		HARE_META(tangentialAccelMax, float)			
 
-		HARE_META(sizeStart, f32)			
-		HARE_META(sizeEnd,   f32)			
-		HARE_META(sizeVar,   f32)			
+		HARE_META(sizeStart, float)			
+		HARE_META(sizeEnd,   float)			
+		HARE_META(sizeVar,   float)			
 
-		HARE_META(spinStart, f32)			
-		HARE_META(spinEnd,   f32)			
-		HARE_META(spinVar,   f32)		
+		HARE_META(spinStart, float)			
+		HARE_META(spinEnd,   float)			
+		HARE_META(spinVar,   float)		
 
-		HARE_META_F(colorStart, u32, propColor)		
-		HARE_META_F(colorEnd,   u32, propColor)	
+		HARE_META_F(colorStart, uint32, propColor)		
+		HARE_META_F(colorEnd,   uint32, propColor)	
 
-		HARE_META(colorVar, f32)			
-		HARE_META(alphaVar, f32)			
+		HARE_META(colorVar, float)			
+		HARE_META(alphaVar, float)			
 	}
 
 	ParticleInfo::ParticleInfo()
@@ -81,8 +81,8 @@ namespace hare_graphics
 	HARE_IMPLEMENT_DYNAMIC_CLASS(SimpleParticle, Particle, 0)
 	{
 		HARE_OBJ(particleInfo, ParticleInfo)
-		HARE_META(tx, f32)
-		HARE_META(ty, f32)
+		HARE_META(tx, float)
+		HARE_META(ty, float)
 	}
 
 	SimpleParticle::SimpleParticle()
@@ -105,12 +105,12 @@ namespace hare_graphics
 	{
 		TextureMtrl* texMtrl = particleMtrl->getTextureMtrl();
 		Texture* tex = texMtrl->getTexture();
-		f32 width = (f32)tex->getWidth();
-		f32 height= (f32)tex->getHeight();
+		float width = (float)tex->getWidth();
+		float height= (float)tex->getHeight();
 
 		ParticleUnit* particleUnit = particleUnits;
 
-		u32 oldColor = getCanvas()->getColor();
+		uint32 oldColor = getCanvas()->getColor();
 		RectF rect;
 		for (int count = 0; count < particlesAlive; ++count){
 			getCanvas()->setColor(particleUnit->color);
@@ -127,11 +127,11 @@ namespace hare_graphics
 
 	void SimpleParticle::frameMove()
 	{
-		f32 ang;
+		float ang;
 		ParticleUnit* pPar;
 		Vector2 vAccel, vAccel2;
 
-		f32 fDeltaTime = getTimer().getDeltaTime();
+		float fDeltaTime = getTimer().getDeltaTime();
 		if(age >= 0)
 		{
 			age += fDeltaTime;
@@ -237,20 +237,20 @@ namespace hare_graphics
 		else age = 0.0f;
 	}
 
-	void SimpleParticle::fireAt(f32 x, f32 y)
+	void SimpleParticle::fireAt(float x, float y)
 	{
 		stop();
 		setPosition(x, y);
 		fire();
 	}
 
-	void SimpleParticle::move(f32 offsetX, f32 offsetY)
+	void SimpleParticle::move(float offsetX, float offsetY)
 	{
 		PointF pos = getPosition();
 		moveTo(pos.x + offsetX, pos.y + offsetY);
 	}
 
-	void SimpleParticle::moveTo(f32 x, f32 y)
+	void SimpleParticle::moveTo(float x, float y)
 	{
         if (age == -2.0f) { prevLocation.x = x; prevLocation.y = y; }
         else { prevLocation.x = location.x; prevLocation.y = location.y; }
@@ -270,7 +270,7 @@ namespace hare_graphics
 		particlesAlive = 0;
 	}
 
-	void SimpleParticle::setPosition(f32 x, f32 y)
+	void SimpleParticle::setPosition(float x, float y)
 	{
         float dx,dy;
 

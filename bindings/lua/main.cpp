@@ -1,3 +1,9 @@
+#include "core/Core.h"
+#include "graphics/Graphics.h"
+using namespace hare_graphics;
+
+#include "LuaDebuggee.h"
+
 #if HARE_PLATFORM == HARE_PLATFORM_WIN32
 #   if defined(_DEBUG)
 #	    define  CRTDBG_MAP_ALLOC
@@ -97,12 +103,6 @@ __attribute__((constructor)) void handler_init()
 }
 
 #endif // HARE_PLATFORM == HARE_PLATFORM_PSP
-
-#include "core/Core.h"
-#include "graphics/Graphics.h"
-using namespace hare_graphics;
-
-#include "LuaDebuggee.h"
 
 extern "C"
 {

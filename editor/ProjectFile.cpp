@@ -19,10 +19,10 @@ namespace hare_editor
     {
         HARE_META(fileName, String)
         HARE_META(editorOpen, bool)
-        HARE_META(editorPos, s32)
-        HARE_META(editorTopLine, s32)
-        HARE_META(editorTabPos, s32)
-        HARE_META_ARRAY(breakPoints, s32)
+        HARE_META(editorPos, int32)
+        HARE_META(editorTopLine, int32)
+        HARE_META(editorTabPos, int32)
+        HARE_META_ARRAY(breakPoints, int32)
     }
 
     ProjectFile::ProjectFile()
@@ -40,7 +40,7 @@ namespace hare_editor
 
     bool ProjectFile::removeBreakPoint(int line)
     {
-        std::vector<s32>::iterator it = std::find(breakPoints.begin(), breakPoints.end(), line);
+        std::vector<int32>::iterator it = std::find(breakPoints.begin(), breakPoints.end(), line);
 
         if (it != breakPoints.end())
             breakPoints.erase(it);

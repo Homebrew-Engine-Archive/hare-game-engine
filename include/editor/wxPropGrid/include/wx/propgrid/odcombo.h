@@ -554,7 +554,7 @@ protected:
     // is the popup window currenty shown?
     bool                    m_isPopupShown;
 
-    // TODO: Remove after f32 popup works ok.
+    // TODO: Remove after float popup works ok.
     unsigned char           m_fakePopupUsage;
 
     wxByte                  m_skipTextCtrlFocusEvents;

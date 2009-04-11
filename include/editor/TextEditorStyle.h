@@ -27,12 +27,12 @@ namespace hare_editor
         HARE_DECLARE_DYNAMIC_CLASS(OptionColour)
     public:
         String name;
-        s32 value;
+        int32 value;
         String fore;
         String back;
-        u8 bold;
-        u8 italics;
-        u8 underlined;
+        uint8 bold;
+        uint8 italics;
+        uint8 underlined;
     };
 
     class OptionSet : public Object
@@ -40,7 +40,7 @@ namespace hare_editor
         HARE_DECLARE_DYNAMIC_CLASS(OptionSet)
     public:
         String lang;
-        s32 lexer;
+        int32 lexer;
         OptionColour::Array colours;
         StringVector keywords;
         StringVector fileMasks;

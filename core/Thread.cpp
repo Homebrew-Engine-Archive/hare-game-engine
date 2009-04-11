@@ -149,7 +149,7 @@ namespace hare_core
         return rc;
     }
 
-    SemaphoreError Semaphore::waitTimeout(u32 milliseconds)
+    SemaphoreError Semaphore::waitTimeout(uint32 milliseconds)
     {
         DWORD rc = WaitForSingleObject(static_cast<HANDLE>(privateData), milliseconds);
 
@@ -234,7 +234,7 @@ namespace hare_core
             return COND_ERROR;
     }
 
-    ConditionError Condition::waitTimeout(u32 milliseconds)
+    ConditionError Condition::waitTimeout(uint32 milliseconds)
     {
         ConditionData* data = static_cast<ConditionData*>(privateData);
 
@@ -333,7 +333,7 @@ namespace hare_core
     public:
         HANDLE handle;
         ThreadState state;
-        u32 id;
+        uint32 id;
     };
 
     Thread::Thread()
@@ -348,17 +348,17 @@ namespace hare_core
     }
 
     /* static */
-    void Thread::sleep(u32 milliseconds)
+    void Thread::sleep(uint32 milliseconds)
     {
         ::Sleep(milliseconds);
     }
 
-    ThreadError Thread::create(u32 stackSize)
+    ThreadError Thread::create(uint32 stackSize)
     {
         CriticalSectionLocker lock(cs);
 
         privateData->handle = (HANDLE)_beginthreadex(NULL, stackSize, ThreadData::threadEntry, this,
-            CREATE_SUSPENDED, (u32*)&privateData->id);
+            CREATE_SUSPENDED, (uint32*)&privateData->id);
 
         if (!privateData->handle)
             return THREAD_NO_RESOURCE;
@@ -610,7 +610,7 @@ namespace hare_core
     }
 
     //---------------------------------------------------------------------
-    static u32 _getTimeMilliseconds()
+    static uint32 _getTimeMilliseconds()
     {
         return clock() / CLOCKS_PER_SEC * 1000;
     }
@@ -665,16 +665,16 @@ namespace hare_core
             return SEMA_NO_ERROR;
         }
 
-        SemaphoreError waitTimeout(u32 milliseconds)
+        SemaphoreError waitTimeout(uint32 milliseconds)
         {
             MutexLocker locker(mutex);
 
-            u32 startTime = _getTimeMilliseconds();
+            uint32 startTime = _getTimeMilliseconds();
 
             while (count == 0)
             {
-                u32 elapsed = _getTimeMilliseconds() - startTime;
-                u32 remainingTime = milliseconds - elapsed;
+                uint32 elapsed = _getTimeMilliseconds() - startTime;
+                uint32 remainingTime = milliseconds - elapsed;
 
                 if (remainingTime <= 0)
                 {
@@ -760,7 +760,7 @@ namespace hare_core
         return static_cast<SemaphoreInternal*>(privateData)->tryWait();
     }
 
-    SemaphoreError Semaphore::waitTimeout(u32 milliseconds)
+    SemaphoreError Semaphore::waitTimeout(uint32 milliseconds)
     {
         return static_cast<SemaphoreInternal*>(privateData)->waitTimeout(milliseconds);
     }
@@ -829,10 +829,10 @@ namespace hare_core
         return COND_NO_ERROR;
     }
 
-    ConditionError Condition::waitTimeout(u32 milliseconds)
+    ConditionError Condition::waitTimeout(uint32 milliseconds)
     {
         ConditionData* data = static_cast<ConditionData*>(privateData);
-        u32 time = _getTimeMilliseconds() + milliseconds;
+        uint32 time = _getTimeMilliseconds() + milliseconds;
 
         timespec tspec;
 
@@ -1017,7 +1017,7 @@ namespace hare_core
     }
 
     /* static */
-    void Thread::sleep(u32 milliseconds)
+    void Thread::sleep(uint32 milliseconds)
     {
         timespec tmReq;
         tmReq.tv_sec = (time_t)(milliseconds / 1000);
@@ -1025,7 +1025,7 @@ namespace hare_core
         (void)nanosleep(&tmReq, (timespec*)NULL);
     }
 
-    ThreadError Thread::create(u32 stackSize)
+    ThreadError Thread::create(uint32 stackSize)
     {
         if (privateData->state != STATE_NEW)
         {

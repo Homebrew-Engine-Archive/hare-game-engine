@@ -28,7 +28,7 @@ namespace hare_graphics
 
 		void loadFromImage(const String& filename);
 
-		void move(f32 x, f32 y);
+		void move(float x, float y);
 	protected:
 		Quad			 quad;
 		Shader*		     shader;

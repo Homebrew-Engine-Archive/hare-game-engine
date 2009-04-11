@@ -77,7 +77,7 @@ void ParticleEditorPage::onMouseMove(wxMouseEvent& event)
         {
             int x, y;
             event.GetPosition(&x, &y);
-            parPtr->moveTo((f32)x, (f32)y);
+            parPtr->moveTo((float)x, (float)y);
         }
     }
 }

@@ -1,7 +1,7 @@
 BUILD_PRX = 1
 PSP_FW_VERSION = 371
 
-SWIG_EXE = ../../ext/swig/swig
+SWIG_EXE = swig
 OUT_DIR = ../../lib
 SRC_DIR = ../../bindings/lua
 TARGET = hare_lua
@@ -18,10 +18,10 @@ OBJS = \
 	$(SRC_DIR)/hare_wrap.o	
 	
 INCDIR = ../../include
-LIBDIR = ../../lib e:/pspdev/pspdev/psp/lib
+LIBDIR = ../../lib $(PSPDIR)/lib
 
 CFLAGS = -O2 -G0 -Wall -Wno-deprecated -DDEVHOOK -DPSPFW3XX -DSTATIC_LINKED
-LIBS = -llua -llualib -lcore -lphysfs -lgraphics -lfreetype -ljpeg -lpng -lz -lmikmod -lpsppower -lpspmpeg -lpspaudiocodec -lpspaudiolib -lpspaudio -lpspgum -lpspgu -lpsprtc -lm -lstdc++
+LIBS = -llua -lphysfs -lcore -lgraphics -lfreetype -lm -lstdc++
 
 include $(PSPSDK)/lib/build.mak
 

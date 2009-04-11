@@ -1,16 +1,110 @@
+#if HARE_PLATFORM == HARE_PLATFORM_WIN32
+#   if defined(_DEBUG)
+#	    define  CRTDBG_MAP_ALLOC
+#	    include <stdlib.h>
+#	    include <crtdbg.h>
+#   endif
+#endif
+
+#if HARE_PLATFORM == HARE_PLATFORM_PSP
+#   include <pspkernel.h>
+#   include <pspdebug.h>
+#   include <pspdisplay.h>
+#   include <pspctrl.h>
+#   include <pspsdk.h>
+#   include <psputility.h>
+
+/* Define the module info section */
+PSP_MODULE_INFO("hare", 0x1000, 1, 1);
+PSP_MAIN_THREAD_ATTR(0);
+PSP_MAIN_THREAD_STACK_SIZE_KB(32);
+PSP_HEAP_SIZE_KB(32);
+
+int exit_callback(int arg1, int arg2, void *common)
+{
+    // TODO end the game
+	sceKernelExitGame();
+
+	return 0;
+}
+
+int power_callback(int unknown, int pwrflags, void *common)
+{
+	if ((pwrflags & (PSP_POWER_CB_POWER_SWITCH | PSP_POWER_CB_STANDBY)) > 0)
+	{
+	    // TODO pause the game
+	}
+	else if ((pwrflags & PSP_POWER_CB_RESUME_COMPLETE) > 0)
+	{
+		sceKernelDelayThread(1500000);
+        // TODO resume the game
+	}
+	return 0;
+}
+
+int callback_thread(SceSize args, void *argp)
+{
+    int cbid;
+	cbid = sceKernelCreateCallback("callback_thread", exit_callback, NULL);
+	sceKernelRegisterExitCallback(cbid);
+	cbid = sceKernelCreateCallback("callback_thread", power_callback, NULL);
+    scePowerRegisterCallback(0, cbid);
+	sceKernelSleepThreadCB();
+
+	return 0;
+}
+
+void psp_init()
+{
+	int thid = sceKernelCreateThread("callback_thread", callback_thread, 0x11, 0xFA0, 0, 0);
+    if (thid >= 0)
+	{
+		sceKernelStartThread(thid, 0, 0);
+    }
+}
+
+void psp_quit()
+{
+    sceKernelExitGame();
+}
+
+void psp_exception_handler(PspDebugRegBlock *regs)
+{
+    pspDebugScreenInit();
+
+    pspDebugScreenSetBackColor(0x00FF0000);
+    pspDebugScreenSetTextColor(0xFFFFFFFF);
+    pspDebugScreenClear();
+
+    pspDebugScreenPrintf("I regret to inform you your psp has just crashed\n");
+    pspDebugScreenPrintf("Please contact Sony technical support for further information\n\n");
+    pspDebugScreenPrintf("Exception Details:\n");
+    pspDebugDumpException(regs);
+    pspDebugScreenPrintf("\nBlame the 3rd party software, it cannot possibly be our fault!\n");
+
+    sceKernelExitGame();
+}
+
+__attribute__((constructor)) void handler_init()
+{
+    pspKernelSetKernelPC();
+
+    pspSdkInstallNoDeviceCheckPatch();
+    pspSdkInstallNoPlainModuleCheckPatch();
+    pspSdkInstallKernelLoadModulePatch();
+
+    pspDebugInstallErrorHandler(psp_exception_handler);
+}
+
+#endif // HARE_PLATFORM == HARE_PLATFORM_PSP
+
 #include "core/Core.h"
 #include "graphics/Graphics.h"
 using namespace hare_graphics;
 
 #include "LuaDebuggee.h"
 
-#if defined(_DEBUG)
-#	define  CRTDBG_MAP_ALLOC
-#	include <stdlib.h>
-#	include <crtdbg.h>
-#endif
-
-extern "C" 
+extern "C"
 {
     #include <lua.h>
     #include <lauxlib.h>
@@ -60,7 +154,7 @@ bool load_scripts(const String& game, lua_State *L)
     if (!fh)
         return false;
     int size = fs->size(fh);
-    if (size <= 0) 
+    if (size <= 0)
     {
         fs->closeFile(fh);
         return false;
@@ -88,19 +182,20 @@ bool load_scripts(const String& game, lua_State *L)
     return true;
 }
 
-//#if HARE_PLATFORM == HARE_PLATFORM_WIN32
-//INT WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR cmd, INT)
-//{
-//    //_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
-//    //_CrtSetBreakAlloc();
-//    core_init(NULL);
-//    CmdLineParser cmdLine(cmd);
-//#else
+#if HARE_PLATFORM == HARE_PLATFORM_WIN32
+INT WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR cmd, INT)
+{
+    core_init(NULL);
+    CmdLineParser cmdLine(cmd);
+#else
 int main(int argc, char *argv[])
 {
+#if HARE_PLATFORM == HARE_PLATFORM_PSP
+    psp_init();
+#endif
     core_init(argv[0]);
     CmdLineParser cmdLine(argc, argv);
-//#endif
+#endif
 
     lua_State *L = lua_open();  /* create state */
     if (L == NULL) {
@@ -136,10 +231,9 @@ int main(int argc, char *argv[])
         fs->addSearchPath(searchPaths[i]);
     }
 
-    LuaDebuggee* debuggee = 0;
-	getHareApp()->startUp();
+  	getHareApp()->startUp();
 
-    //LuaDebugger* debugger = 0;
+    LuaDebuggee* debuggee = 0;
     String debug = cmdLine.getOptionValue("debug");
     if (!debug.empty())
     {
@@ -173,12 +267,13 @@ int main(int argc, char *argv[])
     lua_close(L);
 
 	getHareApp()->shutDown();
-
-
-	//卸载插件时必须最后写在d3d或openGL插件
 	getHareApp()->freePlugin();
 
     core_quit();
+
+#if HARE_PLATFORM == HARE_PLATFORM_PSP
+    psp_quit();
+#endif
 
 	return EXIT_SUCCESS;
 }

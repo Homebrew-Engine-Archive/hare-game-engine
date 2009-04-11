@@ -23,8 +23,7 @@ OBJS = \
 	$(SRC_DIR)/Timer.o \
 	$(SRC_DIR)/Vector2.o
 	
-INCDIR = include/psp ../../include/core ../../ext/physfs
-LIBDIR = lib/psp
+INCDIR = include/psp ../../include/core physfs_psp
 
 CFLAGS = -O2 -G0 -Wall -Wno-deprecated -DDEVHOOK -DPSPFW3XX
 

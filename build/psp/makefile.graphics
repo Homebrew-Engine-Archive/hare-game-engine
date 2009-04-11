@@ -33,8 +33,7 @@ OBJS = \
 		$(SRC_DIR)/TextManager.o \
 		$(SRC_DIR)/Texture.o
 
-INCDIR = e:/pspdev/pspdev/psp/include/freetype2 ../../include ../../include/graphics
-LIBDIR = lib/psp
+INCDIR = ../../include ../../include/graphics $(PSPDIR)/include/freetype2
 
 CFLAGS = -O2 -G0 -Wall -Wno-deprecated -DDEVHOOK -DPSPFW3XX
 

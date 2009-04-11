@@ -20,7 +20,6 @@ namespace hare_graphics
 		RenderSystem();
 		virtual ~RenderSystem();
 
-		virtual void resetDevice() = 0;
 		virtual void initalize() = 0;
 		virtual void release() = 0;
 

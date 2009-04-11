@@ -76,7 +76,7 @@ namespace hare_d3d
 		if (hr == D3DERR_DEVICELOST){
 			return;
 		}else if (hr == D3DERR_DEVICENOTRESET){
-			D3DRenderSystem::getSingletonPtr()->resetDevice();
+			d3drs->resetDevice();
 		}
 
 		SystemManager::hareRunFrame();

@@ -68,6 +68,9 @@ private:
 	DeviceManager* pDeviveManager;
 
 	Matrix4 texMat;
+
+    bool bUseIndex;
+
 };
 
 

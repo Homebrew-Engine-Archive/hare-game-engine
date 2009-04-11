@@ -143,6 +143,7 @@ D3DPRIMITIVETYPE D3DTypeConverter::toD3DPrimtiveType(RenderUnit::RenderOperation
 	case RenderUnit::ROT_TRIANGLE_LIST:  retPrimType = D3DPT_TRIANGLELIST; break;
 	case RenderUnit::ROT_TRIANGLE_STRIP: retPrimType = D3DPT_TRIANGLESTRIP;break;
 	case RenderUnit::ROT_TRIANGLE_FAN:   retPrimType = D3DPT_TRIANGLEFAN;  break;
+    case RenderUnit::ROT_QUAD_LIST:      retPrimType = D3DPT_TRIANGLELIST; break;
 	default: assert(false);
 	}
 

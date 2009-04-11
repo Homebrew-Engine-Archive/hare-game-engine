@@ -20,7 +20,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\include;..\..\ext\physfs;..\..\ext\lua\src"
+				AdditionalIncludeDirectories="..\..\include;..\..\ext\lua\src"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;STATIC_LINKED"
 				MinimalRebuild="TRUE"
 				BasicRuntimeChecks="3"

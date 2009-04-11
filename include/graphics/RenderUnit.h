@@ -21,25 +21,34 @@ namespace hare_graphics
 			ROT_TRIANGLE_LIST,
 			ROT_TRIANGLE_STRIP,
 			ROT_TRIANGLE_FAN,
+            ROT_QUAD_LIST,
 		};
 	public:
 		RenderUnit();
 		virtual ~RenderUnit();
 
 		virtual Vertex* getBuffer() = 0;
-		virtual u32    getVertexCount() = 0;
-		virtual u32	getPrimCount() = 0;
+		virtual u32     getVertexCount() = 0;
+		virtual u32	    getPrimCount() = 0;
 		virtual RenderOperationType	getOperationType() = 0;
 		void setMaterial(Material* m)
 		{
 			mtrl = m;
 		}
+
 		Material* getMaterial()
 		{
 			return mtrl;
 		}
+
+        bool getUseIndex()
+        {
+            return bUseIndex;
+        }
+
 	protected:
 		Material::Ptr mtrl;
+        bool bUseIndex;
 	};
 }
 

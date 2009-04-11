@@ -5,6 +5,7 @@ namespace hare_graphics
 {
 	Quad::Quad()
 	{
+        bUseIndex = true;
 		normalize();
  	}
 
@@ -30,7 +31,7 @@ namespace hare_graphics
 
 	RenderUnit::RenderOperationType Quad::getOperationType()
 	{
-		return RenderUnit::ROT_TRIANGLE_LIST;
+        return RenderUnit::ROT_QUAD_LIST;
 	}
 
 	void Quad::move(float dx, float dy)

@@ -1,12 +1,31 @@
 #ifndef _GLTEXTURE_H_
 #define _GLTEXTURE_H_
 
-namespace hare_gl
+
+class GLTexture : public Texture
 {
-    class GLTexture : public Texture
-    {
-        
-    };
-}
+public:
+    GLTexture();
+
+    virtual ~GLTexture();
+
+    virtual void active();
+
+    virtual void inactive();
+
+    virtual void upload(const Image& img, u32 destX = 0, u32 destY = 0);
+
+    virtual void download(Image& img, const RectN& rc = RectN(0,0,0,0));
+
+    virtual void reCreate();
+
+    virtual void release();
+
+    GLuint  getGLTexture();
+
+private:
+    GLuint glTexture;
+};
+
 
 #endif

@@ -1,47 +1,44 @@
 #ifndef _GLRENDERWINDOW_H_
 #define _GLRENDERWINDOW_H_
 
-namespace hare_gl
+class GLRenderWindow : public RenderWindow
 {
-    class GLRenderWindow : public RenderWindow
-    {
-        friend class GLRenderSystem;
-    public:
-        GLRenderWindow(bool bMainWindow);
+    friend class GLRenderSystem;
+public:
+    GLRenderWindow(bool bMainWindow);
 
-        virtual ~GLRenderWindow();
+    virtual ~GLRenderWindow();
 
-        virtual void create(const WindowParams& params);
+    virtual void create(const WindowParams& params);
 
-        virtual void resize(u32 w, u32 h);
+    virtual void resize(u32 w, u32 h);
 
-        virtual void swapBuffer();
+    virtual void swapBuffer();
 
-        virtual void destoryWindow();
+    virtual void destoryWindow();
 
-        virtual void active();
+    virtual void active();
 
-        virtual void inactive();
+    virtual void inactive();
 
-        HWND getWindowHandle();
+    HWND getWindowHandle();
 
-        HGLRC getRenderContext();
+    HGLRC getRenderContext();
 
-        PIXELFORMATDESCRIPTOR* getPixelFormatDescriptor();
+    PIXELFORMATDESCRIPTOR* getPixelFormatDescriptor();
 
-    private:
-        void initalizeGLConfigParam();
-        void createGLResource();
-        void destoryGLResource();
+private:
+    void initalizeGLConfigParam();
+    void createGLResource();
+    void destoryGLResource();
 
-        void setProjection();
-    private:
-        HGLRC hRC;
-        HDC   hDC;
-        PIXELFORMATDESCRIPTOR pfd;
+    void setProjection();
+private:
+    HGLRC hRC;
+    HDC   hDC;
+    PIXELFORMATDESCRIPTOR pfd;
 
-    };
-}
+};
 
 
 #endif

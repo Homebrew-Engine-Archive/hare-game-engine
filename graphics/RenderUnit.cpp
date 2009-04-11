@@ -4,6 +4,7 @@
 namespace hare_graphics
 {
 	RenderUnit::RenderUnit()
+        :bUseIndex(false)
 	{
 
 	}

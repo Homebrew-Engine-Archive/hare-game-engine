@@ -21,6 +21,7 @@ D3DRenderSystem::D3DRenderSystem()
 	,pVertexBufferManager(NULL)
 	,pPrimaryWindow(NULL)
 	,texMat(Matrix4::IDENTITY)
+    ,bUseIndex(true)
 {
 	pD3DInterface = Direct3DCreate9(D3D_SDK_VERSION);
 	if (!pD3DInterface) {
@@ -216,7 +217,8 @@ void D3DRenderSystem::render()
 	if (pVertexBufferManager->getVectexCount() > 0){
 		pVertexBufferManager->unlockBuffer();
 
-		if (PrimType == D3DPT_TRIANGLELIST){
+        //only quad use Index
+		if (PrimType == D3DPT_TRIANGLELIST && bUseIndex){
 			pD3DDevice->DrawIndexedPrimitive(D3DPT_TRIANGLELIST, 0, 0, 
 				pVertexBufferManager->getVectexCount(), 0, 
 				pVertexBufferManager->getPrimCount());
@@ -287,12 +289,14 @@ void D3DRenderSystem::render(RenderUnit* operation)
 	if ( bRenderTextureChange || bTextureStageChange || bShaderParamsChange
 		|| PrimType != D3DTypeConverter::toD3DPrimtiveType(operation->getOperationType())
 		|| pVertexBufferManager->getVectexCount() >= VERTEX_CAPACITY - operation->getVertexCount()
-		|| texMat != tmpTexMat ){
+		|| texMat != tmpTexMat || operation->getUseIndex() != bUseIndex){
 		
 		render();
 		
 		PrimType = D3DTypeConverter::toD3DPrimtiveType(operation->getOperationType());
 		
+        bUseIndex = operation->getUseIndex();
+
 		if (bRenderTextureChange)
 			pD3DDevice->SetTexture(0, curRenderTexture);
 		if (bShaderParamsChange)

@@ -254,7 +254,7 @@ namespace hare_core
             }
 
             num_read += r;
-            buffer += r;
+            buf += r;
         }
 
         return num_read;

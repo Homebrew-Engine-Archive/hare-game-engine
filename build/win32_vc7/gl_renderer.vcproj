@@ -12,26 +12,30 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="Debug"
-			IntermediateDirectory="Debug"
-			ConfigurationType="4"
+			OutputDirectory="../../lib/plugins"
+			IntermediateDirectory="$(ConfigurationName)/dx9_renderer"
+			ConfigurationType="2"
 			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
+				AdditionalIncludeDirectories="../../include;../../ext/glew/include"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;GLRENDER_EXPORTS"
 				MinimalRebuild="TRUE"
 				BasicRuntimeChecks="3"
-				RuntimeLibrary="5"
-				UsePrecompiledHeader="0"
+				RuntimeLibrary="3"
+				UsePrecompiledHeader="3"
+				PrecompiledHeaderThrough="PCH.h"
 				WarningLevel="3"
-				Detect64BitPortabilityProblems="TRUE"
+				Detect64BitPortabilityProblems="FALSE"
 				DebugInformationFormat="4"/>
 			<Tool
 				Name="VCCustomBuildTool"/>
 			<Tool
-				Name="VCLibrarianTool"
-				OutputFile="$(OutDir)/gl_renderer.lib"/>
+				Name="VCLinkerTool"
+				AdditionalDependencies="core_d.lib graphics_d.lib OPENGL32.lib GLU32.lib glew32mxd.lib glew32mxsd.lib"
+				OutputFile="$(OutDir)/gl_renderer_d.dll"
+				AdditionalLibraryDirectories="../../lib;../../ext/glew/lib"/>
 			<Tool
 				Name="VCMIDLTool"/>
 			<Tool
@@ -46,6 +50,8 @@
 				Name="VCWebServiceProxyGeneratorTool"/>
 			<Tool
 				Name="VCXMLDataGeneratorTool"/>
+			<Tool
+				Name="VCWebDeploymentTool"/>
 			<Tool
 				Name="VCManagedWrapperGeneratorTool"/>
 			<Tool
@@ -97,25 +103,67 @@
 			Name="Source Files"
 			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}">
+			<File
+				RelativePath="..\..\plugins\gl_renderer\Win32\GLPlugin.cpp">
+			</File>
+			<File
+				RelativePath="..\..\plugins\gl_renderer\Win32\GLRenderSystem.cpp">
+			</File>
+			<File
+				RelativePath="..\..\plugins\gl_renderer\Win32\GLRenderWindow.cpp">
+			</File>
+			<File
+				RelativePath="..\..\plugins\gl_renderer\Win32\GLSystemManager.cpp">
+			</File>
+			<File
+				RelativePath="..\..\plugins\gl_renderer\Win32\GLTexture.cpp">
+			</File>
+			<File
+				RelativePath="..\..\plugins\gl_renderer\Win32\GLTypeConverter.cpp">
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
+			<File
+				RelativePath="..\..\plugins\gl_renderer\Win32\GLPlugin.h">
+			</File>
+			<File
+				RelativePath="..\..\plugins\gl_renderer\Win32\GLRenderSystem.h">
+			</File>
+			<File
+				RelativePath="..\..\plugins\gl_renderer\Win32\GLRenderWindow.h">
+			</File>
+			<File
+				RelativePath="..\..\plugins\gl_renderer\Win32\GLSystemManager.h">
+			</File>
+			<File
+				RelativePath="..\..\plugins\gl_renderer\Win32\GLTexture.h">
+			</File>
+			<File
+				RelativePath="..\..\plugins\gl_renderer\Win32\GLTypeConverter.h">
+			</File>
 		</Filter>
 		<Filter
 			Name="PCH"
 			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx"
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}">
 			<File
-				RelativePath="..\..\plugins\gl_renderer\PCH.cpp">
+				RelativePath="..\..\plugins\gl_renderer\Win32\PCH.cpp">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="1"/>
+				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\plugins\gl_renderer\PCH.h">
+				RelativePath="..\..\plugins\gl_renderer\Win32\PCH.h">
 			</File>
 		</Filter>
 		<File
-			RelativePath="..\..\plugins\gl_renderer\GLRenderPrerequisites.h">
+			RelativePath="..\..\plugins\gl_renderer\Win32\GLRenderPrerequisites.h">
 		</File>
 	</Files>
 	<Globals>

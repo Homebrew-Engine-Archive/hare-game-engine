@@ -16,8 +16,6 @@ using namespace hare_core;
 
 using namespace hare_graphics;
 
-#include "D3DRenderPrerequisites.h"
-
 #include <d3d9.h>
 #include <d3dx9.h>
 

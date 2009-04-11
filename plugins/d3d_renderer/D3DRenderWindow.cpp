@@ -107,8 +107,12 @@ namespace hare_d3d
 
             RegisterClass(&wc);
 
+            u32 style = WS_OVERLAPPEDWINDOW;
+            if (params.bFullScreen){
+                style = WS_POPUP;
+            }
 			hwnd = CreateWindow("HareRenderWindow", params.title.c_str(), 
-				WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, 0, params.width, params.height, NULL, NULL, hInstance, NULL);
+				style, CW_USEDEFAULT, 0, params.width, params.height, NULL, NULL, hInstance, NULL);
 
 			RECT  rect;
 

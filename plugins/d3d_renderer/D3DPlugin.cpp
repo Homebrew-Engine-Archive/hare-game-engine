@@ -1,5 +1,4 @@
 #include "PCH.h"
-#include "D3DPlugin.h"
 #include "D3DSystemManager.h"
 
 namespace hare_d3d
@@ -12,10 +11,10 @@ namespace hare_d3d
             systemManager = new D3DSystemManager;
             HareApp::getSingletonPtr()->setGraphicsSystem(systemManager);
         }
-       ~PluginRegistrant()
-       {
-           SAFE_DELETE(systemManager);
-       }
+        ~PluginRegistrant()
+        {
+            SAFE_DELETE(systemManager);
+        }
 
         D3DSystemManager* systemManager;
     };

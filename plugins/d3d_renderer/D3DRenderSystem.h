@@ -17,8 +17,8 @@ namespace hare_d3d
 
 		virtual void initalize();//配置信息 以后加
 		void createDevice(D3DRenderWindow* renderWindow);
+		void resetDevice();
 
-		virtual void resetDevice();
 		virtual void release();
 
 		virtual void beginFrame();

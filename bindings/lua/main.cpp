@@ -78,6 +78,36 @@ void psp_quit()
     sceKernelExitGame();
 }
 
+static int hook_lua_print(lua_State *L)
+{
+    int idx;
+    String stream;
+    int n = lua_gettop(L);  /* number of arguments */
+    lua_getglobal(L, "tostring");
+    for (idx = 1; idx <= n;  idx++)
+    {
+        lua_pushvalue(L, -1);  /* function to be called */
+        lua_pushvalue(L, idx);   /* value to print */
+        lua_call(L, 1, 1);
+        const char* s = lua_tostring(L, -1);  /* get result */
+        if (!s)
+            return luaL_error(L, "`tostring' must return a string to `print'");
+        if (idx > 1)
+            stream.append("\t");
+        stream.append(s);
+        lua_pop(L, 1);  /* pop result */
+    }
+    printf("%s\n", stream.c_str());
+
+    return 0;
+}
+
+void psp_hook_lua_print(lua_State *L)
+{
+    lua_pushcfunction(L, hook_lua_print);
+    lua_setglobal(L, "print");
+}
+
 #endif // HARE_PLATFORM == HARE_PLATFORM_PSP
 
 extern "C"
@@ -185,6 +215,10 @@ int main(int argc, char *argv[])
 	luaL_openlibs(L);
 
     luaopen_hare(L);
+
+#if HARE_PLATFORM == HARE_PLATFORM_PSP
+    psp_hook_lua_print(L);
+#endif
 
     // load all plugins
     ConfigFile plugin;

@@ -2,7 +2,6 @@
 
 typedef unsigned char	uint8;
 typedef signed char		int8;
-typedef char			c8;
 typedef unsigned short	uint16;
 typedef signed short	int16;
 typedef unsigned int	uint32;
@@ -48,7 +47,7 @@ void dynamicCastObject(lua_State* L, Object* object, int owner)
 			info = 0;
 		}
 	} while(!info && cls);
-	
+
 	SWIG_NewPointerObj(L, (void*)object, info, owner);
 }
 %}

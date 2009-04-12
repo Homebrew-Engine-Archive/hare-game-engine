@@ -1,5 +1,5 @@
 OUT_DIR = ../../lib
-SRC_DIR = ../../ext/physfs
+SRC_DIR = physfs_psp
 TARGET_LIB = libphysfs.a
 
 PSPSDK = $(shell psp-config --pspsdk-path)
@@ -9,16 +9,13 @@ OBJS = \
 	$(SRC_DIR)/physfs.o \
 	$(SRC_DIR)/physfs_byteorder.o \
 	$(SRC_DIR)/physfs_unicode.o \
-	$(SRC_DIR)/platform/posix.o \
+	$(SRC_DIR)/platform/psp.o \
 	$(SRC_DIR)/archivers/dir.o \
 	$(SRC_DIR)/archivers/zip.o
 	
-INCDIR = include/psp physfs_psp $(SRC_DIR)
-LIBDIR = lib/psp
+INCDIR = $(SRC_DIR)
 
-CFLAGS = -O2 -G0 -DPHYSFS_SUPPORTS_ZIP=1 -DPHYSFS_SUPPORTS_GRP=0 \
-	-DPHYSFS_SUPPORTS_WAD=0 -DPHYSFS_SUPPORTS_HOG=0 \
-	-DPHYSFS_SUPPORTS_MVL=0 -DPHYSFS_SUPPORTS_QPAK=0 \
+CFLAGS = -O2 -G0 -DPHYSFS_SUPPORTS_ZIP=1 -Dunix \
 	-DPHYSFS_NO_PTHREADS_SUPPORT -DPHYSFS_NO_CDROM_SUPPORT 
 
 include $(PSPSDK)/lib/build.mak

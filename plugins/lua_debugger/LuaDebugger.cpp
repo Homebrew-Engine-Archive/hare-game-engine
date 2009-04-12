@@ -84,7 +84,7 @@ HARE_IMPLEMENT_DYNAMIC_CLASS(LuaDebuggerConfig, Object, 0)
 
 LuaDebuggerConfig::LuaDebuggerConfig()
  : remoteDebug(false), hostName("localhost"),
-   portNumber(9981), appPath("hare_lua")
+   portNumber(9981), appPath("./hare_lua")
 {
 }
 

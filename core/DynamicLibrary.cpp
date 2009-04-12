@@ -85,4 +85,20 @@
             NSUnLinkModule((NSModule)libHandle, NSUNLINKMODULE_OPTION_RESET_LAZY_REFERENCES);
         }
     }
+#else
+    namespace hare_core
+    {
+        void DynamicLibrary::load(const String& path)
+        {
+        }
+
+        void* DynamicLibrary::getSymbol(const String& name)
+        {
+            return NULL;
+        }
+
+        void DynamicLibrary::unload(void* libHandle)
+        {
+        }
+    }
 #endif

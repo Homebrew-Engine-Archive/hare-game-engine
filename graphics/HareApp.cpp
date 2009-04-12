@@ -6,7 +6,7 @@
 #include "Canvas.h"
 
 namespace hare_graphics
-{		
+{
 	HareApp hareApp;
 
 	HARE_IMPLEMENT_SINGLETON(HareApp)
@@ -25,14 +25,14 @@ namespace hare_graphics
 
 	void HareApp::startUp()
 	{
-		DevILImageCodec::startUp();
+		//DevILImageCodec::startUp();
 		textManager = new TextManager();
 	}
 
 	void HareApp::shutDown()
 	{
 		delete textManager;
-        DevILImageCodec::shutDown();
+        //DevILImageCodec::shutDown();
 	}
 
 	void HareApp::setGraphicsSystem(SystemManager* systemManager)

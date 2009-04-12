@@ -16,16 +16,21 @@ OBJS = \
 	$(SRC_DIR)/FileSystem.o \
 	$(SRC_DIR)/MathUtil.o \
 	$(SRC_DIR)/Matrix4.o \
+	$(SRC_DIR)/Object.o \
 	$(SRC_DIR)/Socket.o \
 	$(SRC_DIR)/StringConverter.o \
 	$(SRC_DIR)/StringUtil.o \
 	$(SRC_DIR)/Thread.o \
 	$(SRC_DIR)/Timer.o \
-	$(SRC_DIR)/Vector2.o
+	$(SRC_DIR)/Vector2.o \
+	$(SRC_DIR)/tinyxml/tinystr.o \
+	$(SRC_DIR)/tinyxml/tinyxml.o \
+	$(SRC_DIR)/tinyxml/tinyxmlerror.o \
+	$(SRC_DIR)/tinyxml/tinyxmlparser.o
 	
-INCDIR = include/psp ../../include/core physfs_psp
+INCDIR = include/psp ../../include/core ../../include/core/tinyxml physfs_psp
 
-CFLAGS = -O2 -G0 -Wall -Wno-deprecated -DDEVHOOK -DPSPFW3XX
+CFLAGS = -O2 -G0 -Wall -Wno-deprecated
 
 LIBS = -lgif -lfreetype -ljpeg -lpng -lz -lmikmod -lpsppower -lpspmpeg -lpspaudiocodec -lpspaudiolib -lpspaudio -lpspgum -lpspgu -lpsprtc -lm -lstdc++
 

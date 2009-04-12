@@ -7,6 +7,7 @@ PSPDIR = $(shell psp-config --psp-prefix)
 
 OBJS = \
 		$(SRC_DIR)/Canvas.o \
+		$(SRC_DIR)/Codec.o \
 		$(SRC_DIR)/DataHolder.o \
 		$(SRC_DIR)/Font.o \
 		$(SRC_DIR)/GraphicsUtil.o \
@@ -18,6 +19,7 @@ OBJS = \
 		$(SRC_DIR)/Material.o \
 		$(SRC_DIR)/Mesh.o \
 		$(SRC_DIR)/Particle.o \
+		$(SRC_DIR)/PixelFormat.o \
 		$(SRC_DIR)/Quad.o \
 		$(SRC_DIR)/RenderSystem.o \
 		$(SRC_DIR)/RenderTarget.o \
@@ -31,13 +33,15 @@ OBJS = \
 		$(SRC_DIR)/Sprite.o \
 		$(SRC_DIR)/SystemManager.o \
 		$(SRC_DIR)/TextManager.o \
-		$(SRC_DIR)/Texture.o
+		$(SRC_DIR)/Texture.o \
+		$(SRC_DIR)/Triple.o \
 
 INCDIR = ../../include ../../include/graphics $(PSPDIR)/include/freetype2
+LIBDIR = ../../lib
 
-CFLAGS = -O2 -G0 -Wall -Wno-deprecated -DDEVHOOK -DPSPFW3XX
+CFLAGS = -O2 -G0 -Wall -Wno-deprecated
 
-LIBS = -lgif -lfreetype -ljpeg -lpng -lz -lmikmod -lpsppower -lpspmpeg -lpspaudiocodec -lpspaudiolib -lpspaudio -lpspgum -lpspgu -lpsprtc -lm -lstdc++
+LIBS = -lcore -lfreetype -lz -lmikmod -lm -lstdc++
 
 include $(PSPSDK)/lib/build.mak
 

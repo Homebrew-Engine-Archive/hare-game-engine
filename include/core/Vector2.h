@@ -79,17 +79,17 @@ namespace hare_core
             return *this;
         }
 
-        float	dot(const Vector2 *v) const
+        float dot(const Vector2 *v) const
         {
             return x*v->x + y*v->y;
         }
 
-        float	length() const
+        float length() const
         {
             return MathUtil::sqrtf(dot(this));
         }
 
-        float	angle(const Vector2 *v = 0) const;
+        float angle(const Vector2 *v = 0) const;
 
         void clamp(const float max)
         {

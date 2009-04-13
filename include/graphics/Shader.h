@@ -7,8 +7,9 @@
 
 namespace hare_graphics
 {
-	class GRAPHICS_API ShaderParams
+	class GRAPHICS_API ShaderParams : public Object
 	{
+		HARE_DECLARE_ABSTRACT_CLASS(ShaderParams)
 	public:
 		enum SceneBlendOperation{
 			SBO_Add,
@@ -28,12 +29,13 @@ namespace hare_graphics
 		~ShaderParams(){}
 		
 		bool AlphaBlendEnable;
-		SceneBlendOperation   SceneBlendOP;
-		SceneBlendArgument    SceneBlendSrcArg;
-		SceneBlendArgument    SceneBlendDesArg;
 
-		bool AlphaTestEnable;
-		uint8   AlphaRef;
+		uint8 SceneBlendOP;
+		uint8 SceneBlendSrcArg;
+		uint8 SceneBlendDesArg;
+
+		bool  AlphaTestEnable;
+		uint8 AlphaRef;
 
 		bool operator != (const ShaderParams& right);
 		bool operator == (const ShaderParams& right);
@@ -60,17 +62,17 @@ namespace hare_graphics
 
 		void setShaderParams(const ShaderParams& s)
 		{
-			shaderParams = s;
+			*shaderParams = s;
 		}
 
 		const ShaderParams& getShaderParams()
 		{
-			return shaderParams;
+			return *shaderParams;
 		}
 
 
 	protected:
-		ShaderParams shaderParams;
+		ShaderParams::Ptr shaderParams;
 	};
 
 	class GRAPHICS_API SimpleShader : public Shader

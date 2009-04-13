@@ -4,6 +4,25 @@
 
 namespace hare_graphics
 {
+	HARE_ENUM_BEGIN(TextureStage::WrapMode)
+		HARE_ENUM_NAME_VALUE(Wrap, TextureStage::WM_Wrap)
+		HARE_ENUM_NAME_VALUE(Mirror, TextureStage::WM_Mirror)
+		HARE_ENUM_NAME_VALUE(Clamp, TextureStage::WM_Clamp)
+		HARE_ENUM_NAME_VALUE(Shadow, TextureStage::WM_Shadow)
+	HARE_ENUM_END()
+
+	HARE_ENUM_BEGIN(TextureStage::FliterType)
+		HARE_ENUM_NAME_VALUE(Point, TextureStage::FT_Point)
+		HARE_ENUM_NAME_VALUE(Line, TextureStage::FT_Line)
+	HARE_ENUM_END()
+
+	HARE_IMPLEMENT_ABSTRACT_CLASS(TextureStage, Object, 0)
+	{
+		HARE_ENUM(wrapModeU,  uint8, WrapMode)
+		HARE_ENUM(wrapModeV,  uint8, WrapMode)
+		HARE_ENUM(fliterType, uint8, FliterType)
+	}
+
 	TextureStage::TextureStage()
 		:ColorBlendOP(CABO_Modulate)
 		,ColorBlendArg1(CABA_Texture)
@@ -13,7 +32,7 @@ namespace hare_graphics
 		,AlphaBlendArg2(CBBA_Current)
 		,wrapModeU(WM_Wrap)
 		,wrapModeV(WM_Wrap)
-		,lodSet(LS_Interface)
+		,fliterType(FT_Point)
 	{
 
 	}
@@ -28,7 +47,7 @@ namespace hare_graphics
 		|| AlphaBlendArg2 != right.AlphaBlendArg2
 		|| wrapModeU      != right.wrapModeU
 		|| wrapModeV      != right.wrapModeV
-		|| lodSet         != right.lodSet){
+		|| fliterType         != right.fliterType){
 			return true;
 		}
 
@@ -72,10 +91,12 @@ namespace hare_graphics
 	HARE_IMPLEMENT_DYNAMIC_CLASS(TextureMtrl, StandardMtrl, 0)
 	{
 		HARE_META_F(fileName, String, propFSUrl)
+		HARE_OBJ(textureStage, TextureStage)
 	}
 
 	TextureMtrl::TextureMtrl()
 	{
+		textureStage = new TextureStage;
 		frameMove();
 	}
 

@@ -7,8 +7,9 @@
 
 namespace hare_graphics
 {
-	class GRAPHICS_API TextureStage
+	class GRAPHICS_API TextureStage : public Object
 	{
+		HARE_DECLARE_ABSTRACT_CLASS(TextureStage)
 	public:
 		enum ColorAlphaBlendOperation
 		{
@@ -33,10 +34,10 @@ namespace hare_graphics
 			WM_Shadow,
 		};
 
-		enum LODSet
+		enum FliterType
 		{
-			LS_Interface,	    //没有minimap
-			LS_HighQuality,		//
+			FT_Point,	    //没有minimap
+			FT_Line,		//
 		};
 
 		TextureStage();
@@ -50,10 +51,10 @@ namespace hare_graphics
 		ColorAlphaBlendArgument  AlphaBlendArg1;
 		ColorAlphaBlendArgument  AlphaBlendArg2;
 
-		WrapMode wrapModeU;
-		WrapMode wrapModeV;
+		uint8 wrapModeU;
+		uint8 wrapModeV;
 
-		LODSet   lodSet;
+		uint8 fliterType;
 
 		bool operator != (const TextureStage& right);
 		bool operator == (const TextureStage& right);
@@ -123,43 +124,14 @@ namespace hare_graphics
 			return texture;
 		}
 
-		void setWrapModU(TextureStage::WrapMode modeU)
-		{
-			textureStage.wrapModeU = modeU;
-		}
-		void setWrapModV(TextureStage::WrapMode modeV)
-		{
-			textureStage.wrapModeV = modeV;
-		}
-
-		TextureStage::WrapMode getWrapModeU()
-		{
-			return textureStage.wrapModeU;
-		}
-
-		TextureStage::WrapMode getWrapModeV()
-		{
-			return textureStage.wrapModeV;
-		}
-
-		void setLodSet(TextureStage::LODSet lod)
-		{
-			textureStage.lodSet = lod;
-		}
-
-		TextureStage::LODSet getLodSet()
-		{
-			return textureStage.lodSet;
-		}
-
 		void setTextureStage(const TextureStage& ts)
 		{
-			textureStage = ts;
+			*textureStage = ts;
 		}
 
 		const TextureStage& getTextureStage()
 		{
-			return textureStage;
+			return *textureStage;
 		}
 
 		virtual void postLoaded();
@@ -168,7 +140,7 @@ namespace hare_graphics
 
 	protected:
 		Texture::Ptr texture;
-		TextureStage textureStage;
+		TextureStage::Ptr textureStage;
 	
 	public:
 		Matrix4      texMat;

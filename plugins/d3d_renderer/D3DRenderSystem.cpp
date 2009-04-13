@@ -346,9 +346,9 @@ void D3DRenderSystem::setShaderParams(const ShaderParams& shaderParams)
 {
 	//pD3DDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, true);
 	pD3DDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, shaderParams.AlphaBlendEnable);
-	pD3DDevice->SetRenderState(D3DRS_BLENDOP, D3DTypeConverter::toD3DSceneBlendOperation(shaderParams.SceneBlendOP));
-	pD3DDevice->SetRenderState(D3DRS_SRCBLEND, D3DTypeConverter::toD3DSceneBlendArgument(shaderParams.SceneBlendSrcArg));
-	pD3DDevice->SetRenderState(D3DRS_DESTBLEND, D3DTypeConverter::toD3DSceneBlendArgument(shaderParams.SceneBlendDesArg));
+	pD3DDevice->SetRenderState(D3DRS_BLENDOP, D3DTypeConverter::toD3DSceneBlendOperation((ShaderParams::SceneBlendOperation)shaderParams.SceneBlendOP));
+	pD3DDevice->SetRenderState(D3DRS_SRCBLEND, D3DTypeConverter::toD3DSceneBlendArgument((ShaderParams::SceneBlendArgument)shaderParams.SceneBlendSrcArg));
+	pD3DDevice->SetRenderState(D3DRS_DESTBLEND, D3DTypeConverter::toD3DSceneBlendArgument((ShaderParams::SceneBlendArgument)shaderParams.SceneBlendDesArg));
 	//pD3DDevice->SetRenderState(D3DRS_ALPHATESTENABLE, false);
 	pD3DDevice->SetRenderState(D3DRS_ALPHATESTENABLE, shaderParams.AlphaTestEnable);
 	pD3DDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATEREQUAL);
@@ -378,16 +378,16 @@ void D3DRenderSystem::setTextureStage(const TextureStage& textureStage)
 			pD3DDevice->SetSamplerState(0, D3DSAMP_ADDRESSV, D3DTADDRESS_CLAMP);
 		}
 	}else{
-		pD3DDevice->SetSamplerState(0, D3DSAMP_ADDRESSU, D3DTypeConverter::toD3DTextureAddress(textureStage.wrapModeU));
-		pD3DDevice->SetSamplerState(0, D3DSAMP_ADDRESSV, D3DTypeConverter::toD3DTextureAddress(textureStage.wrapModeV));
+		pD3DDevice->SetSamplerState(0, D3DSAMP_ADDRESSU, D3DTypeConverter::toD3DTextureAddress((TextureStage::WrapMode)textureStage.wrapModeU));
+		pD3DDevice->SetSamplerState(0, D3DSAMP_ADDRESSV, D3DTypeConverter::toD3DTextureAddress((TextureStage::WrapMode)textureStage.wrapModeV));
 	}
 
-	if (textureStage.lodSet == TextureStage::LS_Interface){
+	if (textureStage.fliterType == TextureStage::FT_Point){
 		pD3DDevice->SetSamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_POINT);
 		pD3DDevice->SetSamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_POINT);
 		pD3DDevice->SetSamplerState(0, D3DSAMP_MIPFILTER, D3DTEXF_POINT);
 
-	}else if (textureStage.lodSet == TextureStage::LS_HighQuality){
+	}else if (textureStage.fliterType == TextureStage::FT_Line){
 		pD3DDevice->SetSamplerState(0, D3DSAMP_MINFILTER, bAnisotropicFilter ? D3DTEXF_ANISOTROPIC : D3DTEXF_LINEAR);
 		pD3DDevice->SetSamplerState(0, D3DSAMP_MAGFILTER, bAnisotropicFilter ? D3DTEXF_ANISOTROPIC : D3DTEXF_LINEAR);
 		pD3DDevice->SetSamplerState(0, D3DSAMP_MIPFILTER, bAnisotropicFilter ? D3DTEXF_ANISOTROPIC : D3DTEXF_LINEAR);

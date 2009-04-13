@@ -5,15 +5,15 @@
 namespace hare_graphics
 {
 	HARE_ENUM_BEGIN(TextureStage::WrapMode)
-		HARE_ENUM_NAME_VALUE(Wrap, TextureStage::WM_Wrap)
+		HARE_ENUM_NAME_VALUE(Wrap,   TextureStage::WM_Wrap)
 		HARE_ENUM_NAME_VALUE(Mirror, TextureStage::WM_Mirror)
-		HARE_ENUM_NAME_VALUE(Clamp, TextureStage::WM_Clamp)
+		HARE_ENUM_NAME_VALUE(Clamp,  TextureStage::WM_Clamp)
 		HARE_ENUM_NAME_VALUE(Shadow, TextureStage::WM_Shadow)
 	HARE_ENUM_END()
 
 	HARE_ENUM_BEGIN(TextureStage::FliterType)
 		HARE_ENUM_NAME_VALUE(Point, TextureStage::FT_Point)
-		HARE_ENUM_NAME_VALUE(Line, TextureStage::FT_Line)
+		HARE_ENUM_NAME_VALUE(Line,  TextureStage::FT_Line)
 	HARE_ENUM_END()
 
 	HARE_IMPLEMENT_ABSTRACT_CLASS(TextureStage, Object, 0)
@@ -57,6 +57,21 @@ namespace hare_graphics
 	bool TextureStage::operator == (const TextureStage& right)
 	{
 		return !(*this != right);
+	}
+
+	TextureStage& TextureStage::operator = (const TextureStage& right)
+	{
+		ColorBlendOP   = right.ColorBlendOP;
+		ColorBlendArg1 = right.ColorBlendArg1;
+		ColorBlendArg2 = right.ColorBlendArg2;
+		AlphaBlendOP   = right.AlphaBlendOP;
+		AlphaBlendArg1 = right.AlphaBlendArg1;
+		AlphaBlendArg2 = right.AlphaBlendArg2;
+		wrapModeU      = right.wrapModeU;
+		wrapModeV      = right.wrapModeV;
+		fliterType     = right.fliterType;
+
+		return *this;
 	}
 
 	//²ÄÖÊ»ùÀà

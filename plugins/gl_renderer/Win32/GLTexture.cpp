@@ -5,6 +5,8 @@
 
 GLTexture::GLTexture()
     :glTexture(0)
+	,fbo(0)
+    ,depthbuffer(0)
 {
 
 }
@@ -31,10 +33,10 @@ void GLTexture::active()
     else
         glOrtho(-50.0*(GLfloat)projectionWidth/(GLfloat)projectionHeight, 50.0*(GLfloat)projectionWidth/(GLfloat)projectionHeight, -50.0, 50.0,-1.0,1.0); 
 
-    glMatrixMode (GL_MODELVIEW);
+    glMatrixMode(GL_MODELVIEW);
     glLoadIdentity(); 
 
-    glViewport (0, 0, projectionWidth, projectionHeight);
+    glViewport(0, 0, projectionWidth, projectionHeight);
 
 }
 
@@ -82,6 +84,14 @@ bool GLTexture::doCreate()
             (GLvoid*)data);
 
         delete [] data;
+
+		if (bIsRenderable){
+			glGenFramebuffersEXT(1, &fbo);
+    
+			if (GLRenderSystem::getSingletonPtr()->getCurRenderWindow()->getWindowParams().bZbuffer){
+				
+			}
+		}
 
     }else{
         Image img;

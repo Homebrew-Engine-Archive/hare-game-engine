@@ -28,6 +28,9 @@ protected:
 
 private:
     GLuint glTexture;
+	GLuint fbo;
+	GLuint depthbuffer;
+
 };
 
 

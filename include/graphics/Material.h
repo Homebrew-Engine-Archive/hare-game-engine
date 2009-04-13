@@ -58,6 +58,8 @@ namespace hare_graphics
 
 		bool operator != (const TextureStage& right);
 		bool operator == (const TextureStage& right);
+
+		TextureStage& operator = (const TextureStage& right);
 	};
 
 	//²ÄÖÊ»ùÀà

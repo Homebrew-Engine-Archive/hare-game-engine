@@ -39,6 +39,8 @@ namespace hare_graphics
 
 		bool operator != (const ShaderParams& right);
 		bool operator == (const ShaderParams& right);
+
+		ShaderParams& operator = (const ShaderParams& right);
 	};
 
 	//着色器基类

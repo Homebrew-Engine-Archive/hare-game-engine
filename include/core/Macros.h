@@ -114,34 +114,32 @@ public:                                                                   \
 
 #define HARE_ENUM_BEGIN(TYPE) \
 template <> \
-inline EnumMap* getEnumValue<TYPE>() { \
+inline EnumMap* ::getEnumValue<TYPE>() { \
     static EnumMap* pEnumMap = 0; \
     if (!pEnumMap) { \
         static EnumMap theEnum; \
         pEnumMap = &theEnum; \
     }
+#define HARE_ENUM_NAME_VALUE(NAME, VALUE) pEnumMap->insert(std::make_pair(#NAME, VALUE));
 #define HARE_ENUM_VALUE(VALUE) pEnumMap->insert(std::make_pair(#VALUE, VALUE));
 #define HARE_ENUM_END() \
     return pEnumMap; \
 }
 
-namespace hare_core
+typedef std::map<hare_core::String, hare_core::int32> EnumMap;
+
+template <typename T>
+inline EnumMap* getEnumValue() { return 0; }
+
+enum Bool
 {
-    typedef std::map<String, int32> EnumMap;
+    False,
+    True,
+};
 
-    template <typename T>
-    inline EnumMap* getEnumValue() { return 0; }
-
-    enum Bool
-    {
-        False,
-        True,
-    };
-
-    HARE_ENUM_BEGIN(Bool)
-        HARE_ENUM_VALUE(False)
-        HARE_ENUM_VALUE(True)
-    HARE_ENUM_END()
-}
+HARE_ENUM_BEGIN(Bool)
+    HARE_ENUM_VALUE(False)
+    HARE_ENUM_VALUE(True)
+HARE_ENUM_END()
 
 #endif

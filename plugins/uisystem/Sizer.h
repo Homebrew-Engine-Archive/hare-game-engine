@@ -258,7 +258,7 @@ namespace hare_ui
 
         void setDimension(const RectF& rect)
         {
-            position = rect.ptMin;
+            position.set(rect.minX, rect.minY);
             size.set(rect.width(), rect.height());
             layout();
         }

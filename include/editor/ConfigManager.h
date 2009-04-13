@@ -17,30 +17,20 @@
 #include "TManager.h"
 #include <wx/string.h>
 
-namespace hare_core
-{
-    enum FoldIndicator
-    {
-        FI_Arrow,
-        FI_Circle,
-        FI_Square,
-        FI_Simple,
-    };
-
-    HARE_ENUM_BEGIN(FoldIndicator)
-        HARE_ENUM_VALUE(FI_Arrow)
-        HARE_ENUM_VALUE(FI_Circle)
-        HARE_ENUM_VALUE(FI_Square)
-        HARE_ENUM_VALUE(FI_Simple)
-    HARE_ENUM_END()
-}
-
 namespace hare_editor
 {
     class EDITOR_API AppConfigFile : public Object
     {
         HARE_DECLARE_DYNAMIC_CLASS(AppConfigFile)
     public:
+
+        enum FoldIndicator
+        {
+            FI_Arrow,
+            FI_Circle,
+            FI_Square,
+            FI_Simple,
+        };
 
 		wxString getOpenFilePath();
 		wxString getOpenFileFilters();

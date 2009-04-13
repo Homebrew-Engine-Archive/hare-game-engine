@@ -17,6 +17,13 @@
 
 namespace hare_editor
 {
+    HARE_ENUM_BEGIN(AppConfigFile::FoldIndicator)
+        HARE_ENUM_NAME_VALUE(Arrow, AppConfigFile::FI_Arrow)
+        HARE_ENUM_NAME_VALUE(Circle, AppConfigFile::FI_Circle)
+        HARE_ENUM_NAME_VALUE(Square, AppConfigFile::FI_Square)
+        HARE_ENUM_NAME_VALUE(Simple, AppConfigFile::FI_Simple)
+    HARE_ENUM_END()
+
     HARE_IMPLEMENT_DYNAMIC_CLASS(AppConfigFile, Object, 0)
     {
         HARE_META_F(openFilePath, String, propReadOnly)

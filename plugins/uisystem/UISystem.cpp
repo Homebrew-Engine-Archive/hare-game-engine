@@ -75,47 +75,8 @@ namespace hare_ui
             }
             break;
         }
-
         
-        event.position = mousePos;
-
-        // get the tracker that holds the number of down events seen so far for this button
-        clickTrackers[button].rect.isPointIn(mousePos);
-        // set click count in the event args
-        ma.clickCount = tkr.d_click_count;
-
-        Window* const initial_dest_window = getTargetWindow(ma.position);
-        Window* dest_window = initial_dest_window;
-
-        // loop backwards until event is handled or we run out of windows.
-        while ((!ma.handled) && (dest_window != 0))
-        {
-            ma.window = dest_window;
-            dest_window->onMouseButtonUp(ma);
-            dest_window = getNextTargetWindow(dest_window);
-        }
-
-        bool wasUpHandled = ma.handled;
-
-        // if requirements for click events are met
-        if (((d_click_timeout == 0) || (tkr.d_timer.elapsed() <= d_click_timeout)) &&
-            (tkr.d_click_area.isPointInRect(ma.position)) &&
-            (tkr.d_target_window == initial_dest_window))
-        {
-            ma.handled = false;
-            dest_window = initial_dest_window;
-
-            // loop backwards until event is handled or we run out of windows.
-            while ((!ma.handled) && (dest_window != 0))
-            {
-                ma.window = dest_window;
-                dest_window->onMouseClicked(ma);
-                dest_window = getNextTargetWindow(dest_window);
-            }
-
-        }
-
-        return (ma.handled | wasUpHandled);
+        // click event
     }
 
     bool UISystem::notifyMouseButtonDown(MouseButton button)

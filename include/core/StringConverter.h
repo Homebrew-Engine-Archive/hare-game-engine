@@ -36,6 +36,42 @@ namespace hare_core
             stream >> val;
             return val;
         }
+
+        // Size -> String
+        template <typename T>
+        static String toString(const TSize<T>& val)
+        {
+            return toString(val.cx) + " " + toString(val.cy);
+        }
+
+        // Point -> String
+        template <typename T>
+        static String toString(const TPoint<T>& val)
+        {
+            return toString(val.x) + " " + toString(val.y);
+        }
+
+        // String -> Size 
+        template <typename T>
+        static TSize<T>& parse(const String& str, TSize<T>& val)
+        {
+            StringVector strs = StringUtil::split(str, " ");
+            assert(strs.size() == 2);
+            parse(strs[0], val.cx);
+            parse(strs[1], val.cy);
+            return val;
+        }
+
+        // String -> Point
+        template <typename T>
+        static TPoint<T>& parse(const String& str, TPoint<T>& val)
+        {
+            StringVector strs = StringUtil::split(str, " ");
+            assert(strs.size() == 2);
+            parse(strs[0], val.x);
+            parse(strs[1], val.y);
+            return val;
+        }
     };
 
     // String -> String
@@ -112,43 +148,6 @@ namespace hare_core
         val = (int8)val_int32;
         return val;
     }
-
-    // SizeF -> String
-    template <>
-    inline String StringConverter::toString(const SizeF& val)
-    {
-        return toString(val.cx) + " " + toString(val.cy);
-    }
-
-    // PointF -> String
-    template <>
-    inline String StringConverter::toString(const PointF& val)
-    {
-        return toString(val.x) + " " + toString(val.y);
-    }
-
-    // String -> SizeF 
-    template <>
-    inline SizeF& StringConverter::parse(const String& str, SizeF& val)
-    {
-        StringVector strs = StringUtil::split(str, " ");
-        assert(strs.size() == 2);
-        parse(strs[0], val.cx);
-        parse(strs[1], val.cy);
-        return val;
-    }
-
-    // String -> PointF 
-    template <>
-    inline PointF& StringConverter::parse(const String& str, PointF& val)
-    {
-        StringVector strs = StringUtil::split(str, " ");
-        assert(strs.size() == 2);
-        parse(strs[0], val.x);
-        parse(strs[1], val.y);
-        return val;
-    }
-
 }
 
 #endif

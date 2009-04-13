@@ -51,6 +51,8 @@ void D3DTexture::active()
 
 	SAFE_RELEASE(sur);
 
+    D3DRenderSystem::getSingletonPtr()->clear(pDepthStencilSurface != NULL);
+
 	//重新设置投影矩阵
 	D3DXMATRIX matTEMP;
 
@@ -76,8 +78,6 @@ void D3DTexture::inactive()
 	D3DRenderSystem::getSingletonPtr()->render();
 
 	D3DRenderSystem::getSingletonPtr()->endFrame();
-
-	//D3DRenderSystem::getSingletonPtr()->clear(D3DRenderSystem::getSingletonPtr()->getCurRenderWindow()->getWindowParams().bZbuffer);
 }
 
 void D3DTexture::beforeResetDevice()
@@ -266,6 +266,8 @@ bool D3DTexture::doCreate()
 				tmpData++;
 			}
 		}
+
+        texPixelFormat = HPF_A8R8G8B8;
 
 		for (uint32 y = 0; y < srcHeight; ++y){
 			memcpy(pDestBuf + y * PO2Width * PixelFB, pSrcBuf + y * srcWidth * PixelFB, srcWidth * PixelFB);

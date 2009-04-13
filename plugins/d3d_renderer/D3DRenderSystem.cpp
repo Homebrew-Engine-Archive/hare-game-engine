@@ -198,6 +198,8 @@ void D3DRenderSystem::resetDevice()
 
 	hr = pD3DDevice->Reset(pPrimaryWindow->getPresentationParameters());
 
+    clear(pPrimaryWindow->getWindowParams().bZbuffer);
+
 	if (FAILED(hr)){
 		assert(false);
 	}

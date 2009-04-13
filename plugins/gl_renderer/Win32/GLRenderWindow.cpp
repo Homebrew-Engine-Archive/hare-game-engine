@@ -151,8 +151,8 @@ void GLRenderWindow::create(const WindowParams& params)
 
 void GLRenderWindow::setProjection()
 {
-    glMatrixMode (GL_PROJECTION);
-    glLoadIdentity (); 
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity(); 
     
     //NOTE!! glOrtho funcation last tow args is used as negative
     if (windowParams.width <= windowParams.height)                                                                    //near far
@@ -160,7 +160,9 @@ void GLRenderWindow::setProjection()
     else
         glOrtho(-50.0*(GLfloat)windowParams.width/(GLfloat)windowParams.height, 50.0*(GLfloat)windowParams.width/(GLfloat)windowParams.height, -50.0, 50.0,-1.0,1.0); 
 
-    glMatrixMode (GL_MODELVIEW);
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity(); 
+
     glViewport (0, 0, windowParams.width, windowParams.height);
 }
 
@@ -176,11 +178,7 @@ void GLRenderWindow::swapBuffer()
 {
     SwapBuffers(hDC);
 
-    GLbitfield flag = GL_COLOR_BUFFER_BIT;
-    if (windowParams.bZbuffer){
-        flag |= GL_DEPTH_BUFFER_BIT;
-    }
-    glClear(flag);
+    GLSystemManager::getSingletonPtr()->clear(windowParams.bZbuffer);
 }
 
 void GLRenderWindow::destoryWindow()

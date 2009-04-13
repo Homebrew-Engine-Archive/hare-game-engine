@@ -15,12 +15,8 @@ namespace hare_graphics
 	{
 	public:
 		enum RenderOperationType{
-			ROT_POINT_LIST,
 			ROT_LINE_LIST,
-			ROT_LINE_STRIP,
 			ROT_TRIANGLE_LIST,
-			ROT_TRIANGLE_STRIP,
-			ROT_TRIANGLE_FAN,
             ROT_QUAD_LIST,
 		};
 	public:
@@ -28,8 +24,8 @@ namespace hare_graphics
 		virtual ~RenderUnit();
 
 		virtual Vertex* getBuffer() = 0;
-		virtual uint32     getVertexCount() = 0;
-		virtual uint32	    getPrimCount() = 0;
+		virtual uint32  getVertexCount() = 0;
+		virtual uint32  getPrimCount() = 0;
 		virtual RenderOperationType	getOperationType() = 0;
 		void setMaterial(Material* m)
 		{

@@ -23,6 +23,9 @@ public:
 
     GLuint  getGLTexture();
 
+protected:
+    bool doCreate();
+
 private:
     GLuint glTexture;
 };

@@ -20,6 +20,10 @@ public:
     virtual void setTextureStage(const TextureStage& textureStage);
 
     virtual Texture* createTexture();
+
+protected:
+    void writeBuffer(GLenum type, Vertex* buffer, uint32 count);
+    void makeGLMatrix(GLfloat gl_matrix[16], const Matrix4& m);
 };
 
 

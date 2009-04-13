@@ -14,7 +14,7 @@ namespace hare_graphics
 		virtual ~Quad();
 
 		virtual Vertex* getBuffer();
-		virtual uint32 getVertexCount();
+		virtual uint32  getVertexCount();
 		virtual uint32	getPrimCount();
 		virtual RenderUnit::RenderOperationType	getOperationType();
 		virtual void setTextureUVMap(float ul, float vt, float ur, float vb);

@@ -185,7 +185,6 @@ void D3DRenderWindow::resize(uint32 w, uint32 h)
 
     static_cast<D3DRenderSystem*>(RenderSystem::getSingletonPtr())->resetDevice();
 	//以后从配置文件中的到是否重建后背缓冲和是否剧中的问题
-
 }
 
 void D3DRenderWindow::swapBuffer()
@@ -197,9 +196,8 @@ void D3DRenderWindow::swapBuffer()
 	}else{
 		pSwapChain->Present(NULL, NULL, NULL, NULL, 0);
 	}
-
-	//清空d3d场景
-	D3DRenderSystem::getSingletonPtr()->clear(windowParams.bZbuffer);
+    //清空d3d场景
+    D3DRenderSystem::getSingletonPtr()->clear(windowParams.bZbuffer);
 }
 
 void D3DRenderWindow::active()

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="lua_debugger" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="lua_debugger">
+				<Option output="../../lib/editor_data/plugins/lua_debugger.plugin" prefix_auto="0" extension_auto="0" />
+				<Option working_dir="../../lib/editor_data/plugins" />
+				<Option type="3" />
+				<Option compiler="gcc" />
+				<Option createDefFile="1" />
+				<Option createStaticLib="1" />
+				<Compiler>
+					<Add directory="../../include" />
+					<Add directory="../../ext/lua/src" />
+					<Add directory="../../include/editor/wxTreeListCtrl/include" />
+				</Compiler>
+				<Linker>
+					<Add directory="../../lib" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="`wx-config --cflags`" />
+			<Add option="-Wno-deprecated" />
+			<Add directory="../../include" />
+			<Add directory="../../plugins/lua_debugger" />
+		</Compiler>
+		<Linker>
+			<Add option="`wx-config --libs`" />
+			<Add library="lua" />
+			<Add library="core" />
+			<Add library="editor" />
+		</Linker>
+		<Unit filename="../../bindings/lua/LuaDebugData.cpp" />
+		<Unit filename="../../bindings/lua/LuaDebugData.h" />
+		<Unit filename="../../bindings/lua/LuaDebugDefines.h" />
+		<Unit filename="../../bindings/lua/SocketHelper.h" />
+		<Unit filename="../../plugins/lua_debugger/CallStackWindow.cpp" />
+		<Unit filename="../../plugins/lua_debugger/CallStackWindow.h" />
+		<Unit filename="../../plugins/lua_debugger/LocalWindow.cpp" />
+		<Unit filename="../../plugins/lua_debugger/LocalWindow.h" />
+		<Unit filename="../../plugins/lua_debugger/LuaDebugger.cpp" />
+		<Unit filename="../../plugins/lua_debugger/LuaDebugger.h" />
+		<Unit filename="../../plugins/lua_debugger/OutputWindow.cpp" />
+		<Unit filename="../../plugins/lua_debugger/OutputWindow.h" />
+		<Unit filename="../../plugins/lua_debugger/PCH.cpp" />
+		<Unit filename="../../plugins/lua_debugger/PCH.h" />
+		<Unit filename="../../plugins/lua_debugger/PluginMain.cpp" />
+		<Unit filename="../../plugins/lua_debugger/WatchWindow.cpp" />
+		<Unit filename="../../plugins/lua_debugger/WatchWindow.h" />
+		<Extensions>
+			<code_completion />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

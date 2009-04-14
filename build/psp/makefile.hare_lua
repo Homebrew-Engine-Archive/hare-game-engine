@@ -1,0 +1,35 @@
+PSPSDK = $(shell psp-config --pspsdk-path)
+PSPDIR = $(shell psp-config --psp-prefix)
+
+BUILD_PRX = 1
+PSP_FW_VERSION = 371
+
+SWIG_EXE = swig
+OUT_DIR = ../../lib
+SRC_DIR = ../../bindings/lua
+TARGET = hare_lua
+
+EXTRA_TARGETS = EBOOT.PBP
+PSP_EBOOT_TITLE = hare
+PSP_EBOOT_ICON = lua.png
+
+OBJS = \
+	$(SRC_DIR)/main.o \
+	$(SRC_DIR)/hare_wrap.o	
+	
+INCDIR = ../../include
+LIBDIR = ../../lib $(PSPDIR)/lib $(PSPSDK)/lib
+
+CFLAGS = -O2 -G0 -Wall -Wno-deprecated -DSTATIC_LINKED
+CXXFLAGS = $(CFLAGS) -fno-exceptions -fno-rtti
+ASFLAGS = $(CFLAGS) 
+
+LIBS = -lg -liberty -llua -lgraphics -lcore -lphysfs -lstdc++ -lc -lm -lfreetype -lz -lpsppower
+
+include $(PSPSDK)/lib/build.mak
+
+$(SRC_DIR)/hare_wrap.cpp: $(SRC_DIR)/hare.i
+	$(SWIG_EXE) -c++ -lua -outdir . -I.. $(SRC_DIR)/hare.i
+
+install: $(TARGET)
+	@cp $(TARGET) $(OUT_DIR)

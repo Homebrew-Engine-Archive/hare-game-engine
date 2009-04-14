@@ -66,20 +66,21 @@ public:                                                                   \
     }                                                                     \
     void name::accept(XmlVisitor &visitor, bool super) {                  \
         base::accept(visitor, true);                                      \
-        uint32 savedVer = visitor.classVersion;                              \
+        uint32 savedVer = visitor.classVersion;                           \
         visitor.visitEnter(#name, super, CLASS_INFO.classVersion);        \
         name##_accept(visitor);                                           \
         visitor.classVersion = savedVer;                                  \
     }                                                                     \
     void name::accept(BinVisitor &visitor, bool super) {                  \
         base::accept(visitor, true);                                      \
-        uint32 savedVer = visitor.classVersion;                              \
+        uint32 savedVer = visitor.classVersion;                           \
         visitor.visitEnter(#name, super, CLASS_INFO.classVersion);        \
         name##_accept(visitor);                                           \
         visitor.classVersion = savedVer;                                  \
     }                                                                     \
     void name::accept(AttVisitor &visitor, bool super) {                  \
         base::accept(visitor, true);                                      \
+        visitor.owner = this;                                             \
         visitor.visitEnter(#name, super, CLASS_INFO.classVersion);        \
         name##_accept(visitor);                                           \
     }                                                                     \

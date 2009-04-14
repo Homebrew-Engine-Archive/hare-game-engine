@@ -389,7 +389,6 @@ namespace hare_editor
         if (obj)
         {
             AttVisitor v;
-            v.owner = obj;
             obj->accept(v);
             prop->object = obj;
             prop->attributes = v.attributes;
@@ -400,6 +399,8 @@ namespace hare_editor
                 Attribute *at = *it;
                 bindAttribute(at, page, prop);
             }
+
+            prop->SetExpanded(false);
         }
     }
 
@@ -558,7 +559,6 @@ namespace hare_editor
             wxString::FromUTF8(obj->getClassInfo()->className), wxPG_LABEL));
 
         AttVisitor v;
-        v.owner = obj;
         obj->accept(v);
         page->SetClientData(obj);
         page->object = obj;

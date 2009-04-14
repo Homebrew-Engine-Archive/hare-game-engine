@@ -17,6 +17,9 @@ namespace hare_graphics
 		ParticleInfo();
 		virtual ~ParticleInfo();
 
+        virtual void postLoaded();
+        virtual void postEdited(Attribute* attr);
+
 		int32			emission;
 		float			lifeTime;
 
@@ -25,7 +28,7 @@ namespace hare_graphics
 
 		float			direction;
 		float			spread;
-		bool		relative;
+		bool		    relative;
 
 		float			speedMin;
 		float			speedMax;

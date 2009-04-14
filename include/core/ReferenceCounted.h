@@ -44,6 +44,16 @@ namespace hare_core
             return numRef;
         }
 
+    protected:
+        ReferenceCounted(const ReferenceCounted &)
+        {
+        }
+
+        ReferenceCounted& operator=(const ReferenceCounted &)
+        {   
+            return *this;
+        }
+
     private:
         // do "delete this;"
         virtual void doRelease() = 0;

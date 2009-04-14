@@ -17,7 +17,7 @@ namespace hare_graphics
 		HARE_ENUM_NAME_VALUE(Zero,        ShaderParams::SBA_Zero)
 	HARE_ENUM_END()
 
-	HARE_IMPLEMENT_ABSTRACT_CLASS(ShaderParams, Object, 0)
+	HARE_IMPLEMENT_DYNAMIC_CLASS(ShaderParams, Object, 0)
 	{
 		HARE_META(AlphaBlendEnable, bool) 
 		HARE_META(AlphaTestEnable,  bool) 

@@ -9,7 +9,7 @@ namespace hare_graphics
 {
 	class GRAPHICS_API TextureStage : public Object
 	{
-		HARE_DECLARE_ABSTRACT_CLASS(TextureStage)
+		HARE_DECLARE_DYNAMIC_CLASS(TextureStage)
 	public:
 		enum ColorAlphaBlendOperation
 		{

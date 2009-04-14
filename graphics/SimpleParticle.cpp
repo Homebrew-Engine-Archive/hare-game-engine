@@ -70,13 +70,42 @@ namespace hare_graphics
 		,colorVar(0.2f)			
 		,alphaVar(0)
 	{
-
 	}
 
 	ParticleInfo::~ParticleInfo()
 	{
-
 	}
+
+    void ParticleInfo::postLoaded()
+    {
+        MathUtil::clampMinMax(emission, 0, 1000);
+        MathUtil::clampMax(lifeTime, 10.f);
+        MathUtil::clampMinMax(particleLifeMin,0.f, 5.f);
+        MathUtil::clampMinMax(particleLifeMax,0.f, 5.f);		
+        MathUtil::clampMinMax(direction,0.f, 2 * MathUtil::PI);	
+        MathUtil::clampMinMax(spread,0.f, 2 * MathUtil::PI);					
+        MathUtil::clampMinMax(speedMin,-300.f, 300.f);		
+        MathUtil::clampMinMax(speedMax,-300.f, 300.f);		
+        MathUtil::clampMinMax(gravityMin,-900.f, 900.f);
+        MathUtil::clampMinMax(gravityMax,-900.f, 900.f);	
+        MathUtil::clampMinMax(radialAccelMin,-900.f, 900.f);	
+        MathUtil::clampMinMax(radialAccelMax,-900.f, 900.f);		
+        MathUtil::clampMinMax(tangentialAccelMin,-900.f, 900.f);			
+        MathUtil::clampMinMax(tangentialAccelMax,-900.f, 900.f);		
+        MathUtil::clampMinMax(sizeStart,1.f, 100.f);	
+        MathUtil::clampMinMax(sizeEnd,1.f, 100.f);	
+        MathUtil::clampMinMax(sizeVar,0.f, 1.f);	
+        MathUtil::clampMinMax(spinStart,-50.f, 50.f);	
+        MathUtil::clampMinMax(spinEnd,-50.f, 50.f);	
+        MathUtil::clampMinMax(spinVar,0.f, 1.f);
+        MathUtil::clampMinMax(colorVar,0.f, 1.f);		
+        MathUtil::clampMinMax(alphaVar,0.f, 1.f);
+    }
+
+    void ParticleInfo::postEdited(Attribute* attr)
+    {
+        postLoaded();
+    }
 
 	HARE_IMPLEMENT_DYNAMIC_CLASS(SimpleParticle, Particle, 0)
 	{
@@ -292,32 +321,11 @@ namespace hare_graphics
 
 	void SimpleParticle::postLoaded()
 	{
-		/*MathUtil::clampMinMax(particleInfo->nEmission, 0, 1000);
-		MathUtil::clampMinMax(particleInfo->lifeTime, 0.f, 10.f);
-		MathUtil::clampMinMax(particleInfo->particleLifeMin,0.f, 5.f);
-		MathUtil::clampMinMax(particleInfo->particleLifeMax,0.f, 5.f);		
-		MathUtil::clampMinMax(particleInfo->direction,0.f, 2 * MathUtil::PI);	
-		MathUtil::clampMinMax(particleInfo->spread,0.f, 2 * MathUtil::PI);					
-		MathUtil::clampMinMax(particleInfo->speedMin,-300.f, 300.f);		
-		MathUtil::clampMinMax(particleInfo->speedMax,-300.f, 300.f);		
-		MathUtil::clampMinMax(particleInfo->gravityMin,-900.f, 900.f);
-		MathUtil::clampMinMax(particleInfo->gravityMax,-900.f, 900.f);	
-		MathUtil::clampMinMax(particleInfo->radialAccelMin,-900.f, 900.f);	
-		MathUtil::clampMinMax(particleInfo->radialAccelMax,-900.f, 900.f);		
-		MathUtil::clampMinMax(particleInfo->tangentialAccelMin,-900.f, 900.f);			
-		MathUtil::clampMinMax(particleInfo->tangentialAccelMax,-900.f, 900.f);		
-		MathUtil::clampMinMax(particleInfo->sizeStart,1.f, 100.f);	
-		MathUtil::clampMinMax(particleInfo->sizeEnd,1.f, 100.f);	
-		MathUtil::clampMinMax(particleInfo->sizeVar,0.f, 1.f);	
-		MathUtil::clampMinMax(particleInfo->spinStart,-50.f, 50.f);	
-		MathUtil::clampMinMax(particleInfo->spinEnd,-50.f, 50.f);	
-		MathUtil::clampMinMax(particleInfo->spinVar,0.f, 1.f);
-		MathUtil::clampMinMax(particleInfo->colorVar,0.f, 1.f);		
-		MathUtil::clampMinMax(particleInfo->alphaVar,0.f, 1.f);*/
 	}
 
 	void SimpleParticle::postEdited(Attribute* attr)
 	{
-		postLoaded();
+        stop();
+        fire();
 	}
 }

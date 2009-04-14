@@ -16,7 +16,7 @@ namespace hare_graphics
 		HARE_ENUM_NAME_VALUE(Line,  TextureStage::FT_Line)
 	HARE_ENUM_END()
 
-	HARE_IMPLEMENT_ABSTRACT_CLASS(TextureStage, Object, 0)
+	HARE_IMPLEMENT_DYNAMIC_CLASS(TextureStage, Object, 0)
 	{
 		HARE_ENUM(wrapModeU,  uint8, WrapMode)
 		HARE_ENUM(wrapModeV,  uint8, WrapMode)

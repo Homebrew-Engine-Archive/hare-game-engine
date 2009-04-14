@@ -77,11 +77,13 @@ namespace hare_ui
         }
         
         // click event
+
+        return true;
     }
 
     bool UISystem::notifyMouseButtonDown(MouseButton button)
     {
-
+        return true;
     }
 
 

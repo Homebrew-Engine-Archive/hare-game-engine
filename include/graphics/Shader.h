@@ -9,7 +9,7 @@ namespace hare_graphics
 {
 	class GRAPHICS_API ShaderParams : public Object
 	{
-		HARE_DECLARE_ABSTRACT_CLASS(ShaderParams)
+		HARE_DECLARE_DYNAMIC_CLASS(ShaderParams)
 	public:
 		enum SceneBlendOperation{
 			SBO_Add,

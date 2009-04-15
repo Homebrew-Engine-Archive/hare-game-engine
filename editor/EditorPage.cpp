@@ -19,6 +19,11 @@ namespace hare
 {
     IMPLEMENT_ABSTRACT_CLASS(EditorPage, wxPanel)
 
+    EditorPage::EditorPage()
+    {
+        // This ctor is used for creating Panel form xrc resource 
+    }
+
     EditorPage::EditorPage(wxWindow* parent)
         : wxPanel(parent)
     {

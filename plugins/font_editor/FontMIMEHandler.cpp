@@ -46,12 +46,12 @@ FontEditorPage::FontEditorPage(wxWindow* parent, FontMIMEHandler* handler, Font*
         wxDefaultPosition, wxDefaultSize, wxSP_3D);
     splitter->SetMinimumPaneSize(50);
     
-    canvsText = new wxHareCanvas(splitter, idFontTextWindow);
-    canvsText->Connect(wxEVT_SIZE, wxSizeEventHandler(FontEditorPage::onSize), NULL, this);
-    canvsCache = new wxHareCanvas(splitter, idFontCacheWindow);
-    canvsCache->Connect(wxEVT_SIZE, wxSizeEventHandler(FontEditorPage::onSize), NULL, this);
+    canvasText = new wxHareCanvas(splitter, idFontTextWindow);
+    canvasText->Connect(wxEVT_SIZE, wxSizeEventHandler(FontEditorPage::onSize), NULL, this);
+    canvasCache = new wxHareCanvas(splitter, idFontCacheWindow);
+    canvasCache->Connect(wxEVT_SIZE, wxSizeEventHandler(FontEditorPage::onSize), NULL, this);
 
-    splitter->SplitHorizontally(canvsText, canvsCache, 150);
+    splitter->SplitHorizontally(canvasText, canvasCache, 150);
     sizer1->Add(splitter, 1, wxEXPAND, 5);
 
     SetSizer(sizer1);
@@ -63,8 +63,8 @@ FontEditorPage::FontEditorPage(wxWindow* parent, FontMIMEHandler* handler, Font*
     sceneText->setSceneListener(&txtListener);
     sceneCache->setSceneListener(&cacheListener);
 
-    canvsText->getRenderWindow()->setSceneManager(sceneText);
-    canvsCache->getRenderWindow()->setSceneManager(sceneCache);
+    canvasText->getRenderWindow()->setSceneManager(sceneText);
+    canvasCache->getRenderWindow()->setSceneManager(sceneCache);
 
     changeFont(font);
 }
@@ -94,15 +94,15 @@ void FontEditorPage::onSize(wxSizeEvent& event)
 {
     if (event.GetId() == idFontTextWindow)
 	{
-        wxSize size = canvsText->GetClientSize();
+        wxSize size = canvasText->GetClientSize();
         if (size.GetWidth() > 0 && size.GetHeight() > 0)
-            canvsText->getRenderWindow()->resize(size.GetWidth(), size.GetHeight());
+            canvasText->getRenderWindow()->resize(size.GetWidth(), size.GetHeight());
     }
     else if (event.GetId() == idFontCacheWindow)
     {
-        wxSize size = canvsCache->GetClientSize();
+        wxSize size = canvasCache->GetClientSize();
         if (size.GetWidth() > 0 && size.GetHeight() > 0)
-            canvsCache->getRenderWindow()->resize(size.GetWidth(), size.GetHeight());
+            canvasCache->getRenderWindow()->resize(size.GetWidth(), size.GetHeight());
     }
 }
 

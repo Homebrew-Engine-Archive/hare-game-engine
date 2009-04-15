@@ -127,7 +127,6 @@ namespace hare
             T* oldData = (T*)attr->data;
             *oldData = (T)value;
             attr->owner->postEdited(attr);
-            //
         }
         else
         {
@@ -149,6 +148,18 @@ namespace hare
             *oldData = val.GetString().ToUTF8().data();
             attr->owner->postEdited(attr);
             val = wxString::FromUTF8(oldData->c_str());
+        }
+    }
+
+    template <>
+    void doModifyMeta<bool>(Attribute* attr, wxVariant& val)
+    {
+        if (val.GetType() == wxT("bool"))
+        {
+            bool* oldData = (bool*)attr->data;
+            *oldData = val.GetBool();
+            attr->owner->postEdited(attr);
+            val = *oldData;
         }
     }
 
@@ -263,6 +274,20 @@ namespace hare
         }
         prop->SetClientData(attr);
         prop->SetHelpString(wxT("[String]"));
+        if (attr->hasFlag(Object::propReadOnly))
+            prop->SetFlag(wxPG_PROP_READONLY | wxPG_PROP_DISABLED);
+    }
+
+    template <>
+    void doBindMeta<bool>(Attribute* attr, PropertyGridPage* page, wxPGProperty* parent)
+    {
+        bool* value = (bool*)attr->data;
+
+        wxPGProperty* prop = 0;
+        prop = page->AppendIn(parent, new wxBoolProperty(wxString::FromUTF8(attr->name), wxPG_LABEL,
+            *value));
+        prop->SetClientData(attr);
+        prop->SetHelpString(wxT("[bool]"));
         if (attr->hasFlag(Object::propReadOnly))
             prop->SetFlag(wxPG_PROP_READONLY | wxPG_PROP_DISABLED);
     }
@@ -437,6 +462,8 @@ namespace hare
             {
                 if (attr->typeName == String("String"))
                     doModifyMeta<String>(attr, value);
+                else if (attr->typeName == String("bool"))
+                    doModifyMeta<bool>(attr, value);
                 else if (attr->typeName == String("uint8"))
                     doModifyMeta<uint8>(attr, value);
                 else if (attr->typeName == String("int8"))
@@ -512,6 +539,8 @@ namespace hare
             {
                 if (attr->typeName == String("String"))
                     doBindMeta<String>(attr, page, parent);
+                else if (attr->typeName == String("bool"))
+                    doBindMeta<bool>(attr, page, parent);
                 else if (attr->typeName == String("uint8"))
                     doBindMeta<uint8>(attr, page, parent);
                 else if (attr->typeName == String("int8"))
@@ -528,6 +557,8 @@ namespace hare
                     doBindMeta<float>(attr, page, parent);
                 else if (attr->typeName == String("double"))
                     doBindMeta<double>(attr, page, parent);
+                else
+                    assert(false);
             }
             break;
         case Attribute::attrMetaArray:

@@ -77,8 +77,8 @@ private:
     }
 
 private:
-    wxHareCanvas* canvsText;
-    wxHareCanvas* canvsCache;
+    wxHareCanvas* canvasText;
+    wxHareCanvas* canvasCache;
     wxTextCtrl* txtSample;
 
     SceneManager* sceneText;

@@ -29,7 +29,7 @@ namespace hare
     {
         HARE_META_F(openFilePath, String, propReadOnly)
         HARE_META_F(openFileFilters, String, propReadOnly)
-        HARE_META_F(openFileFilterIndex, int, propReadOnly)
+        HARE_META_F(openFileFilterIndex, int, propHide)
         HARE_META_F(font, String, propReadOnly)
         HARE_META_F(defaultEncoding, String, propReadOnly)
         HARE_ENUM(show_folds, uint8, Bool)
@@ -43,11 +43,11 @@ namespace hare
 
     AppConfigFile::AppConfigFile()
         : openFilePath("."), openFileFilters("*.*"), openFileFilterIndex(0),
-        font("0;-13;0;0;0;400;0;0;0;0;3;2;1;49;Courier New"),
         show_folds(true), fold_xml(true), fold_comments(true), fold_preprocessor(true),
         fold_indicator(FI_Square), language("en_US")
     {
         defaultEncoding = wxLocale::GetSystemEncodingName().ToUTF8().data();
+        font = wxSystemSettings::GetFont(wxSYS_SYSTEM_FIXED_FONT).GetNativeFontInfoDesc().ToUTF8().data();
     }
 
     wxString AppConfigFile::getOpenFilePath()

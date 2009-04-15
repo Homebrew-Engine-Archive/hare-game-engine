@@ -21,6 +21,7 @@ namespace hare
     class EDITOR_API EditorPage : public wxPanel
     {
     public:
+        EditorPage();
         EditorPage(wxWindow* parent);
 
         const wxString& getTitle();

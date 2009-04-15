@@ -1,7 +1,7 @@
 #include "PCH.h"
 #include "RenderUnit.h"
 
-namespace hare_graphics
+namespace hare
 {
 	RenderUnit::RenderUnit()
         :bUseIndex(false)

@@ -5,7 +5,7 @@
 #include "RenderUnit.h"
 
 
-namespace hare_graphics
+namespace hare
 {
 	class GRAPHICS_API Line : public RenderUnit
 	{

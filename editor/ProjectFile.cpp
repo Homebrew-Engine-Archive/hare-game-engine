@@ -3,17 +3,17 @@
 //  Data:    02/11/2009
 //  Author:  littlesome (littlesome@live.cn)
 //-------------------------------------------------------------
-//  
+//
 //-------------------------------------------------------------
 //  This file is part of Hare2D Game Engine.
 //  Copyright (C) All Rights Reserved
 //***************************************************************
-// 
+//
 //***************************************************************
 #include "PCH.h"
 #include "ProjectFile.h"
 
-namespace hare_editor
+namespace hare
 {
     HARE_IMPLEMENT_DYNAMIC_CLASS(ProjectFile, Object, 0)
     {

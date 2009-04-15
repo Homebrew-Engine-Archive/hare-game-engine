@@ -17,7 +17,7 @@
 #include "TManager.h"
 #include "EditorEvent.h"
 
-namespace hare_editor
+namespace hare
 {
     template<typename EventType> class IEventHandlerBase
     {

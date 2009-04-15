@@ -17,9 +17,9 @@
 #include "TManager.h"
 #include "EditorEvent.h"
 
-namespace hare_editor
+namespace hare
 {
-    template<typename EventType> 
+    template<typename EventType>
     class IEventHandlerBase
     {
     public:
@@ -28,7 +28,7 @@ namespace hare_editor
         virtual void* getClass() = 0;
     };
 
-    template<class ClassType, typename EventType> 
+    template<class ClassType, typename EventType>
     class TEventHandler : public IEventHandlerBase<EventType>
     {
     private:

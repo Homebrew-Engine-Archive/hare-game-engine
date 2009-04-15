@@ -5,7 +5,7 @@
 #include "GraphicsPrerequisites.h"
 #include "Texture.h"
 
-namespace hare_graphics
+namespace hare
 {
 	class GRAPHICS_API TextureStage : public Object
 	{
@@ -76,7 +76,7 @@ namespace hare_graphics
 		virtual void frameMove() = 0;
 		virtual TextureMtrl* getTextureMtrl() = 0;
 		virtual Shader* getShader() = 0;
-		
+
 	};
 
 
@@ -143,7 +143,7 @@ namespace hare_graphics
 	protected:
 		Texture::Ptr texture;
 		TextureStage::Ptr textureStage;
-	
+
 	public:
 		Matrix4      texMat;
 		String       fileName;
@@ -191,7 +191,7 @@ namespace hare_graphics
 	public:
 		PointF   offset;
 		PointF   panDirection;
-		float      panRate; 
+		float      panRate;
 
 		PointF   oscillationPhase;
 		PointF   oscillationAmplitude;
@@ -246,7 +246,7 @@ namespace hare_graphics
 	};
 
 	//动画材质修改器
-	
+
 	//动画材质修改器单元
 	class GRAPHICS_API AnimModUnit : public WrapperMtrl
 	{
@@ -273,7 +273,7 @@ namespace hare_graphics
 		void addFrame(AnimModUnit* animModUnit);
 
 	public:
-		AnimModUnit::Array animMtrlList;  
+		AnimModUnit::Array animMtrlList;
 		int curAnimMtrlID;
 
 	};

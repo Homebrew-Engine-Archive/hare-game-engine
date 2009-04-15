@@ -1,7 +1,7 @@
 #include "PCH.h"
 #include "HareGraphicsType.h"
 
-namespace hare_graphics
+namespace hare
 {
 	HARE_IMPLEMENT_DYNAMIC_CLASS(Color, Object, 0)
 	{

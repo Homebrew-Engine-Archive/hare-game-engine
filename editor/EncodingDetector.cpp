@@ -13,7 +13,7 @@
 #include <wx/file.h>
 
 
-namespace hare_editor
+namespace hare
 {
     EncodingDetector::EncodingDetector(const wxString& filename)
         : isOK(false), useBOM(false), sizeBOM(0), convStr(wxEmptyString)
@@ -30,7 +30,7 @@ namespace hare_editor
     }
 
     EncodingDetector::EncodingDetector(const EncodingDetector& rhs)
-        : isOK(rhs.isOK), useBOM(rhs.useBOM), sizeBOM(rhs.sizeBOM), 
+        : isOK(rhs.isOK), useBOM(rhs.useBOM), sizeBOM(rhs.sizeBOM),
         encoding(rhs.encoding), convStr(wxEmptyString)
     {
     }

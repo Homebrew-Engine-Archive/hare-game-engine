@@ -5,7 +5,7 @@
 #include "DataHolder.h"
 #include "HareGraphicsType.h"
 
-namespace hare_graphics
+namespace hare
 {
 	class GRAPHICS_API ImageCodec
 	{
@@ -27,8 +27,8 @@ namespace hare_graphics
 		virtual const String& getType() = 0;
 		virtual bool encode(const DataHolder& input, DataHolder& output, const ImageInfo& info) = 0;
 		virtual bool decode(const DataHolder& input, DataHolder& output, ImageInfo& info) = 0;
-		virtual bool codeToFile(const DataHolder& input, const String& fileName, const ImageInfo& info) = 0; 
-	
+		virtual bool codeToFile(const DataHolder& input, const String& fileName, const ImageInfo& info) = 0;
+
 	protected:
 		String codecType;
 		uint32    typeID;

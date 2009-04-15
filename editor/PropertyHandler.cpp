@@ -24,7 +24,7 @@
 #undef max
 #endif
 
-namespace hare_editor
+namespace hare
 {
     IMPLEMENT_DYNAMIC_CLASS(ObjectEnumProperty, wxEnumProperty)
 

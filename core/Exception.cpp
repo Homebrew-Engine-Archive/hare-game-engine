@@ -3,31 +3,31 @@
 //  Date:   2008-03-03 19:02
 //  Author: littlesome
 //  -------------------------------------------------------------
-//  
+//
 //  -------------------------------------------------------------
 //  Copyright (C) 2008 - All Rights Reserved
 // ***************************************************************
-// 
+//
 // ***************************************************************
 #include "PCH.h"
 #include "Exception.h"
 #include <sstream>
 
-namespace hare_core 
+namespace hare
 {
-    Exception::Exception(int num, const String& desc, const String& src) 
+    Exception::Exception(int num, const String& desc, const String& src)
         :line(0), number(num), description(desc), source(src)
     {
     }
 
-    Exception::Exception(int num, const String& desc, const String& src, 
-        const char* typ, const char* fil, long lin) 
+    Exception::Exception(int num, const String& desc, const String& src,
+        const char* typ, const char* fil, long lin)
         :line(lin), number(num), typeName(typ), description(desc), source(src), file(fil)
     {
     }
 
     Exception::Exception(const Exception& rhs)
-        : line(rhs.line), number(rhs.number), description(rhs.description), 
+        : line(rhs.line), number(rhs.number), description(rhs.description),
         source(rhs.source), file(rhs.file)
     {
     }
@@ -49,7 +49,7 @@ namespace hare_core
             std::ostringstream desc;
 
             desc << "HARE EXCEPTION(" << number << ":" << typeName << "): "
-                 << description 
+                 << description
                  << " in " << source;
 
             if (line > 0)

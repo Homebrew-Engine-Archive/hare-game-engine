@@ -1,13 +1,13 @@
 #ifndef _FILTERS_H_
 #define _FILTERS_H_
 
-namespace hare_graphics
+namespace hare
 {
 
 	class CGenericFilter
 	{
 	public:
-	    
+
 		CGenericFilter (double dWidth) : m_dWidth (dWidth) {}
 		virtual ~CGenericFilter() {}
 
@@ -42,10 +42,10 @@ namespace hare_graphics
 		CBilinearFilter (double dWidth = double(1.0)) : CGenericFilter(dWidth) {}
 		virtual ~CBilinearFilter() {}
 
-		double Filter (double dVal) 
+		double Filter (double dVal)
 			{
-				dVal = fabs(dVal); 
-				return (dVal < m_dWidth ? m_dWidth - dVal : 0.0); 
+				dVal = fabs(dVal);
+				return (dVal < m_dWidth ? m_dWidth - dVal : 0.0);
 			}
 	};
 
@@ -56,13 +56,13 @@ namespace hare_graphics
 		CGaussianFilter (double dWidth = double(3.0)) : CGenericFilter(dWidth) {}
 		virtual ~CGaussianFilter() {}
 
-		double Filter (double dVal) 
+		double Filter (double dVal)
 			{
-				if (fabs (dVal) > m_dWidth) 
+				if (fabs (dVal) > m_dWidth)
 				{
 					return 0.0;
 				}
-				return exp (-dVal * dVal / 2.0) / sqrt (FILTER_2PI); 
+				return exp (-dVal * dVal / 2.0) / sqrt (FILTER_2PI);
 			}
 	};
 
@@ -73,14 +73,14 @@ namespace hare_graphics
 		CHammingFilter (double dWidth = double(0.5)) : CGenericFilter(dWidth) {}
 		virtual ~CHammingFilter() {}
 
-		double Filter (double dVal) 
+		double Filter (double dVal)
 			{
-				if (fabs (dVal) > m_dWidth) 
+				if (fabs (dVal) > m_dWidth)
 				{
-					return 0.0; 
+					return 0.0;
 				}
-				double dWindow = 0.54 + 0.46 * cos (FILTER_2PI * dVal); 
-				double dSinc = (dVal == 0) ? 1.0 : sin (FILTER_PI * dVal) / (FILTER_PI * dVal); 
+				double dWindow = 0.54 + 0.46 * cos (FILTER_2PI * dVal);
+				double dSinc = (dVal == 0) ? 1.0 : sin (FILTER_PI * dVal) / (FILTER_PI * dVal);
 				return dWindow * dSinc;
 			}
 	};
@@ -92,19 +92,19 @@ namespace hare_graphics
 		CBlackmanFilter (double dWidth = double(0.5)) : CGenericFilter(dWidth) {}
 		virtual ~CBlackmanFilter() {}
 
-		double Filter (double dVal) 
+		double Filter (double dVal)
 			{
-				if (fabs (dVal) > m_dWidth) 
+				if (fabs (dVal) > m_dWidth)
 				{
-					return 0.0; 
+					return 0.0;
 				}
-				double dN = 2.0 * m_dWidth + 1.0; 
-				return 0.42 + 0.5 * cos (FILTER_2PI * dVal / ( dN - 1.0 )) + 
-					0.08 * cos (FILTER_4PI * dVal / ( dN - 1.0 )); 
+				double dN = 2.0 * m_dWidth + 1.0;
+				return 0.42 + 0.5 * cos (FILTER_2PI * dVal / ( dN - 1.0 )) +
+					0.08 * cos (FILTER_4PI * dVal / ( dN - 1.0 ));
 			}
 	};
 
 }
- 
- 
+
+
 #endif  // _FILTERS_H_

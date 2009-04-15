@@ -5,7 +5,7 @@
 #include "Material.h"
 #include "Shader.h"
 
-namespace hare_graphics
+namespace hare
 {
 	class RenderTarget;
 	class RenderWindow;

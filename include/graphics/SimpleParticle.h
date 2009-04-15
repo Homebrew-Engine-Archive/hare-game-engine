@@ -7,7 +7,7 @@
 
 #define MAX_PARTICLES 500
 
-namespace hare_graphics
+namespace hare
 {
 
 	class ParticleInfo : public Object

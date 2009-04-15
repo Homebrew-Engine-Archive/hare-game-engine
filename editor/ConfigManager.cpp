@@ -15,7 +15,7 @@
 #include <wx/intl.h>
 #include <wx/font.h>
 
-namespace hare_editor
+namespace hare
 {
     HARE_ENUM_BEGIN(AppConfigFile::FoldIndicator)
         HARE_ENUM_NAME_VALUE(Arrow, AppConfigFile::FI_Arrow)
@@ -23,6 +23,7 @@ namespace hare_editor
         HARE_ENUM_NAME_VALUE(Square, AppConfigFile::FI_Square)
         HARE_ENUM_NAME_VALUE(Simple, AppConfigFile::FI_Simple)
     HARE_ENUM_END()
+
 
     HARE_IMPLEMENT_DYNAMIC_CLASS(AppConfigFile, Object, 0)
     {
@@ -41,7 +42,7 @@ namespace hare_editor
     }
 
     AppConfigFile::AppConfigFile()
-        : openFilePath("."), openFileFilters("*.*"), openFileFilterIndex(0), 
+        : openFilePath("."), openFileFilters("*.*"), openFileFilterIndex(0),
         font("0;-13;0;0;0;400;0;0;0;0;3;2;1;49;Courier New"),
         show_folds(true), fold_xml(true), fold_comments(true), fold_preprocessor(true),
         fold_indicator(FI_Square), language("en_US")

@@ -1,7 +1,7 @@
 #include "PCH.h"
 #include "Texture.h"
 
-namespace hare_graphics
+namespace hare
 {
 	HARE_IMPLEMENT_ABSTRACT_CLASS(Texture, Object, 0)
 	{}
@@ -26,10 +26,10 @@ namespace hare_graphics
 		fileName = "";
 		texPixelFormat = format;//动态纹理像素格式
 
-		//顺序不可以改变 
+		//顺序不可以改变
 		release();//释放上一次的资源 bIsRenderable = true; 放在此句话的后面是确保正确释放上一次的资源
 		bIsRenderable = isRenderable; //如果不是renderable则使用系统托管的内存
-		bFromImage    = false;  
+		bFromImage    = false;
 		reCreate();
 	}
 
@@ -41,10 +41,10 @@ namespace hare_graphics
 		height = 0;
 		fileName = filename;
 
-		//顺序不可以改变 
+		//顺序不可以改变
 		release();//释放上一次的资源 bIsRenderable = false; 放在此句话的后面是确保正确释放上一次的资源
 		bIsRenderable = false;
-		bFromImage    = true; 
+		bFromImage    = true;
 		reCreate();
 	}
 

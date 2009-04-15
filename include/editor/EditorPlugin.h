@@ -16,7 +16,7 @@
 #include "EditorPrerequisites.h"
 #include "EditorManager.h"
 
-namespace hare_editor
+namespace hare
 {
     enum EditorPluginType
     {
@@ -34,9 +34,9 @@ namespace hare_editor
         EditorPlugin();
         virtual ~EditorPlugin();
 
-        virtual EditorPluginType getType() 
-        { 
-            return type; 
+        virtual EditorPluginType getType()
+        {
+            return type;
         }
 
         virtual bool buildMenuBar(wxMenuBar* menuBar) = 0;

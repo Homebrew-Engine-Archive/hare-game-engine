@@ -1,9 +1,9 @@
 #include "PCH.h"
 #include "DataHolder.h"
 
-namespace hare_graphics
+namespace hare
 {
-	DataHolder::DataHolder() 
+	DataHolder::DataHolder()
 		:data(NULL)
 		,size(0)
 	{

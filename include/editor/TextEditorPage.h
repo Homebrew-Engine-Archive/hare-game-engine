@@ -17,7 +17,7 @@
 #include "EditorPage.h"
 #include "ProjectFile.h"
 
-namespace hare_editor
+namespace hare
 {
     class EDITOR_API TextEditorPage : public EditorPage
     {

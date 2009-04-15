@@ -18,7 +18,7 @@
 #include "EditorPlugin.h"
 #include <vector>
 
-namespace hare_editor
+namespace hare
 {
     #define PLUGIN_SDK_VERSION_MAJOR    0
     #define PLUGIN_SDK_VERSION_MINOR    0
@@ -60,7 +60,7 @@ namespace hare_editor
 
         PluginsArray findPlugins(EditorPluginType type);
 
-        void registerPlugin(const PluginInfo& info, FNcreatePlugin fncreatePlugin, 
+        void registerPlugin(const PluginInfo& info, FNcreatePlugin fncreatePlugin,
             FNfreePlugin fnfreePlugin, FNgetVersion fngetVersion);
 
     private:

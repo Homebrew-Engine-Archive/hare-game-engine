@@ -11,9 +11,9 @@
 //
 //***************************************************************
 
-namespace hare_graphics
+namespace hare
 {
-	class Codec 
+	class Codec
 	{
 	public:
 		Codec();

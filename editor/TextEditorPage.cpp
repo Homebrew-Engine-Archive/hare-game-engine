@@ -28,7 +28,7 @@
 #include <wx/fontmap.h>
 #include <wx/splash.h>
 
-namespace hare_editor
+namespace hare
 {
     #define ERROR_MARKER        1
     #define ERROR_STYLE         wxSCI_MARK_SMALLRECT

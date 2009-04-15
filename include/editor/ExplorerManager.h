@@ -17,7 +17,7 @@
 #include "TManager.h"
 #include <wx/treectrl.h>
 
-namespace hare_editor
+namespace hare
 {
     class EDITOR_API ExplorerManager : public TManager<ExplorerManager>
     {

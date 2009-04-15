@@ -7,7 +7,7 @@
 
 
 
-namespace hare_graphics
+namespace hare
 {
 
 }

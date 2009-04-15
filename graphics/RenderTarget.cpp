@@ -1,7 +1,7 @@
 #include "PCH.h"
 #include "RenderTarget.h"
 
-namespace hare_graphics
+namespace hare
 {
 	RenderTarget::RenderTarget()
 	{

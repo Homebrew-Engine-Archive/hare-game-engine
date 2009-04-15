@@ -15,11 +15,11 @@
 
 #include "CorePrerequisites.h"
 
-namespace hare_core
+namespace hare
 {
     typedef HashMap<String, ClassInfo*> ClassNameMap;
     typedef Object* (*ObjectConstructorFunc)();
-    
+
     class CORE_API ClassInfo
     {
     public:

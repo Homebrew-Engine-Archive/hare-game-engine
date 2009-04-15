@@ -13,7 +13,7 @@
 #include "PCH.h"
 #include "ClassInfo.h"
 
-namespace hare_core
+namespace hare
 {
     ClassNameMap* ClassInfo::classMap = 0;
 

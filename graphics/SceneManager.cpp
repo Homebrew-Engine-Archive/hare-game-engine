@@ -4,7 +4,7 @@
 #include "SceneListener.h"
 
 
-namespace hare_graphics
+namespace hare
 {
 	SceneManager::SceneManager()
 		:sceneListener(NULL)

@@ -2,7 +2,6 @@
 #define GRAPHICS
 
 #include "core/Core.h"
-using namespace hare_core;
 
 #include "HareApp.h"
 #include "HareGraphicsType.h"

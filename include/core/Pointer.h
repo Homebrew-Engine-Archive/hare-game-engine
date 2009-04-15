@@ -13,7 +13,7 @@
 #ifndef _POINTER_H_
 #define _POINTER_H_
 
-namespace hare_core
+namespace hare
 {
     template <typename T> class Pointer
     {

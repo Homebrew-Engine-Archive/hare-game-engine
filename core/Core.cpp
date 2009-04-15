@@ -17,7 +17,7 @@
 #include "Socket.h"
 #include "MathUtil.h"
 
-namespace hare_core
+namespace hare
 {
     void CORE_API core_init(const char* argv0)
     {

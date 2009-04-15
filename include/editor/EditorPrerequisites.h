@@ -2,7 +2,7 @@
 #define EDITOR_PREREQUISITES_H
 
 #include "core/Core.h"
-using namespace hare_core;
+using namespace hare;
 
 #if HARE_PLATFORM == HARE_PLATFORM_WIN32
 #   if defined(HARE_STATIC_LIB)
@@ -24,7 +24,7 @@ using namespace hare_core;
 #   error "only support win32 & linux & apple"
 #endif
 
-namespace hare_editor
+namespace hare
 {
     template <typename T> class TManager;
     class Manager;

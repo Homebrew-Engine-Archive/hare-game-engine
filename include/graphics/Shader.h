@@ -5,7 +5,7 @@
 //×ÅÉ«Æ÷
 #include "Material.h"
 
-namespace hare_graphics
+namespace hare
 {
 	class GRAPHICS_API ShaderParams : public Object
 	{
@@ -27,7 +27,7 @@ namespace hare_graphics
 
 		ShaderParams();
 		~ShaderParams(){}
-		
+
 		bool AlphaBlendEnable;
 
 		uint8 SceneBlendOP;
@@ -117,7 +117,7 @@ namespace hare_graphics
 		ParticleShader();
 
 		virtual ~ParticleShader();
-		
+
 		virtual void frameMove()
 		{
 			if (!mtrl)

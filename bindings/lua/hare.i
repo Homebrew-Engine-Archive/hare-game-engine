@@ -6,10 +6,8 @@
 %{
 
 #include "core/Core.h"
-using namespace hare_core;
-
 #include "graphics/Graphics.h"
-using namespace hare_graphics;
+using namespace hare;
 
 %}
 

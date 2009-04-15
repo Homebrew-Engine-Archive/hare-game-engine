@@ -3,7 +3,7 @@
 
 #include "GraphicsPrerequisites.h"
 
-namespace hare_graphics
+namespace hare
 {
 	class GRAPHICS_API DataHolder
 	{
@@ -21,8 +21,8 @@ namespace hare_graphics
 			return data;
 		}
 
-		uint32 getSize() const { 
-			return size; 
+		uint32 getSize() const {
+			return size;
 		}
 
 	protected:

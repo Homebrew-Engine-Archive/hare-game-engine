@@ -21,7 +21,7 @@
 #include <wx/imaglist.h>
 #include <wx/dir.h>
 
-namespace hare_editor
+namespace hare
 {
     class TreeItemData : public wxTreeItemData
     {
@@ -70,7 +70,7 @@ namespace hare_editor
     }
 
     int idProjectExplorer = wxNewId();
-    
+
     BEGIN_EVENT_TABLE(ProjectExplorer, wxPanel)
         EVT_TREE_ITEM_ACTIVATED(idProjectExplorer, ProjectExplorer::onProjectFileActivated)
     END_EVENT_TABLE()

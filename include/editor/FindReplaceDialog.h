@@ -16,7 +16,7 @@
 #include "EditorPrerequisites.h"
 #include <wx/dialog.h>
 
-namespace hare_editor
+namespace hare
 {
     class EDITOR_API FindReplaceDialog : public wxDialog
     {

@@ -18,10 +18,8 @@
 #include <wx/string.h>
 #include <wx/hashmap.h>
 
-namespace hare_editor
+namespace hare
 {
-    using namespace hare_core;
-
     class OptionColour : public Object
     {
         HARE_DECLARE_DYNAMIC_CLASS(OptionColour)

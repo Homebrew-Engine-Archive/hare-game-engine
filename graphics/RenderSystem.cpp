@@ -2,7 +2,7 @@
 #include "RenderSystem.h"
 #include "RenderWindow.h"
 
-namespace hare_graphics
+namespace hare
 {
 	HARE_IMPLEMENT_SINGLETON(RenderSystem)
 
@@ -25,7 +25,7 @@ namespace hare_graphics
 		}
 
 		curRenderTarget = target;
-		
+
 		if (curRenderTarget){
 			curRenderTarget->active();
 		}

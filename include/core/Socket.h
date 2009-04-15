@@ -43,7 +43,7 @@
     #define SD_BOTH         2
 #endif // SD_RECEIVE
 
-namespace hare_core
+namespace hare
 {
     class CORE_API ISocket
     {

@@ -16,7 +16,7 @@
 #include "CorePrerequisites.h"
 #include <limits.h>     // for INT_MAX
 
-namespace hare_core
+namespace hare
 {
     enum MutexError
     {

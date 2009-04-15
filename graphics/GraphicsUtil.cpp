@@ -1,7 +1,7 @@
 #include "PCH.h"
 #include "GraphicsUtil.h"
 
-namespace hare_graphics
+namespace hare
 {
 	//void GraphicsUtil::HarePixelFormat2FreeImageFormat(const HarePixelFormat& hpf, int &ImageFormat, int &BytesPerPixel)
 	//{
@@ -35,11 +35,11 @@ namespace hare_graphics
 	{
 		switch(hpf)
 		{
-		case HPF_A8R8G8B8: 
+		case HPF_A8R8G8B8:
             return 4;
 		case HPF_A8B8G8R8:
 			return 4;
-		case HPF_BYTE_LA: 
+		case HPF_BYTE_LA:
             return 2;
 		default:
             assert(false);

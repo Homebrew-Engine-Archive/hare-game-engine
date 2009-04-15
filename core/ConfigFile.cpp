@@ -13,7 +13,7 @@
 #include "PCH.h"
 #include "ConfigFile.h"
 
-namespace hare_core
+namespace hare
 {
     ConfigFile::ConfigFile()
     {

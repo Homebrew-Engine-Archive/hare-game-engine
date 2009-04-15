@@ -18,7 +18,7 @@
 #   define INADDR_NONE 0xffffffff
 #endif
 
-namespace hare_core
+namespace hare
 {
     String ISocket::getErrorMsg(bool clear)
     {

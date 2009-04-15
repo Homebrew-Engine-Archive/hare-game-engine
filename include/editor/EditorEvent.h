@@ -16,7 +16,7 @@
 #include "EditorPrerequisites.h"
 #include <wx/aui/aui.h>
 
-namespace hare_editor
+namespace hare
 {
     class EDITOR_API EditorEvent : public wxCommandEvent
     {

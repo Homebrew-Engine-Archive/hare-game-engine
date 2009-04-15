@@ -3,12 +3,12 @@
 //  Data:    02/10/2009
 //  Author:  littlesome (littlesome@live.cn)
 //-------------------------------------------------------------
-//  
+//
 //-------------------------------------------------------------
 //  This file is part of Hare2D Game Engine.
 //  Copyright (C) All Rights Reserved
 //***************************************************************
-// 
+//
 //***************************************************************
 #ifndef PROJECTFILE_H
 #define PROJECTFILE_H
@@ -17,7 +17,7 @@
 #include <wx/filename.h>
 #include <wx/treebase.h>
 
-namespace hare_editor
+namespace hare
 {
     class ProjectFile : public Object
     {

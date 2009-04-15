@@ -19,7 +19,7 @@
 #include <wx/panel.h>
 
 
-namespace hare_editor
+namespace hare
 {
     class EDITOR_API Project : public Object
     {

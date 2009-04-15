@@ -22,7 +22,7 @@
 #include <wx/imaglist.h>
 #include <wx/menu.h>
 
-namespace hare_editor
+namespace hare
 {
     // ---------------------------------------------------------------
     // FileSystemPanel

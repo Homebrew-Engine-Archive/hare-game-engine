@@ -1,7 +1,7 @@
 #ifndef MATHCOMMON
 #define MATHCOMMON
 
-namespace hare_core
+namespace hare
 {
     template <class T>
     class TPoint

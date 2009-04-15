@@ -52,6 +52,9 @@
 				<Option compiler="gcc" />
 				<Linker>
 					<Add library="editor" />
+					<Add library="core" />
+					<Add library="wxScintilla" />
+					<Add library="wxPropGrid" />
 				</Linker>
 			</Target>
 		</Build>

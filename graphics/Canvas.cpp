@@ -6,7 +6,7 @@
 #include "Font.h"
 
 
-namespace hare_graphics
+namespace hare
 {
 	HARE_IMPLEMENT_SINGLETON(Canvas)
 
@@ -28,13 +28,13 @@ namespace hare_graphics
 	{
 		Line line;
 		line.set(l, t, r, t, color, z);
-		RenderSystem::getSingletonPtr()->render(&line);		
+		RenderSystem::getSingletonPtr()->render(&line);
 		line.set(r, t, r, b, color, z);
-		RenderSystem::getSingletonPtr()->render(&line);	
+		RenderSystem::getSingletonPtr()->render(&line);
 		line.set(l, b, r, b, color, z);
-		RenderSystem::getSingletonPtr()->render(&line);	
+		RenderSystem::getSingletonPtr()->render(&line);
 		line.set(l, t, l, b, color, z);
-		RenderSystem::getSingletonPtr()->render(&line);	
+		RenderSystem::getSingletonPtr()->render(&line);
 	}
 
 	void Canvas::drawText(int x, int y, const String& text)
@@ -50,11 +50,11 @@ namespace hare_graphics
 		shader->setMaterial(texMtrl);
 		float layout_x = (float)x;
 		float layout_y = 0;
-		
+
 		for (uint32 batchCount = 0; batchCount <= wstr.size() / font->getCacheBufferSize(); ++batchCount){
-			
+
 			uint32 batchNum;
-			
+
 			if (batchCount == wstr.size() / font->getCacheBufferSize()){
 				batchNum = wstr.size() % font->getCacheBufferSize();
 			}else{
@@ -77,8 +77,8 @@ namespace hare_graphics
 				quad.setHeight((charGlyph.recGlyph.maxY - charGlyph.recGlyph.minY) * font->getFontTexture()->getHeight());
 				quad.setTextureUVMap(charGlyph.recGlyph);
 				quad.setColor(color);
-				RenderSystem::getSingletonPtr()->render(&quad);		
-			}		
+				RenderSystem::getSingletonPtr()->render(&quad);
+			}
 			RenderSystem::getSingletonPtr()->render();
 		}
 
@@ -88,7 +88,7 @@ namespace hare_graphics
 		//quad2.setWidth(font->getFontTexture()->getWidth());
 		//quad2.setHeight(font->getFontTexture()->getHeight());
 		//texMtrl->setUV(0,0,1,1);
-		//RenderSystem::getSingletonPtr()->render(&quad2);	
+		//RenderSystem::getSingletonPtr()->render(&quad2);
 
 	}
 
@@ -112,7 +112,7 @@ namespace hare_graphics
 				quad.setHeight((float)tex->getHeight());
 			}
 		}
-		RenderSystem::getSingletonPtr()->render(&quad);	
+		RenderSystem::getSingletonPtr()->render(&quad);
 	}
 
 	void Canvas::drawImage(const RectF& rect, Material* mtrl, const RectF& uvRect)
@@ -129,7 +129,7 @@ namespace hare_graphics
 		quad.setColor(color);
 		quad.setWidth(rect.width());
 		quad.setHeight(rect.height());
-		RenderSystem::getSingletonPtr()->render(&quad);		
+		RenderSystem::getSingletonPtr()->render(&quad);
 	}
 
 	void Canvas::drawImage(const RectF& rect, Material* mtrl, float rot, const RectF& uvRect, const PointF& center)
@@ -167,30 +167,30 @@ namespace hare_graphics
 			sint = MathUtil::sinf(rot);
 
 			quad.buffer[0].x = tx1*cost - ty1*sint + rect.minX;
-			quad.buffer[0].y = tx1*sint + ty1*cost + rect.minY;	
+			quad.buffer[0].y = tx1*sint + ty1*cost + rect.minY;
 
 			quad.buffer[1].x = tx2*cost - ty1*sint + rect.minX;
-			quad.buffer[1].y = tx2*sint + ty1*cost + rect.minY;	
+			quad.buffer[1].y = tx2*sint + ty1*cost + rect.minY;
 
 			quad.buffer[2].x = tx2*cost - ty2*sint + rect.minX;
-			quad.buffer[2].y = tx2*sint + ty2*cost + rect.minY;	
+			quad.buffer[2].y = tx2*sint + ty2*cost + rect.minY;
 
 			quad.buffer[3].x = tx1*cost - ty2*sint + rect.minX;
-			quad.buffer[3].y = tx1*sint + ty2*cost + rect.minY;	
+			quad.buffer[3].y = tx1*sint + ty2*cost + rect.minY;
 		}
 		else
 		{
-			quad.buffer[0].x = tx1 + rect.minX; 
+			quad.buffer[0].x = tx1 + rect.minX;
 			quad.buffer[0].y = ty1 + rect.minY;
-			quad.buffer[1].x = tx2 + rect.minX; 
+			quad.buffer[1].x = tx2 + rect.minX;
 			quad.buffer[1].y = ty1 + rect.minY;
-			quad.buffer[2].x = tx2 + rect.minX; 
+			quad.buffer[2].x = tx2 + rect.minX;
 			quad.buffer[2].y = ty2 + rect.minY;
-			quad.buffer[3].x = tx1 + rect.minX; 
+			quad.buffer[3].x = tx1 + rect.minX;
 			quad.buffer[3].y = ty2 + rect.minY;
 		}
 
-		RenderSystem::getSingletonPtr()->render(&quad);		
+		RenderSystem::getSingletonPtr()->render(&quad);
 
 	}
 

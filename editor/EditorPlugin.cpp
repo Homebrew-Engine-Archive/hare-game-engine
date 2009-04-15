@@ -13,7 +13,7 @@
 #include "PCH.h"
 #include "EditorPlugin.h"
 
-namespace hare_editor
+namespace hare
 {
     EditorPlugin::EditorPlugin() : attached(false), type(EPT_Unknown)
     {

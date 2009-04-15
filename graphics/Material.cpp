@@ -2,7 +2,7 @@
 #include "Material.h"
 #include "RenderSystem.h"
 
-namespace hare_graphics
+namespace hare
 {
 	HARE_ENUM_BEGIN(TextureStage::WrapMode)
 		HARE_ENUM_NAME_VALUE(Wrap,   TextureStage::WM_Wrap)
@@ -39,7 +39,7 @@ namespace hare_graphics
 
 	bool TextureStage::operator != (const TextureStage& right)
 	{
-		if (ColorBlendOP  != right.ColorBlendOP 
+		if (ColorBlendOP  != right.ColorBlendOP
 		|| ColorBlendArg1 != right.ColorBlendArg1
 		|| ColorBlendArg2 != right.ColorBlendArg2
 		|| AlphaBlendOP   != right.AlphaBlendOP
@@ -140,7 +140,7 @@ namespace hare_graphics
 		postLoaded();
 	}
 
-	//节点包裹材质 
+	//节点包裹材质
 	HARE_IMPLEMENT_ABSTRACT_CLASS(WrapperMtrl, StandardMtrl, 0)
 	{
 		HARE_OBJ(mtrl, StandardMtrl)
@@ -237,7 +237,7 @@ namespace hare_graphics
 	{
 		if (mtrl)
 			mtrl->frameMove();
-	
+
 		TextureMtrl* texMtrl = getTextureMtrl();
 
 		if (texMtrl){
@@ -262,7 +262,7 @@ namespace hare_graphics
 			mat._13 = -center.x;
 			mat._23 = -center.y;
 
-			texMtrl->texMat = mat * texMtrl->texMat;		
+			texMtrl->texMat = mat * texMtrl->texMat;
 
 			mat = Matrix4::IDENTITY;
 			mat._11 = 1.f/(scale.x + aniScale.x);
@@ -300,7 +300,7 @@ namespace hare_graphics
 	{
 		if (mtrl)
 			mtrl->frameMove();
-	
+
 		TextureMtrl* texMtrl = getTextureMtrl();
 
 		if (texMtrl){
@@ -323,7 +323,7 @@ namespace hare_graphics
 			mat._13 = -center.x;
 			mat._23 = -center.y;
 
-			texMtrl->texMat = mat * texMtrl->texMat;		
+			texMtrl->texMat = mat * texMtrl->texMat;
 
 			mat = Matrix4::IDENTITY;
 

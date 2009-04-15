@@ -2,72 +2,72 @@
 #include "SimpleParticle.h"
 #include "Canvas.h"
 
-namespace hare_graphics
+namespace hare
 {
 	HARE_IMPLEMENT_DYNAMIC_CLASS(ParticleInfo, Object, 0)
 	{
 		HARE_META(emission, int32)
-		HARE_META(lifeTime, float)		
+		HARE_META(lifeTime, float)
 
-		HARE_META(particleLifeMin, float)			
-		HARE_META(particleLifeMax, float)			
+		HARE_META(particleLifeMin, float)
+		HARE_META(particleLifeMax, float)
 
-		HARE_META(direction, float)			
-		HARE_META(spread,    float)			
-		HARE_META(relative,  bool)		
+		HARE_META(direction, float)
+		HARE_META(spread,    float)
+		HARE_META(relative,  bool)
 
-		HARE_META(speedMin, float)			
-		HARE_META(speedMax, float)			
+		HARE_META(speedMin, float)
+		HARE_META(speedMax, float)
 
-		HARE_META(gravityMin, float)			
-		HARE_META(gravityMax, float)			
+		HARE_META(gravityMin, float)
+		HARE_META(gravityMax, float)
 
-		HARE_META(radialAccelMin, float)			
-		HARE_META(radialAccelMax, float)			
+		HARE_META(radialAccelMin, float)
+		HARE_META(radialAccelMax, float)
 
-		HARE_META(tangentialAccelMin, float)			
-		HARE_META(tangentialAccelMax, float)			
+		HARE_META(tangentialAccelMin, float)
+		HARE_META(tangentialAccelMax, float)
 
-		HARE_META(sizeStart, float)			
-		HARE_META(sizeEnd,   float)			
-		HARE_META(sizeVar,   float)			
+		HARE_META(sizeStart, float)
+		HARE_META(sizeEnd,   float)
+		HARE_META(sizeVar,   float)
 
-		HARE_META(spinStart, float)			
-		HARE_META(spinEnd,   float)			
-		HARE_META(spinVar,   float)		
+		HARE_META(spinStart, float)
+		HARE_META(spinEnd,   float)
+		HARE_META(spinVar,   float)
 
-		HARE_META_F(colorStart, uint32, propColor)		
-		HARE_META_F(colorEnd,   uint32, propColor)	
+		HARE_META_F(colorStart, uint32, propColor)
+		HARE_META_F(colorEnd,   uint32, propColor)
 
-		HARE_META(colorVar, float)			
-		HARE_META(alphaVar, float)			
+		HARE_META(colorVar, float)
+		HARE_META(alphaVar, float)
 	}
 
 	ParticleInfo::ParticleInfo()
 		:emission(7)
-		,lifeTime(-1)		
-		,particleLifeMin(0.4f)	
-		,particleLifeMax(1)		
-		,direction(0)		
-		,spread(6)			
-		,relative(true)		
-		,speedMin(0)			
-		,speedMax(-4)			
-		,gravityMin(-200)	
-		,gravityMax(0)		
-		,radialAccelMin(-0.6f)		
-		,radialAccelMax(-0.6f)			
-		,tangentialAccelMin(0)			
-		,tangentialAccelMax(0)			
-		,sizeStart(0.2f)		
-		,sizeEnd(0.9f)		
-		,sizeVar(0)		
-		,spinStart(0)		
-		,spinEnd(0)	
-		,spinVar(0)	
+		,lifeTime(-1)
+		,particleLifeMin(0.4f)
+		,particleLifeMax(1)
+		,direction(0)
+		,spread(6)
+		,relative(true)
+		,speedMin(0)
+		,speedMax(-4)
+		,gravityMin(-200)
+		,gravityMax(0)
+		,radialAccelMin(-0.6f)
+		,radialAccelMax(-0.6f)
+		,tangentialAccelMin(0)
+		,tangentialAccelMax(0)
+		,sizeStart(0.2f)
+		,sizeEnd(0.9f)
+		,sizeVar(0)
+		,spinStart(0)
+		,spinEnd(0)
+		,spinVar(0)
 		,colorStart(0)
 		,colorEnd(-1)
-		,colorVar(0.2f)			
+		,colorVar(0.2f)
 		,alphaVar(0)
 	{
 	}
@@ -81,24 +81,24 @@ namespace hare_graphics
         MathUtil::clampMinMax(emission, 0, 1000);
         MathUtil::clampMax(lifeTime, 10.f);
         MathUtil::clampMinMax(particleLifeMin,0.f, 5.f);
-        MathUtil::clampMinMax(particleLifeMax,0.f, 5.f);		
-        MathUtil::clampMinMax(direction,0.f, 2 * MathUtil::PI);	
-        MathUtil::clampMinMax(spread,0.f, 2 * MathUtil::PI);					
-        MathUtil::clampMinMax(speedMin,-300.f, 300.f);		
-        MathUtil::clampMinMax(speedMax,-300.f, 300.f);		
+        MathUtil::clampMinMax(particleLifeMax,0.f, 5.f);
+        MathUtil::clampMinMax(direction,0.f, 2 * MathUtil::PI);
+        MathUtil::clampMinMax(spread,0.f, 2 * MathUtil::PI);
+        MathUtil::clampMinMax(speedMin,-300.f, 300.f);
+        MathUtil::clampMinMax(speedMax,-300.f, 300.f);
         MathUtil::clampMinMax(gravityMin,-900.f, 900.f);
-        MathUtil::clampMinMax(gravityMax,-900.f, 900.f);	
-        MathUtil::clampMinMax(radialAccelMin,-900.f, 900.f);	
-        MathUtil::clampMinMax(radialAccelMax,-900.f, 900.f);		
-        MathUtil::clampMinMax(tangentialAccelMin,-900.f, 900.f);			
-        MathUtil::clampMinMax(tangentialAccelMax,-900.f, 900.f);		
-        MathUtil::clampMinMax(sizeStart,1.f, 100.f);	
-        MathUtil::clampMinMax(sizeEnd,1.f, 100.f);	
-        MathUtil::clampMinMax(sizeVar,0.f, 1.f);	
-        MathUtil::clampMinMax(spinStart,-50.f, 50.f);	
-        MathUtil::clampMinMax(spinEnd,-50.f, 50.f);	
+        MathUtil::clampMinMax(gravityMax,-900.f, 900.f);
+        MathUtil::clampMinMax(radialAccelMin,-900.f, 900.f);
+        MathUtil::clampMinMax(radialAccelMax,-900.f, 900.f);
+        MathUtil::clampMinMax(tangentialAccelMin,-900.f, 900.f);
+        MathUtil::clampMinMax(tangentialAccelMax,-900.f, 900.f);
+        MathUtil::clampMinMax(sizeStart,1.f, 100.f);
+        MathUtil::clampMinMax(sizeEnd,1.f, 100.f);
+        MathUtil::clampMinMax(sizeVar,0.f, 1.f);
+        MathUtil::clampMinMax(spinStart,-50.f, 50.f);
+        MathUtil::clampMinMax(spinEnd,-50.f, 50.f);
         MathUtil::clampMinMax(spinVar,0.f, 1.f);
-        MathUtil::clampMinMax(colorVar,0.f, 1.f);		
+        MathUtil::clampMinMax(colorVar,0.f, 1.f);
         MathUtil::clampMinMax(alphaVar,0.f, 1.f);
     }
 

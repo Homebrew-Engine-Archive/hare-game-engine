@@ -3,12 +3,12 @@
 //  Data:    11/26/2008
 //  Author:  littlesome (littlesome@live.cn)
 //-------------------------------------------------------------
-//  
+//
 //-------------------------------------------------------------
 //  This file is part of Hare2D Game Engine.
 //  Copyright (C) All Rights Reserved
 //***************************************************************
-// 
+//
 //***************************************************************
 #ifndef _EDITOR_PAGE_H_
 #define _EDITOR_PAGE_H_
@@ -16,7 +16,7 @@
 #include "EditorPrerequisites.h"
 #include <wx/panel.h>
 
-namespace hare_editor
+namespace hare
 {
     class EDITOR_API EditorPage : public wxPanel
     {

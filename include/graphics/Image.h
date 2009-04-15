@@ -5,7 +5,7 @@
 #include "HareGraphicsType.h"
 #include "DataHolder.h"
 
-namespace hare_graphics
+namespace hare
 {
 
 	class GRAPHICS_API Image

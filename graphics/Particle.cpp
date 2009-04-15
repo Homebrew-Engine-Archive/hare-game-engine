@@ -1,7 +1,7 @@
 #include "PCH.h"
 #include "Particle.h"
 
-namespace hare_graphics
+namespace hare
 {
 	HARE_IMPLEMENT_ABSTRACT_CLASS(Particle, Object, 0)
 	{

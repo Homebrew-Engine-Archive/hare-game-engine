@@ -15,7 +15,7 @@
 #include "EditorManager.h"
 #include "EditorPageManager.h"
 
-namespace hare_editor
+namespace hare
 {
     IMPLEMENT_ABSTRACT_CLASS(EditorPage, wxPanel)
 

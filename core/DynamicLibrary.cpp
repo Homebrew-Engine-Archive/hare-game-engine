@@ -15,7 +15,7 @@
 
 #if HARE_PLATFORM == HARE_PLATFORM_LINUX
     #include <dlfcn.h>
-    namespace hare_core
+    namespace hare
     {
         void DynamicLibrary::load(const String& path)
         {
@@ -34,7 +34,7 @@
     }
 #elif HARE_PLATFORM == HARE_PLATFORM_WIN32
     #include <windows.h>
-    namespace hare_core
+    namespace hare
     {
         void DynamicLibrary::load(const String& path)
         {
@@ -53,7 +53,7 @@
     }
 #elif HARE_PLATFORM == HARE_PLATFORM_APPLE
     #include <mach-o/dyld.h>
-    namespace hare_core
+    namespace hare
     {
         void DynamicLibrary::load(const String& path)
         {
@@ -86,7 +86,7 @@
         }
     }
 #else
-    namespace hare_core
+    namespace hare
     {
         void DynamicLibrary::load(const String& path)
         {

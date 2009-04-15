@@ -17,7 +17,7 @@
 #include <wx/propgrid/manager.h>
 #include <wx/propgrid/advprops.h>
 
-namespace hare_editor
+namespace hare
 {
     // --------------------------------------------------------
     // PropertyGridPage

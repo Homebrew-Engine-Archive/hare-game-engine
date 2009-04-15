@@ -1,4 +1,4 @@
-namespace hare_graphics
+namespace hare
 {
 	class Triple
 	{

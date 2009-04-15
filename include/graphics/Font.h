@@ -7,7 +7,7 @@
 #include "Shader.h"
 #include "DataHolder.h"
 
-namespace hare_graphics
+namespace hare
 {
 	struct FontResource;
 
@@ -103,7 +103,7 @@ namespace hare_graphics
 		Texture::Ptr texCache;
 		uint32 numCharPerLine;
 
-		FontResource* fontResource; 
+		FontResource* fontResource;
 		DataHolder  input;
 
 		CachedChar willBeFillCachedPos;//添加一个字模时在纹理中的位置 初始化的位置是(0,0)

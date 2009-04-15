@@ -17,7 +17,7 @@
 #include "EditorPageManager.h"
 #include "PluginManager.h"
 
-namespace hare_editor
+namespace hare
 {
     template<> Manager* TManager<Manager>::instance = 0;
     template<> bool TManager<Manager>::autoCreate = true;

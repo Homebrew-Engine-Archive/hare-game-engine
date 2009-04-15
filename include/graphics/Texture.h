@@ -17,7 +17,7 @@
 #include "RenderTarget.h"
 #include "Image.h"
 
-namespace hare_graphics 
+namespace hare
 {
     class GRAPHICS_API Texture : public Object, public RenderTarget
     {
@@ -28,8 +28,8 @@ namespace hare_graphics
 		virtual ~Texture();
 
         void create(uint32 w, uint32 h, HarePixelFormat format, bool isRenderable = false);
-        void createFromFile(const String& filename);     
-		
+        void createFromFile(const String& filename);
+
 		void setProjectionSize(float w, float h);
 
 		uint32 getWidth(){

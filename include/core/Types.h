@@ -15,7 +15,7 @@
 
 #include "MathCommon.h"
 
-namespace hare_core
+namespace hare
 {
     typedef unsigned char	uint8;
     typedef signed char		int8;
@@ -42,12 +42,12 @@ namespace hare_core
 
 namespace __gnu_cxx
 {
-    template <> struct hash<hare_core::String>
+    template <> struct hash<hare::String>
     {
-        size_t operator()(const hare_core::String &str) const
+        size_t operator()(const hare::String &str) const
         {
             register size_t ret = 0;
-            for (hare_core::String::const_iterator it = str.begin(); it != str.end(); ++it)
+            for (hare::String::const_iterator it = str.begin(); it != str.end(); ++it)
                 ret = 5 * ret + *it;
 
             return ret;

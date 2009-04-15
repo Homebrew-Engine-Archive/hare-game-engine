@@ -4,7 +4,7 @@
 #include "GraphicsPrerequisites.h"
 #include "ImageCodec.h"
 
-namespace hare_graphics
+namespace hare
 {
 	class GRAPHICS_API DevILImageCodec : public ImageCodec
 	{

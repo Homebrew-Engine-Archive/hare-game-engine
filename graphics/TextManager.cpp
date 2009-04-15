@@ -4,11 +4,11 @@
 
 
 
-namespace hare_graphics
+namespace hare
 {
 
 	HARE_IMPLEMENT_SINGLETON(TextManager)
-	
+
 	TextManager::TextManager()
 		:fontResolution(100)
 		,fontCacheSize(10)
@@ -34,7 +34,7 @@ namespace hare_graphics
 		}catch(...){
 			font = NULL;
 		}
-		
+
 		return font;
 	}
 

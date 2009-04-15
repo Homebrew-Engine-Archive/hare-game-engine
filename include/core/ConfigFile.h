@@ -3,12 +3,12 @@
 //  Data:    02/01/2009
 //  Author:  littlesome (littlesome@live.cn)
 //-------------------------------------------------------------
-//  
+//
 //-------------------------------------------------------------
 //  This file is part of Hare2D Game Engine.
 //  Copyright (C) All Rights Reserved
 //***************************************************************
-// 
+//
 //***************************************************************
 #ifndef CONFIGFILE_H
 #define CONFIGFILE_H
@@ -16,7 +16,7 @@
 #include "CorePrerequisites.h"
 #include "StringUtil.h"
 
-namespace hare_core 
+namespace hare
 {
     class CORE_API ConfigFile
     {

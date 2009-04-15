@@ -18,7 +18,7 @@
 #include "TextEditorStyle.h"
 #include <wx/string.h>
 
-namespace hare_editor
+namespace hare
 {
     class EDITOR_API EditorPageManager : public TManager<EditorPageManager>
     {

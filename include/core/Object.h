@@ -16,7 +16,7 @@
 #include "CorePrerequisites.h"
 #include "ReferenceCounted.h"
 
-namespace hare_core
+namespace hare
 {
     class CORE_API Attribute : public ReferenceCounted
     {

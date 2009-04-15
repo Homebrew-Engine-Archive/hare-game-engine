@@ -5,7 +5,7 @@
 #include "GraphicsPrerequisites.h"
 #include "RenderUnit.h"
 
-namespace hare_graphics
+namespace hare
 {
 	class GRAPHICS_API Quad : public RenderUnit
 	{

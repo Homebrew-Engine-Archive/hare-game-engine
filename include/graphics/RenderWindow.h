@@ -5,7 +5,7 @@
 #include "GraphicsPrerequisites.h"
 #include "RenderTarget.h"
 
-namespace hare_graphics
+namespace hare
 {
 	struct GRAPHICS_API WindowParams
     {
@@ -59,7 +59,7 @@ namespace hare_graphics
 		{
 			return sceneManager;
 		}
-		
+
 		bool getIsMainWnd()
 		{
 			return isMainWnd;
@@ -75,7 +75,7 @@ namespace hare_graphics
         bool isExternal;
 
 		WindowParams windowParams;
-		
+
 		SceneManager* sceneManager;
 	};
 }

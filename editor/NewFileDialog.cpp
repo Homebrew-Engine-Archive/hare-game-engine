@@ -18,7 +18,7 @@
 #include <wx/filename.h>
 #include <wx/imaglist.h>
 
-namespace hare_editor
+namespace hare
 {
     BEGIN_EVENT_TABLE(NewFileDialog, wxDialog)
     END_EVENT_TABLE()

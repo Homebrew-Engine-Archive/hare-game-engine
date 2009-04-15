@@ -1,7 +1,7 @@
 #ifndef _HAREGRAPHICSTYPE_H_
 #define _HAREGRAPHICSTYPE_H_
 
-namespace hare_graphics
+namespace hare
 {
 	enum HarePixelFormat
 	{
@@ -24,14 +24,14 @@ namespace hare_graphics
 #else
 #   pragma pack(1)
 #endif
-	
+
     template <HarePixelFormat PIXEL_FORMAT>
 	struct HarePixelType { };
 
 	template <>
 	struct HarePixelType<HPF_A8R8G8B8> {
         union {
-            struct { uint8 b, g, r, a; }; 
+            struct { uint8 b, g, r, a; };
 			uint32 clr;
 		};
 	};
@@ -39,7 +39,7 @@ namespace hare_graphics
 	template <>
 	struct HarePixelType<HPF_A8B8G8R8> {
 		union {
-			struct { uint8 r, g, b, a; }; 
+			struct { uint8 r, g, b, a; };
 			uint32 clr;
 		};
 	};

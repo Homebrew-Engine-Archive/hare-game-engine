@@ -3,12 +3,12 @@
 //  Data:    11/02/2008
 //  Author:  wanglei (wanglei010407@163.com)
 //-------------------------------------------------------------
-//  
+//
 //-------------------------------------------------------------
 //  This file is part of Hare2D Game Engine.
 //  Copyright (C) All Rights Reserved
 //***************************************************************
-// 
+//
 //***************************************************************
 #include "PCH.h"
 #include "Image.h"
@@ -16,7 +16,7 @@
 #include "GraphicsUtil.h"
 #include "ImageCodec.h"
 
-namespace hare_graphics
+namespace hare
 {
 	Image::Image(void)
 	{
@@ -30,7 +30,7 @@ namespace hare_graphics
 
 	Image::~Image(void)
 	{
-		
+
 	}
 
 	void Image::create(uint32 width, uint32 height, HarePixelFormat format)
@@ -133,7 +133,7 @@ namespace hare_graphics
 	{
 		if (!imageData.getData() || newWidth < 0 || newHeight < 0)
 			return false;
-		
+
 		Image newImage;
 		newImage.create(newWidth, newHeight, imageInfo.format);
 
@@ -151,7 +151,7 @@ namespace hare_graphics
 			C2PassScale<CBoxFilter, MyPixelType> ps;
 
 			ps.Scale((MyPixelType*)imageData.getData(), imageInfo.width, imageInfo.height, (MyPixelType*)newImage.getImageData(), newImage.getWidth(), newImage.getHeight());
-		
+
 			}
 		default:
 			return false;

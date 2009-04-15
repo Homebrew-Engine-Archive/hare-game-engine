@@ -15,7 +15,7 @@
 #include "StringUtil.h"
 #include <physfs.h>
 
-namespace hare_core
+namespace hare
 {
     HARE_IMPLEMENT_SINGLETON(FileSystem)
 

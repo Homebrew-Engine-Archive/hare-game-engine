@@ -13,7 +13,7 @@
 #ifndef _BINVISITOR_H_
 #define _BINVISITOR_H_
 
-namespace hare_core
+namespace hare
 {
     class BinVisitor
     {

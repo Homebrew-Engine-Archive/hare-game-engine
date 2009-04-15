@@ -5,7 +5,7 @@
 #include "RenderWindow.h"
 #include "SystemManager.h"
 
-namespace hare_graphics
+namespace hare
 {
 	class SystemManager;
 	class SceneManager;

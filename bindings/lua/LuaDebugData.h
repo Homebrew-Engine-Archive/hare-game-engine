@@ -2,9 +2,9 @@
 #define LUA_DEBUG_DATA_H
 
 #include "core/Core.h"
-using namespace hare_core;
+using namespace hare;
 
-extern "C" 
+extern "C"
 {
     #include <lua.h>
     #include <lauxlib.h>
@@ -28,10 +28,10 @@ class LuaDebugItem : public Object
 public:
     LuaDebugItem(const String& key, uint8 keyType, const String& value,
         uint8 valueType, const String& source, int32 idx, int32 flg)
-        : itemKey(key), itemKeyType(keyType), itemValue(value), itemValueType(valueType), 
+        : itemKey(key), itemKeyType(keyType), itemValue(value), itemValueType(valueType),
           itemSource(source), index(idx), flag(flg) {}
 
-    LuaDebugItem() : itemKeyType(LUA_TNONE), itemValueType(LUA_TNONE), 
+    LuaDebugItem() : itemKeyType(LUA_TNONE), itemValueType(LUA_TNONE),
         index(0), flag(LUA_DEBUGITEM_NONE) {}
 
 public:

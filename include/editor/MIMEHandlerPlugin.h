@@ -3,12 +3,12 @@
 //  Data:    01/27/2009
 //  Author:  littlesome (littlesome@live.cn)
 //-------------------------------------------------------------
-//  
+//
 //-------------------------------------------------------------
 //  This file is part of Hare2D Game Engine.
 //  Copyright (C) All Rights Reserved
 //***************************************************************
-// 
+//
 //***************************************************************
 #ifndef MIMEHANDLERPLUGIN_H
 #define MIMEHANDLERPLUGIN_H
@@ -16,7 +16,7 @@
 #include "EditorPrerequisites.h"
 #include "EditorPlugin.h"
 
-namespace hare_editor
+namespace hare
 {
     class EDITOR_API MIMEHandlerPlugin : public EditorPlugin
     {

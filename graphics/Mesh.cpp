@@ -1,7 +1,7 @@
 #include "PCH.h"
 #include "Mesh.h"
 
-namespace hare_graphics
+namespace hare
 {
 	Mesh::Mesh()
 	{

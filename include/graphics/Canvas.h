@@ -1,7 +1,7 @@
 #ifndef _CANVAS_H_
 #define _CANVAS_H_
 
-namespace hare_graphics
+namespace hare
 {
 	class Material;
 	class Font;

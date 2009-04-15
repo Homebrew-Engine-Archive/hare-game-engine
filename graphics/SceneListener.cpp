@@ -1,7 +1,7 @@
 #include "PCH.h"
 #include "SceneListener.h"
 
-namespace hare_graphics
+namespace hare
 {
 	SceneListenerBase::SceneListenerBase()
 	{

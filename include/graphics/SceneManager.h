@@ -4,7 +4,7 @@
 
 #include "GraphicsPrerequisites.h"
 
-namespace hare_graphics
+namespace hare
 {
 
 	class Sprite;
@@ -33,7 +33,7 @@ namespace hare_graphics
 		SpriteList spriteList;
 
 		SceneListenerBase* sceneListener;
-	
+
 	};
 }
 

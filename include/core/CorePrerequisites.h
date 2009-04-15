@@ -26,7 +26,7 @@
 #include "Pointer.h"
 #include "Macros.h"
 
-namespace hare_core
+namespace hare
 {
     class ReferenceCounted;
     class Object;

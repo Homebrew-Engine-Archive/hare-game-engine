@@ -14,7 +14,7 @@
 
 #include <assert.h>
 
-namespace hare_core
+namespace hare
 {
     template<typename T> class Singleton
     {

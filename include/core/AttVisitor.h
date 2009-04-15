@@ -15,7 +15,7 @@
 
 #include "Object.h"
 
-namespace hare_core
+namespace hare
 {
     class CORE_API AttVisitor
     {

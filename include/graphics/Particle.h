@@ -3,7 +3,7 @@
 
 #include "GraphicsPrerequisites.h"
 #include "Shader.h"
-namespace hare_graphics
+namespace hare
 {
 	class GRAPHICS_API Particle : public Object
 	{

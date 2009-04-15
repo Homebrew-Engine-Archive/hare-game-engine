@@ -17,7 +17,7 @@
 #include <windows.h>
 #endif
 
-namespace hare_core
+namespace hare
 {
     CmdLineParser::CmdLineParser()
     {
@@ -40,31 +40,31 @@ namespace hare_core
         char* arg = cmd;
         int index;
 
-        while (arg[0] != 0) 
+        while (arg[0] != 0)
         {
-            while (arg[0] != 0 && arg[0] == ' ') 
+            while (arg[0] != 0 && arg[0] == ' ')
             {
                 arg++;
             }
 
-            if (arg[0] != 0) 
+            if (arg[0] != 0)
             {
                 argc++;
                 while (arg[0] != 0 && arg[0] != ' ')
                     arg++;
             }
-        }    
+        }
 
         // tokenize the arguments
         arg = cmd;
         index = 1;
 
-        while (arg[0] != 0) 
+        while (arg[0] != 0)
         {
             while (arg[0] != 0 && arg[0] == ' ')
                 arg++;
 
-            if (arg[0] != 0) 
+            if (arg[0] != 0)
             {
                 argv[index] = arg;
                 index++;
@@ -72,13 +72,13 @@ namespace hare_core
                 while (arg[0] != 0 && arg[0] != ' ')
                     arg++;
 
-                if (arg[0] != 0) 
+                if (arg[0] != 0)
                 {
-                    arg[0] = 0;    
+                    arg[0] = 0;
                     arg++;
                 }
             }
-        }    
+        }
 
         // put the program name into argv[0]
         GetModuleFileName(NULL, file_name, _MAX_PATH);

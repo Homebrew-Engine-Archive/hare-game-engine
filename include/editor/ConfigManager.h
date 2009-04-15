@@ -17,7 +17,7 @@
 #include "TManager.h"
 #include <wx/string.h>
 
-namespace hare_editor
+namespace hare
 {
     class EDITOR_API AppConfigFile : public Object
     {

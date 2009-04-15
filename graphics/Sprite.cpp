@@ -1,7 +1,7 @@
 #include "PCH.h"
 #include "Sprite.h"
 
-namespace hare_graphics
+namespace hare
 {
 	Sprite::Sprite()
 	{

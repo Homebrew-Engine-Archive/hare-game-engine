@@ -1,6 +1,6 @@
 #include "core/Core.h"
 #include "graphics/Graphics.h"
-using namespace hare_graphics;
+using namespace hare;
 
 #include "LuaDebuggee.h"
 

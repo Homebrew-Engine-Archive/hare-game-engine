@@ -13,6 +13,6 @@
 #include "PCH.h"
 #include "StringConverter.h"
 
-namespace hare_core
+namespace hare
 {
 }

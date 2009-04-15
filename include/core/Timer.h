@@ -3,7 +3,7 @@
 
 #include "CorePrerequisites.h"
 
-namespace hare_core
+namespace hare
 {
     CORE_API Timer& getTimer();
     CORE_API float getTime();

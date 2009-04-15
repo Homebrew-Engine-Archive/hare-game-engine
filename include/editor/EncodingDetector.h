@@ -11,7 +11,7 @@
 #include <wx/fontenc.h>
 #include <wx/string.h>
 
-namespace hare_editor
+namespace hare
 {
     class EncodingDetector
     {

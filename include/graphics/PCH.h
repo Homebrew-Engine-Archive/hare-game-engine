@@ -8,9 +8,6 @@
 using namespace std;
 
 #include "core/Core.h"
-
-using namespace hare_core;
-
 #include "GraphicsPrerequisites.h"
 
 #endif

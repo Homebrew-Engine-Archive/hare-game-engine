@@ -14,7 +14,7 @@
 #include "StringUtil.h"
 #include "ConvertUTF.h"
 
-namespace hare_core
+namespace hare
 {
     const String StringUtil::EMPTY;
 

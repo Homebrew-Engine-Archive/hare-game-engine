@@ -7,7 +7,7 @@
 #include "Canvas.h"
 #include "SimpleParticle.h"
 
-namespace hare_graphics
+namespace hare
 {
 	SimpleSprite::SimpleSprite()
 		:shader(NULL)
@@ -101,7 +101,7 @@ namespace hare_graphics
 		tex = RenderSystem::getSingletonPtr()->createTexture();
 		tex->create(256, 256, HPF_A8R8G8B8, true);
 		RenderSystem::getSingletonPtr()->setRenderTarget(tex);
-		
+
 		RenderSystem::getSingletonPtr()->render(&quad);
 
 		RenderSystem::getSingletonPtr()->setRenderTarget(target);

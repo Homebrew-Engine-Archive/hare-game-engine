@@ -16,7 +16,7 @@
 #include "EditorPrerequisites.h"
 #include <assert.h>
 
-namespace hare_editor
+namespace hare
 {
     template <typename T> class TManager
     {

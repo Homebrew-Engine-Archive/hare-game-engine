@@ -22,7 +22,7 @@ typedef unsigned THREAD_RETVAL;
 #   include <errno.h>
 #endif
 
-namespace hare_core
+namespace hare
 {
 #if HARE_PLATFORM == HARE_PLATFORM_WIN32
     //---------------------------------------------------------------------

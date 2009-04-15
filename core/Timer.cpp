@@ -9,7 +9,7 @@
 #	include <mmsystem.h>
 #endif
 
-namespace hare_core
+namespace hare
 {
 	float getTime()
 	{

@@ -1,7 +1,7 @@
 #include "PCH.h"
 #include "Matrix4.h"
 
-namespace hare_core
+namespace hare
 {
 	const Matrix4 Matrix4::ZERO(0, 0, 0, 0,
 		0, 0, 0, 0,

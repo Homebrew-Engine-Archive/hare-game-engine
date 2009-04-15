@@ -2,7 +2,7 @@
 #include "MathUtil.h"
 #include "Timer.h"
 
-namespace hare_core
+namespace hare
 {
 	const float MathUtil::PI = (4.0f * atan( 1.0f ));
 	uint32 MathUtil::g_seed = 0;

@@ -3,17 +3,17 @@
 //  Data:    01/23/2009
 //  Author:  littlesome (littlesome@live.cn)
 //-------------------------------------------------------------
-//  
+//
 //-------------------------------------------------------------
 //  This file is part of Hare2D Game Engine.
 //  Copyright (C) All Rights Reserved
 //***************************************************************
-// 
+//
 //***************************************************************
 #include "PCH.h"
 #include "EditorEvent.h"
 
-namespace hare_editor
+namespace hare
 {
     IMPLEMENT_DYNAMIC_CLASS(EditorEvent, wxEvent)
     IMPLEMENT_DYNAMIC_CLASS(EditorDockEvent, wxEvent)

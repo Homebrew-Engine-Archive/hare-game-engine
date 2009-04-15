@@ -13,7 +13,7 @@
 #include "PCH.h"
 #include "WizardPlugin.h"
 
-namespace hare_editor
+namespace hare
 {
     HARE_IMPLEMENT_DYNAMIC_CLASS(WizardResult, Object, 0)
     {

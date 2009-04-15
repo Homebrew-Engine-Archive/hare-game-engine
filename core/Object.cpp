@@ -19,7 +19,7 @@
 #include "FileSystem.h"
 #include "Exception.h"
 
-namespace hare_core
+namespace hare
 {
     ObjectUrlMap& getObjectUrlMap()
     {
@@ -29,7 +29,7 @@ namespace hare_core
 
     void setObjUrl(Object *obj, const String& url)
     {
-        if (!obj->getUrl().empty()) 
+        if (!obj->getUrl().empty())
         {
             ObjectUrlMap::iterator it = getObjectUrlMap().find(obj->getUrl());
             if (it != getObjectUrlMap().end())
@@ -50,14 +50,14 @@ namespace hare_core
     {
         setObjUrl(this, StringUtil::EMPTY);
     }
-    
+
     /* special RTTI for base class Object
     */
     void Object::doRelease()
     {
         delete this;
     }
-    
+
     Object* Object::createObject()
     {
         return new Object;
@@ -73,11 +73,11 @@ namespace hare_core
     void Object::accept(XmlVisitor &visitor, bool super)
     {
         uint32 savedVer = visitor.classVersion;
-        
-        // do not write this <_super_version_Object class="uint32" value="0" />        
+
+        // do not write this <_super_version_Object class="uint32" value="0" />
         /* visitor.visitEnter("Object", super, CLASS_INFO.classVersion); */
         Object_accept(visitor);
-        
+
         visitor.classVersion = savedVer;
     }
 

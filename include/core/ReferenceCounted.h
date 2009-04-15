@@ -15,7 +15,7 @@
 
 #include <assert.h>
 
-namespace hare_core
+namespace hare
 {
     /** Reference-counted base class
     */
@@ -50,7 +50,7 @@ namespace hare_core
         }
 
         ReferenceCounted& operator=(const ReferenceCounted &)
-        {   
+        {
             return *this;
         }
 

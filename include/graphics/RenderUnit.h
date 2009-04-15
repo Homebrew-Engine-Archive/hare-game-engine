@@ -7,7 +7,7 @@
 #include "Shader.h"
 
 
-namespace hare_graphics
+namespace hare
 {
 	class Shader;
 

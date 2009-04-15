@@ -18,7 +18,7 @@
 #include <wx/dir.h>
 #include <wx/wxscintilla.h>
 
-namespace hare_editor
+namespace hare
 {
     HARE_IMPLEMENT_DYNAMIC_CLASS(OptionColour, Object, 0)
     {

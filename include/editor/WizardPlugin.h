@@ -16,7 +16,7 @@
 #include "EditorPrerequisites.h"
 #include "EditorPlugin.h"
 
-namespace hare_editor
+namespace hare
 {
     class EDITOR_API WizardResult : public Object
     {

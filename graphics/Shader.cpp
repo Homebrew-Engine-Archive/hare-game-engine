@@ -1,7 +1,7 @@
 #include "PCH.h"
 #include "Shader.h"
 
-namespace hare_graphics
+namespace hare
 {
 	HARE_ENUM_BEGIN(ShaderParams::SceneBlendOperation)
 		HARE_ENUM_NAME_VALUE(Add,         ShaderParams::SBO_Add)
@@ -19,8 +19,8 @@ namespace hare_graphics
 
 	HARE_IMPLEMENT_DYNAMIC_CLASS(ShaderParams, Object, 0)
 	{
-		HARE_META(AlphaBlendEnable, bool) 
-		HARE_META(AlphaTestEnable,  bool) 
+		HARE_META(AlphaBlendEnable, bool)
+		HARE_META(AlphaTestEnable,  bool)
 		HARE_META(AlphaRef,         uint8)
 		HARE_ENUM(SceneBlendOP,     uint8, SceneBlendOperation)
 		HARE_ENUM(SceneBlendSrcArg, uint8, SceneBlendArgument)

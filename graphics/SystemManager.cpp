@@ -4,7 +4,7 @@
 #include "RenderSystem.h"
 #include "Canvas.h"
 
-namespace hare_graphics
+namespace hare
 {
 	HARE_IMPLEMENT_SINGLETON(SystemManager)
 

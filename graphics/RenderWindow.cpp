@@ -1,7 +1,7 @@
 #include "PCH.h"
 #include "RenderWindow.h"
 
-namespace hare_graphics
+namespace hare
 {
 	RenderWindow::RenderWindow()
 		:isMainWnd(false)

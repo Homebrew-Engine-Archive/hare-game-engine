@@ -15,7 +15,7 @@
 #include "CorePrerequisites.h"
 #include <exception>
 
-namespace hare_core
+namespace hare
 {
     class CORE_API Exception : public std::exception
     {

@@ -18,7 +18,7 @@
 #include <wx/dir.h>
 #include <wx/filename.h>
 
-namespace hare_editor
+namespace hare
 {
     template<> PluginManager* TManager<PluginManager>::instance = 0;
     template<> bool TManager<PluginManager>::autoCreate = true;
@@ -75,7 +75,7 @@ namespace hare_editor
             elem->freeProc(elem->plugin);
         else
             delete elem->plugin;
-        
+
         wxPluginManager::UnloadLibrary(elem->fileName);
 
         plugins.Remove(elem);
@@ -125,7 +125,7 @@ namespace hare_editor
         {
             return false;
         }
-        
+
         std::vector<PluginRegistration>::iterator it = registeredPlugins.begin();
         for (; it != registeredPlugins.end(); ++it)
         {
@@ -170,7 +170,7 @@ namespace hare_editor
         }
     }
 
-    void PluginManager::registerPlugin(const PluginInfo& info, FNcreatePlugin fncreatePlugin, 
+    void PluginManager::registerPlugin(const PluginInfo& info, FNcreatePlugin fncreatePlugin,
         FNfreePlugin fnfreePlugin, FNgetVersion fngetVersion)
     {
         if (!fncreatePlugin || !fnfreePlugin || !fngetVersion)

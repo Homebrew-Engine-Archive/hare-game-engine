@@ -16,7 +16,7 @@
 #include "CorePrerequisites.h"
 #include "StringUtil.h"
 
-namespace hare_core
+namespace hare
 {
     class CORE_API StringConverter
     {
@@ -51,7 +51,7 @@ namespace hare_core
             return toString(val.x) + " " + toString(val.y);
         }
 
-        // String -> Size 
+        // String -> Size
         template <typename T>
         static TSize<T>& parse(const String& str, TSize<T>& val)
         {

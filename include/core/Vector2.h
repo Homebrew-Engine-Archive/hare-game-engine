@@ -4,7 +4,7 @@
 #include "CorePrerequisites.h"
 #include "MathUtil.h"
 
-namespace hare_core
+namespace hare
 {
     class CORE_API Vector2
     {

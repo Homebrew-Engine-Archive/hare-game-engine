@@ -5,7 +5,7 @@
 #include "TextManager.h"
 #include "Canvas.h"
 
-namespace hare_graphics
+namespace hare
 {
 	HareApp hareApp;
 

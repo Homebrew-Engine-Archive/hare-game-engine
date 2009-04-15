@@ -8,7 +8,7 @@
 #define PER_WIDTH 64
 #define CODEPOINT_QUAD L'A' + 63
 
-namespace hare_graphics
+namespace hare
 {
     HARE_IMPLEMENT_DYNAMIC_CLASS(Font, Object, 0)
     {
@@ -100,7 +100,7 @@ namespace hare_graphics
 				max_height = fontResource->face->glyph->bitmap.rows;
 
 			if (fontResource->face->glyph->bitmap.width > max_width)
-				max_width = fontResource->face->glyph->bitmap.width;		
+				max_width = fontResource->face->glyph->bitmap.width;
 		}
 
 		ch = L'A';
@@ -113,7 +113,7 @@ namespace hare_graphics
 				max_height = fontResource->face->glyph->bitmap.rows;
 
 			if (fontResource->face->glyph->bitmap.width > max_width)
-				max_width = fontResource->face->glyph->bitmap.width;		
+				max_width = fontResource->face->glyph->bitmap.width;
 		}
 
 		//最大字符宽度
@@ -127,7 +127,7 @@ namespace hare_graphics
 		numCharPerLine = texSize / maxCharWidth;
 
 		//字符实际缓冲大小
-		cacheBufferSize = numCharPerLine * numCharPerLine; 
+		cacheBufferSize = numCharPerLine * numCharPerLine;
 
 		texCache = SystemManager::getSingletonPtr()->createTexture();
 
@@ -198,7 +198,7 @@ namespace hare_graphics
 
 	uint32 Font::getCacheBufferSize()
 	{
-		return cacheBufferSize;		
+		return cacheBufferSize;
 	}
 
 	const CharGlyph& Font::getCharGlyph(uint32 codePoint)
@@ -215,15 +215,15 @@ namespace hare_graphics
 					//move the char to deque's front
 					cacheCharQueue.erase(it);
 
-					cacheCharQueue.push_front(tmpCacheChar);				
+					cacheCharQueue.push_front(tmpCacheChar);
 				}
 
 				return charGlyph;
-			}		
+			}
 		}
 
 		try{
-			addCharGlyph(codePoint);		
+			addCharGlyph(codePoint);
 		}catch(...){
 			getCharGlyph(CODEPOINT_QUAD); //the char glyph is quad
 		}
@@ -231,7 +231,7 @@ namespace hare_graphics
 		const CachedChar& tmpCacheChar = cacheCharQueue.front();
 
 		charGlyph = tmpCacheChar.charGlyph;
-		
+
 		return charGlyph;
 	}
 
@@ -288,16 +288,16 @@ namespace hare_graphics
 		int char_height = 0;
 
 		if (!buffer){//char glyph space
-			
+
 			char_height = maxCharWidth;
 
 			char_width  = fontResource->face->glyph->metrics.horiAdvance / PER_WIDTH;
-		
+
 		}else{
 			Image img;
 
 			img.create(maxCharWidth, maxCharWidth, HPF_A8R8G8B8);
-			
+
 			for (int count1 = 0; count1 < fontResource->face->glyph->bitmap.rows; ++count1){
 				uint8* destBuffer = (uint8*)img.getImageData() + img.getRowStride() * count1;
 				for (int count2 = 0; count2 < fontResource->face->glyph->bitmap.width; ++count2){

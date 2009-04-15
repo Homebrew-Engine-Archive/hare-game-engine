@@ -1,7 +1,7 @@
 #include "PCH.h"
 #include "ImageCodec.h"
 
-namespace hare_graphics
+namespace hare
 {
 	std::map<String, ImageCodec*> ImageCodec::codecMap;
 

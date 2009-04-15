@@ -19,7 +19,7 @@
 #include <wx/imaglist.h>
 #include <wx/dialog.h>
 
-namespace hare_editor
+namespace hare
 {
     //---------------------------------------------------------------
     // FileSystemPanel : the common panel showing the file system

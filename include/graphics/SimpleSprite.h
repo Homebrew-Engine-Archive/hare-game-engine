@@ -8,7 +8,7 @@
 
 #include "GraphicsPrerequisites.h"
 
-namespace hare_graphics
+namespace hare
 {
 	class TextureMtrl;
 	class Texture;

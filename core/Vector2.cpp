@@ -1,7 +1,7 @@
 #include "PCH.h"
 #include "Vector2.h"
 
-namespace hare_core
+namespace hare
 {
     float Vector2::angle(const Vector2 *v) const
     {

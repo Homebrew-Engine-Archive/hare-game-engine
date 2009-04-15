@@ -1,9 +1,9 @@
 
 
-namespace hare_graphics
+namespace hare
 {
 	class RenderTexture : public Texture, public RenderTarget
 	{
-		
+
 	};
 }

@@ -16,7 +16,7 @@
 #include "CorePrerequisites.h"
 #include "Singleton.h"
 
-namespace hare_core
+namespace hare
 {
     typedef void* FileHandle;
 

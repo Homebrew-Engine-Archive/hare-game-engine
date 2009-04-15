@@ -3,9 +3,9 @@
 #define LUA_DEBUGGER_H
 
 #include "core/Core.h"
-using namespace hare_core;
+using namespace hare;
 
-extern "C" 
+extern "C"
 {
 #include <lua.h>
 #include <lauxlib.h>
@@ -70,7 +70,7 @@ protected:
         DEBUG_GO
     };
 
-    DebugOperations nextOperation; 
+    DebugOperations nextOperation;
 
     typedef std::set<String> BreakPointSet;
 
@@ -93,20 +93,20 @@ protected:
     String toBreakPoint(const String &fileName, int lineNumber) const;
 
     bool hasBreakPoint(const String &fileName, int lineNumber);
-    
+
     bool addBreakPoint(const String &fileName, int lineNumber);
-    
+
     bool removeBreakPoint(const String &fileName, int lineNumber);
-    
+
     bool clearAllBreakPoints();
-    
+
     bool step();
     bool stepOver();
     bool stepOut();
     bool continueExec();
     bool breakExec();
     bool reset();
-    
+
     bool enumerateStack();
     bool enumerateStackEntry(int stackRef);
     bool enumerateTable(int stackRef, const String& table);

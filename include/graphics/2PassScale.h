@@ -5,7 +5,7 @@
 
 #include "Filters.h"
 #include "HareGraphicsType.h"
-namespace hare_graphics
+namespace hare
 {
 
 	typedef struct

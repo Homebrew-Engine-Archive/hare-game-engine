@@ -3,7 +3,7 @@
 #include "GraphicsUtil.h"
 #include "IL/il.h"
 
-namespace hare_graphics
+namespace hare
 {
     static void toDevILFormat(const HarePixelFormat& hpf, int &imageFormat, int& bytesPerPixel)
     {

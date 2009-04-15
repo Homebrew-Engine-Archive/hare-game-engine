@@ -25,7 +25,7 @@
 #include <wx/propgrid/manager.h>
 #include <wx/xrc/xmlres.h>
 
-namespace hare_editor
+namespace hare
 {
     template<> ExplorerManager* TManager<ExplorerManager>::instance = 0;
     template<> bool TManager<ExplorerManager>::autoCreate = true;

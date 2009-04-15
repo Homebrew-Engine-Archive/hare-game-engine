@@ -1,7 +1,7 @@
 #include "PCH.h"
 #include "Line.h"
 
-namespace hare_graphics
+namespace hare
 {
 	Line::Line()
 	{
@@ -35,12 +35,12 @@ namespace hare_graphics
 
 	void Line::normalize()
 	{
-		buffer[0].u = buffer[0].x = 0;		
-		buffer[0].v = buffer[0].y = 0;		
-		buffer[1].u = buffer[1].x = 1;		
-		buffer[1].v = buffer[1].y = 1;			
+		buffer[0].u = buffer[0].x = 0;
+		buffer[0].v = buffer[0].y = 0;
+		buffer[1].u = buffer[1].x = 1;
+		buffer[1].v = buffer[1].y = 1;
 
-		
+
 		buffer[0].z = buffer[1].z = 0;
 		buffer[0].diffuse = buffer[1].diffuse = -1;
 	}
@@ -52,9 +52,9 @@ namespace hare_graphics
 
 	void Line::set(int x1, int y1, int x2, int y2, uint32 color, float z)
 	{
-		buffer[0].x = (float)x1;		
-		buffer[0].y = (float)y1;		
-		buffer[1].x = (float)x2;		
+		buffer[0].x = (float)x1;
+		buffer[0].y = (float)y1;
+		buffer[1].x = (float)x2;
 		buffer[1].y = (float)y2;
 		buffer[0].z = buffer[1].z = z;
 		setColor(color);

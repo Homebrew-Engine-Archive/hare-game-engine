@@ -5,16 +5,13 @@
 #include <list>
 #include <map>
 #include <xutility>
-
 using namespace std;
 
 #include "core/Core.h"
-
-using namespace hare_core;
-
 #include "graphics/Graphics.h"
+using namespace std;
 
-using namespace hare_graphics;
+
 
 #include <GL/glew.h>
 

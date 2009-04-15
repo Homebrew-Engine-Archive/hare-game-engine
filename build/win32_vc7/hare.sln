@@ -47,6 +47,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gl_renderer", "gl_renderer.
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gui_editor", "gui_editor.vcproj", "{2A663F90-96FA-4121-9B4E-AAFFD54E143B}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfiguration) = preSolution
 		Debug = Debug
@@ -97,6 +101,10 @@ Global
 		{8E83E98C-F83A-4470-B63C-16C7C1151FD4}.Debug.Build.0 = Debug|Win32
 		{8E83E98C-F83A-4470-B63C-16C7C1151FD4}.Release.ActiveCfg = Release|Win32
 		{8E83E98C-F83A-4470-B63C-16C7C1151FD4}.Release.Build.0 = Release|Win32
+		{2A663F90-96FA-4121-9B4E-AAFFD54E143B}.Debug.ActiveCfg = Debug|Win32
+		{2A663F90-96FA-4121-9B4E-AAFFD54E143B}.Debug.Build.0 = Debug|Win32
+		{2A663F90-96FA-4121-9B4E-AAFFD54E143B}.Release.ActiveCfg = Release|Win32
+		{2A663F90-96FA-4121-9B4E-AAFFD54E143B}.Release.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 	EndGlobalSection

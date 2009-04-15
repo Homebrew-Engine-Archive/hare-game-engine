@@ -17,7 +17,7 @@
 #include <wx/string.h>
 
 #include "graphics/Graphics.h"
-using namespace hare_graphics;
+using namespace hare;
 
 #ifdef WXMAKINGDLL_HARE_CANVAS
 #    define WXDLLIMPEXP_HARE_CANVAS WXEXPORT

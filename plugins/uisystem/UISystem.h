@@ -4,6 +4,8 @@
 #include "UIPrerequisites.h"
 #include "Event.h"
 
+typedef TRect<float> RectUV;
+
 namespace hare_ui
 {
     enum MouseButton

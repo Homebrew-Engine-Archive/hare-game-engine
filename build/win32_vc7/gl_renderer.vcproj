@@ -105,22 +105,22 @@
 			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}">
 			<File
-				RelativePath="..\..\plugins\gl_renderer\Win32\GLPlugin.cpp">
+				RelativePath="..\..\plugins\gl_renderer\GLPlugin.cpp">
 			</File>
 			<File
-				RelativePath="..\..\plugins\gl_renderer\Win32\GLRenderSystem.cpp">
+				RelativePath="..\..\plugins\gl_renderer\GLRenderSystem.cpp">
 			</File>
 			<File
 				RelativePath="..\..\plugins\gl_renderer\Win32\GLRenderWindow.cpp">
 			</File>
 			<File
-				RelativePath="..\..\plugins\gl_renderer\Win32\GLSystemManager.cpp">
+				RelativePath="..\..\plugins\gl_renderer\GLSystemManager.cpp">
 			</File>
 			<File
-				RelativePath="..\..\plugins\gl_renderer\Win32\GLTexture.cpp">
+				RelativePath="..\..\plugins\gl_renderer\GLTexture.cpp">
 			</File>
 			<File
-				RelativePath="..\..\plugins\gl_renderer\Win32\GLTypeConverter.cpp">
+				RelativePath="..\..\plugins\gl_renderer\GLTypeConverter.cpp">
 			</File>
 		</Filter>
 		<Filter
@@ -128,19 +128,19 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
 			<File
-				RelativePath="..\..\plugins\gl_renderer\Win32\GLRenderSystem.h">
+				RelativePath="..\..\plugins\gl_renderer\GLRenderSystem.h">
 			</File>
 			<File
 				RelativePath="..\..\plugins\gl_renderer\Win32\GLRenderWindow.h">
 			</File>
 			<File
-				RelativePath="..\..\plugins\gl_renderer\Win32\GLSystemManager.h">
+				RelativePath="..\..\plugins\gl_renderer\GLSystemManager.h">
 			</File>
 			<File
-				RelativePath="..\..\plugins\gl_renderer\Win32\GLTexture.h">
+				RelativePath="..\..\plugins\gl_renderer\GLTexture.h">
 			</File>
 			<File
-				RelativePath="..\..\plugins\gl_renderer\Win32\GLTypeConverter.h">
+				RelativePath="..\..\plugins\gl_renderer\GLTypeConverter.h">
 			</File>
 		</Filter>
 		<Filter
@@ -148,16 +148,10 @@
 			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx"
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}">
 			<File
-				RelativePath="..\..\plugins\gl_renderer\Win32\PCH.cpp">
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="1"/>
-				</FileConfiguration>
+				RelativePath="..\..\plugins\gl_renderer\PCH.cpp">
 			</File>
 			<File
-				RelativePath="..\..\plugins\gl_renderer\Win32\PCH.h">
+				RelativePath="..\..\plugins\gl_renderer\PCH.h">
 			</File>
 		</Filter>
 	</Files>

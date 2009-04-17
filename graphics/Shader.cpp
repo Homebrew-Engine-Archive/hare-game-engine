@@ -28,11 +28,11 @@ namespace hare
 	}
 
 	ShaderParams::ShaderParams()
-		:AlphaBlendEnable(false)
+		:AlphaBlendEnable(true)
 		,SceneBlendOP(SBO_Add)
 		,SceneBlendSrcArg(SBA_Srcalpha)
 		,SceneBlendDesArg(SBA_Invsrcalpha)
-		,AlphaTestEnable(true)
+		,AlphaTestEnable(false)
 		,AlphaRef(1)
 	{
 

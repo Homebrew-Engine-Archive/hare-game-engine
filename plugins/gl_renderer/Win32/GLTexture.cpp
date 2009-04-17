@@ -1,6 +1,7 @@
 #include "PCH.h"
 #include "GLTexture.h"
 #include "GLTypeConverter.h"
+#include "GLRenderSystem.h"
 
 
 GLTexture::GLTexture()
@@ -20,23 +21,30 @@ void GLTexture::active()
 {
     assert(bIsRenderable);
 
-    glBindTexture(GL_TEXTURE_2D, glTexture);
+    glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, fbo);
+
+	glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT, GL_DEPTH_ATTACHMENT_EXT, GL_RENDERBUFFER_EXT, depthbuffer);
+
+	glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT, GL_TEXTURE_2D, glTexture, 0);
+
+#ifdef _DEBUG
+	GLenum status = glCheckFramebufferStatusEXT(GL_FRAMEBUFFER_EXT);
+
+	assert(status == GL_FRAMEBUFFER_COMPLETE_EXT);
+#endif
 
     GLRenderSystem::getSingletonPtr()->clear(GLRenderSystem::getSingletonPtr()->getCurRenderWindow()->getWindowParams().bZbuffer);
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity(); 
 
-    //NOTE!! glOrtho funcation last tow args is used as negative
-    if (projectionWidth <= projectionHeight)                                                                    //near far
-        glOrtho(-50.0, 50.0, -50.0*(GLfloat)projectionHeight/(GLfloat)projectionWidth, 50.0*(GLfloat)projectionHeight/(GLfloat)projectionWidth,-1.0,1.0); 
-    else
-        glOrtho(-50.0*(GLfloat)projectionWidth/(GLfloat)projectionHeight, 50.0*(GLfloat)projectionWidth/(GLfloat)projectionHeight, -50.0, 50.0,-1.0,1.0); 
+    //NOTEC!! glOrtho funcation last tow args is used as negative       near far                
+    glOrtho(0, (GLfloat)projectionWidth, (GLfloat)projectionHeight, 0, -1.0, 1.0); 
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity(); 
 
-    glViewport(0, 0, projectionWidth, projectionHeight);
+    glViewport(0, 0, (GLsizei)projectionWidth, (GLsizei)projectionHeight);
 
 }
 
@@ -44,11 +52,33 @@ void GLTexture::inactive()
 {
     assert(bIsRenderable);
 
-    glCopyTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE, 0, 0, width, height, 0);
+	//release bind
+	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
+
+	glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT, GL_DEPTH_ATTACHMENT_EXT, GL_RENDERBUFFER_EXT, 0);
+
+	glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT, GL_TEXTURE_2D, 0, 0);
+
 }
 
 void GLTexture::upload(const Image& img, uint32 destX, uint32 destY)
 {
+	assert(img.getPixelFormat() == texPixelFormat);
+
+	int desWidth = min(img.getWidth(), width - destX);
+	int desHeight= min(img.getHeight(), height - destY);
+
+	glEnable(GL_TEXTURE_2D);
+
+	glBindTexture(GL_TEXTURE_2D, glTexture);
+
+	glTexSubImage2D(GL_TEXTURE_2D, 0, destX, destY, desWidth, desHeight, GLTypeConverter::toGLFormat(img.getPixelFormat()), GL_UNSIGNED_BYTE, img.getImageData());
+
+#ifdef _DEBUG
+	GLenum ret = glGetError();
+
+	assert(ret == GL_NO_ERROR);
+#endif
 
 }
 
@@ -67,9 +97,13 @@ bool GLTexture::doCreate()
 
         uint8* data = new uint8[width * height * PixelFB];
 
-        ZeroMemory(data, width * height * PixelFB);
+        memset(data, 0, width * height * PixelFB);
 
         glGenTextures(1, &glTexture);
+
+#ifdef _DEBUG
+		GLenum ret = glGetError();
+#endif
 
         glBindTexture(GL_TEXTURE_2D, glTexture);
 
@@ -89,7 +123,9 @@ bool GLTexture::doCreate()
 			glGenFramebuffersEXT(1, &fbo);
     
 			if (GLRenderSystem::getSingletonPtr()->getCurRenderWindow()->getWindowParams().bZbuffer){
-				
+				glGenRenderbuffersEXT(1, &depthbuffer);
+				glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, depthbuffer);
+                glRenderbufferStorageEXT(GL_RENDERBUFFER_EXT, GL_DEPTH_COMPONENT16, width, height);
 			}
 		}
 
@@ -126,6 +162,8 @@ bool GLTexture::doCreate()
 
         uint8 *pDestBuf = new uint8[width * height * PixelFB];
 
+		memset(pDestBuf, 0, width * height * PixelFB);
+
         uint8 *pSrcBuf  = (uint8*)img.getImageData();
 
         //swap R and B 
@@ -148,6 +186,10 @@ bool GLTexture::doCreate()
 
         glGenTextures(1, &glTexture);
 
+#ifdef _DEBUG
+		GLenum ret = glGetError();
+#endif
+
         glBindTexture(GL_TEXTURE_2D, glTexture);
 
         glTexImage2D(GL_TEXTURE_2D, 
@@ -160,7 +202,11 @@ bool GLTexture::doCreate()
             GL_UNSIGNED_BYTE, 
             (GLvoid*)pDestBuf);
 
+		ret = glGetError();
+
         delete [] pDestBuf;
+
+
     }
 
     return true;
@@ -177,6 +223,16 @@ void GLTexture::release()
         glDeleteTextures(1, &glTexture);
         glTexture = 0;
     }
+	if (bIsRenderable){
+		if (depthbuffer){
+			glDeleteRenderbuffersEXT(1, &depthbuffer);
+			depthbuffer = 0;
+		}
+		if (fbo){
+			glDeleteFramebuffersEXT(1, &fbo);
+			fbo = 0;
+		}
+	}
 }
 
 GLuint GLTexture::getGLTexture()

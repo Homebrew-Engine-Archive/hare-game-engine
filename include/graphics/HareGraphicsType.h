@@ -87,7 +87,7 @@ namespace hare
 		float u, v;
 	};
 
-	class Color : public Object
+	class GRAPHICS_API Color : public Object
 	{
 		HARE_DECLARE_DYNAMIC_CLASS(Color)
 	public:

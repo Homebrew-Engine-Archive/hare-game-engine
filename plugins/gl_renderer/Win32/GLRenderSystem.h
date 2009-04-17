@@ -23,7 +23,8 @@ public:
 
 protected:
     void writeBuffer(GLenum type, Vertex* buffer, uint32 count);
-    void makeGLMatrix(GLfloat gl_matrix[16], const Matrix4& m);
+    void makeGLMatrix(GLfloat gl_matrix[16], const Matrix4& mat);
+
 };
 
 

@@ -13,7 +13,7 @@
 		<Configuration
 			Name="Debug|Win32"
 			OutputDirectory="../../lib/plugins"
-			IntermediateDirectory="$(ConfigurationName)/dx9_renderer"
+			IntermediateDirectory="$(ConfigurationName)/gl_renderer"
 			ConfigurationType="2"
 			CharacterSet="2">
 			<Tool
@@ -33,9 +33,10 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="core_d.lib graphics_d.lib OPENGL32.lib GLU32.lib glew32mxd.lib glew32mxsd.lib"
+				AdditionalDependencies="core_d.lib graphics_d.lib OPENGL32.lib GLU32.lib glew32sd.lib glew32d.lib"
 				OutputFile="$(OutDir)/gl_renderer_d.dll"
-				AdditionalLibraryDirectories="../../lib;../../ext/glew/lib"/>
+				AdditionalLibraryDirectories="../../lib;../../ext/glew/lib"
+				GenerateDebugInformation="TRUE"/>
 			<Tool
 				Name="VCMIDLTool"/>
 			<Tool

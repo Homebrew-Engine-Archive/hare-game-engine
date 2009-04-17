@@ -3,7 +3,20 @@
 
 class GLSystemManager : public SystemManager
 {
-    
+public:
+	GLSystemManager();
+
+	virtual ~GLSystemManager();
+
+	virtual RenderWindow* createRenderWindow(const WindowParams& params);
+
+	virtual void destoryRenderWindow(RenderWindow* renderWindow);
+
+	virtual Texture* createTexture();
+
+	virtual void hareRun();
+
+	virtual void hareRunFrame();
 };
 
 

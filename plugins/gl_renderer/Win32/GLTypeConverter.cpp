@@ -64,3 +64,26 @@ GLenum GLTypeConverter::getGLInternalFormat(HarePixelFormat format)
     return glfmt;
 }
 
+GLenum GLTypeConverter::toGLTextureWrapMode(TextureStage::WrapMode wrapMode)
+{
+	GLenum retWrapMode = GL_CLAMP;
+	switch(wrapMode)
+	{
+	case TextureStage::WM_Clamp: retWrapMode = GL_CLAMP;break;
+	case TextureStage::WM_Mirror:retWrapMode = GL_REPEAT;break;
+	}
+	return retWrapMode;
+}
+
+GLenum GLTypeConverter::toGLSceneBlendArg(ShaderParams::SceneBlendArgument sceneBlendArg)
+{
+	GLenum retSceneBlendArg = GL_SRC_ALPHA;
+	switch(sceneBlendArg)
+	{
+	case ShaderParams::SBA_One:        retSceneBlendArg = GL_ONE;break;
+	case ShaderParams::SBA_Zero:       retSceneBlendArg = GL_ZERO;break;
+	case ShaderParams::SBA_Srcalpha:   retSceneBlendArg = GL_SRC_ALPHA;break;
+	case ShaderParams::SBA_Invsrcalpha:retSceneBlendArg = GL_ONE_MINUS_SRC_ALPHA;break;
+	}
+	return retSceneBlendArg;
+}

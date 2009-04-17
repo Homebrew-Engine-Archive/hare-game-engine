@@ -44,20 +44,21 @@ namespace hare
 		//scaleMtrl->center.x = 0.2f;
 		scaleMtrl->setSubMtrl(texMtrl);
 
-		//RotatorMod* rotatorMod;
-		//rotatorMod = new RotatorMod;
-		//rotatorMod->center.x = 0.5f;
-		//rotatorMod->center.y = 0.5f;
-		//rotatorMod->rotation = 10.5f;
-		//rotatorMod->speed = 10.5f;
-		//rotatorMod->setSubMtrl(scaleMtrl);
+		RotatorMod* rotatorMod;
+		rotatorMod = new RotatorMod;
+		rotatorMod->center.x = 0.5f;
+		rotatorMod->center.y = 0.5f;
+		rotatorMod->rotation = 10.5f;
+		rotatorMod->speed = 10.5f;
+		rotatorMod->setSubMtrl(scaleMtrl);
 
 		AnimModUnit* animModUnit;
 		animModUnit = new AnimModUnit;
 		animModUnit->frameTime = 1;
+		//animModUnit->setSubMtrl(texMtrl);
 		//animModUnit->setSubMtrl(pannerMtrl);
-		animModUnit->setSubMtrl(scaleMtrl);
-		//animModUnit->setSubMtrl(rotatorMod);
+		//animModUnit->setSubMtrl(scaleMtrl);
+		animModUnit->setSubMtrl(rotatorMod);
 
 		AnimMod* animModMtrl = new AnimMod;
 		animModMtrl->addFrame(animModUnit);
@@ -68,7 +69,7 @@ namespace hare
 		quad.setWidth((float)tex->getWidth());
 		quad.setHeight((float)tex->getHeight());
 		quad.setMaterial(shader);
-		quad.moveTo(100, 100);
+		quad.moveTo(10, 10);
 
 
 		tex = RenderSystem::getSingletonPtr()->createTexture();
@@ -99,7 +100,7 @@ namespace hare
 
 		Texture* tex;
 		tex = RenderSystem::getSingletonPtr()->createTexture();
-		tex->create(256, 256, HPF_A8R8G8B8, true);
+		tex->create(256, 256, HPF_A8B8G8R8, true);
 		RenderSystem::getSingletonPtr()->setRenderTarget(tex);
 
 		RenderSystem::getSingletonPtr()->render(&quad);

@@ -16,6 +16,7 @@ D3DSystemManager::D3DSystemManager()
 D3DSystemManager::~D3DSystemManager()
 {
 	delete pPrimaryWindow;
+	pPrimaryWindow = NULL;
 	SecondaryWindowList::iterator it = secondaryWindowList.begin();
 	for (;it != secondaryWindowList.end(); ++it){
 		delete *it;

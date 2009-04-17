@@ -1,5 +1,7 @@
 #include "PCH.h"
 #include "GLRenderWindow.h"
+#include "GLRenderSystem.h"
+#include "GLSystemManager.h"
 
 #define COLOR_DEPTH 16
 
@@ -152,13 +154,11 @@ void GLRenderWindow::create(const WindowParams& params)
 void GLRenderWindow::setProjection()
 {
     glMatrixMode(GL_PROJECTION);
-    glLoadIdentity(); 
-    
-    //NOTE!! glOrtho funcation last tow args is used as negative
-    if (windowParams.width <= windowParams.height)                                                                    //near far
-        glOrtho(-50.0, 50.0, -50.0*(GLfloat)windowParams.height/(GLfloat)windowParams.width, 50.0*(GLfloat)windowParams.height/(GLfloat)windowParams.width,-1.0,1.0); 
-    else
-        glOrtho(-50.0*(GLfloat)windowParams.width/(GLfloat)windowParams.height, 50.0*(GLfloat)windowParams.width/(GLfloat)windowParams.height, -50.0, 50.0,-1.0,1.0); 
+    glLoadIdentity();
+
+    //NOTEC!! glOrtho funcation last tow args is used as negative
+    //left right bottom top                                                 near far
+    glOrtho(0, (GLfloat)windowParams.width, (GLfloat)windowParams.height, 0, -1.0, 1.0); 
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity(); 
@@ -178,7 +178,7 @@ void GLRenderWindow::swapBuffer()
 {
     SwapBuffers(hDC);
 
-    GLSystemManager::getSingletonPtr()->clear(windowParams.bZbuffer);
+    GLRenderSystem::getSingletonPtr()->clear(windowParams.bZbuffer);
 }
 
 void GLRenderWindow::destoryWindow()
@@ -192,9 +192,9 @@ void GLRenderWindow::destoryWindow()
         }
     }else{
         //destory window 
-        //GLSystemManager::getSingletonPtr()->destoryRenderWindow(this);	
+        GLSystemManager::getSingletonPtr()->destoryRenderWindow(this);	
     }
-    //NOTE!! can't modify member value affter this funcation
+    //NOTEC!! can't modify member value affter this funcation
 }
 
 void GLRenderWindow::active()
@@ -204,11 +204,13 @@ void GLRenderWindow::active()
     }
 
     setProjection();
+
+	GLRenderSystem::getSingletonPtr()->setCurRenderWindow(this);
 }
 
 void GLRenderWindow::inactive()
 {
-    
+
 }
 
 HWND GLRenderWindow::getWindowHandle()
@@ -249,6 +251,13 @@ void GLRenderWindow::createGLResource()
         MessageBox(NULL, "can't create OpenGL render Context", "error", MB_OK|MB_ICONEXCLAMATION);
         HARE_EXCEPT(Exception::ERR_INTERNAL_ERROR, "can't create OpenGL render Context!", "GLRenderWindow::createGLResource"); 
     }
+
+
+	wglMakeCurrent(hDC, hRC);
+	glewInit();
+	GLenum ret = glGetError();
+	glEnable(GL_TEXTURE_2D);
+	glDisable(GL_LIGHTING);
 
 }
 

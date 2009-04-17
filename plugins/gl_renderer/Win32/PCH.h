@@ -9,7 +9,7 @@ using namespace std;
 
 #include "core/Core.h"
 #include "graphics/Graphics.h"
-using namespace std;
+using namespace hare;
 
 
 

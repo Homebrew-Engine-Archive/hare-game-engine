@@ -8,6 +8,8 @@ public:
     static uint32 countByPrimtType(GLenum primtype);
     static GLenum toGLFormat(HarePixelFormat hpf);
     static GLenum getGLInternalFormat(HarePixelFormat format);
+	static GLenum toGLTextureWrapMode(TextureStage::WrapMode wrapMode);
+	static GLenum toGLSceneBlendArg(ShaderParams::SceneBlendArgument sceneBlendArg);
 };
 
 

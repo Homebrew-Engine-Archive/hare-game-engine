@@ -15,7 +15,7 @@ GLRenderSystem::~GLRenderSystem()
 
 void GLRenderSystem::initalize()
 {
-    glEnable(GL_TEXTURE_2D);
+
 }
 
 void GLRenderSystem::release()
@@ -30,7 +30,7 @@ void GLRenderSystem::beginFrame()
 
 void GLRenderSystem::render()
 {
-
+	//glDrawBuffer(GL_FRONT_AND_BACK);
 }
 
 void GLRenderSystem::writeBuffer(GLenum type, Vertex* buffer, uint32 count)
@@ -73,7 +73,7 @@ void GLRenderSystem::render(RenderUnit* operation)
 
             tmpTexMat = textureMtrl->texMat;
 
-            texture = (D3DTexture*)textureMtrl->getTexture();
+            texture = (GLTexture*)textureMtrl->getTexture();
             if (!texture){
                assert(false);
             }
@@ -81,22 +81,23 @@ void GLRenderSystem::render(RenderUnit* operation)
     }
 
     if (texture){
-        glBindTexture(GL_TEXTURE_2D, texture->getGLTexture());
+		glEnable(GL_TEXTURE_2D);
 
-        setShaderParams(tmpShaderParams);
+		glBindTexture(GL_TEXTURE_2D, texture->getGLTexture());
+
+		setShaderParams(tmpShaderParams);
 
         setTextureStage(tmpTextureStage);
     }else{
-        glBindTexture(GL_TEXTURE_2D, 0);
+		glDisable(GL_TEXTURE_2D);
     }
 
     GLfloat gl_matrix[16];
     makeGLMatrix(gl_matrix, tmpTexMat);
 
-    glPushMatrix();
+	glMatrixMode(GL_TEXTURE);
     glLoadMatrixf(gl_matrix);
-    writeBuffer(GLTypeConverter::toGLPrimtiveType(operation->getOperationType(), operation->getBuffer(), operation->getVertexCount()));
-    glPopMatrix();
+    writeBuffer(GLTypeConverter::toGLPrimtiveType(operation->getOperationType()), operation->getBuffer(), operation->getVertexCount());
 }
 
 void GLRenderSystem::endFrame()
@@ -117,12 +118,35 @@ void GLRenderSystem::clear(bool z)
 
 void GLRenderSystem::setShaderParams(const ShaderParams& shaderParams)
 {
+	if(shaderParams.AlphaBlendEnable){
+		glEnable(GL_BLEND);
 
+		glBlendFunc(GLTypeConverter::toGLSceneBlendArg((ShaderParams::SceneBlendArgument)shaderParams.SceneBlendSrcArg)
+			, GLTypeConverter::toGLSceneBlendArg((ShaderParams::SceneBlendArgument)shaderParams.SceneBlendDesArg));
+	}else{
+		glDisable(GL_BLEND);
+	}
+
+	if(shaderParams.AlphaTestEnable){
+		glEnable(GL_ALPHA_TEST);
+		glAlphaFunc(GL_GEQUAL, shaderParams.AlphaRef / 255.0f);
+	}else{
+		glDisable(GL_ALPHA_TEST);
+	}
 }
 
 void GLRenderSystem::setTextureStage(const TextureStage& textureStage)
 {
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GLTypeConverter::toGLTextureWrapMode((TextureStage::WrapMode)textureStage.wrapModeU));
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GLTypeConverter::toGLTextureWrapMode((TextureStage::WrapMode)textureStage.wrapModeV));
 
+	if (textureStage.fliterType == TextureStage::FT_Point){
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	}else if (textureStage.fliterType == TextureStage::FT_Line){
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	}
 }
 
 Texture* GLRenderSystem::createTexture()
@@ -130,14 +154,14 @@ Texture* GLRenderSystem::createTexture()
     return new GLTexture;
 }
 
-void GLRenderSystem::makeGLMatrix(GLfloat gl_matrix[16], const Matrix4& m)
+void GLRenderSystem::makeGLMatrix(GLfloat gl_matrix[16], const Matrix4& mat)
 {
     size_t x = 0;
     for (size_t i = 0; i < 4; i++)
     {
         for (size_t j = 0; j < 4; j++)
         {
-            gl_matrix[x] = m[j][i];
+            gl_matrix[x] = mat.m[j][i];
             x++;
         }
     }

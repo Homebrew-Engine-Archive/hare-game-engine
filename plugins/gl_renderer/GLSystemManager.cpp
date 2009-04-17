@@ -1,6 +1,10 @@
 #include "PCH.h"
 #include "GLSystemManager.h"
-#include "GLRenderWindow.h"
+
+#if HARE_PLATFORM == HARE_PLATFORM_WIN32
+#include "Win32/GLRenderWindow.h"
+#endif
+
 #include "GLRenderSystem.h"
 #include "GLTexture.h"
 

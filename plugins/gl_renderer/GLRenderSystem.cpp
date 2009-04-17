@@ -30,7 +30,7 @@ void GLRenderSystem::beginFrame()
 
 void GLRenderSystem::render()
 {
-	//glDrawBuffer(GL_FRONT_AND_BACK);
+	
 }
 
 void GLRenderSystem::writeBuffer(GLenum type, Vertex* buffer, uint32 count)

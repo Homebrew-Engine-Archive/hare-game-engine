@@ -41,7 +41,14 @@ namespace hare
 
 		void hareRun();
 
-		void hareRunFrame();
+		int  hareRunFrame();
+
+		void pause();
+
+		void resume();
+
+		void end();
+
 	private:
 		DynamicLibrary* plugin;
 		SystemManager* graphicsSystemManager;

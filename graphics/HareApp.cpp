@@ -70,9 +70,24 @@ namespace hare
 		graphicsSystemManager->hareRun();
 	}
 
-	void HareApp::hareRunFrame()
+	int  HareApp::hareRunFrame()
 	{
-		graphicsSystemManager->hareRunFrame();
+		return graphicsSystemManager->hareRunFrame();
+	}
+
+	void HareApp::pause()
+	{
+		graphicsSystemManager->pause();
+	}
+
+	void HareApp::resume()
+	{
+		graphicsSystemManager->resume();
+	}
+
+	void HareApp::end()
+	{
+		graphicsSystemManager->end();
 	}
 
 	HareApp* getHareApp()

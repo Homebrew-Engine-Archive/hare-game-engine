@@ -1,7 +1,7 @@
 #include "PCH.h"
 #include "GLRenderWindow.h"
-#include "GLRenderSystem.h"
-#include "GLSystemManager.h"
+#include "../GLRenderSystem.h"
+#include "../GLSystemManager.h"
 
 #define COLOR_DEPTH 16
 

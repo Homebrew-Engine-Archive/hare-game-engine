@@ -5,7 +5,7 @@ class GLRenderWindow : public RenderWindow
 {
     friend class GLRenderSystem;
 public:
-    GLRenderWindow(bool bMainWindow);
+    GLRenderWindow();
 
     virtual ~GLRenderWindow();
 
@@ -21,23 +21,19 @@ public:
 
     virtual void inactive();
 
-    HWND getWindowHandle();
-
-    HGLRC getRenderContext();
-
-    PIXELFORMATDESCRIPTOR* getPixelFormatDescriptor();
-
 private:
     void initalizeGLConfigParam();
-    void createGLResource();
-    void destoryGLResource();
+	void createGLResource();
+	void destoryGLResource();
 
     void setProjection();
-private:
-    HGLRC hRC;
-    HDC   hDC;
-    PIXELFORMATDESCRIPTOR pfd;
 
+private:
+	uint32 displayMode;
+
+	EGLDisplay dpy;
+	EGLContext ctx;
+	EGLSurface surface;
 };
 
 

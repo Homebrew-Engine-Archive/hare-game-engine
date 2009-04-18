@@ -32,9 +32,17 @@ namespace hare
 
 		virtual Texture* createTexture() = 0;
 
-		virtual void hareRunFrame();
+		virtual int  hareRunFrame();
 
 		virtual void hareRun() = 0;
+
+		void pause();
+
+		void resume();
+
+		void end();
+
+		RenderWindow* getPrimaryWindow();
 
 	protected:
 
@@ -48,6 +56,9 @@ namespace hare
 
 		RenderSystem* renderSystem;
 		Canvas*       canvas;
+
+		bool bResume;
+		bool bEnd;
 	};
 }
 

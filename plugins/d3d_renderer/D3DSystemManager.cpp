@@ -62,24 +62,24 @@ Texture* D3DSystemManager::createTexture()
 	return RenderSystem::getSingletonPtr()->createTexture();
 }
 
-void D3DSystemManager::hareRunFrame()
+int D3DSystemManager::hareRunFrame()
 {
     D3DRenderSystem* d3drs = static_cast<D3DRenderSystem*>(RenderSystem::getSingletonPtr());
     if (!d3drs)
-        return;
+        return 1;
     
     LPDIRECT3DDEVICE9 d3ddev = d3drs->getD3DDevice();
     if (!d3ddev)
-        return;
+        return 1;
 	
     HRESULT hr = d3ddev->TestCooperativeLevel();
 	if (hr == D3DERR_DEVICELOST){
-		return;
+		return 1;
 	}else if (hr == D3DERR_DEVICENOTRESET){
 		d3drs->resetDevice();
 	}
 
-	SystemManager::hareRunFrame();
+	return SystemManager::hareRunFrame();
 }
 
 void D3DSystemManager::hareRun()
@@ -94,7 +94,10 @@ void D3DSystemManager::hareRun()
 			TranslateMessage(&Message);
 			DispatchMessage(&Message);
 		} else {
-            hareRunFrame();
+			int ret = hareRunFrame();
+				
+			if (ret == 0)
+				break;
 		}
 	}
 }

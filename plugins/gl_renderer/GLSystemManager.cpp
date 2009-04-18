@@ -3,6 +3,8 @@
 
 #if HARE_PLATFORM == HARE_PLATFORM_WIN32
 #include "Win32/GLRenderWindow.h"
+#elif HARE_PLATFORM == HARE_PLATFORM_PSP
+#include "PSP/GLRenderWindow.h"
 #endif
 
 #include "GLRenderSystem.h"
@@ -63,13 +65,14 @@ Texture* GLSystemManager::createTexture()
 	return RenderSystem::getSingletonPtr()->createTexture();
 }
 
-void GLSystemManager::hareRunFrame()
+int  GLSystemManager::hareRunFrame()
 {
-	SystemManager::hareRunFrame();
+	return SystemManager::hareRunFrame();
 }
 
 void GLSystemManager::hareRun()
 {
+#if HARE_PLATFORM == HARE_PLATFORM_WIN32
 	MSG Message;
 
 	for (;;){	
@@ -80,9 +83,25 @@ void GLSystemManager::hareRun()
 			TranslateMessage(&Message);
 			DispatchMessage(&Message);
 		} else {
-			hareRunFrame();
+			int ret = hareRunFrame();
+
+			if (ret == 0)
+				break;
 		}
 	}
+#elif HARE_PLATFORM == HARE_PLATFORM_PSP
+
+	do{
+		int ret = hareRunFrame();
+
+		if (ret == 0)
+			break;
+	}while(1);
+
+#elif HARE_PLATFORM == HARE_PLATFORM_LINUX
+
+
+#endif
 }
 
 

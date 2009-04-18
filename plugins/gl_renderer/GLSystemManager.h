@@ -16,7 +16,7 @@ public:
 
 	virtual void hareRun();
 
-	virtual void hareRunFrame();
+	virtual int  hareRunFrame();
 };
 
 

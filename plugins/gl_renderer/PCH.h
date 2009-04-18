@@ -11,13 +11,21 @@ using namespace std;
 #include "graphics/Graphics.h"
 using namespace hare;
 
-
-
-#include <GL/glew.h>
-
-#if HARE_PLATFORM == HARE_PLATFORM_WIN32
-#include <GL/wglew.h>
+#if HARE_PLATFORM == HARE_PLATFORM_PSP
+#	include <GLES/egl.h>
+#   include <GLES/glut.h>
+#else
+#	include <GL/glew.h>
+#	if HARE_PLATFORM == HARE_PLATFORM_WIN32
+#	include <GL/wglew.h>
+#   elif HARE_PLATFORM == HARE_PLATFORM_LINUX
+#   include <GL/glxew.h>
+#	endif
 #endif
+
+
+
+
 
 
 #endif

@@ -10,6 +10,8 @@ namespace hare
 
 	SystemManager::SystemManager()
 		:pPrimaryWindow(NULL)
+		,bResume(true)
+	    ,bEnd(false)
 	{
 		canvas = new Canvas;
 	}
@@ -31,9 +33,15 @@ namespace hare
 		return scene;
 	}
 
-	void SystemManager::hareRunFrame()
+	int  SystemManager::hareRunFrame()
 	{
         getTimer().update();
+
+		if (bEnd)
+			return 0;
+
+		if (!bResume)
+			return 2;
 
 		//äÖÈ¾Ç°
 		SecondaryWindowList::iterator it = secondaryWindowList.begin();
@@ -89,5 +97,27 @@ namespace hare
 			if (pPrimaryWindow->getSceneManager())
 				pPrimaryWindow->getSceneManager()->endScene();
 		}
+
+		return 1;
+	}
+
+	RenderWindow* SystemManager::getPrimaryWindow()
+	{
+		return pPrimaryWindow;
+	}
+
+	void SystemManager::pause()
+	{
+        bResume = true;
+	}
+
+	void SystemManager::resume()
+	{
+		bResume = false;
+	}
+
+	void SystemManager::end()
+	{
+		bEnd = true;
 	}
 }

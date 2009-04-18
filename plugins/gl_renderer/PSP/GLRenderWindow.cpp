@@ -1,38 +1,27 @@
 #include "PCH.h"
 #include "GLRenderWindow.h"
-#include "GLRenderSystem.h"
-#include "GLSystemManager.h"
+#include "../GLRenderSystem.h"
+#include "../GLSystemManager.h"
 
-#define COLOR_DEPTH 16
+#define SCREEN_WIDTH  480
+#define SCREEN_HEIGHT 272
 
-static LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+static EGLint attrib_list [] = {
+    EGL_RED_SIZE,     8, /* 0 */
+    EGL_GREEN_SIZE,   8, /* 2 */
+    EGL_BLUE_SIZE,    8, /* 4 */
+    EGL_ALPHA_SIZE,   0, /* 6 */
+    EGL_STENCIL_SIZE, 0, /* 8 */
+    EGL_DEPTH_SIZE,   0, /* 10 */
+    EGL_NONE
+};
+
+GLRenderWindow::GLRenderWindow()
+	:dpy(NULL)
+    ,ctx(NULL)
+	,surface(NULL)
 {
-    GLRenderWindow* renderWindow = (GLRenderWindow*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
-    switch( uMsg )
-    {
-    case WM_SIZE:
-        {
-            int w = LOWORD(lParam) > 0 ? LOWORD(lParam) : 1;
-            int h = HIWORD(lParam) > 0 ? HIWORD(lParam) : 1;
 
-            if (renderWindow)
-                renderWindow->resize(w, h);
-        }
-        break;
-    case WM_CLOSE:
-        if (renderWindow)
-            renderWindow->destoryWindow();
-        break;
-    }
-
-    return DefWindowProc(hWnd, uMsg, wParam, lParam);
-}
-
-GLRenderWindow::GLRenderWindow(bool bMainWindow)
-    :hRC(NULL)
-    ,hDC(NULL)
-{
-    isMainWnd = bMainWindow;
 }
 
 GLRenderWindow::~GLRenderWindow()
@@ -42,113 +31,27 @@ GLRenderWindow::~GLRenderWindow()
 
 void GLRenderWindow::initalizeGLConfigParam()
 {
-    PIXELFORMATDESCRIPTOR tmpPFD = {
-        sizeof(PIXELFORMATDESCRIPTOR),  // 上述格式描述符的大小
-        1,                              // 版本号
-        PFD_DRAW_TO_WINDOW |            // 格式支持窗口
-        PFD_SUPPORT_OPENGL |            // 格式必须支持OpenGL
-        PFD_DOUBLEBUFFER,               // 必须支持双缓冲
-        PFD_TYPE_RGBA,                  // 申请 RGBA 格式
-        COLOR_DEPTH,                    // 选定色彩深度
-        0, 0, 0, 0, 0, 0,               // 忽略的色彩位
-        0,                              // 无Alpha缓存
-        0,                              // 忽略Shift Bit
-        0,                              // 无累加缓存
-        0, 0, 0, 0,                     // 忽略聚集位
-        windowParams.bZbuffer ? 16 : 0, // 16位 Z-缓存 (深度缓存)
-        0,                              // 无蒙板缓存
-        0,                              // 无辅助缓存
-        PFD_MAIN_PLANE,                 // 主绘图层
-        0,                              // Reserved
-        0, 0, 0                         // 忽略层遮罩
-    };
-
-    pfd = tmpPFD;
+	glEnable(GL_TEXTURE_2D);
+	glDisable(GL_LIGHTING);
 }
 
 void GLRenderWindow::create(const WindowParams& params)
 {
-    HWND hwnd;
-    bool bFullScreen = params.bFullScreen;
+	windowParams = params;
+	windowParams.hwnd = NULL;
+	windowParams.bFullScreen = true;
+	windowParams.width = SCREEN_WIDTH;
+	windowParams.height= SCREEN_HEIGHT;
 
-    if (params.hwnd == NULL){//如果窗口句柄为空则制动创建
-
-        HINSTANCE hInstance = (HINSTANCE)GetModuleHandle(NULL);
-
-        WNDCLASS wc;
-
-        wc.style = CS_DBLCLKS;
-        wc.lpfnWndProc = WindowProc;
-        wc.cbClsExtra = 0;
-        wc.cbWndExtra = 0;
-        wc.hInstance = hInstance;
-        wc.hIcon = LoadIcon(0, IDI_APPLICATION);
-        wc.hCursor = LoadCursor(NULL, IDC_ARROW);
-        wc.hbrBackground = (HBRUSH)GetStockObject(BLACK_BRUSH);
-        wc.lpszMenuName = NULL;
-        wc.lpszClassName = "HareRenderWindow";
-
-        RegisterClass(&wc);
-
-        if (bFullScreen){
-            DEVMODE dmScreenSettings;
-            memset(&dmScreenSettings, 0, sizeof(dmScreenSettings));
-            dmScreenSettings.dmSize         = sizeof(dmScreenSettings);
-            dmScreenSettings.dmPelsWidth	= params.width;
-            dmScreenSettings.dmPelsHeight	= params.height;
-            dmScreenSettings.dmBitsPerPel	= COLOR_DEPTH;  // color depth per pixel
-            dmScreenSettings.dmFields       = DM_BITSPERPEL|DM_PELSWIDTH|DM_PELSHEIGHT;
-
-            if (ChangeDisplaySettings(&dmScreenSettings, CDS_FULLSCREEN) != DISP_CHANGE_SUCCESSFUL){
-                bFullScreen = false;
-            }
-        }
-
-        uint32 style = WS_OVERLAPPEDWINDOW;
-        if (bFullScreen){
-            style = WS_POPUP;
-        }
-
-        hwnd = CreateWindow("HareRenderWindow", params.title.c_str(), 
-            style, CW_USEDEFAULT, 0, params.width, params.height, NULL, NULL, hInstance, NULL);
-
-        RECT  rect;
-
-        int xL = (GetSystemMetrics(SM_CXSCREEN) - params.width ) / 2;
-        int yT = (GetSystemMetrics(SM_CYSCREEN) - params.height) / 2;
-        int xR = xL + params.width;
-        int yB = yT + params.height;
-
-        SetRect(&rect, xL, yT, xR, yB);
-
-        AdjustWindowRectEx(&rect, GetWindowLong(hwnd, GWL_STYLE), 
-            (GetMenu(hwnd) != NULL), GetWindowLong(hwnd, GWL_EXSTYLE));
-
-        MoveWindow(hwnd, rect.left, rect.top, rect.right - rect.left,
-            rect.bottom - rect.top, TRUE);
-
-        ShowWindow(hwnd, SW_NORMAL);
-
-        UpdateWindow(hwnd);
-
-        isExternal = false;
-    } else {
-        hwnd = (HWND)params.hwnd;
-        isExternal = true;
-    }
-
-    windowParams = params;
-
-    windowParams.hwnd = (uint32)hwnd;
-
-    windowParams.bFullScreen = bFullScreen;
-
-    SetWindowLongPtr(hwnd, GWLP_USERDATA, (uint32)this);
+	displayMode = GLUT_RGBA | GLUT_DOUBLE;
+	if (windowParams.bZbuffer){
+		mode |= GLUT_DEPTH;
+	}
 
     //get information from config
     initalizeGLConfigParam();
 
-    createGLResource();
+	createGLResource();
 }
 
 void GLRenderWindow::setProjection()
@@ -176,32 +79,17 @@ void GLRenderWindow::resize(uint32 w, uint32 h)
 
 void GLRenderWindow::swapBuffer()
 {
-    SwapBuffers(hDC);
-
-    GLRenderSystem::getSingletonPtr()->clear(windowParams.bZbuffer);
+	eglSwapBuffers(dpy, surface);
 }
 
 void GLRenderWindow::destoryWindow()
 {
     sceneManager = NULL;
-
-    if (getIsMainWnd()){
-        if (!isExternal){
-            //exit main Process
-            PostQuitMessage(0);
-        }
-    }else{
-        //destory window 
-        GLSystemManager::getSingletonPtr()->destoryRenderWindow(this);	
-    }
-    //NOTEC!! can't modify member value affter this funcation
 }
 
 void GLRenderWindow::active()
-{
-    if(!wglMakeCurrent(hDC,hRC)){
-        HARE_EXCEPT(Exception::ERR_INTERNAL_ERROR, "can't active RenderContext!", "GLRenderWindow::active");
-    }
+{   
+	GLRenderSystem::getSingletonPtr()->clear(true);
 
     setProjection();
 
@@ -213,82 +101,38 @@ void GLRenderWindow::inactive()
 
 }
 
-HWND GLRenderWindow::getWindowHandle()
-{
-    return (HWND)windowParams.hwnd;
-}
-
-HGLRC GLRenderWindow::getRenderContext()
-{
-    return hRC;
-}
-
-PIXELFORMATDESCRIPTOR* GLRenderWindow::getPixelFormatDescriptor()
-{
-    return &pfd;
-}
-
 void GLRenderWindow::createGLResource()
 {
-    GLuint PixelFormat;
+	EGLConfig config;
+	EGLint num_configs;
 
-    if (!(hDC=GetDC((HWND)windowParams.hwnd))){	// get DeviceContext
-        MessageBox(NULL, "can't get DeviceContext", "error", MB_OK|MB_ICONEXCLAMATION);
-        HARE_EXCEPT(Exception::ERR_INTERNAL_ERROR, "can't get DeviceContext!", "GLRenderWindow::createGLResource");
-    }
+	dpy = eglGetDisplay(0);
+	eglInitialize(dpy, NULL, NULL);
+	
+    if (displayMode & GLUT_ALPHA)
+        attrib_list[7]  = 8;
+    if (displayMode & GLUT_STENCIL)
+        attrib_list[9]  = 8;
+    if (displayMode & GLUT_DEPTH)
+        attrib_list[11] = 16;
 
-    if (!(PixelFormat=ChoosePixelFormat(hDC,&pfd))){ // Windows search PixelFormat 
-        MessageBox(NULL, "can't search PixelFormat", "error",MB_OK|MB_ICONEXCLAMATION);
-        HARE_EXCEPT(Exception::ERR_INTERNAL_ERROR, "can't search PixelFormat!", "GLRenderWindow::createGLResource");      
-    }
+	eglChooseConfig(dpy, attrib_list, &config, 1, &num_configs);
 
-    if(!SetPixelFormat(hDC,PixelFormat,&pfd)){ // set PixelFormat
-        MessageBox(NULL, "can't set PixelFormat", "error", MB_OK|MB_ICONEXCLAMATION);
-        HARE_EXCEPT(Exception::ERR_INTERNAL_ERROR, "can't set PixelFormat!", "GLRenderWindow::createGLResource"); 
-    }
+	//error log 
+	if (num_configs == 0)
+		return ;
 
-    if (!(hRC=wglCreateContext(hDC))){ // create Render Context
-        MessageBox(NULL, "can't create OpenGL render Context", "error", MB_OK|MB_ICONEXCLAMATION);
-        HARE_EXCEPT(Exception::ERR_INTERNAL_ERROR, "can't create OpenGL render Context!", "GLRenderWindow::createGLResource"); 
-    }
+	eglGetConfigAttrib(dpy, config, EGL_WIDTH, &(windowParams.width));
+	eglGetConfigAttrib(dpy, config, EGL_HEIGHT, &(windowParams.height));
 
-
-	wglMakeCurrent(hDC, hRC);
-	glewInit();
-	GLenum ret = glGetError();
-	glEnable(GL_TEXTURE_2D);
-	glDisable(GL_LIGHTING);
-
+	ctx = eglCreateContext(dpy, config, NULL, NULL);
+	surface = eglCreateWindowSurface(dpy, config, 0, NULL);
+	eglMakeCurrent(dpy, surface, surface, ctx);
 }
 
 void GLRenderWindow::destoryGLResource()
 {
-
-    if (windowParams.bFullScreen){
-        ChangeDisplaySettings(NULL, 0);	
-    }
-
-    if (hRC){
-        if (!wglMakeCurrent(NULL, NULL)){
-            HARE_EXCEPT(Exception::ERR_INTERNAL_ERROR, "can't make current OpenGL render Context NULL!", "GLRenderWindow::destoryGLResource"); 
-        }
-
-        if (!wglDeleteContext(hRC)){
-            HARE_EXCEPT(Exception::ERR_INTERNAL_ERROR, "can't destory OpenGL render Context!", "GLRenderWindow::destoryGLResource"); 
-        }
-        hRC = NULL;							
-    }
-
-    if (hDC && !ReleaseDC((HWND)windowParams.hwnd, hDC)){
-        hDC = NULL;
-    }
-
-    if (windowParams.hwnd && !DestroyWindow((HWND)windowParams.hwnd)){
-        windowParams.hwnd = NULL;							
-    }
-
+	eglTerminate(dpy);
 }
-
-
 
 

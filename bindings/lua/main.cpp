@@ -30,7 +30,7 @@ PSP_MAIN_THREAD_ATTR(THREAD_ATTR_USER);
 int exit_callback(int arg1, int arg2, void *common)
 {
     // TODO end the game
-	sceKernelExitGame();
+	getHareApp()->end();
 
 	return 0;
 }
@@ -40,11 +40,13 @@ int power_callback(int unknown, int pwrflags, void *common)
 	if ((pwrflags & (PSP_POWER_CB_POWER_SWITCH | PSP_POWER_CB_STANDBY)) > 0)
 	{
 	    // TODO pause the game
+		getHareApp()->pause();
 	}
 	else if ((pwrflags & PSP_POWER_CB_RESUME_COMPLETE) > 0)
 	{
 		sceKernelDelayThread(1500000);
         // TODO resume the game
+		getHareApp()->resume();
 	}
 	return 0;
 }

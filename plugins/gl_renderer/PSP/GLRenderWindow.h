@@ -1,11 +1,13 @@
 #ifndef _GLRENDERWINDOW_H_
 #define _GLRENDERWINDOW_H_
 
+#include "../GLPrerequisites.h"
+
 class GLRenderWindow : public RenderWindow
 {
     friend class GLRenderSystem;
 public:
-    GLRenderWindow();
+    GLRenderWindow(bool);
 
     virtual ~GLRenderWindow();
 

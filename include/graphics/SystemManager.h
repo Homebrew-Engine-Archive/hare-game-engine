@@ -32,7 +32,7 @@ namespace hare
 
 		virtual Texture* createTexture() = 0;
 
-		virtual int  hareRunFrame();
+		virtual int hareRunFrame();
 
 		virtual void hareRun() = 0;
 

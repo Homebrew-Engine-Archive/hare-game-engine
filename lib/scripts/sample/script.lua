@@ -10,19 +10,13 @@ function beginScene()
         lastTime = hare.getTime()
         print("fps:", hare.getTimer():getFPS(), lastTime)
     end
-    --par:frameMove()
 end
 
 function renderScene()
 	canvas = hare.getCanvas()
 	canvas:setColor(0xffff0000)
 	canvas:drawRect(50, 50, 100, 100)
-	canvas:setColor(0xff00ff00)
-	canvas:drawLine(0,0, 800, 600)
-	canvas:setColor(0xff0000ff)
-	canvas:drawRect(50, 50, 600, 500)
 	canvas:drawText(150, 150,'Hello hare~!!')
-	--par:render()
 end
 
 function endScene()
@@ -40,9 +34,6 @@ function init()
     w = hareApp:createRenderWindow(p)
     s = hareApp:createSceneManager()
     w:setSceneManager(s)
-    --sprite1 = hare.SimpleSprite()
-    --sprite1:loadFromImage("xueren.png")
-    --s:addSprite(sprite1)
     sprite2 = hare.SimpleSprite()
     sprite2:loadFromImage("yu.png")
     s:addSprite(sprite2)    
@@ -52,25 +43,11 @@ function init()
     listener:setEndSceneListenFunc(endScene)
     s:setSceneListener(listener)
     
-    --p = hare.WindowParams()
-    --p.hwnd = 0
-    --p.width = 800
-    --p.height = 600
-    --p.bFullScreen = false
-    --p.bZbuffer = true
-    --w = hareApp:createRenderWindow(p)
-    --w:setSceneManager(s)
-    --sprite1 = hare.SimpleSprite()
-    --sprite1:loadFromImage("xueren.png")
-    --s:addSprite(sprite1)
-    
 	tm = hare.getTextManager() 
 	fnt = tm:createFont("comic.ttf", 50) 
 	canvas = hare.getCanvas()
 	canvas:setFont(fnt)
-	
-	--par = hare.importObject('default.particle')
-	--par:fireAt(300,300)
+
 end
 
 function quit()

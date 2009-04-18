@@ -65,8 +65,8 @@ void GLTexture::upload(const Image& img, uint32 destX, uint32 destY)
 {
 	assert(img.getPixelFormat() == texPixelFormat);
 
-	int desWidth = min(img.getWidth(), width - destX);
-	int desHeight= min(img.getHeight(), height - destY);
+	int desWidth = std::min(img.getWidth(), width - destX);
+	int desHeight= std::min(img.getHeight(), height - destY);
 
 	glEnable(GL_TEXTURE_2D);
 
@@ -201,9 +201,9 @@ bool GLTexture::doCreate()
             GLTypeConverter::toGLFormat(texPixelFormat), 
             GL_UNSIGNED_BYTE, 
             (GLvoid*)pDestBuf);
-
+#ifdef _DEBUG
 		ret = glGetError();
-
+#endif
         delete [] pDestBuf;
 
 

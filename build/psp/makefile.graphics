@@ -15,6 +15,7 @@ OBJS = \
 		$(SRC_DIR)/HareGraphicsType.o \
 		$(SRC_DIR)/Image.o \
 		$(SRC_DIR)/ImageCodec.o \
+		$(SRC_DIR)/DevILImageCodec.o \
 		$(SRC_DIR)/Line.o \
 		$(SRC_DIR)/Material.o \
 		$(SRC_DIR)/Mesh.o \
@@ -36,7 +37,7 @@ OBJS = \
 		$(SRC_DIR)/Texture.o \
 		$(SRC_DIR)/Triple.o \
 
-INCDIR = ../../include ../../include/graphics $(PSPDIR)/include/freetype2
+INCDIR = ../../include ../../include/graphics $(PSPDIR)/include/freetype2 devil_psp/include
 LIBDIR = ../../lib
 
 CFLAGS = -O2 -G0 -Wall -Wno-deprecated

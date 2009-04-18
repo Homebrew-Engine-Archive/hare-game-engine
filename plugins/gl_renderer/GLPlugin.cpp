@@ -1,21 +1,25 @@
 #include "PCH.h"
 #include "GLSystemManager.h"
 
+GLSystemManager* systemManager;
+
+void glplugin()
+{
+    systemManager = new GLSystemManager;
+    HareApp::getSingletonPtr()->setGraphicsSystem(systemManager);
+}
+
 
 class PluginRegistrant
 {
 public:
 	PluginRegistrant()
 	{
-		systemManager = new GLSystemManager;
-		HareApp::getSingletonPtr()->setGraphicsSystem(systemManager);
+	     getHareApp()->setPluginCallback(glplugin);
 	}
 	~PluginRegistrant()
 	{
-		SAFE_DELETE(systemManager);
-	}
-
-	GLSystemManager* systemManager;
+	}
 };
 
 PluginRegistrant thePlugin;

@@ -1,6 +1,8 @@
 #ifndef _GLSYSTEMMANAGER_H_
 #define _GLSYSTEMMANAGER_H_
 
+#include "GLPrerequisites.h"
+
 class GLSystemManager : public SystemManager
 {
 public:
@@ -14,9 +16,9 @@ public:
 
 	virtual Texture* createTexture();
 
-	virtual void hareRun();
+	virtual int hareRunFrame();
 
-	virtual int  hareRunFrame();
+	virtual void hareRun();
 };
 
 

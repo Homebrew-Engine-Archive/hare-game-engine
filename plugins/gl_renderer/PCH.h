@@ -1,31 +1,6 @@
 #ifndef _PCH_H_
 #define _PCH_H_
 
-#include <vector>
-#include <list>
-#include <map>
-#include <xutility>
-using namespace std;
-
-#include "core/Core.h"
-#include "graphics/Graphics.h"
-using namespace hare;
-
-#if HARE_PLATFORM == HARE_PLATFORM_PSP
-#	include <GLES/egl.h>
-#   include <GLES/glut.h>
-#else
-#	include <GL/glew.h>
-#	if HARE_PLATFORM == HARE_PLATFORM_WIN32
-#	include <GL/wglew.h>
-#   elif HARE_PLATFORM == HARE_PLATFORM_LINUX
-#   include <GL/glxew.h>
-#	endif
-#endif
-
-
-
-
-
+#include "GLPrerequisites.h"
 
 #endif

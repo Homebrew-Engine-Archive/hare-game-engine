@@ -1,4 +1,3 @@
-#include "PCH.h"
 #include "GLRenderWindow.h"
 #include "../GLRenderSystem.h"
 #include "../GLSystemManager.h"
@@ -16,10 +15,10 @@ static EGLint attrib_list [] = {
     EGL_NONE
 };
 
-GLRenderWindow::GLRenderWindow()
-	:dpy(NULL)
+GLRenderWindow::GLRenderWindow(bool)
+    :dpy(NULL)
     ,ctx(NULL)
-	,surface(NULL)
+    ,surface(NULL)
 {
 
 }
@@ -45,7 +44,7 @@ void GLRenderWindow::create(const WindowParams& params)
 
 	displayMode = GLUT_RGBA | GLUT_DOUBLE;
 	if (windowParams.bZbuffer){
-		mode |= GLUT_DEPTH;
+		displayMode |= GLUT_DEPTH;
 	}
 
     //get information from config
@@ -122,8 +121,8 @@ void GLRenderWindow::createGLResource()
 	if (num_configs == 0)
 		return ;
 
-	eglGetConfigAttrib(dpy, config, EGL_WIDTH, &(windowParams.width));
-	eglGetConfigAttrib(dpy, config, EGL_HEIGHT, &(windowParams.height));
+	eglGetConfigAttrib(dpy, config, EGL_WIDTH, (EGLint*)&(windowParams.width));
+	eglGetConfigAttrib(dpy, config, EGL_HEIGHT, (EGLint*)&(windowParams.height));
 
 	ctx = eglCreateContext(dpy, config, NULL, NULL);
 	surface = eglCreateWindowSurface(dpy, config, 0, NULL);

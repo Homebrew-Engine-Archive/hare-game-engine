@@ -1,6 +1,8 @@
 #ifndef _GLRENDERSYSTEM_H_
 #define _GLRENDERSYSTEM_H_
 
+#include "GLPrerequisites.h"
+
 class GLRenderSystem : public RenderSystem
 {
 public:

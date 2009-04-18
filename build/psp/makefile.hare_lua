@@ -24,7 +24,7 @@ CFLAGS = -O2 -G0 -Wall -Wno-deprecated -DSTATIC_LINKED
 CXXFLAGS = $(CFLAGS) -fno-exceptions -fno-rtti
 ASFLAGS = $(CFLAGS) 
 
-LIBS = -lg -liberty -llua -lgraphics -lcore -lphysfs -lstdc++ -lc -lm -lfreetype -lz -lpsppower
+LIBS = -lg -liberty -llua -lgraphics -lcore -lphysfs -lstdc++ -lc -lm -lfreetype -ldevil -lpng -ljpeg -lz -lpsppower -lgl_renderer
 
 include $(PSPSDK)/lib/build.mak
 

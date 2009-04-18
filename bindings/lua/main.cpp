@@ -231,7 +231,7 @@ int main(int argc, char *argv[])
     {
         getHareApp()->loadPlugin(pluginDir + plugins[i]);
     }
-
+    getHareApp()->createPlugin();
     // load all resources
     ConfigFile resource;
     resource.load("resource.cfg");

@@ -2,6 +2,29 @@
 #include "../GLRenderSystem.h"
 #include "../GLSystemManager.h"
 
+
+
+
+
+
+#define EGLCHK(x)                                      \
+	do{                                               \
+		EGLint errcode;                                \
+		x;                                             \
+		errcode = eglGetError();                       \
+		if (errcode != EGL_SUCCESS) {                  \
+		FLIE* fp = fopen("ms0:/log.txt"); \
+			__FUNCTION__, __LINE__,                    \
+			(unsigned int) errcode);                   \
+        }                                              \
+	}while(0);
+
+
+
+
+
+
+
 #define SCREEN_WIDTH  480
 #define SCREEN_HEIGHT 272
 

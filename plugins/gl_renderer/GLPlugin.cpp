@@ -15,7 +15,9 @@ class PluginRegistrant
 public:
 	PluginRegistrant()
 	{
-	     getHareApp()->setPluginCallback(glplugin);
+		if (!getHareApp())
+			__pspgl_log("%s (%d): load gl plugin error", __FUNCTION__, __LINE__);
+	    getHareApp()->setPluginCallback(glplugin);
 	}
 	~PluginRegistrant()
 	{

@@ -7,8 +7,6 @@
 
 namespace hare
 {
-	HareApp hareApp;
-
 	HARE_IMPLEMENT_SINGLETON(HareApp)
 
 	HareApp::HareApp()
@@ -92,6 +90,33 @@ namespace hare
 
 	HareApp* getHareApp()
 	{
+		static HareApp hareApp;
 		return HareApp::getSingletonPtr();
 	}
+}
+
+
+#include <stdlib.h>
+
+void __pspgl_log (const char *fmt, ...)
+{
+	va_list ap;
+
+#if 0
+	va_start(ap, fmt);
+	vfprintf(stderr, fmt, ap);
+	va_end(ap);
+#else
+	char buf [1024];
+	int len;
+	FILE* log_fd;
+
+	va_start(ap, fmt);
+	len = _vsnprintf(buf, sizeof(buf), fmt, ap);
+	va_end(ap);
+
+	log_fd = fopen("ms0:/log.txt", "a");
+	fwrite(buf, 1, len, log_fd);
+	fclose(log_fd);
+#endif
 }

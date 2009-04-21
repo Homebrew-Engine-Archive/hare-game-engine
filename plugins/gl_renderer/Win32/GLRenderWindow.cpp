@@ -301,9 +301,9 @@ void GLRenderWindow::destoryGLResource()
         hDC = NULL;
     }
 
-    if (windowParams.hwnd && !DestroyWindow(windowParams.hwnd)){
-        windowParams.hwnd = NULL;							
-    }
+	if (!isExternal && windowParams.hwnd && !DestroyWindow(windowParams.hwnd)){
+		windowParams.hwnd = NULL;							
+	}	
 
 }
 

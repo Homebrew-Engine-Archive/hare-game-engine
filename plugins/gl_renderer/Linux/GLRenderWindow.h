@@ -1,6 +1,10 @@
 #ifndef _GLRENDERWINDOW_H_
 #define _GLRENDERWINDOW_H_
 
+#include <gtkmm/main.h>
+#include <gtkmm/window.h>
+#include <gtkglmm.h>
+
 class HareWidget : public Gtk::GL::DrawingArea
 {
 public:

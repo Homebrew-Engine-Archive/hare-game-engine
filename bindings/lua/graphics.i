@@ -69,11 +69,11 @@ public:
 
 struct WindowParams
 {
-	uint32    hwnd;
-	bool   bFullScreen;
-	uint32    width;
-	uint32    height;
-	bool   bZbuffer;
+	//WindowHandle hwnd;
+	bool bFullScreen;
+	uint32 width;
+	uint32 height;
+	bool bZbuffer;
 	String title;
 };
 

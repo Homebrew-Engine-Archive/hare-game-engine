@@ -3,6 +3,12 @@
 #include "GLTypeConverter.h"
 #include "GLRenderSystem.h"
 
+#ifdef min
+#undef min
+#endif
+#ifdef max
+#undef max
+#endif
 
 GLTexture::GLTexture()
     :glTexture(0)
@@ -23,23 +29,13 @@ void GLTexture::active()
 
     glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, fbo);
 
-	glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT, GL_DEPTH_ATTACHMENT_EXT, GL_RENDERBUFFER_EXT, depthbuffer);
-
-	glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT, GL_TEXTURE_2D, glTexture, 0);
-
-#ifdef _DEBUG
-	GLenum status = glCheckFramebufferStatusEXT(GL_FRAMEBUFFER_EXT);
-
-	assert(status == GL_FRAMEBUFFER_COMPLETE_EXT);
-#endif
-
     GLRenderSystem::getSingletonPtr()->clear(GLRenderSystem::getSingletonPtr()->getCurRenderWindow()->getWindowParams().bZbuffer);
 
-    glMatrixMode(GL_PROJECTION);
+	glMatrixMode(GL_PROJECTION);
     glLoadIdentity(); 
 
     //NOTEC!! glOrtho funcation last tow args is used as negative       near far                
-    glOrtho(0, (GLfloat)projectionWidth, (GLfloat)projectionHeight, 0, -1.0, 1.0); 
+    glOrtho(0, (GLfloat)projectionWidth,  0, (GLfloat)projectionHeight,-1.0, 1.0); 
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity(); 
@@ -54,10 +50,6 @@ void GLTexture::inactive()
 
 	//release bind
 	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
-
-	glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT, GL_DEPTH_ATTACHMENT_EXT, GL_RENDERBUFFER_EXT, 0);
-
-	glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT, GL_TEXTURE_2D, 0, 0);
 
 }
 
@@ -107,6 +99,10 @@ bool GLTexture::doCreate()
 
         glBindTexture(GL_TEXTURE_2D, glTexture);
 
+		//default filter
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+
         glTexImage2D(GL_TEXTURE_2D, 
             0,
             GLTypeConverter::getGLInternalFormat(texPixelFormat), 
@@ -115,18 +111,37 @@ bool GLTexture::doCreate()
             0, 
             GLTypeConverter::toGLFormat(texPixelFormat), 
             GL_UNSIGNED_BYTE, 
-            (GLvoid*)data);
+            0);
 
+		glBindTexture(GL_TEXTURE_2D, 0);
         delete [] data;
 
 		if (bIsRenderable){
 			glGenFramebuffersEXT(1, &fbo);
+			glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, fbo);
     
-			if (GLRenderSystem::getSingletonPtr()->getCurRenderWindow()->getWindowParams().bZbuffer){
+			bool bZBuffer = GLRenderSystem::getSingletonPtr()->getCurRenderWindow()->getWindowParams().bZbuffer;
+			if (bZBuffer){
 				glGenRenderbuffersEXT(1, &depthbuffer);
 				glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, depthbuffer);
-                glRenderbufferStorageEXT(GL_RENDERBUFFER_EXT, GL_DEPTH_COMPONENT16, width, height);
+                glRenderbufferStorageEXT(GL_RENDERBUFFER_EXT, GL_DEPTH_COMPONENT, width, height);
+			    glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, 0);
 			}
+
+			glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT, GL_TEXTURE_2D, glTexture, 0);
+		
+			if (bZBuffer){
+				glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT, GL_DEPTH_ATTACHMENT_EXT, GL_RENDERBUFFER_EXT, depthbuffer);
+			}
+
+			glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
+
+#ifdef _DEBUG
+			GLenum status = glCheckFramebufferStatusEXT(GL_FRAMEBUFFER_EXT);
+
+			assert(status == GL_FRAMEBUFFER_COMPLETE_EXT);
+#endif
+
 		}
 
     }else{
@@ -202,6 +217,12 @@ bool GLTexture::doCreate()
             GL_UNSIGNED_BYTE, 
             (GLvoid*)pDestBuf);
 #ifdef _DEBUG
+		//default filter
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		
+		glBindTexture(GL_TEXTURE_2D, 0);
+
 		ret = glGetError();
 #endif
         delete [] pDestBuf;

@@ -135,13 +135,13 @@ void D3DRenderWindow::create(const WindowParams& params)
 
         isExternal = false;
 	} else {
-		hwnd = (HWND)params.hwnd;
+		hwnd = params.hwnd;
         isExternal = true;
 	}
 
 	windowParams = params;
 
-	windowParams.hwnd = (uint32)hwnd;
+	windowParams.hwnd = hwnd;
 
 	SetWindowLongPtr(hwnd, GWLP_USERDATA, (uint32)this);
 
@@ -259,7 +259,7 @@ void D3DRenderWindow::afterResetDevice()
 
 HWND D3DRenderWindow::getWindowHandle()
 {
-	return (HWND)windowParams.hwnd;
+	return windowParams.hwnd;
 }
 
 void D3DRenderWindow::createD3DResource()

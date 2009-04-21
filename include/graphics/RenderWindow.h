@@ -5,15 +5,24 @@
 #include "GraphicsPrerequisites.h"
 #include "RenderTarget.h"
 
+#if HARE_PLATFORM == HARE_PLATFORM_WIN32
+typedef HWND WindowHandle;
+#elif HARE_PLATFORM == HARE_PLATFORM_LINUX
+//use GTK Gtk::Container is base Gtk::Window
+typedef Gtk::Container* WindowHandle;
+#else
+typedef uint32 WindowHandle;
+#endif
+
 namespace hare
 {
 	struct GRAPHICS_API WindowParams
     {
-		uint32    hwnd;
-		bool   bFullScreen;
-		uint32    width;
-		uint32    height;
-		bool   bZbuffer;
+		WindowHandle hwnd;
+		bool bFullScreen;
+		uint32 width;
+		uint32 height;
+		bool bZbuffer;
 		String title;
 		WindowParams()
 			:hwnd(0)

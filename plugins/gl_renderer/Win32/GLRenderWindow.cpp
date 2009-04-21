@@ -133,13 +133,13 @@ void GLRenderWindow::create(const WindowParams& params)
 
         isExternal = false;
     } else {
-        hwnd = (HWND)params.hwnd;
+        hwnd = params.hwnd;
         isExternal = true;
     }
 
     windowParams = params;
 
-    windowParams.hwnd = (uint32)hwnd;
+    windowParams.hwnd = hwnd;
 
     windowParams.bFullScreen = bFullScreen;
 
@@ -215,7 +215,7 @@ void GLRenderWindow::inactive()
 
 HWND GLRenderWindow::getWindowHandle()
 {
-    return (HWND)windowParams.hwnd;
+    return windowParams.hwnd;
 }
 
 HGLRC GLRenderWindow::getRenderContext()
@@ -230,9 +230,12 @@ PIXELFORMATDESCRIPTOR* GLRenderWindow::getPixelFormatDescriptor()
 
 void GLRenderWindow::createGLResource()
 {
+	HDC old_hdc = wglGetCurrentDC();
+	HGLRC old_hrc = wglGetCurrentContext();
+
     GLuint PixelFormat;
 
-    if (!(hDC=GetDC((HWND)windowParams.hwnd))){	// get DeviceContext
+    if (!(hDC=GetDC(windowParams.hwnd))){	// get DeviceContext
         MessageBox(NULL, "can't get DeviceContext", "error", MB_OK|MB_ICONEXCLAMATION);
         HARE_EXCEPT(Exception::ERR_INTERNAL_ERROR, "can't get DeviceContext!", "GLRenderWindow::createGLResource");
     }
@@ -252,9 +255,24 @@ void GLRenderWindow::createGLResource()
         HARE_EXCEPT(Exception::ERR_INTERNAL_ERROR, "can't create OpenGL render Context!", "GLRenderWindow::createGLResource"); 
     }
 
+	if (!wglMakeCurrent(hDC, hRC))
+        HARE_EXCEPT(Exception::ERR_INTERNAL_ERROR, "can't wglMakeCurrent context!", "GLRenderWindow::createGLResource"); 
 
-	wglMakeCurrent(hDC, hRC);
+	if (old_hrc && old_hrc != hRC)
+	{
+		// Restore old context
+		if (!wglMakeCurrent(old_hdc, old_hrc))
+            HARE_EXCEPT(Exception::ERR_INTERNAL_ERROR, "can't Restore old context!", "GLRenderWindow::createGLResource"); 
+		// Share lists with old context
+		if (!wglShareLists(old_hrc, hRC))
+			HARE_EXCEPT(Exception::ERR_INTERNAL_ERROR, "can't Share lists with old context!", "GLRenderWindow::createGLResource"); 
+		
+		if (!wglMakeCurrent(hDC, hRC))
+			HARE_EXCEPT(Exception::ERR_INTERNAL_ERROR, "can't wglMakeCurrent context!", "GLRenderWindow::createGLResource"); 
+	}
+
 	glewInit();
+
 	GLenum ret = glGetError();
 	glEnable(GL_TEXTURE_2D);
 	glDisable(GL_LIGHTING);
@@ -279,11 +297,11 @@ void GLRenderWindow::destoryGLResource()
         hRC = NULL;							
     }
 
-    if (hDC && !ReleaseDC((HWND)windowParams.hwnd, hDC)){
+    if (hDC && !ReleaseDC(windowParams.hwnd, hDC)){
         hDC = NULL;
     }
 
-    if (windowParams.hwnd && !DestroyWindow((HWND)windowParams.hwnd)){
+    if (windowParams.hwnd && !DestroyWindow(windowParams.hwnd)){
         windowParams.hwnd = NULL;							
     }
 

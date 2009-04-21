@@ -5,8 +5,6 @@
 #include "RenderWindow.h"
 #include "SystemManager.h"
 
-typedef void (*pluginCallback)();
-
 namespace hare
 {
 	class SystemManager;
@@ -51,21 +49,11 @@ namespace hare
 
 		void end();
 
-                void setPluginCallback(pluginCallback callback)
-                {
-                    this->callback = callback;
-                }
-                void createPlugin()
-                {
-                    if (callback)callback();
-                }
-
 	private:
 		DynamicLibrary* plugin;
 		SystemManager* graphicsSystemManager;
 		TextManager* textManager;
 
-                pluginCallback callback;
 	};
 
 	GRAPHICS_API HareApp* getHareApp();

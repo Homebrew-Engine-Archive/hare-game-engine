@@ -28,7 +28,4 @@
 #include "Font.h"
 #include "TextManager.h"
 
-#include <stdio.h>
-void __pspgl_log (const char *fmt, ...);
-
 #endif

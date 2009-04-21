@@ -46,10 +46,10 @@ namespace hare
 
 		RotatorMod* rotatorMod;
 		rotatorMod = new RotatorMod;
-		rotatorMod->center.x = 0.5f;
-		rotatorMod->center.y = 0.5f;
+		//rotatorMod->center.x = 0.5f;
+		//rotatorMod->center.y = 0.5f;
 		rotatorMod->rotation = 10.5f;
-		rotatorMod->speed = 10.5f;
+		rotatorMod->speed = 30.5f;
 		rotatorMod->setSubMtrl(scaleMtrl);
 
 		AnimModUnit* animModUnit;
@@ -69,7 +69,7 @@ namespace hare
 		quad.setWidth((float)tex->getWidth());
 		quad.setHeight((float)tex->getHeight());
 		quad.setMaterial(shader);
-		quad.moveTo(10, 10);
+		quad.moveTo(0, 0);
 
 
 		tex = RenderSystem::getSingletonPtr()->createTexture();
@@ -98,20 +98,20 @@ namespace hare
 		RenderSystem::getSingletonPtr()->render(&quad);
 		particle->render();
 
-		//Texture* tex;
-		//tex = RenderSystem::getSingletonPtr()->createTexture();
-		//tex->create(256, 256, HPF_A8B8G8R8, true);
-		//RenderSystem::getSingletonPtr()->setRenderTarget(tex);
+		Texture* tex;
+		tex = RenderSystem::getSingletonPtr()->createTexture();
+		tex->create(256, 256, HPF_A8R8G8B8, true);
+		RenderSystem::getSingletonPtr()->setRenderTarget(tex);
 
-		//RenderSystem::getSingletonPtr()->render(&quad);
+		RenderSystem::getSingletonPtr()->render(&quad);
 
-		//RenderSystem::getSingletonPtr()->setRenderTarget(target);
+		RenderSystem::getSingletonPtr()->setRenderTarget(target);
 
-		//TextureMtrl* texMtrl;
-		//texMtrl = new TextureMtrl;
-		//texMtrl->setTexture(tex);
+		TextureMtrl* texMtrl;
+		texMtrl = new TextureMtrl;
+		texMtrl->setTexture(tex);
 
-		//getCanvas()->drawImage(300, 300, texMtrl);
+		getCanvas()->drawImage(300, 300, texMtrl);
 
 	}
 

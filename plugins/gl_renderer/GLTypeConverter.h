@@ -1,7 +1,6 @@
 #ifndef _GLTYPECONVERTER_H_
 #define _GLTYPECONVERTER_H_
 
-#include "GLPrerequisites.h"
 
 class GLTypeConverter
 {

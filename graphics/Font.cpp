@@ -131,10 +131,10 @@ namespace hare
 
 		texCache = SystemManager::getSingletonPtr()->createTexture();
 
-		texCache->create(texSize, texSize, HPF_A8B8G8R8);
+		texCache->create(texSize, texSize, HPF_A8R8G8B8);
 
-		//ch = L'A';
-		//advanceFillCache(ch, ch + 63);
+		ch = L'A';
+		advanceFillCache(ch, ch + 63);
 	}
 
 	void Font::destoryResource()
@@ -278,7 +278,7 @@ namespace hare
 		//clear char glyph base
 		Image clearImg;
 
-		clearImg.create(maxCharWidth, maxCharWidth, HPF_A8B8G8R8);
+		clearImg.create(maxCharWidth, maxCharWidth, HPF_A8R8G8B8);
 
 		texCache->upload(clearImg, willBeFillCachedPos.x, willBeFillCachedPos.y);
 
@@ -296,7 +296,7 @@ namespace hare
 		}else{
 			Image img;
 
-			img.create(maxCharWidth, maxCharWidth, HPF_A8B8G8R8);
+			img.create(maxCharWidth, maxCharWidth, HPF_A8R8G8B8);
 
 			for (int count1 = 0; count1 < fontResource->face->glyph->bitmap.rows; ++count1){
 				uint8* destBuffer = (uint8*)img.getImageData() + img.getRowStride() * count1;

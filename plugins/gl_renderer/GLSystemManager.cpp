@@ -3,6 +3,8 @@
 
 #if HARE_PLATFORM == HARE_PLATFORM_WIN32
 #include "Win32/GLRenderWindow.h"
+#elif HARE_PLATFORM == HARE_PLATFORM_LINUX
+#include "Linux/GLRenderWindow.h"
 #elif HARE_PLATFORM == HARE_PLATFORM_PSP
 #include "PSP/GLRenderWindow.h"
 #endif

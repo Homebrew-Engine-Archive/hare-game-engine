@@ -39,6 +39,9 @@ GLenum GLTypeConverter::toGLFormat(HarePixelFormat hpf)
     case HPF_A8B8G8R8://this format diffrent from d3d format
         glfmt = GL_RGBA;
         break;
+	case HPF_A8R8G8B8:
+		glfmt = GL_BGRA;
+		break;
     default:
         glfmt = GL_NONE;
         assert(false);
@@ -55,8 +58,9 @@ GLenum GLTypeConverter::getGLInternalFormat(HarePixelFormat format)
         glfmt = GL_LUMINANCE8_ALPHA8;
         break;
     case HPF_A8B8G8R8:
-        glfmt = GL_RGBA8;
-        break;
+	case HPF_A8R8G8B8:
+		glfmt = GL_RGBA8;
+		break;
     default:
         glfmt = GL_NONE;
         assert(false);

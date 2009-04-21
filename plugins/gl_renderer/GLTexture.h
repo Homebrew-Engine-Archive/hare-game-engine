@@ -1,7 +1,6 @@
 #ifndef _GLTEXTURE_H_
 #define _GLTEXTURE_H_
 
-#include "GLPrerequisites.h"
 
 class GLTexture : public Texture
 {

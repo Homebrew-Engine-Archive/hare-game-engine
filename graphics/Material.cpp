@@ -30,8 +30,8 @@ namespace hare
 		,AlphaBlendOP(CABO_Modulate)
 		,AlphaBlendArg1(CABA_Texture)
 		,AlphaBlendArg2(CBBA_Current)
-		,wrapModeU(WM_Wrap)
-		,wrapModeV(WM_Wrap)
+		,wrapModeU(WM_Mirror)
+		,wrapModeV(WM_Mirror)
 		,fliterType(FT_Point)
 	{
 

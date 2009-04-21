@@ -17,25 +17,36 @@ namespace hare
 	{
 	}
 
-	void Canvas::drawLine(int x1, int y1, int x2, int y2)
+	void Canvas::drawLine(float x1, float y1, float x2, float y2)
 	{
 		Line line;
 		line.set(x1, y1, x2, y2, color, z);
 		RenderSystem::getSingletonPtr()->render(&line);
 	}
 
-	void Canvas::drawRect(int l, int t, int r, int b)
+	void Canvas::drawRect(float l, float t, float r, float b)
 	{
 		Line line;
 		line.set(l, t, r, t, color, z);
 		RenderSystem::getSingletonPtr()->render(&line);
 		line.set(r, t, r, b, color, z);
 		RenderSystem::getSingletonPtr()->render(&line);
-		line.set(l, b, r, b, color, z);
+		line.set(r, b, l, b, color, z);
 		RenderSystem::getSingletonPtr()->render(&line);
-		line.set(l, t, l, b, color, z);
+		line.set(l, b, l, t, color, z);
 		RenderSystem::getSingletonPtr()->render(&line);
 	}
+
+    void Canvas::drawRectFill(float l, float t, float r, float b)
+    {
+        Quad quad;
+        quad.moveTo(l, t);
+        quad.setDepth(z);
+        quad.setColor(color);
+        quad.setWidth(r - l);
+        quad.setHeight(b - t);
+        RenderSystem::getSingletonPtr()->render(&quad);
+    }
 
 	void Canvas::drawText(int x, int y, const String& text)
 	{
@@ -129,6 +140,7 @@ namespace hare
 		quad.setColor(color);
 		quad.setWidth(rect.width());
 		quad.setHeight(rect.height());
+        quad.setTextureUVMap(uvRect);
 		RenderSystem::getSingletonPtr()->render(&quad);
 	}
 

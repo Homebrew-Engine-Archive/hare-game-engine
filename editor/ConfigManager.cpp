@@ -29,7 +29,7 @@ namespace hare
     {
         HARE_META_F(openFilePath, String, propReadOnly)
         HARE_META_F(openFileFilters, String, propReadOnly)
-        HARE_META_F(openFileFilterIndex, int, propHide)
+        HARE_META_F(openFileFilterIndex, int8, propHide)
         HARE_META_F(font, String, propReadOnly)
         HARE_META_F(defaultEncoding, String, propReadOnly)
         HARE_ENUM(show_folds, uint8, Bool)

@@ -13,6 +13,12 @@
 #include "wx/harecanvas.h"
 #include <wx/dcclient.h>
 
+#if defined(__WXGTK__)
+#include <gtkmm/main.h>
+#include <gtkmm/window.h>
+#include <gtkglmm.h>
+#endif
+
 const wxChar* wxHareCanvasNameStr = wxT("HareCanvas");
 
 BEGIN_EVENT_TABLE(wxHareCanvas, wxWindow)
@@ -29,7 +35,7 @@ wxHareCanvas::wxHareCanvas(wxWindow *parent, wxWindowID id, bool hasZBuffer, con
     Create(parent, id, pos, size, style, name);
 
     WindowParams params;
-    params.hwnd = (uint32)GetHWND();
+    params.hwnd = (WindowHandle)GetHWND();
     params.bFullScreen = false;
     params.width = size.GetWidth() > 0 ? size.GetWidth() : 800;
     params.height = size.GetHeight() > 0 ? size.GetHeight() : 600;

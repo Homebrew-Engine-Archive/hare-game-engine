@@ -51,6 +51,13 @@ namespace hare
             return toString(val.x) + " " + toString(val.y);
         }
 
+        // Rect -> String
+        template <typename T>
+        static String toString(const TRect<T>& val)
+        {
+            return toString(val.minX) + " " + toString(val.minY) + " " + toString(val.maxX) + " " + toString(val.maxY);
+        }
+
         // String -> Size
         template <typename T>
         static TSize<T>& parse(const String& str, TSize<T>& val)
@@ -70,6 +77,18 @@ namespace hare
             assert(strs.size() == 2);
             parse(strs[0], val.x);
             parse(strs[1], val.y);
+            return val;
+        }
+
+        template <typename T>
+        static TRect<T>& parse(const String& str, TRect<T>& val)
+        {
+            StringVector strs = StringUtil::split(str, " ");
+            assert(strs.size() == 4);
+            parse(strs[0], val.minX);
+            parse(strs[1], val.minY);
+            parse(strs[2], val.maxX);
+            parse(strs[3], val.maxY);
             return val;
         }
     };

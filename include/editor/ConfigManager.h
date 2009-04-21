@@ -49,7 +49,7 @@ namespace hare
 
         String openFilePath;
         String openFileFilters;
-        int openFileFilterIndex;
+        int8 openFileFilterIndex;
 
         String defaultEncoding;
         String font;

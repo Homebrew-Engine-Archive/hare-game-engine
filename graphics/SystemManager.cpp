@@ -46,13 +46,17 @@ namespace hare
 		//äÖÈ¾Ç°
 		SecondaryWindowList::iterator it = secondaryWindowList.begin();
 		for (;it != secondaryWindowList.end(); ++it){
-			if ((*it)->getSceneManager())
+			if ((*it)->getSceneManager()){
+                renderSystem->setCurRenderWindow(*it);
 				(*it)->getSceneManager()->beginScene();
+            }
 		}
 
 		if (pPrimaryWindow){
-			if (pPrimaryWindow->getSceneManager())
+            if (pPrimaryWindow->getSceneManager()) {
+                renderSystem->setCurRenderWindow(pPrimaryWindow);
 				pPrimaryWindow->getSceneManager()->beginScene();
+            }
 		}
 
 		//äÖÈ¾
@@ -84,20 +88,23 @@ namespace hare
 			pPrimaryWindow->swapBuffer();
 		}
 
-		//renderSystem->setRenderTarget(NULL);
-
 		//äÖÈ¾ºó
 		it = secondaryWindowList.begin();
 		for (;it != secondaryWindowList.end(); ++it){
-			if ((*it)->getSceneManager())
-				(*it)->getSceneManager()->endScene();
+            if ((*it)->getSceneManager()) {
+                renderSystem->setCurRenderWindow(*it);
+                (*it)->getSceneManager()->endScene();
+            }
 		}
 
 		if (pPrimaryWindow){
-			if (pPrimaryWindow->getSceneManager())
-				pPrimaryWindow->getSceneManager()->endScene();
+            if (pPrimaryWindow->getSceneManager()) {
+				renderSystem->setCurRenderWindow(pPrimaryWindow);
+                pPrimaryWindow->getSceneManager()->endScene();
+            }
 		}
 
+        renderSystem->setCurRenderWindow(NULL);
 		return 1;
 	}
 

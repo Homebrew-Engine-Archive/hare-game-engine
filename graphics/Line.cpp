@@ -50,12 +50,12 @@ namespace hare
 		buffer[0].diffuse = buffer[1].diffuse = color;
 	}
 
-	void Line::set(int x1, int y1, int x2, int y2, uint32 color, float z)
+	void Line::set(float x1, float y1, float x2, float y2, uint32 color, float z)
 	{
-		buffer[0].x = (float)x1;
-		buffer[0].y = (float)y1;
-		buffer[1].x = (float)x2;
-		buffer[1].y = (float)y2;
+		buffer[0].x = x1;
+		buffer[0].y = y1;
+		buffer[1].x = x2;
+		buffer[1].y = y2;
 		buffer[0].z = buffer[1].z = z;
 		setColor(color);
 	}

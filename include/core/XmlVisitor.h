@@ -184,7 +184,7 @@ namespace hare
                     }
                     else
                     {
-                        assert(store == Object::storeNull);
+                        //assert(store == Object::storeNull);
                     }
                     break;
                 }

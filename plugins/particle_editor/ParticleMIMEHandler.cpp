@@ -33,7 +33,7 @@ ParticleEditorPage::ParticleEditorPage(wxWindow* parent, ParticleMIMEHandler* ha
     Layout();
 
     sceneParticle = getHareApp()->createSceneManager();
-    sceneParticle->setSceneListener(&parListener);
+    sceneParticle->setSceneListener(this);
     canvasParticle->getRenderWindow()->setSceneManager(sceneParticle);
 
     changeParticle(par);
@@ -100,10 +100,9 @@ bool ParticleEditorPage::changeParticle(Particle* par)
 
     if (parPtr)
     {
-        parListener.par = parPtr;
         int w, h;
         canvasParticle->GetClientSize(&w, &h);
-        parListener.par->fireAt(w / 2, h / 2);
+        parPtr->fireAt(w / 2, h / 2);
     }
     
     Manager::getInstancePtr()->getExplorerManager()->removeAllProperties();

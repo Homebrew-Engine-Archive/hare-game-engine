@@ -17,30 +17,7 @@
 
 class ParticleMIMEHandler;
 
-class ParticleSceneListener : public SceneListenerBase
-{
-public:
-    ParticleSceneListener() : par(0) {}
-
-    virtual void beginScene()
-    {
-        if (par)
-            par->frameMove();
-    }
-    virtual void endScene()
-    {
-    }
-    virtual void renderScene()
-    {
-        if (!par)
-            return;
-        par->render();
-    }
-public:
-    Particle* par;
-};
-
-class ParticleEditorPage : public EditorPage 
+class ParticleEditorPage : public EditorPage, public SceneListenerBase
 {
     friend class ParticleMIMEHandler;
 
@@ -55,11 +32,25 @@ private:
         return parPtr.pointer() != NULL;
     }
 
+    virtual void beginScene()
+    {
+        if (parPtr)
+            parPtr->frameMove();
+    }
+
+    virtual void endScene()
+    {
+    }
+    
+    virtual void renderScene()
+    {
+        if (parPtr)
+            parPtr->render();
+    }
+
 private:
     wxHareCanvas* canvasParticle;
     SceneManager* sceneParticle;
-    ParticleSceneListener parListener;
-
     Particle::Ptr parPtr;
 
     ParticleMIMEHandler* mime;

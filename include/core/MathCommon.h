@@ -183,7 +183,6 @@ namespace hare
     public:
         static const TRect<T> ZERO;
 
-
         T minX, minY, maxX, maxY;
 
         TRect() {}

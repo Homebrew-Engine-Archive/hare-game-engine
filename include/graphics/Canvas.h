@@ -12,9 +12,10 @@ namespace hare
 	public:
 		Canvas();
 
-		void drawLine(int x1, int y1, int x2, int y2);
+		void drawLine(float x1, float y1, float x2, float y2);
 
-		void drawRect(int l, int t, int r, int b);
+        void drawRect(float l, float t, float r, float b);
+        void drawRectFill(float l, float t, float r, float b);
 
 		void drawText(int x, int y, const String& text);
 

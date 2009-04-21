@@ -19,7 +19,7 @@ namespace hare
 		virtual RenderUnit::RenderOperationType	getOperationType();
 
 		void setColor(uint32 color);
-		void set(int x1, int y1, int x2, int y2, uint32 color = -1, float z = 0.f);
+		void set(float x1, float y1, float x2, float y2, uint32 color = -1, float z = 0.f);
 		void normalize();
 	public:
 		Vertex buffer[2];

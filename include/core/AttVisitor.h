@@ -61,14 +61,14 @@ namespace hare
         }
 
         template <typename T>
-        void visitObject(const char* name, T* &obj, ClassInfo*, uint32 flags)
+        void visitObject(const char* name, T* &obj, ClassInfo *cls, uint32 flags)
         {
             assert(owner);
             Attribute* attr = new Attribute;
             attr->attrType = Attribute::attrObject;
             attr->name = name;
             attr->data = &obj;
-            attr->classInfo = obj->getClassInfo();
+            attr->classInfo = obj ? obj->getClassInfo() : cls;
             attr->flags = flags;
             attr->owner = owner;
             attributes.push_back(attr);

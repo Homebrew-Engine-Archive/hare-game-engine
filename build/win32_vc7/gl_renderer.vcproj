@@ -33,7 +33,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="core_d.lib graphics_d.lib OPENGL32.lib GLU32.lib glew32sd.lib glew32d.lib"
+				AdditionalDependencies="core_d.lib graphics_d.lib OPENGL32.lib GLU32.lib glew32d.lib"
 				OutputFile="$(OutDir)/gl_renderer_d.dll"
 				AdditionalLibraryDirectories="../../lib;../../ext/glew/lib"
 				GenerateDebugInformation="TRUE"/>

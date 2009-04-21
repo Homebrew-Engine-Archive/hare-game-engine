@@ -160,8 +160,8 @@ private:
 class Canvas
 {
 public:
-	void drawLine(int x1, int y1, int x2, int y2);
-	void drawRect(int l, int t, int r, int b);
+	void drawLine(float x1, float y1, float x2, float y2);
+	void drawRect(float l, float t, float r, float b);
 	void drawText(int x, int y, const String& text);
 	void drawImage(int x, int y, Material* mtrl);
 	void setFont(Font* f);

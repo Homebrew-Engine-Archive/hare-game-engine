@@ -35,10 +35,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "font_editor", "font_editor.
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "uisystem", "uisystem.vcproj", "{508C8324-5017-4336-A249-2F9741C0AD8D}"
-	ProjectSection(ProjectDependencies) = postProject
-	EndProjectSection
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "particle_editor", "particle_editor.vcproj", "{8966F408-1DA4-4CEC-9CC5-CB0C687FCA33}"
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
@@ -49,6 +45,15 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gl_renderer", "gl_renderer.
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gui_editor", "gui_editor.vcproj", "{2A663F90-96FA-4121-9B4E-AAFFD54E143B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{508C8324-5017-4336-A249-2F9741C0AD8D} = {508C8324-5017-4336-A249-2F9741C0AD8D}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mtrl_editor", "mtrl_editor.vcproj", "{C77B3474-2C3D-4138-A8EF-183D356703FB}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gui", "gui.vcproj", "{508C8324-5017-4336-A249-2F9741C0AD8D}"
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
@@ -90,10 +95,6 @@ Global
 		{DED2B450-0ED2-493B-9BBC-A443B7F0666F}.Debug.Build.0 = Debug|Win32
 		{DED2B450-0ED2-493B-9BBC-A443B7F0666F}.Release.ActiveCfg = Release|Win32
 		{DED2B450-0ED2-493B-9BBC-A443B7F0666F}.Release.Build.0 = Release|Win32
-		{508C8324-5017-4336-A249-2F9741C0AD8D}.Debug.ActiveCfg = Debug|Win32
-		{508C8324-5017-4336-A249-2F9741C0AD8D}.Debug.Build.0 = Debug|Win32
-		{508C8324-5017-4336-A249-2F9741C0AD8D}.Release.ActiveCfg = Release|Win32
-		{508C8324-5017-4336-A249-2F9741C0AD8D}.Release.Build.0 = Release|Win32
 		{8966F408-1DA4-4CEC-9CC5-CB0C687FCA33}.Debug.ActiveCfg = Debug|Win32
 		{8966F408-1DA4-4CEC-9CC5-CB0C687FCA33}.Debug.Build.0 = Debug|Win32
 		{8966F408-1DA4-4CEC-9CC5-CB0C687FCA33}.Release.ActiveCfg = Release|Win32
@@ -106,6 +107,14 @@ Global
 		{2A663F90-96FA-4121-9B4E-AAFFD54E143B}.Debug.Build.0 = Debug|Win32
 		{2A663F90-96FA-4121-9B4E-AAFFD54E143B}.Release.ActiveCfg = Release|Win32
 		{2A663F90-96FA-4121-9B4E-AAFFD54E143B}.Release.Build.0 = Release|Win32
+		{C77B3474-2C3D-4138-A8EF-183D356703FB}.Debug.ActiveCfg = Debug|Win32
+		{C77B3474-2C3D-4138-A8EF-183D356703FB}.Debug.Build.0 = Debug|Win32
+		{C77B3474-2C3D-4138-A8EF-183D356703FB}.Release.ActiveCfg = Release|Win32
+		{C77B3474-2C3D-4138-A8EF-183D356703FB}.Release.Build.0 = Release|Win32
+		{508C8324-5017-4336-A249-2F9741C0AD8D}.Debug.ActiveCfg = Debug|Win32
+		{508C8324-5017-4336-A249-2F9741C0AD8D}.Debug.Build.0 = Debug|Win32
+		{508C8324-5017-4336-A249-2F9741C0AD8D}.Release.ActiveCfg = Release|Win32
+		{508C8324-5017-4336-A249-2F9741C0AD8D}.Release.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 	EndGlobalSection

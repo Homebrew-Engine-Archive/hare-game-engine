@@ -17,16 +17,15 @@ function renderScene()
 	canvas:setColor(0xffff0000)
 	canvas:drawRect(50, 50, 100, 100)
 	canvas:drawText(150, 150,'Hello hare~!!')
+    canvas:setColor(-1)
 end
 
 function endScene()
-
 end
 
 function init()
     hareApp = hare.getHareApp()
     p = hare.WindowParams()
-    p.hwnd = 0
     p.width = 800
     p.height = 600
     p.bFullScreen = false
@@ -44,7 +43,7 @@ function init()
     s:setSceneListener(listener)
     
 	tm = hare.getTextManager() 
-	fnt = tm:createFont("comic.ttf", 50) 
+	fnt = tm:createFont("comic.ttf", 30) 
 	canvas = hare.getCanvas()
 	canvas:setFont(fnt)
 

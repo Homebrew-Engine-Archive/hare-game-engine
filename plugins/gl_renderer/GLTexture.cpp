@@ -34,7 +34,7 @@ void GLTexture::active()
 	glMatrixMode(GL_PROJECTION);
     glLoadIdentity(); 
 
-    //NOTEC!! glOrtho funcation last tow args is used as negative       near far                
+    //NB: glOrtho funcation last tow args is used as negative       near far                
     glOrtho(0, (GLfloat)projectionWidth,  0, (GLfloat)projectionHeight,-1.0, 1.0); 
 
     glMatrixMode(GL_MODELVIEW);

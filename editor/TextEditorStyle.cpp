@@ -77,23 +77,23 @@ namespace hare
                 "time tmpfile tmpname write");
 
             MAKE_OptionColour("Default", 0,  MAKE_RGB(0,0,0),        MAKE_RGB(255,255,255), 0, 0, 0);
-            MAKE_OptionColour("Comment", 1,  MAKE_RGB(160,160,160),  MAKE_RGB(255,255,255), 0, 0, 0);
-            MAKE_OptionColour("Comment", 2,  MAKE_RGB(160,160,160),  MAKE_RGB(255,255,255), 0, 0, 0);
-            MAKE_OptionColour("Comment", 3,  MAKE_RGB(160,160,160),  MAKE_RGB(255,255,255), 0, 0, 0);
-            MAKE_OptionColour("Number",  4,  MAKE_RGB(240,0,240),    MAKE_RGB(255,255,255), 0, 0, 0);
-            MAKE_OptionColour("Keyword", 5,  MAKE_RGB(0,0,255),      MAKE_RGB(255,255,255), 0, 0, 0);
-            MAKE_OptionColour("Keyword", 13, MAKE_RGB(0,0,255),      MAKE_RGB(255,255,255), 0, 0, 0);
-            MAKE_OptionColour("Keyword", 14, MAKE_RGB(0,0,255),      MAKE_RGB(255,255,255), 0, 0, 0);
-            MAKE_OptionColour("Keyword", 15, MAKE_RGB(0,0,255),      MAKE_RGB(255,255,255), 0, 0, 0);
+            MAKE_OptionColour("Comment", 1,  MAKE_RGB(0,128,0),  MAKE_RGB(255,255,255), 0, 0, 0);
+            MAKE_OptionColour("Comment", 2,  MAKE_RGB(0,128,0),  MAKE_RGB(255,255,255), 0, 0, 0);
+            MAKE_OptionColour("Comment", 3,  MAKE_RGB(0,128,128),  MAKE_RGB(255,255,255), 0, 0, 0);
+            MAKE_OptionColour("Number",  4,  MAKE_RGB(255,128,0),    MAKE_RGB(255,255,255), 0, 0, 0);
+            MAKE_OptionColour("Keyword", 5,  MAKE_RGB(0,0,255),      MAKE_RGB(255,255,255), 1, 0, 0);
+            MAKE_OptionColour("Keyword", 13, MAKE_RGB(0,128,192),      MAKE_RGB(255,255,255), 1, 0, 0);
+            MAKE_OptionColour("Keyword", 14, MAKE_RGB(128,0,255),      MAKE_RGB(255,255,255), 1, 0, 0);
+            MAKE_OptionColour("Keyword", 15, MAKE_RGB(0,0,160),      MAKE_RGB(255,255,255), 1, 0, 0);
             MAKE_OptionColour("Keyword", 16, MAKE_RGB(0,0,255),      MAKE_RGB(255,255,255), 0, 0, 0);
             MAKE_OptionColour("Keyword", 17, MAKE_RGB(0,0,255),      MAKE_RGB(255,255,255), 0, 0, 0);
             MAKE_OptionColour("Keyword", 18, MAKE_RGB(0,0,255),      MAKE_RGB(255,255,255), 0, 0, 0);
             MAKE_OptionColour("Keyword", 19, MAKE_RGB(0,0,255),      MAKE_RGB(255,255,255), 0, 0, 0);
-            MAKE_OptionColour("String",  6,  MAKE_RGB(255,0,255),    MAKE_RGB(255,255,255), 0, 0, 0);
-            MAKE_OptionColour("String",  7,  MAKE_RGB(255,0,255),    MAKE_RGB(255,255,255), 0, 0, 0);
-            MAKE_OptionColour("String",  8,  MAKE_RGB(255,0,255),    MAKE_RGB(255,255,255), 0, 0, 0);
+            MAKE_OptionColour("String",  6,  MAKE_RGB(128,128,128),    MAKE_RGB(255,255,255), 0, 0, 0);
+            MAKE_OptionColour("String",  7,  MAKE_RGB(128,128,128),    MAKE_RGB(255,255,255), 0, 0, 0);
+            MAKE_OptionColour("String",  8,  MAKE_RGB(149,0,74),    MAKE_RGB(255,255,255), 0, 0, 0);
             MAKE_OptionColour("String",  12, MAKE_RGB(255,0,255),    MAKE_RGB(255,255,255), 0, 0, 0);
-            MAKE_OptionColour("Operator",10, MAKE_RGB(255,0,0),      MAKE_RGB(255,255,255), 0, 0, 0);
+            MAKE_OptionColour("Operator",10, MAKE_RGB(0,0,128),      MAKE_RGB(255,255,255), 0, 0, 0);
             MAKE_OptionColour("Matching brace highlight",
                 34, MAKE_RGB(0,0,0),        MAKE_RGB(255,255,255), 1, 0, 0);
             MAKE_OptionColour("No matching brace highlight",

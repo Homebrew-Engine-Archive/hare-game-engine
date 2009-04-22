@@ -156,7 +156,7 @@ void GLRenderWindow::setProjection()
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
 
-    //NOTEC!! glOrtho funcation last tow args is used as negative
+    //NB: glOrtho funcation last tow args is used as negative
     //left right bottom top                                                 near far
     glOrtho(0, (GLfloat)windowParams.width, (GLfloat)windowParams.height, 0, -1.0, 1.0); 
 
@@ -194,7 +194,7 @@ void GLRenderWindow::destoryWindow()
         //destory window 
         GLSystemManager::getSingletonPtr()->destoryRenderWindow(this);	
     }
-    //NOTEC!! can't modify member value affter this funcation
+    //NB: can't modify member value affter this funcation
 }
 
 void GLRenderWindow::active()
@@ -241,7 +241,7 @@ void GLRenderWindow::createGLResource()
     }
 
     if (!(PixelFormat=ChoosePixelFormat(hDC,&pfd))){ // Windows search PixelFormat 
-        MessageBox(NULL, "can't search PixelFormat", "error",MB_OK|MB_ICONEXCLAMATION);
+        MessageBox(NULL, "can't search PixelFormat", "error", MB_OK|MB_ICONEXCLAMATION);
         HARE_EXCEPT(Exception::ERR_INTERNAL_ERROR, "can't search PixelFormat!", "GLRenderWindow::createGLResource");      
     }
 

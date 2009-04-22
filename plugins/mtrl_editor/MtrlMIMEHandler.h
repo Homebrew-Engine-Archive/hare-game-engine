@@ -17,6 +17,14 @@
 
 class MtrlMIMEHandler;
 
+class MaterialEditState : public Object
+{
+    HARE_DECLARE_DYNAMIC_CLASS(MaterialEditState)
+public:
+    Material::Ptr mtrl;
+    PointF pos;
+};
+
 class MtrlEditorPage : public EditorPage, public SceneListenerBase
 {
 public:
@@ -25,25 +33,34 @@ public:
 
     bool isOk() const
     {
-        return mtrlPtr.pointer() != NULL;
+        return mtrlStates.size() > 0;
     }
 
     void addMaterial(Material* mtrl);
+    void addMaterialFromFile(const String& url);
 
     virtual void beginScene();
     virtual void endScene();
     virtual void renderScene();
 
 private:
-    Material::Ptr mtrlPtr;
+    MaterialEditState::List mtrlStates;
+    Material::Ptr selectedMtrl;
+
     MtrlMIMEHandler* mime;
     wxHareCanvas* canvas;
     SceneManager* scene;
+
+    wxPoint mouseDownPos;
 
 private:
     void onSize(wxSizeEvent& event);
     void onEraseBackground(wxEraseEvent& event);
     void onMouseMove(wxMouseEvent& event);
+    void onMouseLeftDown(wxMouseEvent& event);
+
+    void drawMaterial(Material* mtrl, const PointF& pos);
+    void selectMaterial(Material* mtrl);
 
     DECLARE_ABSTRACT_CLASS(MtrlEditorPage)
 };

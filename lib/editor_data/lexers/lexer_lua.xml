@@ -15,7 +15,7 @@
         <item1 store="0" class="OptionColour" version="0">
             <name class="String" value="Comment" />
             <value class="int32" value="1" />
-            <fore class="String" value="RGB(160,160,160)" />
+            <fore class="String" value="RGB(0,128,0)" />
             <back class="String" value="RGB(255,255,255)" />
             <bold class="uint8" value="0" />
             <italics class="uint8" value="0" />
@@ -24,7 +24,7 @@
         <item2 store="0" class="OptionColour" version="0">
             <name class="String" value="Comment" />
             <value class="int32" value="2" />
-            <fore class="String" value="RGB(160,160,160)" />
+            <fore class="String" value="RGB(0,128,0)" />
             <back class="String" value="RGB(255,255,255)" />
             <bold class="uint8" value="0" />
             <italics class="uint8" value="0" />
@@ -33,7 +33,7 @@
         <item3 store="0" class="OptionColour" version="0">
             <name class="String" value="Comment" />
             <value class="int32" value="3" />
-            <fore class="String" value="RGB(160,160,160)" />
+            <fore class="String" value="RGB(0,128,128)" />
             <back class="String" value="RGB(255,255,255)" />
             <bold class="uint8" value="0" />
             <italics class="uint8" value="0" />
@@ -42,7 +42,7 @@
         <item4 store="0" class="OptionColour" version="0">
             <name class="String" value="Number" />
             <value class="int32" value="4" />
-            <fore class="String" value="RGB(240,0,240)" />
+            <fore class="String" value="RGB(255,128,0)" />
             <back class="String" value="RGB(255,255,255)" />
             <bold class="uint8" value="0" />
             <italics class="uint8" value="0" />
@@ -53,34 +53,34 @@
             <value class="int32" value="5" />
             <fore class="String" value="RGB(0,0,255)" />
             <back class="String" value="RGB(255,255,255)" />
-            <bold class="uint8" value="0" />
+            <bold class="uint8" value="1" />
             <italics class="uint8" value="0" />
             <underlined class="uint8" value="0" />
         </item5>
         <item6 store="0" class="OptionColour" version="0">
             <name class="String" value="Keyword" />
             <value class="int32" value="13" />
-            <fore class="String" value="RGB(0,0,255)" />
+            <fore class="String" value="RGB(0,128,192)" />
             <back class="String" value="RGB(255,255,255)" />
-            <bold class="uint8" value="0" />
+            <bold class="uint8" value="1" />
             <italics class="uint8" value="0" />
             <underlined class="uint8" value="0" />
         </item6>
         <item7 store="0" class="OptionColour" version="0">
             <name class="String" value="Keyword" />
             <value class="int32" value="14" />
-            <fore class="String" value="RGB(0,0,255)" />
+            <fore class="String" value="RGB(128,0,255)" />
             <back class="String" value="RGB(255,255,255)" />
-            <bold class="uint8" value="0" />
+            <bold class="uint8" value="1" />
             <italics class="uint8" value="0" />
             <underlined class="uint8" value="0" />
         </item7>
         <item8 store="0" class="OptionColour" version="0">
             <name class="String" value="Keyword" />
             <value class="int32" value="15" />
-            <fore class="String" value="RGB(0,0,255)" />
+            <fore class="String" value="RGB(0,0,160)" />
             <back class="String" value="RGB(255,255,255)" />
-            <bold class="uint8" value="0" />
+            <bold class="uint8" value="1" />
             <italics class="uint8" value="0" />
             <underlined class="uint8" value="0" />
         </item8>
@@ -123,7 +123,7 @@
         <item13 store="0" class="OptionColour" version="0">
             <name class="String" value="String" />
             <value class="int32" value="6" />
-            <fore class="String" value="RGB(255,0,255)" />
+            <fore class="String" value="RGB(128,128,128)" />
             <back class="String" value="RGB(255,255,255)" />
             <bold class="uint8" value="0" />
             <italics class="uint8" value="0" />
@@ -132,7 +132,7 @@
         <item14 store="0" class="OptionColour" version="0">
             <name class="String" value="String" />
             <value class="int32" value="7" />
-            <fore class="String" value="RGB(255,0,255)" />
+            <fore class="String" value="RGB(128,128,128)" />
             <back class="String" value="RGB(255,255,255)" />
             <bold class="uint8" value="0" />
             <italics class="uint8" value="0" />
@@ -141,7 +141,7 @@
         <item15 store="0" class="OptionColour" version="0">
             <name class="String" value="String" />
             <value class="int32" value="8" />
-            <fore class="String" value="RGB(255,0,255)" />
+            <fore class="String" value="RGB(149,0,74)" />
             <back class="String" value="RGB(255,255,255)" />
             <bold class="uint8" value="0" />
             <italics class="uint8" value="0" />
@@ -159,7 +159,7 @@
         <item17 store="0" class="OptionColour" version="0">
             <name class="String" value="Operator" />
             <value class="int32" value="10" />
-            <fore class="String" value="RGB(255,0,0)" />
+            <fore class="String" value="RGB(0,0,128)" />
             <back class="String" value="RGB(255,255,255)" />
             <bold class="uint8" value="0" />
             <italics class="uint8" value="0" />

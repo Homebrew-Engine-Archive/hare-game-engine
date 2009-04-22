@@ -93,13 +93,13 @@ namespace hare
 			RenderSystem::getSingletonPtr()->render();
 		}
 
-		Quad quad2;
-		quad2.setMaterial(shader);
-		quad2.moveTo(150,150);
-		quad2.setWidth((float)font->getFontTexture()->getWidth());
-		quad2.setHeight((float)font->getFontTexture()->getHeight());
-		//texMtrl->setUV(0,0,1,1);
-		RenderSystem::getSingletonPtr()->render(&quad2);	
+		//Quad quad2;
+		//quad2.setMaterial(shader);
+		//quad2.moveTo(150,150);
+		//quad2.setWidth((float)font->getFontTexture()->getWidth());
+		//quad2.setHeight((float)font->getFontTexture()->getHeight());
+		////texMtrl->setUV(0,0,1,1);
+		//RenderSystem::getSingletonPtr()->render(&quad2);	
 
 	}
 
@@ -115,6 +115,7 @@ namespace hare
 		quad.moveTo((float)x, (float)y);
 		quad.setDepth(z);
 		quad.setColor(color);
+		quad.setTextureUVMap(uvRect);
 		TextureMtrl* texMtrl = mtrl->getTextureMtrl();
 		if (texMtrl){
 			Texture* tex = texMtrl->getTexture();
@@ -201,9 +202,8 @@ namespace hare
 			quad.buffer[3].x = tx1 + rect.minX;
 			quad.buffer[3].y = ty2 + rect.minY;
 		}
-
+        quad.setTextureUVMap(uvRect);
 		RenderSystem::getSingletonPtr()->render(&quad);
-
 	}
 
 	void Canvas::setFont(Font* f)

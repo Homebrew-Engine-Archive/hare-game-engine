@@ -14,6 +14,7 @@ GLXContext GLRenderWindow::main_context = NULL;
 
 GLRenderWindow::GLRenderWindow(bool bMainWindow)
     :glContext(NULL)
+	,oldMode(-1)
 {
     assert(isMainWnd && bMainWindow);
 
@@ -39,7 +40,67 @@ void GLRenderWindow::create(const WindowParams& params)
 		if (dpy == NULL)
 			HARE_EXCEPT(Exception::ERR_INTERNAL_ERROR, "can't open a connection to the X server!", "GLRenderWindow::create"); 
 
-		int dummy;
+        int screen = DefaultScreen(dpy);
+		Window rootWindow = RootWindow(dpy,screen);
+		int left = (DisplayWidth(dpy, screen) - windowParams.width)/2;
+		int top = (DisplayHeight(dpy, screen) - windowParams.height)/2;
+
+        int dummy;
+
+#ifndef NO_XRANDR
+		// Attempt mode switch for fullscreen -- only if RANDR extension is there
+
+		if(windowParams.bFullScreen && ! XQueryExtension(dpy, "RANDR", &dummy, &dummy, &dummy)) {
+		    //log:can't switch to full screen mode: No XRANDR extension found
+		    windowParams.bFullScreen = false;
+		}else if(windowParams.bFullScreen) {
+			// Use Xrandr extension to switch video modes. This is much better than
+			// XVidMode as you can't scroll away from the full-screen applications.
+			XRRScreenConfiguration *config;
+			XRRScreenSize *sizes;
+			Rotation current_rotation;
+			int nsizes;
+
+			// Get current screen info
+			config = XRRGetScreenInfo(dpy, rootWindow);
+			// Get available sizes
+			if(config)
+				sizes = XRRConfigSizes (config, &nsizes);
+
+			if(config && nsizes > 0) {	
+                // Get current size and rotation
+				oldMode = XRRConfigCurrentConfiguration (config, &current_rotation);
+				// Find smallest matching mode
+                int mode = -1;
+                int mode_width = INT_MAX;
+                int mode_height = INT_MAX;
+				for(size_t i = 0; i < nsizes; i++){
+                    if(sizes[i].width >= static_cast<int>(windowParams.width) && 
+                        sizes[i].height >= static_cast<int>(windowParams.height) &&
+                        sizes[i].width < mode_width && 
+                        sizes[i].height < mode_height){
+
+						mode = i;
+						mode_width = sizes[i].width;
+						mode_height = sizes[i].height;
+					}
+				}
+				if(mode >= 0){
+					// Finally, set the screen configuration
+					XRRSetScreenConfig(mDisplay, config, rootWindow, mode, current_rotation, CurrentTime);
+				}else{
+					//log:Could not switch to full screen mode: No conforming mode was found
+				    windowParams.bFullScreen = false;
+				}
+				// Free configuration data
+				XRRFreeScreenConfigInfo(config);
+			}else{
+                //log:Could not switch to full screen mode: XRRGetScreenInfo failed
+                windowParams.bFullScreen = false;
+			}
+        }
+#endif
+
 		if(!glXQueryExtension(dpy, &dummy, &dummy))
 			HARE_EXCEPT(Exception::ERR_INTERNAL_ERROR, "X server has no OpenGL GLX extension!", "GLRenderWindow::create"); 
 		
@@ -57,19 +118,27 @@ void GLRenderWindow::create(const WindowParams& params)
 
         Colormap cmap;
 		XSetWindowAttributes swa;
+		unsigned long mask;
 		cmap = XCreateColormap(dpy, RootWindow(dpy, vi->screen), vi->visual, AllocNone);
 		swa.colormap = cmap;
+		swa.background_pixel = 0;
 		swa.border_pixel = 0;
-		swa.event_mask = KeyPressMask | ExposureMask
-            | ButtonPressMask | StructureNotifyMask;
+		swa.event_mask = StructureNotifyMask | VisibilityChangeMask;
 
-		int screen = DefaultScreen(dpy);
-		int left = DisplayWidth(dpy, screen);
-		int top = DisplayHeight(dpy, screen);
+		if(windowParams.bFullScreen) {
+			mask = CWBackPixel | CWColormap | CWOverrideRedirect | CWSaveUnder | CWBackingStore | CWEventMask;
+			swa.override_redirect = True;
+			swa.backing_store = NotUseful;
+			swa.save_under = False;
+			// Fullscreen windows are always in the top left origin
+			left = top = 0;
+		} else
+			mask = CWBackPixel | CWBorderPixel | CWColormap | CWEventMask;
+
 		Window win;
 		win = XCreateWindow(dpy, RootWindow(dpy, vi->screen), left, top,
-			windowParams.width, windowParams.height, 0, vi->depth, InputOutput, vi->visual,
-			CWBorderPixel | CWColormap | CWEventMask, &swa);
+            windowParams.width, windowParams.height, 0, vi->depth, InputOutput, vi->visual,
+            mask, &swa);
 
 		XSetStandardProperties(dpy, win, windowParams.title, NULL, None,
 			NULL, 0, NULL);
@@ -181,6 +250,26 @@ void GLRenderWindow::destoryGLResource()
 		if(windowParams.hwnd.win)
 			XDestroyWindow(windowParams.hwnd.dpy, windowParams.hwnd.win);	
 	}
+
+#ifndef NO_XRANDR
+	if(windowParams.bFullScreen){
+		// Restore original video mode.
+		Window rootWindow = DefaultRootWindow(windowParams.hwnd.dpy);
+		XRRScreenConfiguration *config;
+
+		// Get current screen info
+		config = XRRGetScreenInfo(windowParams.hwnd.dpy, rootWindow);
+		if(config){
+			Rotation current_rotation;
+			XRRConfigCurrentConfiguration (config, &current_rotation);
+			//Leaving full screen mode
+			XRRSetScreenConfig(windowParams.hwnd.dpy, config, rootWindow, oldMode, current_rotation, CurrentTime);
+			XRRFreeScreenConfigInfo(config);
+        }else{
+            //Could not switch from full screen mode: XRRGetScreenInfo failed
+        }
+    }
+#endif
 }
 
 void GLXProc(const XEvent &event, GLRenderWindow* win)

@@ -33,6 +33,7 @@ private:
 	static GLXContext main_context;
     GLXContext glContext;
 
+    int oldMode;
 };
 
 void GLXProc(const XEvent &event, GLRenderWindow* win);

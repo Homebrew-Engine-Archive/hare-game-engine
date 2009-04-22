@@ -93,12 +93,12 @@ namespace hare
 
 	void SimpleSprite::renderScene()
 	{
-		/*RenderTarget* target = RenderSystem::getSingletonPtr()->getRenderTarget();
+		RenderTarget* target = RenderSystem::getSingletonPtr()->getRenderTarget();
 
 		RenderSystem::getSingletonPtr()->render(&quad);
 		particle->render();
 
-		Texture* tex;
+		/*Texture* tex;
 		tex = RenderSystem::getSingletonPtr()->createTexture();
 		tex->create(256, 256, HPF_A8R8G8B8, true);
 		RenderSystem::getSingletonPtr()->setRenderTarget(tex);
@@ -111,8 +111,8 @@ namespace hare
 		texMtrl = new TextureMtrl;
 		texMtrl->setTexture(tex);*/
 
-        getCanvas()->drawImage(300, 300, shader, RectF(0.5,0.5,1.0,1.0));
-        getCanvas()->drawImage(600, 300, shader);
+        //getCanvas()->drawImage(300, 300, shader, RectF(0.5,0.5,1.0,1.0));
+        //getCanvas()->drawImage(600, 300, shader);
 
 	}
 

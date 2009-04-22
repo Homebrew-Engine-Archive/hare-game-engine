@@ -10,6 +10,7 @@ public:
 	{
 		systemManager = new GLSystemManager;
 		HareApp::getSingletonPtr()->setGraphicsSystem(systemManager);
+		printf("plugin : gl_renderer \n");
 	}
 	~PluginRegistrant()
 	{

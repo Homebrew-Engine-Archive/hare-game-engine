@@ -5,13 +5,13 @@
 		<Project filename="editor.cbp">
 			<Depends filename="core.cbp" />
 		</Project>
-		<Project filename="hare_lua.cbp" />
+		<Project filename="hare_lua.cbp" active="1" />
 		<Project filename="graphics.cbp">
 			<Depends filename="core.cbp" />
 		</Project>
 		<Project filename="lua_debugger.cbp">
 			<Depends filename="editor.cbp" />
 		</Project>
-		<Project filename="gl_renderer/gl_renderer.cbp" active="1" />
+		<Project filename="gl_renderer.cbp" />
 	</Workspace>
 </CodeBlocks_workspace_file>

@@ -77,7 +77,7 @@ void GLSystemManager::hareRun()
 #if HARE_PLATFORM == HARE_PLATFORM_WIN32
 	MSG Message;
 
-	for (;;){	
+	for (;;){
 		if (PeekMessage(&Message, 0, 0, 0, PM_NOREMOVE)){
 			if (!GetMessage(&Message, NULL, 0, 0)){
 				break;
@@ -102,7 +102,20 @@ void GLSystemManager::hareRun()
 
 #elif HARE_PLATFORM == HARE_PLATFORM_LINUX
 
+    while(1){
+        XEvent event;
 
+        Display* dpy = ((GLRenderWindow*)pPrimaryWindow)->getDisplay();
+        do{
+            XNextEvent(dpy, &event);
+            break;
+       } while(XPending(dpy));
+
+        int ret = hareRunFrame();
+
+		if (ret == 0)
+			break;
+    }
 #endif
 }
 

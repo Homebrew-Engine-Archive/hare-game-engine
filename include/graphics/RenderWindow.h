@@ -8,18 +8,15 @@
 #if HARE_PLATFORM == HARE_PLATFORM_WIN32
 typedef HWND WindowHandle;
 #elif HARE_PLATFORM == HARE_PLATFORM_LINUX
-//use GTK Gtk::Container is base Gtk::Window
 typedef struct _WindowHandle{
-	Display     *dpy;
-	XVisualInfo *vi;
-	Window      win;
-
-	_WindowHandle(uint32)
+	void*   dpy;
+	void*   vi;
+	int     win;
+	_WindowHandle(int x)
 		:dpy(NULL)
 		,vi(NULL)
 		,win(0)
 	{
-
 	}
 } WindowHandle;
 #else

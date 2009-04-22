@@ -11,7 +11,7 @@
 				<Option working_dir="../../lib" />
 				<Option type="1" />
 				<Option compiler="gcc" />
-				<Option parameters="-game test -debug localhost:9981" />
+				<Option parameters="-game sample" />
 				<Compiler>
 					<Add option="-g" />
 				</Compiler>

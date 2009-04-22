@@ -22,6 +22,11 @@ public:
 
     virtual void inactive();
 
+    Display* getDisplay()
+    {
+        return (Display*)windowParams.hwnd.dpy;
+    }
+
 
 private:
     void initalizeGLConfigParam();

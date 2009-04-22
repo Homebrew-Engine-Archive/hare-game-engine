@@ -3,7 +3,6 @@
 
 #include "core/Core.h"
 #include "graphics/Graphics.h"
-using namespace hare;
 
 #if HARE_PLATFORM == HARE_PLATFORM_PSP
 #	include <GLES/egl.h>
@@ -12,8 +11,17 @@ using namespace hare;
 #	if HARE_PLATFORM == HARE_PLATFORM_WIN32
 #		include <GL/wglew.h>
 #	elif HARE_PLATFORM == HARE_PLATFORM_LINUX
+#       include <X11/Xlib.h>
+#       include <X11/Xutil.h>
+#       include <X11/Xlibint.h>
+#       include <X11/extensions/render.h>
+#       include <X11/extensions/Xrender.h>
+#       include <X11/extensions/Xrandr.h>
 #		include <GL/glxew.h>
 #	endif
 #endif
+
+using namespace hare;
+
 
 #endif

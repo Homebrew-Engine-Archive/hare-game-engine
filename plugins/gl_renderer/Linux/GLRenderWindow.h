@@ -1,15 +1,6 @@
 #ifndef _GLRENDERWINDOW_H_
 #define _GLRENDERWINDOW_H_
 
-#include <gtkmm/main.h>
-#include <gtkmm/window.h>
-#include <gtkglmm.h>
-
-class HareWidget : public Gtk::GL::DrawingArea
-{
-public:
-	HareWidget(bool bZBuffer);
-};
 
 class GLRenderWindow : public RenderWindow
 {
@@ -39,17 +30,11 @@ private:
 
     void setProjection();
 private:
-	static Glib::RefPtr<Gdk::GL::Context> main_context;
-	static Glib::RefPtr<Gdk::GL::Window>  main_window;
-
-	Gtk::Window *gtkWindow;
-    HareWidget  *hareWidget;
-protected:
-	// Signal handlers
-	bool on_delete_event(GdkEventAny* event);
-	bool on_expose_event(GdkEventExpose* event);
+	static GLXContext main_context;
+    GLXContext glContext;
 
 };
 
+void GLXProc(const XEvent &event, GLRenderWindow* win);
 
 #endif

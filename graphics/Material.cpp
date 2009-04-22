@@ -159,7 +159,14 @@ namespace hare
 
 	//平移材质修改器
 	HARE_IMPLEMENT_DYNAMIC_CLASS(PannerMod, WrapperMtrl, 0)
-	{}
+	{
+        HARE_META_F(offset, PointF, propHide)
+		HARE_META_F(panDirection, PointF, propHide)
+		HARE_META(panRate, float)
+		HARE_META_F(oscillationPhase, PointF, propHide)
+		HARE_META_F(oscillationAmplitude, PointF, propHide)
+		HARE_META_F(oscillationRate, PointF, propHide)
+	}
 
 	PannerMod::PannerMod()
         :offset(PointF::ZERO)
@@ -215,7 +222,13 @@ namespace hare
 
 	//缩放材质修改器
 	HARE_IMPLEMENT_DYNAMIC_CLASS(ScalerMod, WrapperMtrl, 0)
-	{}
+	{
+        HARE_META_F(scale, PointF, propHide)
+        HARE_META_F(center, PointF, propHide)
+        HARE_META_F(oscillationPhase, PointF, propHide)
+        HARE_META_F(oscillationAmplitude, PointF, propHide)
+		HARE_META_F(oscillationRate, PointF, propHide)
+	}
 
 	ScalerMod::ScalerMod()
 		:scale(1, 1)
@@ -277,7 +290,14 @@ namespace hare
 
 	//旋转材质修改器
 	HARE_IMPLEMENT_DYNAMIC_CLASS(RotatorMod, WrapperMtrl, 0)
-	{}
+	{
+        HARE_META_F(center, PointF, propHide)
+		HARE_META(rotation, float)
+		HARE_META(speed, float)
+		HARE_META(oscillationPhase, float)
+		HARE_META(oscillationAmplitude, float)
+		HARE_META(oscillationRate, float)
+	}
 
 	RotatorMod::RotatorMod()
 		:center(0, 0)
@@ -341,10 +361,16 @@ namespace hare
 
 	//动画材质修改器
 	HARE_IMPLEMENT_DYNAMIC_CLASS(AnimModUnit, WrapperMtrl, 0)
-	{}
+	{
+        HARE_META(frameTime, float)
+        HARE_META_F(rectUV, RectF, propHide)
+        HARE_META(bUseUV, bool)
+	}
 
 	AnimModUnit::AnimModUnit()
 		:frameTime(0)
+		,rectUV(0,0,1,1)
+		,bUseUV(false)
 	{
 
 	}
@@ -358,12 +384,29 @@ namespace hare
 	{
 		if (mtrl)
 			mtrl->frameMove();
+
+		if (bUseUV){
+			TextureMtrl* texMtrl = getTextureMtrl();
+			if (texMtrl){
+				Matrix4 mat;
+				mat = Matrix4::IDENTITY;
+
+				mat._11 = rectUV.width();
+				mat._22 = rectUV.height();
+				mat._13 = rectUV.minX;
+				mat._23 = rectUV.minY;
+
+				texMtrl->texMat = mat;
+			}
+		}
 	}
 
 
 
 	HARE_IMPLEMENT_DYNAMIC_CLASS(AnimMod, WrapperMtrl, 0)
-	{}
+	{
+		HARE_OBJ_ARRAY(animMtrlList, AnimModUnit)
+	}
 
 	AnimMod::AnimMod()
 		:curAnimMtrlID(0)

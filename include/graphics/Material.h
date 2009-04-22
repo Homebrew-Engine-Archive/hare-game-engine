@@ -232,7 +232,7 @@ namespace hare
 
 		virtual void frameMove();
 	public:
-		PointF	center;
+		PointF      center;
 		float		rotation;
 		float		speed;
 
@@ -258,6 +258,8 @@ namespace hare
 		virtual void frameMove();
 	public:
 		float frameTime;
+		RectF rectUV;
+		bool  bUseUV;
 	};
 
 

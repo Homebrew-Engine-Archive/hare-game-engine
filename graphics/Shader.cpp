@@ -87,7 +87,7 @@ namespace hare
 
 	HARE_IMPLEMENT_DYNAMIC_CLASS(SimpleShader, Shader, 0)
 	{
-		HARE_OBJ(mtrl, StandardMtrl)
+		HARE_OBJ_F(mtrl, StandardMtrl, propHide)
 	}
 
 	SimpleShader::SimpleShader()
@@ -103,7 +103,7 @@ namespace hare
 
 	HARE_IMPLEMENT_DYNAMIC_CLASS(ParticleShader, Shader, 0)
 	{
-		HARE_OBJ(mtrl, StandardMtrl)
+		HARE_OBJ_F(mtrl, StandardMtrl, propHide)
 	}
 
 	ParticleShader::ParticleShader()

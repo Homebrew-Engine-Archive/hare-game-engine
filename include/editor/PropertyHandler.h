@@ -46,11 +46,12 @@ namespace hare
         DECLARE_DYNAMIC_CLASS(ObjectEnumProperty)
     public:
         ObjectEnumProperty(const wxString& label = wxPG_LABEL, const wxString& name = wxPG_LABEL)
-            : wxEnumProperty(label, name)
+            : wxEnumProperty(label, name), currentSelection(-1)
         {
         }
     public:
         std::vector<ClassInfo*> subClasses;
+        int currentSelection;
         Object::Ptr object;
         Attribute::List attributes;
     };

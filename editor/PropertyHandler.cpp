@@ -26,6 +26,8 @@
 
 namespace hare
 {
+    static const int IMPORT_OBJECT = -2; 
+
     IMPLEMENT_DYNAMIC_CLASS(ObjectEnumProperty, wxEnumProperty)
 
     //-----------------------------------------------------------------------------------
@@ -368,50 +370,37 @@ namespace hare
             prop->SetFlag(wxPG_PROP_READONLY | wxPG_PROP_DISABLED);
     }*/
 
-    void reBindObject(Attribute* attr, ObjectEnumProperty* prop)
+    void reBindObject(Attribute* attr, ObjectEnumProperty* prop, PropertyGridPage* page)
     {
         prop->Empty();
 
         wxPGChoices choices;
         long selection = -1;
+        
+        if (attr->hasFlag(Object::propImport))
+            choices.Add(wxT("[Import From File ...]"), IMPORT_OBJECT);
+
+        Object* obj = *(Object**)attr->data;
+        ClassInfo* objCls = obj ? obj->getClassInfo() : attr->classInfo;
+        wxString className = wxString::FromUTF8(objCls->className);
+        
         attr->classInfo->findSubs(prop->subClasses);
         size_t i = 0;
         for (; i != prop->subClasses.size(); ++i)
         {
             choices.Add(wxString::FromUTF8(prop->subClasses[i]->className), i);
-            if (prop->subClasses[i] == attr->classInfo)
+            if (prop->subClasses[i] == objCls)
                 selection = i;
         }
-        prop->SetChoices(choices);
-        if (selection != -1)
-            prop->SetValue(selection);
-        wxString className = wxString::FromUTF8(attr->classInfo->className);
-        prop->SetHelpString(className);
-        prop->SetClientData(attr);
-
+        
         // for referenced object, we should display the URL after its class name.
-        Object* obj = *(Object**)attr->data;
         if (obj && !obj->getUrl().empty())
         {
             wxString lable = className + wxT(" [") + wxString::FromUTF8(obj->getUrl().c_str()) + wxT("]");
-            int newID = prop->AppendChoice(lable, i);
-            prop->SetValue((long)newID);
+            selection = i;
+            choices.Add(lable, i);
         }
-        if (attr->hasFlag(Object::propReadOnly))
-            prop->SetFlag(wxPG_PROP_READONLY | wxPG_PROP_DISABLED);
-    }
-
-    void doBindObject(Attribute* attr, PropertyGridPage* page, wxPGProperty* parent)
-    {
-        ObjectEnumProperty* prop = new ObjectEnumProperty(wxString::FromUTF8(attr->name), wxPG_LABEL);
-
-        page->AppendIn(parent, prop);
-
-        reBindObject(attr, prop);
-
-        Object* obj = *(Object**)attr->data;
-
-        if (obj)
+        else if (obj)
         {
             AttVisitor v;
             obj->accept(v);
@@ -427,8 +416,92 @@ namespace hare
 
             prop->SetExpanded(false);
         }
+        prop->SetChoices(choices);
+        if (selection != -1)
+        {
+            prop->SetValue(selection);
+            prop->currentSelection = selection;
+        }
+        
+        prop->SetHelpString(className);
+        prop->SetClientData(attr);
+
+        if (attr->hasFlag(Object::propReadOnly))
+            prop->SetFlag(wxPG_PROP_READONLY | wxPG_PROP_DISABLED);
     }
 
+    void doBindObject(Attribute* attr, PropertyGridPage* page, wxPGProperty* parent)
+    {
+        ObjectEnumProperty* prop = new ObjectEnumProperty(wxString::FromUTF8(attr->name), wxPG_LABEL);
+
+        page->AppendIn(parent, prop);
+
+        reBindObject(attr, prop, page);
+    }
+
+    void doModifyObject(Attribute* attr, wxVariant& val, wxPGProperty* prop, PropertyGridPage* page)
+    {
+        ObjectEnumProperty* objectProp = (ObjectEnumProperty*)prop;
+
+        long value = wxPGVariantToInt(val);
+
+        Object::Ptr newObject;
+        
+        if (value < 0)
+        {
+            String objectUrl;
+
+            if (value == IMPORT_OBJECT)
+            {
+                wxSize size(300, 400);
+
+                FileSystemDialog dlg(prop->GetGrid(), _("FileSystem"), wxT("/"),
+                    wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER,
+                    prop->GetGrid()->GetGoodEditorDialogPosition(prop, size),
+                    size);
+
+                if (dlg.ShowModal() == wxID_OK)
+                {
+                    objectUrl = dlg.GetPath().ToUTF8().data();
+
+                    Object::Ptr imported = Object::importObject(objectUrl);
+
+                    if (imported && imported->isA(attr->classInfo))
+                    {
+                        newObject = imported;
+                    }
+                }
+            }
+        }
+        else
+        {
+            assert(value < (long)objectProp->subClasses.size());
+            ClassInfo* cls = objectProp->subClasses[value];
+            
+            newObject = cls->createObject();
+            if (newObject)
+                newObject->postLoaded();
+        }
+
+        if (newObject)
+        {
+            Object** objPtr = (Object**)attr->data;
+
+            newObject->addRef();
+
+            if ((*objPtr))
+                (*objPtr)->decRef();
+
+            *objPtr = newObject;
+
+            reBindObject(attr, objectProp, page);
+        }
+        else if (objectProp->currentSelection >= 0)
+        {
+            objectProp->SetValue(objectProp->currentSelection);
+        }
+    }
+    
     BEGIN_EVENT_TABLE(PropertyGridPage, wxPropertyGridPage)
         EVT_PG_SELECTED(wxID_ANY, PropertyGridPage::onPropertySelect)
         EVT_PG_CHANGING(wxID_ANY, PropertyGridPage::onPropertyChanging)
@@ -484,7 +557,7 @@ namespace hare
                     assert(false);
 
                 p->SetValue(value);
-                p->RefreshEditor();
+                RefreshProperty(p);
             }
             break;
         case Attribute::attrMetaArray:
@@ -493,6 +566,8 @@ namespace hare
             break;
         case Attribute::attrObject:
             {
+                doModifyObject(attr, value, p, this);
+                RefreshProperty(p);
             }
             break;
         case Attribute::attrObjectArray:

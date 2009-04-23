@@ -34,6 +34,7 @@ MtrlEditorPage::MtrlEditorPage(wxWindow* parent, MtrlMIMEHandler* handler, Mater
     canvas->Connect(wxEVT_SIZE, wxSizeEventHandler(MtrlEditorPage::onSize), 0, this);
     canvas->Connect(wxEVT_MOTION, wxMouseEventHandler(MtrlEditorPage::onMouseMove), 0, this);
     canvas->Connect(wxEVT_LEFT_DOWN, wxMouseEventHandler(MtrlEditorPage::onMouseLeftDown), 0, this);
+    canvas->Connect(wxEVT_LEFT_UP, wxMouseEventHandler(MtrlEditorPage::onMouseLeftUp), 0, this);
     
     wxBoxSizer* sizer = new wxBoxSizer(wxVERTICAL);
     sizer->Add(canvas, 1, wxEXPAND, 0);
@@ -51,8 +52,6 @@ MtrlEditorPage::~MtrlEditorPage()
     }
 
     mime->page = NULL;
-
-    delete canvas;
 }
 
 void MtrlEditorPage::addMaterialFromFile(const String& url)
@@ -91,10 +90,10 @@ void MtrlEditorPage::endScene()
 
 void MtrlEditorPage::renderScene()
 {
-    MaterialEditState::List::iterator it = mtrlStates.begin();
-    for (; it != mtrlStates.end(); ++it)
+    MaterialEditState::List::reverse_iterator rit = mtrlStates.rbegin();
+    for (; rit != mtrlStates.rend(); ++rit)
     {
-        MaterialEditState* st = *it;
+        MaterialEditState* st = *rit;
         drawMaterial(st->mtrl, st->pos);
     }
 }
@@ -154,6 +153,53 @@ void MtrlEditorPage::onSize(wxSizeEvent& event)
         canvas->getRenderWindow()->resize(size.GetWidth(), size.GetHeight());
 }
 
+void MtrlEditorPage::onMouseLeftUp(wxMouseEvent& event)
+{
+    if (!editMtrl)
+        return;
+
+    PointF pt(event.GetPosition().x, event.GetPosition().y);
+    RectF rect(0.0f, 0.0f, 100.0f, 100.0f);
+
+    MaterialEditState::List::iterator it0 = mtrlStates.begin();
+    for (; it0 != mtrlStates.end(); ++it0)
+    {
+        MaterialEditState* st = *it0;
+
+        if (st == editMtrl || st->mtrl == editMtrl->mtrl)
+            continue;
+
+        rect.moveTo(st->pos);
+
+        AttVisitor v;
+        st->mtrl->accept(v);
+        Attribute::List::iterator it1 = v.attributes.begin();
+        for (; it1 != v.attributes.end(); ++it1)
+        {
+            Attribute* attr = *it1;
+            if (attr->attrType == Attribute::attrObject && attr->data)
+            {
+                Object* obj = *(Object**)attr->data;
+                if (obj->isA(&Material::CLASS_INFO))
+                {
+                    Material* subMtrl = (Material*)obj;
+                    rect.moveTo(st->pos.x + 101, st->pos.y);
+                    if (rect.isPointIn(pt))
+                    {
+                        Object** pMtrl = (Object**)attr->data;
+                        subMtrl->decRef();
+                        editMtrl->mtrl->addRef();
+                        *pMtrl = editMtrl->mtrl;
+                        mtrlStates.remove(editMtrl);
+                        editMtrl = st;
+                        return;
+                    }
+                }
+            }
+        }
+    }
+}
+
 void MtrlEditorPage::onMouseLeftDown(wxMouseEvent& event)
 {
     mouseDownPos = event.GetPosition();
@@ -161,25 +207,26 @@ void MtrlEditorPage::onMouseLeftDown(wxMouseEvent& event)
     PointF pt(mouseDownPos.x, mouseDownPos.y);
     RectF rect(0.0f, 0.0f, 100.0f, 100.0f);
 
-    MaterialEditState::List::reverse_iterator rit = mtrlStates.rbegin();
-    for (; rit != mtrlStates.rend(); ++rit)
+    MaterialEditState::List::iterator it0 = mtrlStates.begin();
+    for (; it0 != mtrlStates.end(); ++it0)
     {
-        MaterialEditState* st = *rit;
+        MaterialEditState* st = *it0;
         rect.moveTo(st->pos);
         if (rect.isPointIn(pt))
         {
             selectMaterial(st->mtrl);
-            mtrlStates.push_back(st);
-            mtrlStates.erase(rit.base());
+            editMtrl = st;
+            mtrlStates.erase(it0);
+            mtrlStates.push_front(st);
             return;
         }
 
         AttVisitor v;
         st->mtrl->accept(v);
-        Attribute::List::iterator it = v.attributes.begin();
-        for (; it != v.attributes.end(); ++it)
+        Attribute::List::iterator it1 = v.attributes.begin();
+        for (; it1 != v.attributes.end(); ++it1)
         {
-            Attribute* attr = *it;
+            Attribute* attr = *it1;
             if (attr->attrType == Attribute::attrObject && attr->data)
             {
                 Object* obj = *(Object**)attr->data;
@@ -190,8 +237,9 @@ void MtrlEditorPage::onMouseLeftDown(wxMouseEvent& event)
                     if (rect.isPointIn(pt))
                     {
                         selectMaterial(subMtrl);
-                        mtrlStates.push_back(st);
-                        mtrlStates.erase(rit.base());
+                        editMtrl = st;
+                        mtrlStates.erase(it0);
+                        mtrlStates.push_front(st);
                         return;
                     }
                 }
@@ -202,20 +250,12 @@ void MtrlEditorPage::onMouseLeftDown(wxMouseEvent& event)
 
 void MtrlEditorPage::onMouseMove(wxMouseEvent& event)
 {
-    if (selectedMtrl && event.Dragging() && event.LeftIsDown())
+    if (editMtrl && event.Dragging() && event.LeftIsDown())
     {
         wxPoint offset = event.GetPosition() - mouseDownPos;
         mouseDownPos = event.GetPosition();
         MaterialEditState::List::reverse_iterator rit = mtrlStates.rbegin();
-        for (; rit != mtrlStates.rend(); ++rit)
-        {
-            MaterialEditState* st = *rit;
-            if (st->mtrl == selectedMtrl)
-            {
-                st->pos.move(offset.x, offset.y);
-                return;
-            }
-        }
+        editMtrl->pos.move(offset.x, offset.y);
     }
 }
 
@@ -239,21 +279,22 @@ bool MtrlMIMEHandler::openFile(const wxString& filename)
     if (!mtrl)
         return false;
 
+    EditorPageManager* epm = Manager::getInstancePtr()->getEditorPageManager();
+
     if (!page)
     {
-        Manager::getInstancePtr()->getEditorPageManager()->getNotebook()->Freeze();
-        page = new MtrlEditorPage(Manager::getInstancePtr()->getEditorPageManager()->getNotebook(), 
-            this, mtrl);
-        Manager::getInstancePtr()->getEditorPageManager()->addEditorPage(page);
-        Manager::getInstancePtr()->getEditorPageManager()->getNotebook()->Thaw();
+        epm->getNotebook()->Freeze();
+        page = new MtrlEditorPage(epm->getNotebook(), this, mtrl);
+        epm->addEditorPage(page);
+        epm->getNotebook()->Thaw();
     }
     else
         page->addMaterial(mtrl);
 
-    int index = Manager::getInstancePtr()->getEditorPageManager()->getNotebook()->GetPageIndex(page);
+    int index = epm->getNotebook()->GetPageIndex(page);
 
     if (index != -1)
-        Manager::getInstancePtr()->getEditorPageManager()->getNotebook()->SetSelection(index);
+        epm->getNotebook()->SetSelection(index);
 
     return page->isOk();
 }

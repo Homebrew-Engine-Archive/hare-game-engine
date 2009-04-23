@@ -67,6 +67,7 @@ namespace hare
     int ClassInfo::findSubs(std::vector<ClassInfo*>& list)
     {
         int num = 0;
+        list.clear();
 
         if (!classMap)
             return num;
@@ -75,7 +76,7 @@ namespace hare
 
         for (; it != classMap->end(); ++it)
         {
-            if (it->second->isDerivedFrom(this))
+            if (it->second->isDynamic() && it->second->isDerivedFrom(this))
                 list.push_back(it->second);
         }
 

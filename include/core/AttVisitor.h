@@ -68,7 +68,7 @@ namespace hare
             attr->attrType = Attribute::attrObject;
             attr->name = name;
             attr->data = &obj;
-            attr->classInfo = obj ? obj->getClassInfo() : cls;
+            attr->classInfo = cls;
             attr->flags = flags;
             attr->owner = owner;
             attributes.push_back(attr);

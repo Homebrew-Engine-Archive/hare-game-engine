@@ -34,8 +34,6 @@ private:
 
     virtual void beginScene()
     {
-        if (parPtr)
-            parPtr->frameMove();
     }
 
     virtual void endScene()

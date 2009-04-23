@@ -135,7 +135,15 @@ namespace hare
 		frameMove();
 
 		TextureMtrl* texMtrl = particleMtrl->getTextureMtrl();
+        
+        if (!texMtrl)
+            return;
+
 		Texture* tex = texMtrl->getTexture();
+
+        if (!tex)
+            return;
+
 		float width = (float)tex->getWidth();
 		float height= (float)tex->getHeight();
 

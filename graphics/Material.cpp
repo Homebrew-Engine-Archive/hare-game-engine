@@ -127,9 +127,7 @@ namespace hare
 
 	void TextureMtrl::postLoaded()
 	{
-		if (fileName.empty()){
-			assert(false);
-		}else{
+		if (!fileName.empty()){
 			texture = RenderSystem::getSingletonPtr()->createTexture();
 			texture->createFromFile(fileName);
 		}

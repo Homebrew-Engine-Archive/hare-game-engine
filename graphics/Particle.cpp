@@ -5,7 +5,7 @@ namespace hare
 {
 	HARE_IMPLEMENT_ABSTRACT_CLASS(Particle, Object, 0)
 	{
-        HARE_OBJ(particleMtrl, Material)
+        HARE_OBJ_F(particleMtrl, Material, propImport)
     }
 
 	Particle::Particle()

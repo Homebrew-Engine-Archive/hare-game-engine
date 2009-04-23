@@ -45,6 +45,7 @@ public:
 
 private:
     MaterialEditState::List mtrlStates;
+    MaterialEditState::Ptr editMtrl;
     Material::Ptr selectedMtrl;
 
     MtrlMIMEHandler* mime;
@@ -58,6 +59,7 @@ private:
     void onEraseBackground(wxEraseEvent& event);
     void onMouseMove(wxMouseEvent& event);
     void onMouseLeftDown(wxMouseEvent& event);
+    void onMouseLeftUp(wxMouseEvent& event);
 
     void drawMaterial(Material* mtrl, const PointF& pos);
     void selectMaterial(Material* mtrl);

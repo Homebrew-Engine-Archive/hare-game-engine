@@ -365,6 +365,16 @@
 				RelativePath="..\..\include\graphics\SimpleParticle.h">
 			</File>
 		</Filter>
+		<Filter
+			Name="Animation"
+			Filter="">
+			<File
+				RelativePath="..\..\graphics\Animation.cpp">
+			</File>
+			<File
+				RelativePath="..\..\include\graphics\Animation.h">
+			</File>
+		</Filter>
 		<File
 			RelativePath="..\..\include\graphics\Graphics.h">
 		</File>

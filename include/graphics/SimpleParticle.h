@@ -89,7 +89,6 @@ namespace hare
 		virtual ~SimpleParticle();
 
 		virtual void render();
-		virtual void frameMove();
 		virtual void fire();
 		virtual void fireAt(float x, float y);
 		virtual void move(float offsetX, float offsetY);
@@ -100,6 +99,10 @@ namespace hare
 
 		virtual void postLoaded();
 		virtual void postEdited(Attribute* attr);
+
+	protected:
+		virtual void frameMove();
+
 	protected:
 		float		age;
 		float		emissionResidue;

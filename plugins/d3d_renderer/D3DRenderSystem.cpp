@@ -7,7 +7,7 @@
 #include "D3DTypeConverter.h"
 
 
-const uint32 D3DRenderSystem::VERTEX_CAPACITY = 4096;
+const uint32 D3DRenderSystem::VERTEX_CAPACITY = 1024;
 
 const uint32 D3DRenderSystem::VERTEX_FVF = (D3DFVF_XYZ|D3DFVF_DIFFUSE|D3DFVF_TEX1);
 

@@ -6,17 +6,22 @@
 #include "RenderSystem.h"
 #include "Canvas.h"
 #include "SimpleParticle.h"
+#include "Animation.h"
+
 
 namespace hare
 {
+	Animation* anim;
+
 	SimpleSprite::SimpleSprite()
 		:shader(NULL)
 	{
 		quad.setMaterial(NULL);
+		anim = new Animation;
 	}
 	SimpleSprite::~SimpleSprite()
 	{
-
+        delete anim;
 	}
 
 	void SimpleSprite::loadFromImage(const String& filename)
@@ -52,19 +57,8 @@ namespace hare
 		rotatorMod->speed = 30.5f;
 		rotatorMod->setSubMtrl(scaleMtrl);
 
-		AnimModUnit* animModUnit;
-		animModUnit = new AnimModUnit;
-		animModUnit->frameTime = 1;
-		//animModUnit->setSubMtrl(texMtrl);
-		//animModUnit->setSubMtrl(pannerMtrl);
-		//animModUnit->setSubMtrl(scaleMtrl);
-		animModUnit->setSubMtrl(rotatorMod);
-
-		AnimMod* animModMtrl = new AnimMod;
-		animModMtrl->addFrame(animModUnit);
-
 		shader = new SimpleShader;
-		shader->setMaterial(animModMtrl);
+		shader->setMaterial(rotatorMod);
 		quad.normalize();
 		quad.setWidth((float)tex->getWidth());
 		quad.setHeight((float)tex->getHeight());
@@ -83,21 +77,40 @@ namespace hare
 		particle->fireAt(200, 200);
         //particle->saveToXml("default.particle");
 
+		AnimFrame* frame = new AnimFrame;
+		frame->frameTime = 1;
+		frame->setMaterial(shader);
+        anim->addFrame(frame);
+
+		frame = new AnimFrame;
+		frame->frameTime = 2;
+
+		tex = RenderSystem::getSingletonPtr()->createTexture();
+		tex->createFromFile("logo.png");
+		texMtrl = new TextureMtrl;
+		texMtrl->setTexture(tex);
+
+		frame->setMaterial(texMtrl);
+        anim->addFrame(frame);
+
+		anim->moveTo(300, 500);
+
 	}
 
 	void SimpleSprite::beginScene()
 	{
-		shader->getMaterial()->frameMove();
-		particle->frameMove();
+		
 	}
 
 	void SimpleSprite::renderScene()
 	{
 		RenderTarget* target = RenderSystem::getSingletonPtr()->getRenderTarget();
 
+        shader->getMaterial()->frameMove();
 		RenderSystem::getSingletonPtr()->render(&quad);
 		particle->render();
 
+		anim->render();
 		/*Texture* tex;
 		tex = RenderSystem::getSingletonPtr()->createTexture();
 		tex->create(256, 256, HPF_A8R8G8B8, true);

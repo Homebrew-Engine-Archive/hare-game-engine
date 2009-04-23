@@ -122,6 +122,9 @@
 			<File
 				RelativePath="..\..\plugins\gl_renderer\GLTypeConverter.cpp">
 			</File>
+			<File
+				RelativePath="..\..\plugins\gl_renderer\GLVertexBufferManager.cpp">
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -141,6 +144,9 @@
 			</File>
 			<File
 				RelativePath="..\..\plugins\gl_renderer\GLTypeConverter.h">
+			</File>
+			<File
+				RelativePath="..\..\plugins\gl_renderer\GLVertexBufferManager.h">
 			</File>
 		</Filter>
 		<Filter

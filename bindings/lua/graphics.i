@@ -186,7 +186,6 @@ public:
 	virtual ~Particle();
 
 	virtual void render() = 0;
-	virtual void frameMove() = 0;
 	virtual void fire() = 0;
 	virtual void fireAt(float x, float y) = 0;
 	virtual void move(float offsetX, float offsetY) = 0;
@@ -197,3 +196,31 @@ public:
 	virtual PointF getPosition();
 	virtual void setPosition(float x, float y);
 };
+
+class AnimFrame : public Object
+{
+public:
+    AnimFrame();
+    virtual ~AnimFrame();
+    
+    void setMaterial(Material* m);
+    Material* getMaterial();
+
+public:
+    float frameTime;
+    RectF rectUV;
+};
+
+class Animation : public Object
+{
+public:
+    Animation();
+    virtual ~Animation();
+
+    void addFrame(AnimFrame* frame);
+    void render();
+    void move(float dx, float dy);
+    void moveTo(float x, float y);
+
+};
+

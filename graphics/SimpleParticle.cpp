@@ -132,6 +132,8 @@ namespace hare
 
 	void SimpleParticle::render()
 	{
+		frameMove();
+
 		TextureMtrl* texMtrl = particleMtrl->getTextureMtrl();
 		Texture* tex = texMtrl->getTexture();
 		float width = (float)tex->getWidth();

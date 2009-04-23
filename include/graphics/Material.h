@@ -41,7 +41,7 @@ namespace hare
 		};
 
 		TextureStage();
-		~TextureStage(){}
+		virtual ~TextureStage(){}
 
 		ColorAlphaBlendOperation ColorBlendOP;
 		ColorAlphaBlendArgument  ColorBlendArg1;
@@ -243,54 +243,6 @@ namespace hare
 	protected:
 		float		startTime;
 
-	};
-
-	//动画材质修改器
-
-	//动画材质修改器单元
-	class GRAPHICS_API AnimModUnit : public WrapperMtrl
-	{
-		HARE_DECLARE_DYNAMIC_CLASS(AnimModUnit)
-	public:
-		AnimModUnit();
-		virtual ~AnimModUnit();
-
-		virtual void frameMove();
-	public:
-		float frameTime;
-		RectF rectUV;
-		bool  bUseUV;
-	};
-
-
-	class GRAPHICS_API AnimMod : public WrapperMtrl
-	{
-		HARE_DECLARE_DYNAMIC_CLASS(AnimMod)
-	public:
-		AnimMod();
-		virtual ~AnimMod();
-
-		virtual void frameMove();
-
-		void addFrame(AnimModUnit* animModUnit);
-
-	public:
-		AnimModUnit::Array animMtrlList;
-		int curAnimMtrlID;
-
-	};
-
-
-
-	class GRAPHICS_API AnimMtrl : public WrapperMtrl
-	{
-		HARE_DECLARE_DYNAMIC_CLASS(AnimMtrl)
-	public:
-		AnimMtrl();
-		virtual ~AnimMtrl();
-
-		virtual void frameMove();
-	public:
 	};
 
 

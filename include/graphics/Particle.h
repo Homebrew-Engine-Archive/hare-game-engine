@@ -13,7 +13,6 @@ namespace hare
 		virtual ~Particle();
 
 		virtual void render() = 0;
-		virtual void frameMove() = 0;
 		virtual void fire() = 0;
 		virtual void fireAt(float x, float y) = 0;
 		virtual void move(float offsetX, float offsetY) = 0;
@@ -24,6 +23,8 @@ namespace hare
 		virtual PointF getPosition();
 		virtual void   setPosition(float x, float y);
 		void   setMaterial(Material* mtrl);
+	protected:
+		virtual void frameMove() = 0;
 
 	protected:
 		Vector2       location;

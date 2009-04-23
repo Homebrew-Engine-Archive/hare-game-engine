@@ -27,5 +27,6 @@
 #include "Canvas.h"
 #include "Font.h"
 #include "TextManager.h"
+#include "Animation.h"
 
 #endif

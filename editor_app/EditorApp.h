@@ -26,10 +26,6 @@ private:
     wxLocale locale;
 
     void OnIdle(wxIdleEvent& event);
-    void OnUnhandledException()
-    {
-        __asm {int 3}
-    }
 
     DECLARE_EVENT_TABLE();
 };

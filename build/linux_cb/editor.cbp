@@ -51,8 +51,9 @@
 				<Option type="0" />
 				<Option compiler="gcc" />
 				<Linker>
-					<Add library="editor" />
 					<Add library="core" />
+					<Add library="editor" />
+					<Add library="graphics" />
 					<Add library="wxScintilla" />
 					<Add library="wxPropGrid" />
 				</Linker>
@@ -547,6 +548,8 @@
 			<Option target="editor_app" />
 		</Unit>
 		<Unit filename="../../editor_app/PCH.h">
+			<Option compile="1" />
+			<Option weight="0" />
 			<Option target="editor_app" />
 		</Unit>
 		<Unit filename="../../include/editor/CompilerPlugin.h">

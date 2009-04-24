@@ -33,9 +33,6 @@ void GLRenderSystem::beginFrame()
 
 void GLRenderSystem::render()
 {
-	//if (PrimType == GL_LINES)
-	//	glDisable(GL_TEXTURE_2D);
-
 	if (GLVertexBufferManager::getSingletonPtr()->getArrayCount() > 0){
 		glEnableClientState(GL_VERTEX_ARRAY);
 		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
@@ -169,59 +166,7 @@ void GLRenderSystem::render(RenderUnit* operation)
 
 	}
 
-	//if (!operation)
-	//	return ;
-
-	//ShaderParams tmpShaderParams;
-	//TextureStage tmpTextureStage;
-	//GLTexture*   texture   = NULL;
-	//Matrix4      tmpTexMat = Matrix4::IDENTITY;
-
-	//Material* mtrl = operation->getMaterial();
-	//if (mtrl){
-	//	Shader* shader = mtrl->getShader();
-
-	//	if (shader){
-	//		tmpShaderParams = shader->getShaderParams();
-	//	}
-
-	//	TextureMtrl* textureMtrl = mtrl->getTextureMtrl();
-	//	if (textureMtrl){
-
-	//		tmpTexMat = textureMtrl->texMat;
-
-	//		texture = (GLTexture*)textureMtrl->getTexture();
-	//		if (!texture){
-	//			assert(false);
-	//		}
-	//	}
-	//}
-
-	//if (texture){
-	//	glEnable(GL_TEXTURE_2D);
-
-	//	glBindTexture(GL_TEXTURE_2D, texture->getGLTexture());
-
-	//	setShaderParams(tmpShaderParams);
-
-	//	setTextureStage(tmpTextureStage);
-	//}else{
-	//	glDisable(GL_TEXTURE_2D);
-	//}
-
-	//GLfloat gl_matrix[16];
-	//makeGLMatrix(gl_matrix, tmpTexMat);
-
-	//glMatrixMode(GL_TEXTURE);
-	//glLoadMatrixf(gl_matrix);
-
 	GLVertexBufferManager::getSingletonPtr()->writeBuffer(operation->getBuffer(), operation->getVertexCount());
-
-	//PrimType = GLTypeConverter::toGLPrimtiveType(operation->getOperationType());
-
-    //render();
-
-	//writeBuffer(GLTypeConverter::toGLPrimtiveType(operation->getOperationType()), operation->getBuffer(), operation->getVertexCount());
 }
 
 void GLRenderSystem::endFrame()

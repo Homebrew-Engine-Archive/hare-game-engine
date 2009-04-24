@@ -34,25 +34,9 @@ void GLRenderSystem::beginFrame()
 void GLRenderSystem::render()
 {
 	if (GLVertexBufferManager::getSingletonPtr()->getArrayCount() > 0){
-
         GLVertexBufferManager::getSingletonPtr()->lock();
-		//glBindBufferARB(GL_ARRAY_BUFFER_ARB, GLVertexBufferManager::getSingletonPtr()->getVertexVBO());
-		//glVertexPointer(3, GL_FLOAT, 0, NULL);		
-		//glBindBufferARB(GL_ARRAY_BUFFER_ARB, GLVertexBufferManager::getSingletonPtr()->getTexCoordVBO());
-		//glTexCoordPointer(2, GL_FLOAT, 0, NULL);
-		//glBindBufferARB(GL_ARRAY_BUFFER_ARB, GLVertexBufferManager::getSingletonPtr()->getColorVBO());
-		//glColorPointer(4, GL_UNSIGNED_BYTE, 0, NULL);
-
-
-		//glVertexPointer(3, GL_FLOAT, 0, GLVertexBufferManager::getSingletonPtr()->getVertexArray());		
-		//glTexCoordPointer(2, GL_FLOAT, 0, GLVertexBufferManager::getSingletonPtr()->getTexCoordArray());
-		//glColorPointer(4, GL_UNSIGNED_BYTE, 0, GLVertexBufferManager::getSingletonPtr()->getColorArray());
-
-
-
 		glDrawArrays(PrimType, 0, GLVertexBufferManager::getSingletonPtr()->getArrayCount());
         GLVertexBufferManager::getSingletonPtr()->unlock();
-	
 	}
 }
 

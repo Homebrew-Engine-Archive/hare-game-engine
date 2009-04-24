@@ -80,13 +80,13 @@ void GLVertexBufferManager::lock()
 	glEnableClientState(GL_COLOR_ARRAY);
 
 	glBindBufferARB(GL_ARRAY_BUFFER_ARB, VBOVertex);
-	glBufferDataARB(GL_ARRAY_BUFFER_ARB, arrayCount * 3 * sizeof(float), vertexArray, GL_STREAM_DRAW_ARB);
+	glBufferDataARB(GL_ARRAY_BUFFER_ARB, arrayCount * 3 * sizeof(float), vertexArray, GL_STATIC_DRAW_ARB);
 	glVertexPointer(3, GL_FLOAT, 0, NULL);		
 	glBindBufferARB(GL_ARRAY_BUFFER_ARB, VBOTexCoord );
-	glBufferDataARB(GL_ARRAY_BUFFER_ARB, arrayCount * 2 * sizeof(float), texCoordArray, GL_STREAM_DRAW_ARB);
+	glBufferDataARB(GL_ARRAY_BUFFER_ARB, arrayCount * 2 * sizeof(float), texCoordArray, GL_STATIC_DRAW_ARB);
 	glTexCoordPointer(2, GL_FLOAT, 0, NULL);	
 	glBindBufferARB(GL_ARRAY_BUFFER_ARB, VBOColor);
-	glBufferDataARB(GL_ARRAY_BUFFER_ARB, arrayCount * 4 * sizeof(uint8), colorArray, GL_STREAM_DRAW_ARB);
+	glBufferDataARB(GL_ARRAY_BUFFER_ARB, arrayCount * 4 * sizeof(uint8), colorArray, GL_STATIC_DRAW_ARB);
 	glColorPointer(4, GL_UNSIGNED_BYTE, 0, NULL);
 }
 

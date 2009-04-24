@@ -24,14 +24,14 @@ public:
     uint32 getVertexVBO();
 	uint32 getTexCoordVBO();
 	uint32 getColorVBO();
+
+	void lock();
+	void unlock();
 	
 protected:
-	//float vertexArray[VERTEX_BUFFER_COUNT * 3];
-	//float texCoordArray[VERTEX_BUFFER_COUNT * 2];
-	//uint8 colorArray[VERTEX_BUFFER_COUNT * 4];
-	float *vertexArray;
-	float *texCoordArray;
-	uint8 *colorArray;
+	float vertexArray[VERTEX_BUFFER_COUNT * 3];
+	float texCoordArray[VERTEX_BUFFER_COUNT * 2];
+	uint8 colorArray[VERTEX_BUFFER_COUNT * 4];
 
 	uint32 arrayCount;
 

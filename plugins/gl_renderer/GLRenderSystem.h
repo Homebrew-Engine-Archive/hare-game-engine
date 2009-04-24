@@ -26,7 +26,6 @@ public:
 	void initalizeParam();
 protected:
     void makeGLMatrix(GLfloat gl_matrix[16], const Matrix4& mat);
-    void writeBuffer(GLenum type, Vertex* buffer, uint32 count);
 
 protected:
 	ShaderParams curShaderParams;

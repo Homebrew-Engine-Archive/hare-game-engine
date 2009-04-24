@@ -41,35 +41,16 @@ GLVertexBufferManager::GLVertexBufferManager()
     ,VBOTexCoord(0)
     ,VBOColor(0)
 {
-	// NB: GL_STATIC_DRAW_ARB and GL_STREAM_DRAW_ARB may use video memory
-	//     GL_DYNAMIC_DRAW_ARB may use AGP memory
-
-	vertexArray   = new float[VERTEX_BUFFER_COUNT * 3];
-    texCoordArray = new float[VERTEX_BUFFER_COUNT * 2];
-	colorArray    = new uint8[VERTEX_BUFFER_COUNT * 4];
-
-	//glGenBuffersARB(1, &VBOVertex);
-	//glBindBufferARB(GL_ARRAY_BUFFER_ARB, VBOVertex);
-	//glBufferDataARB(GL_ARRAY_BUFFER_ARB, VERTEX_BUFFER_COUNT * 3 * sizeof(float), vertexArray, GL_STREAM_DRAW_ARB);
-
-	//glGenBuffersARB(1, &VBOTexCoord);
-	//glBindBufferARB(GL_ARRAY_BUFFER_ARB, VBOTexCoord );
-	//glBufferDataARB(GL_ARRAY_BUFFER_ARB, VERTEX_BUFFER_COUNT * 2 * sizeof(float), texCoordArray, GL_STREAM_DRAW_ARB);
-
-	//glGenBuffersARB(1, &VBOColor);
-	//glBindBufferARB(GL_ARRAY_BUFFER_ARB, VBOColor);
-	//glBufferDataARB(GL_ARRAY_BUFFER_ARB, VERTEX_BUFFER_COUNT * 4 * sizeof(uint8), colorArray, GL_STREAM_DRAW_ARB);
-
+	glGenBuffersARB(1, &VBOVertex);
+	glGenBuffersARB(1, &VBOTexCoord);
+	glGenBuffersARB(1, &VBOColor);
 }
 
 GLVertexBufferManager::~GLVertexBufferManager()
 {
-    //glDeleteBuffersARB(1, &VBOVertex);
-    //glDeleteBuffersARB(1, &VBOTexCoord);
-    //glDeleteBuffersARB(1, &VBOColor);
-	delete [] vertexArray;
-	delete [] texCoordArray;
-	delete [] colorArray;
+    glDeleteBuffersARB(1, &VBOVertex);
+    glDeleteBuffersARB(1, &VBOTexCoord);
+    glDeleteBuffersARB(1, &VBOColor);
 }
 
 void GLVertexBufferManager::writeBuffer(Vertex* buffer, uint32 count)
@@ -88,6 +69,34 @@ void GLVertexBufferManager::writeBuffer(Vertex* buffer, uint32 count)
         colorArray[arrayCount * 4 + 3] = (uint8)(255 * color.A);
 		arrayCount++;
 	}
+}
+
+void GLVertexBufferManager::lock()
+{
+	// NB: GL_STATIC_DRAW_ARB and GL_STREAM_DRAW_ARB may use video memory
+	//     GL_DYNAMIC_DRAW_ARB may use AGP memory
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+	glEnableClientState(GL_COLOR_ARRAY);
+
+	glBindBufferARB(GL_ARRAY_BUFFER_ARB, VBOVertex);
+	glBufferDataARB(GL_ARRAY_BUFFER_ARB, arrayCount * 3 * sizeof(float), vertexArray, GL_STREAM_DRAW_ARB);
+	glVertexPointer(3, GL_FLOAT, 0, NULL);		
+	glBindBufferARB(GL_ARRAY_BUFFER_ARB, VBOTexCoord );
+	glBufferDataARB(GL_ARRAY_BUFFER_ARB, arrayCount * 2 * sizeof(float), texCoordArray, GL_STREAM_DRAW_ARB);
+	glTexCoordPointer(2, GL_FLOAT, 0, NULL);	
+	glBindBufferARB(GL_ARRAY_BUFFER_ARB, VBOColor);
+	glBufferDataARB(GL_ARRAY_BUFFER_ARB, arrayCount * 4 * sizeof(uint8), colorArray, GL_STREAM_DRAW_ARB);
+	glColorPointer(4, GL_UNSIGNED_BYTE, 0, NULL);
+}
+
+void GLVertexBufferManager::unlock()
+{
+	glDisableClientState(GL_VERTEX_ARRAY);				
+	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+	glDisableClientState(GL_COLOR_ARRAY);
+
+    arrayCount = 0;
 }
 
 float* GLVertexBufferManager::getVertexArray()

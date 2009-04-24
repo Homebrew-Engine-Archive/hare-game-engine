@@ -34,10 +34,8 @@ void GLRenderSystem::beginFrame()
 void GLRenderSystem::render()
 {
 	if (GLVertexBufferManager::getSingletonPtr()->getArrayCount() > 0){
-		glEnableClientState(GL_VERTEX_ARRAY);
-		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-		glEnableClientState(GL_COLOR_ARRAY);
 
+        GLVertexBufferManager::getSingletonPtr()->lock();
 		//glBindBufferARB(GL_ARRAY_BUFFER_ARB, GLVertexBufferManager::getSingletonPtr()->getVertexVBO());
 		//glVertexPointer(3, GL_FLOAT, 0, NULL);		
 		//glBindBufferARB(GL_ARRAY_BUFFER_ARB, GLVertexBufferManager::getSingletonPtr()->getTexCoordVBO());
@@ -46,37 +44,16 @@ void GLRenderSystem::render()
 		//glColorPointer(4, GL_UNSIGNED_BYTE, 0, NULL);
 
 
-		glVertexPointer(3, GL_FLOAT, 0, GLVertexBufferManager::getSingletonPtr()->getVertexArray());		
-		glTexCoordPointer(2, GL_FLOAT, 0, GLVertexBufferManager::getSingletonPtr()->getTexCoordArray());
-		glColorPointer(4, GL_UNSIGNED_BYTE, 0, GLVertexBufferManager::getSingletonPtr()->getColorArray());
+		//glVertexPointer(3, GL_FLOAT, 0, GLVertexBufferManager::getSingletonPtr()->getVertexArray());		
+		//glTexCoordPointer(2, GL_FLOAT, 0, GLVertexBufferManager::getSingletonPtr()->getTexCoordArray());
+		//glColorPointer(4, GL_UNSIGNED_BYTE, 0, GLVertexBufferManager::getSingletonPtr()->getColorArray());
 
 
 
 		glDrawArrays(PrimType, 0, GLVertexBufferManager::getSingletonPtr()->getArrayCount());
-
-		glDisableClientState(GL_VERTEX_ARRAY);				
-		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-		glDisableClientState(GL_COLOR_ARRAY);	
-
-        GLVertexBufferManager::getSingletonPtr()->arrayCount = 0;
+        GLVertexBufferManager::getSingletonPtr()->unlock();
+	
 	}
-}
-
-void GLRenderSystem::writeBuffer(GLenum type, Vertex* buffer, uint32 count)
-{
-	Color   color;
-	uint32  numPerUnit = GLTypeConverter::countByPrimtType(type);
-
-	glBegin(type);
-	for (uint32 i = 0; i < count; i += numPerUnit){
-		for (uint32 j = 0; j < numPerUnit; ++j){
-			color = buffer[i + j].diffuse;
-			glColor4f(color.R, color.G, color.B, color.A);
-			glTexCoord2f(buffer[i + j].u, buffer[i + j].v);
-			glVertex3f(buffer[i + j].x, buffer[i + j].y, buffer[i + j].z);
-		}
-	}
-	glEnd();
 }
 
 void GLRenderSystem::render(RenderUnit* operation)

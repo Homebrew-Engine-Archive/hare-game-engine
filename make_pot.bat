@@ -1,6 +1,6 @@
 @echo off
 
-@i18n\tool\wxrc.exe lib\editor_data\resources\*.xrc -g -o editor\resource_xrc.cpp
+@i18n\tool\wxrc.exe lib\resources\*.xrc -g -o editor\resource_xrc.cpp
 
 @i18n\tool\bin\xgettext.exe -C -n -k_ -o    i18n\editor.pot editor\*.cpp
 @i18n\tool\bin\xgettext.exe -C -n -k_ -j -o i18n\editor.pot include\editor\*.h

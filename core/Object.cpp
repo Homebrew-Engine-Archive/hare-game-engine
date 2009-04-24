@@ -143,7 +143,7 @@ namespace hare
         Object *obj = 0;
 
         TiXmlDocument doc;
-        static char sBuffer[4096];
+        static char sBuffer[40960];
 
         FileSystem* fs = FileSystem::getSingletonPtr();
         FileHandle fh = fs->openFile(url, FM_Read);
@@ -154,7 +154,7 @@ namespace hare
             if (size > 0)
             {
                 char* buffer = 0;
-                if (size >= 4096)
+                if (size >= 40960)
                     buffer = new char[size + 1];
                 else
                     buffer = sBuffer;
@@ -180,7 +180,11 @@ namespace hare
             else
                 fs->closeFile(fh);
         }
-        
+        else
+        {
+            //HARE_EXCEPT(Exception::ERR_FILE_NOT_FOUND, "Cannot open file : " + url, "Object::loadFromXml()");
+        }
+
         return obj;
     }
 
@@ -220,6 +224,10 @@ namespace hare
             }
             else
                 fs->closeFile(fh);
+        }
+        else
+        {
+            //HARE_EXCEPT(Exception::ERR_FILE_NOT_FOUND, "Cannot open file : " + url, "Object::loadFromXml()");
         }
 
         return obj;

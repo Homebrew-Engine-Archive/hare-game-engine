@@ -99,8 +99,7 @@ namespace hare
             MAKE_OptionColour("No matching brace highlight",
                 35, MAKE_RGB(255,0,0),      MAKE_RGB(255,0,0),     1, 0, 0);
 
-            wxString fileName = Manager::getInstancePtr()->convToEditorDataDir(wxT("lexers/lexer_lua.xml"));
-            Editor_saveToXml(opt, fileName);
+            opt->saveToXml("/editor/lexers/lexer_lua.xml");
         }
 
         // make lexer_xml.xml for xml
@@ -125,8 +124,7 @@ namespace hare
             MAKE_OptionColour("XML End",         13, MAKE_RGB(128,0,128),MAKE_RGB(255,255,255), 0, 0, 0);
             MAKE_OptionColour("CDATA Section",   17, MAKE_RGB(0,0,0),    MAKE_RGB(255,255,255), 0, 1, 0);
 
-            wxString fileName = Manager::getInstancePtr()->convToEditorDataDir(wxT("lexers/lexer_xml.xml"));
-            Editor_saveToXml(opt, fileName);
+            opt->saveToXml("/editor/lexers/lexer_xml.xml");
         }
 #endif
         load();
@@ -275,14 +273,13 @@ namespace hare
     {
         for (OptionSetsMap::iterator it = setsMap.begin(); it != setsMap.end(); ++it)
         {
-            wxString fileName = Manager::getInstancePtr()->convToEditorDataDir(
-                wxT("lexers/lexer_") + wxString::FromUTF8(it->second->lang.c_str()) + wxT(".xml"));
-            Editor_saveToXml(it->second, fileName);
+            it->second->saveToXml("/editor/lexers/lexer_" + it->second->lang + ".xml");
         }
     }
 
     bool TextEditorStyle::reset(HighlightLanguage lang)
     {
+        assert(false);
         return true;
     }
 
@@ -290,15 +287,17 @@ namespace hare
     {
         wxDir dir;
         wxString filename;
-        wxString fullPath = Manager::getInstancePtr()->convToEditorDataDir(wxT("lexers/"));
+        static const String path = "/editor/lexers/";
+
+        wxString fullPath = Manager::getInstancePtr()->getAppDir() + wxT("/editor_data/editor/lexers/");
 
         if (dir.Open(fullPath))
         {
             bool ok = dir.GetFirst(&filename, wxT("lexer_*.xml"), wxDIR_FILES);
             while (ok)
             {
-                wxString name = fullPath + filename;
-                OptionSet::Ptr opt = (OptionSet*)Editor_importObject(name);
+                String name = path + filename.ToUTF8().data();
+                OptionSet::Ptr opt = (OptionSet*)Object::importObject(name);
                 if (opt)
                 {
                     wxString name = wxString::FromUTF8(opt->lang.c_str());

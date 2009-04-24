@@ -46,7 +46,7 @@ void EditorApp::InitLocale()
         {
             locale.Init(info->Language);
 
-            wxString fullPath = Manager::getInstancePtr()->convToEditorDataDir(wxT("locale/"));
+            wxString fullPath = Manager::getInstancePtr()->getAppDir() + wxT("/locale/");
             wxLocale::AddCatalogLookupPathPrefix(fullPath);
             fullPath += info->CanonicalName + wxT("/LC_MESSAGES/");
 
@@ -78,10 +78,33 @@ bool EditorApp::OnInit()
     wxString argv0 = argv[0];
     core_init(argv0.ToUTF8().data());
 
+    FileSystem* fs = FileSystem::getSingletonPtr();
+
+    // -------------------------------------------------------------------
+    // Read resource config file
+    // -------------------------------------------------------------------
+    ConfigFile resource;
+    resource.load("resource.cfg");
+
+    // NB: ScriptDir will not be added to search path in editor,
+    //     it's used for Workspace.
+    String scriptDir = resource.getSetting("ScriptDir");
+    wxString workspaceDir = wxString::FromUTF8(scriptDir.c_str());
+
+    // NB: SearchPath is same as WriteDir, so we can save edited result. 
+    String writeDir = resource.getSetting("WriteDir");
+    fs->addSearchPath(writeDir);
+    fs->setWriteDir(writeDir);
+
+    // -------------------------------------------------------------------
+    // Read plugin config file
+    // -------------------------------------------------------------------
     ConfigFile plugin;
     plugin.load("plugin.cfg");
+
     String pluginDir = plugin.getSetting("PluginDir");
     StringVector plugins = plugin.getMultiSetting("Plugin");
+    
     for (size_t i = 0; i < plugins.size(); ++i)
     {
         getHareApp()->loadPlugin(pluginDir + plugins[i]);
@@ -94,7 +117,7 @@ bool EditorApp::OnInit()
 
     InitLocale();
 
-    EditorFrame* frame = new EditorFrame(0, wxT("Editor"));
+    EditorFrame* frame = new EditorFrame(0, wxT("Editor"), workspaceDir);
     frame->Show(true);
 
     return true;

@@ -68,14 +68,13 @@ UVEditorPage::UVEditorPage(wxWindow* parent)
     list = XRCCTRL(*this, "idListItems", wxListBox);
 
     wxImage img;
-    wxString fileName = Manager::getInstancePtr()->convToEditorDataDir(wxT("resources/drag.png"));
-    img.LoadFile(fileName);
+    wxString fullPath = Manager::getInstancePtr()->getAppDir() + wxT("/resources/");
+    img.LoadFile(fullPath + wxT("drag.png"));
     dragCursor = new wxCursor(img);
 
     if (!gridMtrl)
     {
-        wxString fileName = Manager::getInstancePtr()->convToEditorDataDir(wxT("/default/grid.material"));
-        gridMtrl = (Material*)Editor_importObject(fileName);
+        gridMtrl = (Material*)Object::importObject("grid.material");
     }
 
     Layout();

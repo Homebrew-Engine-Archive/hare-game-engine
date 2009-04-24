@@ -75,7 +75,6 @@ namespace hare
 		particle = new SimpleParticle;
 		particle->setMaterial(particleMtrl);
 		particle->fireAt(200, 200);
-        //particle->saveToXml("default.particle");
 
 		AnimFrame* frame = new AnimFrame;
 		frame->frameTime = 1;

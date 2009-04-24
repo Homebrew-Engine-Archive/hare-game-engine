@@ -219,9 +219,8 @@ void LuaDebugger::onAttach()
         event.window = localWindow;
         Manager::getInstancePtr()->processEvent(event);
     }
-    
-    wxString fileName = Manager::getInstancePtr()->convToEditorDataDir(wxT("lua_debugger.xml"));
-    config = (LuaDebuggerConfig*)Editor_importObject(fileName);
+
+    config = (LuaDebuggerConfig*)Object::importObject("/editor/lua_debugger.xml");
     if (!config)
         config = new LuaDebuggerConfig();
 
@@ -274,10 +273,7 @@ void LuaDebugger::onAppBeforeShutdown(EditorEvent& event)
     while (wxTheApp->Pending() && wxTheApp->Dispatch());
 
     if (config)
-    {
-        wxString fileName = Manager::getInstancePtr()->convToEditorDataDir(wxT("lua_debugger.xml"));
-        Editor_saveToXml(config, fileName);
-    }
+        config->saveToXml("/editor/lua_debugger.xml");
 }
 
 bool LuaDebugger::buildMenuBar(wxMenuBar* menuBar)
@@ -290,7 +286,7 @@ bool LuaDebugger::buildMenuBar(wxMenuBar* menuBar)
 
 bool LuaDebugger::buildToolBar(wxAuiToolBar* toolBar)
 {
-    wxString fullPath = Manager::getInstancePtr()->convToEditorDataDir(wxT("resources/"));
+    wxString fullPath = Manager::getInstancePtr()->getAppDir() + wxT("/resources/");
     wxBitmap bmp;
 
     bmp.LoadFile(fullPath + wxT("start.png"), wxBITMAP_TYPE_PNG);

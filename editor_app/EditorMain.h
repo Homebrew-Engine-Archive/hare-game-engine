@@ -21,7 +21,7 @@ WX_DECLARE_HASH_MAP(int, wxAuiToolBar*, wxIntegerHash, wxIntegerEqual, PluginToo
 class EditorFrame: public wxFrame
 {
 public:
-    EditorFrame(wxFrame *frame, const wxString& title);
+    EditorFrame(wxFrame *frame, const wxString& title, const wxString& scriptDir);
    ~EditorFrame();
 private:
     wxAuiManager layoutManager;

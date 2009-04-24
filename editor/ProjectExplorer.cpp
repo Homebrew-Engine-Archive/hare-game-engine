@@ -220,8 +220,7 @@ namespace hare
         if (workspace)
         {
             updateProjectFiles();
-            wxString fileName = Manager::getInstancePtr()->convToEditorDataDir(wxT("workspace.xml"));
-            Editor_saveToXml(workspace, fileName);
+            workspace->saveToXml("/editor/workspace.xml");
         }
     }
 
@@ -264,7 +263,7 @@ namespace hare
             wxT("file.png"),
         };
 
-        wxString fullPath = Manager::getInstancePtr()->convToEditorDataDir(wxT("resources/"));
+        wxString fullPath = Manager::getInstancePtr()->getAppDir() + wxT("/resources/");
         imageList = new wxImageList(16, 16);
 
         wxBitmap bmp;

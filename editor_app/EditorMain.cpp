@@ -123,7 +123,7 @@ BEGIN_EVENT_TABLE(EditorFrame, wxFrame)
     EVT_AUITOOLBAR_TOOL_DROPDOWN(idFileNew, EditorFrame::onToolbarDropDownCreate)
 END_EVENT_TABLE()
 
-EditorFrame::EditorFrame(wxFrame *frame, const wxString& title)
+EditorFrame::EditorFrame(wxFrame *frame, const wxString& title, const wxString& scriptDir)
  : wxFrame(frame, wxID_ANY, title, wxDefaultPosition, wxSize(800, 600), wxDEFAULT_FRAME_STYLE | wxNO_FULL_REPAINT_ON_RESIZE), mainToolBar(0)
 {
 #ifdef __WXMSW__
@@ -131,21 +131,6 @@ EditorFrame::EditorFrame(wxFrame *frame, const wxString& title)
 #else
     SetIcon(wxIcon(editor));
 #endif // __WXMSW__
-
-    FileSystem* fs = FileSystem::getSingletonPtr();
-    
-    // Read resource config file
-    ConfigFile resource;
-    resource.load("resource.cfg");
-    
-    // NB: ScriptDir will not be added to search path in editor,
-    //     it's used for Workspace.
-    String scriptDir = resource.getSetting("ScriptDir");
-    
-    // NB: SearchPath is same as WriteDir, so we can save edited result. 
-    String writeDir = resource.getSetting("WriteDir");
-    fs->addSearchPath(writeDir);
-    fs->setWriteDir(writeDir);
 
 #if HARE_PLATFORM == HARE_PLATFORM_WIN32
     // create canvas and hide it, we mush have a window to init graphics moudle
@@ -166,8 +151,7 @@ EditorFrame::EditorFrame(wxFrame *frame, const wxString& title)
 
     createIDE();
 
-    wxString dir = wxString::FromUTF8(scriptDir.c_str());
-    Manager::getInstancePtr()->getExplorerManager()->getProjectExplorer()->loadWorkspace(dir);
+    Manager::getInstancePtr()->getExplorerManager()->getProjectExplorer()->loadWorkspace(scriptDir);
 
     wxString layout = Manager::getInstancePtr()->getConfigManager()->getAppConfigFile()->getLayout();
 
@@ -227,8 +211,8 @@ void EditorFrame::createIDE()
         FloatingSize(bestSize).MinSize(wxSize(50, 100)).Left().CloseButton(true).MaximizeButton(true));
 
     findReplaceDlg = new FindReplaceDialog(this);
-    
-    wxString pluginPath = Manager::getInstancePtr()->convToEditorDataDir(wxT("plugins/"));
+
+    wxString pluginPath = Manager::getInstancePtr()->getAppDir() + wxT("/editor_plugins/");
 
     Manager::getInstancePtr()->getPluginManager()->scanForPlugins(pluginPath);
     Manager::getInstancePtr()->getPluginManager()->loadAllPlugins();
@@ -241,8 +225,8 @@ void EditorFrame::createIDE()
 
 void EditorFrame::preLoadXRC()
 {
-    wxString fullPath = Manager::getInstancePtr()->convToEditorDataDir(wxT("resources/"));
-    wxXmlResource::Get()->Load(fullPath + wxT("/*.xrc"));
+    wxString fullPath = Manager::getInstancePtr()->getAppDir() + wxT("/resources/");
+    wxXmlResource::Get()->Load(fullPath + wxT("*.xrc"));
 }
 
 void EditorFrame::createMenuBar()
@@ -257,7 +241,7 @@ void EditorFrame::createToolBar()
         wxAUI_TB_DEFAULT_STYLE | wxAUI_TB_OVERFLOW | wxAUI_TB_HORZ_LAYOUT);
     mainToolBar->SetToolBitmapSize(wxSize(16, 16));
 
-    wxString fullPath = Manager::getInstancePtr()->convToEditorDataDir(wxT("resources/"));
+    wxString fullPath = Manager::getInstancePtr()->getAppDir() + wxT("/resources/");
     wxBitmap bmp;
 
     bmp.LoadFile(fullPath + wxT("new.png"), wxBITMAP_TYPE_PNG);

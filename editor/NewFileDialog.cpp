@@ -34,7 +34,7 @@ namespace hare
 
         wxBitmap bmp[2];
 
-        wxString fullPath = Manager::getInstancePtr()->convToEditorDataDir(wxT("resources/"));
+        wxString fullPath = Manager::getInstancePtr()->getAppDir() + wxT("/resources/");
         wxImageList* imgList = new wxImageList(16, 16);
 
         bmp[0].LoadFile(fullPath + wxT("folder_closed.png"), wxBITMAP_TYPE_PNG);

@@ -60,8 +60,6 @@ void GLTexture::upload(const Image& img, uint32 destX, uint32 destY)
 	int desWidth = std::min(img.getWidth(), width - destX);
 	int desHeight= std::min(img.getHeight(), height - destY);
 
-	glEnable(GL_TEXTURE_2D);
-
 	glBindTexture(GL_TEXTURE_2D, glTexture);
 
 	glTexSubImage2D(GL_TEXTURE_2D, 0, destX, destY, desWidth, desHeight, GLTypeConverter::toGLFormat(img.getPixelFormat()), GL_UNSIGNED_BYTE, img.getImageData());
@@ -71,7 +69,6 @@ void GLTexture::upload(const Image& img, uint32 destX, uint32 destY)
 
 	assert(ret == GL_NO_ERROR);
 #endif
-
 }
 
 void GLTexture::download(Image& img, const RectN& rc)

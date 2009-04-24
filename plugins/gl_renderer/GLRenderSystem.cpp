@@ -33,8 +33,8 @@ void GLRenderSystem::beginFrame()
 
 void GLRenderSystem::render()
 {
-	if (PrimType == GL_LINES)
-		glDisable(GL_TEXTURE_2D);
+	//if (PrimType == GL_LINES)
+	//	glDisable(GL_TEXTURE_2D);
 
 	if (GLVertexBufferManager::getSingletonPtr()->getArrayCount() > 0){
 		glEnableClientState(GL_VERTEX_ARRAY);
@@ -91,6 +91,7 @@ void GLRenderSystem::render(RenderUnit* operation)
 	bool bTextureStageChange = false; 
 	bool bRenderTextureChange= false; 
 	Matrix4 tmpTexMat;
+
 
 
 	Material* mtrl = operation->getMaterial();
@@ -164,6 +165,8 @@ void GLRenderSystem::render(RenderUnit* operation)
 		makeGLMatrix(gl_matrix, texMat);
 		glMatrixMode(GL_TEXTURE);
 		glLoadMatrixf(gl_matrix);
+
+
 	}
 
 	//if (!operation)
@@ -219,7 +222,6 @@ void GLRenderSystem::render(RenderUnit* operation)
     //render();
 
 	//writeBuffer(GLTypeConverter::toGLPrimtiveType(operation->getOperationType()), operation->getBuffer(), operation->getVertexCount());
-
 }
 
 void GLRenderSystem::endFrame()

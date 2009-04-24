@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<Object store="0" class="Workspace" version="0">
+    <projects class="object_list" number="1">
+        <item0 store="0" class="Project" version="0">
+            <projectName class="String" value="sample" />
+            <debuggerName class="String" value="" />
+            <files class="object_list" number="1">
+                <item0 store="0" class="ProjectFile" version="0">
+                    <fileName class="String" value="script.lua" />
+                    <editorOpen class="bool" value="1" />
+                    <editorPos class="int32" value="252" />
+                    <editorTopLine class="int32" value="0" />
+                    <editorTabPos class="int32" value="1" />
+                    <breakPoints class="meta_array" number="0" />
+                </item0>
+            </files>
+        </item0>
+    </projects>
+    <activeProject class="String" value="sample" />
+</Object>

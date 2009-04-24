@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<resource xmlns="http://www.wxwindows.org/wxxrc" version="2.3.0.1">
+    <object class="wxPanel" name="luaCallStack">
+        <object class="wxBoxSizer">
+            <orient>wxVERTICAL</orient>
+            <object class="sizeritem">
+                <option>1</option>
+                <flag>wxALIGN_LEFT|wxALIGN_TOP|wxEXPAND</flag>
+                <object class="wxListCtrl" name="lstLuaCallStack">
+                    <style>wxLC_REPORT|wxLC_NO_SORT_HEADER</style>
+                </object>
+            </object>
+        </object>
+    </object>
+</resource>

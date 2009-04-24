@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<Object store="0" class="Font" version="0">
+    <fontFile class="String" value="/editor/comic.ttf" />
+    <fontSize class="float" value="13.000000" />
+    <cacheBufferSize class="uint32" value="196" />
+    <resolution class="uint32" value="96" />
+</Object>

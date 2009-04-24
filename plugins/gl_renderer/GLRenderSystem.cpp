@@ -2,8 +2,11 @@
 #include "GLRenderSystem.h"
 #include "GLTypeConverter.h"
 #include "GLTexture.h"
+#include "GLVertexBufferManager.h"
 
 GLRenderSystem::GLRenderSystem()
+    :curRenderTexture(0)
+    ,PrimType(GL_QUADS)
 {
 
 }
@@ -30,24 +33,51 @@ void GLRenderSystem::beginFrame()
 
 void GLRenderSystem::render()
 {
-	
+	GLenum ret;
+	if (GLVertexBufferManager::getSingletonPtr()->getArrayCount() > 0){
+		glEnableClientState(GL_VERTEX_ARRAY);
+		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+		glEnableClientState(GL_COLOR_ARRAY);
+
+		//glBindBufferARB(GL_ARRAY_BUFFER_ARB, GLVertexBufferManager::getSingletonPtr()->getVertexVBO());
+		//glVertexPointer(3, GL_FLOAT, 0, NULL);		
+		//glBindBufferARB(GL_ARRAY_BUFFER_ARB, GLVertexBufferManager::getSingletonPtr()->getTexCoordVBO());
+		//glTexCoordPointer(2, GL_FLOAT, 0, NULL);
+		//glBindBufferARB(GL_ARRAY_BUFFER_ARB, GLVertexBufferManager::getSingletonPtr()->getColorVBO());
+		//glColorPointer(4, GL_UNSIGNED_BYTE, 0, NULL);
+
+
+		glVertexPointer(3, GL_FLOAT, 0, GLVertexBufferManager::getSingletonPtr()->getVertexArray());		
+		glTexCoordPointer(2, GL_FLOAT, 0, GLVertexBufferManager::getSingletonPtr()->getTexCoordArray());
+		glColorPointer(4, GL_UNSIGNED_BYTE, 0, GLVertexBufferManager::getSingletonPtr()->getColorArray());
+
+
+
+		glDrawArrays(PrimType, 0, GLVertexBufferManager::getSingletonPtr()->getArrayCount());
+
+		glDisableClientState(GL_VERTEX_ARRAY);				
+		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+		glDisableClientState(GL_COLOR_ARRAY);	
+
+        GLVertexBufferManager::getSingletonPtr()->arrayCount = 0;
+	}
 }
 
 void GLRenderSystem::writeBuffer(GLenum type, Vertex* buffer, uint32 count)
 {
-    Color   color;
-    uint32  numPerUnit = GLTypeConverter::countByPrimtType(type);
+	Color   color;
+	uint32  numPerUnit = GLTypeConverter::countByPrimtType(type);
 
-    glBegin(type);
-    for (uint32 i = 0; i < count; i += numPerUnit){
-        for (uint32 j = 0; j < numPerUnit; ++j){
-            color = buffer[i + j].diffuse;
-            glColor4f(color.R, color.G, color.B, color.A);
-            glTexCoord2f(buffer[i + j].u, buffer[i + j].v);
-            glVertex3f(buffer[i + j].x, buffer[i + j].y, buffer[i + j].z);
-        }
-    }
-    glEnd();
+	glBegin(type);
+	for (uint32 i = 0; i < count; i += numPerUnit){
+		for (uint32 j = 0; j < numPerUnit; ++j){
+			color = buffer[i + j].diffuse;
+			glColor4f(color.R, color.G, color.B, color.A);
+			glTexCoord2f(buffer[i + j].u, buffer[i + j].v);
+			glVertex3f(buffer[i + j].x, buffer[i + j].y, buffer[i + j].z);
+		}
+	}
+	glEnd();
 }
 
 void GLRenderSystem::render(RenderUnit* operation)
@@ -55,49 +85,87 @@ void GLRenderSystem::render(RenderUnit* operation)
     if (!operation)
         return ;
 
-    ShaderParams tmpShaderParams;
-    TextureStage tmpTextureStage;
-    GLTexture*   texture   = NULL;
-    Matrix4      tmpTexMat = Matrix4::IDENTITY;
+	bool bShaderParamsChange = false; 
+	bool bTextureStageChange = false; 
+	bool bRenderTextureChange= false; 
+	Matrix4 tmpTexMat;
 
-    Material* mtrl = operation->getMaterial();
-    if (mtrl){
-        Shader* shader = mtrl->getShader();
 
-        if (shader){
-            tmpShaderParams = shader->getShaderParams();
-        }
+	Material* mtrl = operation->getMaterial();
+	if (mtrl){
+		Shader* shader = mtrl->getShader();
+		ShaderParams tmpShaderParams;
+		if (shader){
+			tmpShaderParams = shader->getShaderParams();
+		}
 
-        TextureMtrl* textureMtrl = mtrl->getTextureMtrl();
-        if (textureMtrl){
+		if (curShaderParams != tmpShaderParams){
+			curShaderParams = tmpShaderParams;
+			bShaderParamsChange = true;
+		}
 
-            tmpTexMat = textureMtrl->texMat;
+		TextureMtrl* textureMtrl = mtrl->getTextureMtrl();
+		if (textureMtrl){
+			if (curTextureStage != textureMtrl->getTextureStage()){
+				curTextureStage = textureMtrl->getTextureStage();
+				bTextureStageChange = true;
+			}
 
-            texture = (GLTexture*)textureMtrl->getTexture();
-            if (!texture){
-               assert(false);
-            }
-        }
-    }
+			tmpTexMat = textureMtrl->texMat;
 
-    if (texture){
-		glEnable(GL_TEXTURE_2D);
+			GLTexture* texture = (GLTexture*)textureMtrl->getTexture();
+			if (texture){
+				if (curRenderTexture != texture->getGLTexture()){
+					bRenderTextureChange = true;
+					curRenderTexture = texture->getGLTexture();
+				}
+			}else{
+				assert(false);
+			}
 
-		glBindTexture(GL_TEXTURE_2D, texture->getGLTexture());
+		}else{
+			bRenderTextureChange = true;
+			curRenderTexture = 0;
+			tmpTexMat = Matrix4::IDENTITY;
+		}
+	}else{
+		bRenderTextureChange = true;
+		curRenderTexture = 0;	
+		tmpTexMat = Matrix4::IDENTITY;	
+	}
 
-		setShaderParams(tmpShaderParams);
+	if ( bRenderTextureChange || bTextureStageChange || bShaderParamsChange
+	    || PrimType != GLTypeConverter::toGLPrimtiveType(operation->getOperationType())
+        || GLVertexBufferManager::getSingletonPtr()->getArrayCount() >= VERTEX_BUFFER_COUNT - operation->getVertexCount()
+		|| texMat != tmpTexMat){
 
-        setTextureStage(tmpTextureStage);
-    }else{
-		glDisable(GL_TEXTURE_2D);
-    }
+        render();
 
-    GLfloat gl_matrix[16];
-    makeGLMatrix(gl_matrix, tmpTexMat);
+		PrimType = GLTypeConverter::toGLPrimtiveType(operation->getOperationType());
+		
+		if (bRenderTextureChange){
+			if (curRenderTexture){
+				glEnable(GL_TEXTURE_2D);
+				glBindTexture(GL_TEXTURE_2D, curRenderTexture);
 
-	glMatrixMode(GL_TEXTURE);
-    glLoadMatrixf(gl_matrix);
-    writeBuffer(GLTypeConverter::toGLPrimtiveType(operation->getOperationType()), operation->getBuffer(), operation->getVertexCount());
+			}else{
+				glDisable(GL_TEXTURE_2D);
+			}
+		}
+
+		if (bShaderParamsChange)
+			setShaderParams(curShaderParams);
+
+		if (bTextureStageChange)
+			setTextureStage(curTextureStage);
+
+		texMat = tmpTexMat;
+		makeGLMatrix(gl_matrix, texMat);
+		glMatrixMode(GL_TEXTURE);
+		glLoadMatrixf(gl_matrix);
+	}
+
+	GLVertexBufferManager::getSingletonPtr()->writeBuffer(operation->getBuffer(), operation->getVertexCount());
 }
 
 void GLRenderSystem::endFrame()
@@ -165,4 +233,14 @@ void GLRenderSystem::makeGLMatrix(GLfloat gl_matrix[16], const Matrix4& mat)
             x++;
         }
     }
+}
+
+void GLRenderSystem::initalizeParam()
+{
+	glewInit();
+	GLenum ret = glGetError();
+	glEnable(GL_TEXTURE_2D);
+	glDisable(GL_LIGHTING);
+	setShaderParams(curShaderParams);
+	setTextureStage(curTextureStage);
 }

@@ -11,17 +11,31 @@
 
 #include "GLRenderSystem.h"
 #include "GLTexture.h"
+#include "GLVertexBufferManager.h"
+
+
+
+GLVertexBufferManager* vertexBufferManager;
 
 GLSystemManager::GLSystemManager()
 {
 	renderSystem = new GLRenderSystem;
 	renderSystem->initalize();
+	vertexBufferManager = NULL;
 }
 
 GLSystemManager::~GLSystemManager()
 {
-	delete pPrimaryWindow;
-	pPrimaryWindow = NULL;
+	if (pPrimaryWindow){
+		delete pPrimaryWindow;
+		pPrimaryWindow = NULL;	
+	}
+
+	if (vertexBufferManager){
+	    delete vertexBufferManager;
+        vertexBufferManager = NULL;
+	}
+
 	SecondaryWindowList::iterator it = secondaryWindowList.begin();
 	for (;it != secondaryWindowList.end(); ++it){
 		delete *it;
@@ -40,6 +54,7 @@ RenderWindow* GLSystemManager::createRenderWindow(const WindowParams& params)
 
 	if (window->getIsMainWnd()){
 		pPrimaryWindow = window;
+        vertexBufferManager = new GLVertexBufferManager;
 	}else{
 		secondaryWindowList.push_back(window);
 	}

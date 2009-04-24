@@ -210,7 +210,7 @@ void GLRenderWindow::active()
 
 void GLRenderWindow::inactive()
 {
-
+    GLRenderSystem::getSingletonPtr()->render();
 }
 
 HWND GLRenderWindow::getWindowHandle()
@@ -271,11 +271,7 @@ void GLRenderWindow::createGLResource()
 			HARE_EXCEPT(Exception::ERR_INTERNAL_ERROR, "can't wglMakeCurrent context!", "GLRenderWindow::createGLResource"); 
 	}
 
-	glewInit();
-
-	GLenum ret = glGetError();
-	glEnable(GL_TEXTURE_2D);
-	glDisable(GL_LIGHTING);
+	(static_cast<GLRenderSystem*>(RenderSystem::getSingletonPtr()))->initalizeParam();
 
 }
 

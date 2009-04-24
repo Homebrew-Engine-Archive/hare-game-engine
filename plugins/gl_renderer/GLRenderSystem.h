@@ -1,6 +1,7 @@
 #ifndef _GLRENDERSYSTEM_H_
 #define _GLRENDERSYSTEM_H_
 
+class GLVertexBufferManager;
 
 class GLRenderSystem : public RenderSystem
 {
@@ -22,10 +23,23 @@ public:
 
     virtual Texture* createTexture();
 
+	void initalizeParam();
 protected:
-    void writeBuffer(GLenum type, Vertex* buffer, uint32 count);
     void makeGLMatrix(GLfloat gl_matrix[16], const Matrix4& mat);
+    void writeBuffer(GLenum type, Vertex* buffer, uint32 count);
 
+protected:
+	ShaderParams curShaderParams;
+
+	TextureStage curTextureStage;
+
+	GLuint  curRenderTexture;
+
+	GLenum  PrimType;
+
+	Matrix4 texMat;
+
+	GLfloat gl_matrix[16];
 };
 
 

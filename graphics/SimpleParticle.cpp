@@ -92,8 +92,12 @@ namespace hare
         MathUtil::clampMinMax(radialAccelMax,-900.f, 900.f);
         MathUtil::clampMinMax(tangentialAccelMin,-900.f, 900.f);
         MathUtil::clampMinMax(tangentialAccelMax,-900.f, 900.f);
-        MathUtil::clampMinMax(sizeStart,1.f, 100.f);
-        MathUtil::clampMinMax(sizeEnd,1.f, 100.f);
+
+        static const float size_min = 1.0f / 32.0f;
+        static const float size_max = 100.0f / 32.0f;
+
+        MathUtil::clampMinMax(sizeStart, size_min, size_max);
+        MathUtil::clampMinMax(sizeEnd, size_min, size_max);
         MathUtil::clampMinMax(sizeVar,0.f, 1.f);
         MathUtil::clampMinMax(spinStart,-50.f, 50.f);
         MathUtil::clampMinMax(spinEnd,-50.f, 50.f);

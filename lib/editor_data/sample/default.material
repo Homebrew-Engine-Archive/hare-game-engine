@@ -5,6 +5,6 @@
     <mtrl store="0" class="TextureMtrl" version="0">
         <super_version_Material class="uint32" value="0" />
         <super_version_StandardMtrl class="uint32" value="0" />
-        <fileName class="String" value="/images/test.png" />
+        <fileName class="String" value="/sample/images/sample.png" />
     </mtrl>
 </Object>

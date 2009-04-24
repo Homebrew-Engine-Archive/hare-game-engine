@@ -1,35 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <Object store="0" class="SimpleParticle" version="0">
     <super_version_Particle class="uint32" value="0" />
-    <particleMtrl store="0" class="ParticleShader" version="0">
-        <super_version_Material class="uint32" value="0" />
-        <super_version_Shader class="uint32" value="0" />
-        <shaderParams store="0" class="ShaderParams" version="0">
-            <AlphaBlendEnable class="bool" value="1" />
-            <AlphaTestEnable class="bool" value="1" />
-            <AlphaRef class="uint8" value="1" />
-            <SceneBlendOP class="uint8" value="0" />
-            <SceneBlendSrcArg class="uint8" value="0" />
-            <SceneBlendDesArg class="uint8" value="2" />
-        </shaderParams>
-        <mtrl store="0" class="TextureMtrl" version="0">
-            <super_version_Material class="uint32" value="0" />
-            <super_version_StandardMtrl class="uint32" value="0" />
-            <fileName class="String" value="/particles/par0.png" />
-            <textureStage store="0" class="TextureStage" version="0">
-                <wrapModeU class="uint8" value="0" />
-                <wrapModeV class="uint8" value="0" />
-                <fliterType class="uint8" value="0" />
-            </textureStage>
-        </mtrl>
-    </particleMtrl>
+    <particleMtrl store="1" ref="/sample/default.material" />
     <particleInfo store="0" class="ParticleInfo" version="0">
-        <emission class="int32" value="100" />
+        <emission class="int32" value="1000" />
         <lifeTime class="float" value="-1.000000" />
-        <particleLifeMin class="float" value="0.200000" />
-        <particleLifeMax class="float" value="0.500000" />
+        <particleLifeMin class="float" value="1.000000" />
+        <particleLifeMax class="float" value="5.000000" />
         <direction class="float" value="0.000000" />
-        <spread class="float" value="0.000000" />
+        <spread class="float" value="3.140000" />
         <relative class="bool" value="0" />
         <speedMin class="float" value="300.000000" />
         <speedMax class="float" value="300.000000" />
@@ -41,12 +20,12 @@
         <tangentialAccelMax class="float" value="0.000000" />
         <sizeStart class="float" value="1.000000" />
         <sizeEnd class="float" value="1.000000" />
-        <sizeVar class="float" value="0.000000" />
+        <sizeVar class="float" value="1.000000" />
         <spinStart class="float" value="0.000000" />
         <spinEnd class="float" value="0.000000" />
         <spinVar class="float" value="0.000000" />
-        <colorStart class="uint32" value="4294967040" />
-        <colorEnd class="uint32" value="4294901760" />
+        <colorStart class="uint32" value="4294967295" />
+        <colorEnd class="uint32" value="16777215" />
         <colorVar class="float" value="0.000000" />
         <alphaVar class="float" value="0.000000" />
     </particleInfo>

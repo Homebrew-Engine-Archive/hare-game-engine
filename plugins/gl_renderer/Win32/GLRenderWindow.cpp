@@ -273,6 +273,7 @@ void GLRenderWindow::createGLResource()
 
 	(static_cast<GLRenderSystem*>(RenderSystem::getSingletonPtr()))->initalizeParam();
 
+    wglSwapIntervalEXT(0);
 }
 
 void GLRenderWindow::destoryGLResource()

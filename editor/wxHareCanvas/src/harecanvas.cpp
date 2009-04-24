@@ -49,7 +49,8 @@ wxHareCanvas::~wxHareCanvas()
 {
     if (renderWindow)
     {
-        renderWindow->destoryWindow();
+        SystemManager::getSingletonPtr()->destoryRenderWindow(renderWindow);
+        //renderWindow->destoryWindow();
     }
     renderWindow = NULL;
 }

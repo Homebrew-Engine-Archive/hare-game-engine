@@ -85,7 +85,7 @@ namespace hare
 		frame->frameTime = 2;
 
 		tex = RenderSystem::getSingletonPtr()->createTexture();
-		tex->createFromFile("logo.png");
+		tex->createFromFile("/sample/images/sample.png");
 		texMtrl = new TextureMtrl;
 		texMtrl->setTexture(tex);
 

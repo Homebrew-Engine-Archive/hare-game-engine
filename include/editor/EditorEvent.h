@@ -71,10 +71,17 @@ namespace hare
     typedef void (wxEvtHandler::*EditorEventFunction)(EditorEvent&);
 
     extern EDITOR_API const wxEventType editorEVT_APP_BEFORE_SHUTDOWN;
+    
     extern EDITOR_API const wxEventType editorEVT_EDITOR_UPDATE_UI;
+    extern EDITOR_API const wxEventType editorEVT_EDITOR_ACTIVATED;
+    extern EDITOR_API const wxEventType editorEVT_EDITOR_DEACTIVATED;
+    extern EDITOR_API const wxEventType editorEVT_EDITOR_CLOSE;
+    
     extern EDITOR_API const wxEventType editorEVT_PLUGIN_ATTACHED;
     extern EDITOR_API const wxEventType editorEVT_PLUGIN_DETACHED;
+    
     extern EDITOR_API const wxEventType editorEVT_PROJECT_ACTIVED;
+    
     extern EDITOR_API const wxEventType editorEVT_LAYOUT_SWITCH;
     extern EDITOR_API const wxEventType editorEVT_LAYOUT_QUERY;
 

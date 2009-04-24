@@ -29,6 +29,13 @@ namespace hare
     {
     }
 
+    EditorPage::~EditorPage()
+    {
+        EditorEvent evt(editorEVT_EDITOR_CLOSE);
+        evt.editorPage = this;
+        Manager::getInstancePtr()->processEvent(evt);
+    }
+
     const wxString& EditorPage::getTitle()
     {
         return title;

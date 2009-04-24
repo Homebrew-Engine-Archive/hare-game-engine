@@ -15,19 +15,63 @@
 #include "EditorManager.h"
 #include "TextEditorPage.h"
 #include <wx/utils.h>
-#include <wx/wxFlatNotebook/wxFlatNotebook.h>
 #include <wx/filename.h>
 
 namespace hare
 {
+    BEGIN_EVENT_TABLE(EditorNotebook, wxFlatNotebook)
+        EVT_FLATNOTEBOOK_PAGE_CHANGING(wxID_ANY, EditorNotebook::onPageChanging)
+        EVT_FLATNOTEBOOK_PAGE_CHANGED(wxID_ANY, EditorNotebook::onPageChanged)
+        EVT_FLATNOTEBOOK_PAGE_CLOSING(wxID_ANY, EditorNotebook::onPageClosing)
+    END_EVENT_TABLE()
+
+    EditorNotebook::EditorNotebook(wxWindow* parent, wxWindowID id, 
+        const wxPoint& pos, const wxSize& size, long style, const wxString& name) 
+        : wxFlatNotebook(parent, id, pos, size, style, name)
+    {
+    }
+
+    void EditorNotebook::onPageChanged(wxFlatNotebookEvent& event)
+    {
+        EditorPage* page = (EditorPage*)GetPage(event.GetSelection());
+        EditorEvent evt(editorEVT_EDITOR_ACTIVATED);
+        evt.editorPage = page;
+        Manager::getInstancePtr()->processEvent(evt);
+
+        event.Skip(); // allow others to process it too
+    }
+
+    void EditorNotebook::onPageChanging(wxFlatNotebookEvent& event)
+    {
+        EditorPage* page = (EditorPage*)GetPage(event.GetOldSelection());
+        EditorEvent evt(editorEVT_EDITOR_DEACTIVATED);
+        evt.editorPage = page;
+        Manager::getInstancePtr()->processEvent(evt);
+
+        event.Skip(); // allow others to process it too
+    }
+
+    void EditorNotebook::onPageClosing(wxFlatNotebookEvent& event)
+    {
+        EditorPage* page = (EditorPage*)GetPage(event.GetSelection());
+
+        if (page && page->getIsModified())
+        {
+            if (!EditorPageManager::getInstancePtr()->queryClosePage(page))
+                event.Veto();
+        }
+
+        event.Skip(); // allow others to process it too
+    }
+
     template<> EditorPageManager* TManager<EditorPageManager>::instance = 0;
     template<> bool TManager<EditorPageManager>::autoCreate = true;
 
-    static const int idEditorPageManager = wxNewId();
+    static const int idEditorPageFNB = wxNewId();
 
     EditorPageManager::EditorPageManager()
     {
-        notebook = new wxFlatNotebook(Manager::getInstancePtr()->getAppWindow(), idEditorPageManager,
+        notebook = new EditorNotebook(Manager::getInstancePtr()->getAppWindow(), idEditorPageFNB,
             wxDefaultPosition, wxDefaultSize, wxNO_FULL_REPAINT_ON_RESIZE | wxCLIP_CHILDREN |
             wxFNB_DROPDOWN_TABS_LIST | wxFNB_NO_NAV_BUTTONS | wxFNB_VC8 | wxFNB_DCLICK_CLOSES_TABS);
 
@@ -71,6 +115,64 @@ namespace hare
         return false;
     }
 
+    bool EditorPageManager::queryClosePage(EditorPage* page)
+    {
+        if (!page)
+            return true;
+
+        if (!page->getIsModified())
+            return true;
+
+        wxString msg;
+        msg.Printf(_("Page '%s' is modified...\nDo you want to save the changes?"), 
+            page->getTitle().c_str());
+
+        wxMessageDialog dlg(page, msg, _("Save Changes"), wxCENTER | wxICON_QUESTION | wxYES_NO | wxCANCEL);
+
+        switch (dlg.ShowModal())
+        {
+        case wxID_YES:
+            return page->save();
+            break;
+        case wxID_NO:
+            page->setModified(false);
+            return true;
+        case wxCANCEL:
+        default:
+            return false;
+        }
+        return false;
+    }
+
+    bool EditorPageManager::queryCloseAllPages()
+    {
+        for (int i = 0; i < notebook->GetPageCount(); ++i)
+        {
+            EditorPage* page = (EditorPage*)notebook->GetPage(i);
+            if (page->getIsModified())
+            {
+                if (!queryClosePage(page))
+                    return false;
+            }
+        }
+        return true;
+    }
+
+    bool EditorPageManager::saveAll()
+    {
+        bool alldone = true;
+
+        for (int i = 0; i < notebook->GetPageCount(); ++i)
+        {
+            EditorPage* page = (EditorPage*)notebook->GetPage(i);
+            if (page->getIsModified())
+            {
+                alldone = page->save() && alldone;
+            }
+        }
+        return alldone;
+    }
+
     TextEditorPage* EditorPageManager::openInTextEditor(const wxString& fileName)
     {
         wxFileName fname(fileName);
@@ -111,5 +213,4 @@ namespace hare
     {
         return (EditorPage*)notebook->GetPage(index);
     }
-
 }

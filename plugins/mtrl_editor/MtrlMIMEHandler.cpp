@@ -54,6 +54,18 @@ MtrlEditorPage::~MtrlEditorPage()
     mime->page = NULL;
 }
 
+bool MtrlEditorPage::Show(bool show)
+{
+    if (show)
+    {
+        Manager::getInstancePtr()->getExplorerManager()->removeAllProperties();
+        if (selectedMtrl)
+            Manager::getInstancePtr()->getExplorerManager()->bindProperty(wxT("MaterialProperity"), selectedMtrl);
+    }
+
+    return EditorPage::Show(show);
+}
+
 void MtrlEditorPage::addMaterialFromFile(const String& url)
 {
     TextureMtrl::Ptr texMtrl = new TextureMtrl();

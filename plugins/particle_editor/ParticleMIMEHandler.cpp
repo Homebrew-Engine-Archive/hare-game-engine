@@ -36,10 +36,10 @@ ParticleEditorPage::ParticleEditorPage(wxWindow* parent, ParticleMIMEHandler* ha
     sceneParticle->setSceneListener(this);
     canvasParticle->getRenderWindow()->setSceneManager(sceneParticle);
 
-    changeParticle(par);
-
     Connect(wxEVT_ERASE_BACKGROUND, wxEraseEventHandler(ParticleEditorPage::onEraseBackground), NULL, this);
     canvasParticle->Connect(wxEVT_MOTION, wxMouseEventHandler(ParticleEditorPage::onMouseMove), NULL, this);
+
+    changeParticle(par);
 }
 
 ParticleEditorPage::~ParticleEditorPage()
@@ -56,6 +56,17 @@ ParticleEditorPage::~ParticleEditorPage()
     }
 
     mime->page = NULL;
+}
+
+bool ParticleEditorPage::Show(bool show)
+{
+    if (show)
+    {
+        Manager::getInstancePtr()->getExplorerManager()->removeAllProperties();
+        if (parPtr)
+            Manager::getInstancePtr()->getExplorerManager()->bindProperty(wxT("ParticleProperity"), parPtr);
+    }
+    return EditorPage::Show(show);
 }
 
 void ParticleEditorPage::onSize(wxSizeEvent& event)

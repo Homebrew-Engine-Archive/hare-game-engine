@@ -19,13 +19,20 @@ namespace hare
     IMPLEMENT_DYNAMIC_CLASS(EditorDockEvent, wxEvent)
 
     const wxEventType editorEVT_APP_BEFORE_SHUTDOWN = wxNewEventType();
-    const wxEventType editorEVT_EDITOR_UPDATE_UI = wxNewEventType();
+    
     const wxEventType editorEVT_PLUGIN_ATTACHED = wxNewEventType();
     const wxEventType editorEVT_PLUGIN_DETACHED = wxNewEventType();
+
     const wxEventType editorEVT_PROJECT_ACTIVED = wxNewEventType();
+    
     const wxEventType editorEVT_LAYOUT_SWITCH = wxNewEventType();
     const wxEventType editorEVT_LAYOUT_QUERY = wxNewEventType();
 
+    const wxEventType editorEVT_EDITOR_UPDATE_UI = wxNewEventType();
+    const wxEventType editorEVT_EDITOR_ACTIVATED = wxNewEventType();
+    const wxEventType editorEVT_EDITOR_DEACTIVATED = wxNewEventType();
+    const wxEventType editorEVT_EDITOR_CLOSE = wxNewEventType();
+    
     const wxEventType editorEVT_ADD_DOCK_WINDOW = wxNewEventType();
     const wxEventType editorEVT_DEL_DOCK_WINDOW = wxNewEventType();
     const wxEventType editorEVT_SHOW_DOCK_WINDOW = wxNewEventType();

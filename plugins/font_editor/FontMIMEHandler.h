@@ -94,6 +94,8 @@ private:
     void onTextUpdate(wxCommandEvent& event);
     void onSize(wxSizeEvent& event);
 
+    bool Show(bool show = true);
+
     DECLARE_ABSTRACT_CLASS(FontEditorPage)
 };
 

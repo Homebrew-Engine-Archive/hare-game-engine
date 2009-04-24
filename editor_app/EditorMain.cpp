@@ -186,6 +186,11 @@ void EditorFrame::registerEvents()
 
     pm->registerEvent(editorEVT_EDITOR_UPDATE_UI,
         new TEventHandler<EditorFrame, EditorEvent>(this, &EditorFrame::onEditorUpdateUI));
+    pm->registerEvent(editorEVT_EDITOR_ACTIVATED,
+        new TEventHandler<EditorFrame, EditorEvent>(this, &EditorFrame::onEditorActivated));
+    pm->registerEvent(editorEVT_EDITOR_CLOSE,
+        new TEventHandler<EditorFrame, EditorEvent>(this, &EditorFrame::onEditorClose));
+
     pm->registerEvent(editorEVT_PLUGIN_ATTACHED,
         new TEventHandler<EditorFrame, EditorEvent>(this, &EditorFrame::onPluginAttached));
     pm->registerEvent(editorEVT_LAYOUT_SWITCH,
@@ -352,7 +357,7 @@ void EditorFrame::_doUpdateStatusBar()
     else
     {
         int panel = 0;
-        SetStatusText(_("Welcome to Hare Editor !"), panel++);
+        SetStatusText(_("Welcome to hare editor !"), panel++);
         SetStatusText(wxEmptyString, panel++);
         SetStatusText(wxEmptyString, panel++);
         SetStatusText(wxEmptyString, panel++);
@@ -369,6 +374,18 @@ void EditorFrame::onEditorUpdateUI(EditorEvent& event)
     {
         _doUpdateStatusBar();
     }
+    event.Skip();
+}
+
+void EditorFrame::onEditorActivated(EditorEvent& event)
+{
+    _doUpdateStatusBar();
+    event.Skip();
+}
+
+void EditorFrame::onEditorClose(EditorEvent& event)
+{
+    _doUpdateStatusBar();
     event.Skip();
 }
 
@@ -603,6 +620,12 @@ void EditorFrame::onSize(wxSizeEvent& event)
 
 void EditorFrame::onApplicationClose(wxCloseEvent& event)
 {
+    if (!EditorPageManager::getInstancePtr()->queryCloseAllPages())
+    {
+        event.Veto();
+        return;
+    }
+
     EditorEvent evt(editorEVT_APP_BEFORE_SHUTDOWN);
     Manager::getInstancePtr()->processEvent(evt);
 
@@ -651,10 +674,11 @@ void EditorFrame::onFileSave(wxCommandEvent& event)
 }
 void EditorFrame::onFileSaveAll(wxCommandEvent& event)
 {
+    EditorPageManager::getInstancePtr()->saveAll();
 }
 void EditorFrame::onFileQuit(wxCommandEvent& event)
 {
-    Close(true);
+    Close(false);
 }
 void EditorFrame::onEditUndo(wxCommandEvent& event)
 {

@@ -58,6 +58,8 @@ private:
     void onEraseBackground(wxEraseEvent& event);
     void onMouseMove(wxMouseEvent& event);
 
+    virtual bool Show(bool show = true);
+
     DECLARE_ABSTRACT_CLASS(ParticleEditorPage)
 };
 

@@ -32,8 +32,6 @@ namespace hare
         wxScintilla* getControl() const;
 
         bool getIsOK() const;
-        bool getIsModified() const;
-        void setModified(bool modified = true);
 
         bool open(bool detectEncoding = true);
         virtual bool save();
@@ -51,6 +49,16 @@ namespace hare
 
         void toggleBreakPoint(int line);
 
+        void setFoldingIndicator(int id);
+        void setMarkerStyle(int marker, int markerType, wxColor fore, wxColor back);
+
+        void setProjectFile(ProjectFile* prjFile);
+        ProjectFile* getProjectFile();
+
+    public:
+        virtual bool getIsModified() const;
+        virtual void setModified(bool modified = true);
+
         virtual void undo();
         virtual void redo();
         virtual void cut();
@@ -63,12 +71,6 @@ namespace hare
         virtual bool canPaste() const;
         virtual bool hasSelection() const;
         virtual bool isReadOnly() const;
-
-        void setFoldingIndicator(int id);
-        void setMarkerStyle(int marker, int markerType, wxColor fore, wxColor back);
-
-        void setProjectFile(ProjectFile* prjFile);
-        ProjectFile* getProjectFile();
 
     public:
         static void setDefaultEditorStyle(wxScintilla* control);

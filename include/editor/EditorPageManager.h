@@ -17,15 +17,31 @@
 #include "TManager.h"
 #include "TextEditorStyle.h"
 #include <wx/string.h>
+#include <wx/wxFlatNotebook/wxFlatNotebook.h>
 
 namespace hare
 {
+    class EDITOR_API EditorNotebook : public wxFlatNotebook
+    {
+    public:
+        EditorNotebook(wxWindow* parent, wxWindowID id = wxID_ANY, 
+            const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, 
+            long style = 0, const wxString& name = wxT("Editor Notebook"));
+
+    private:
+        void onPageChanging(wxFlatNotebookEvent& event);
+        void onPageChanged(wxFlatNotebookEvent& event);
+        void onPageClosing(wxFlatNotebookEvent& event);
+
+        DECLARE_EVENT_TABLE()
+    };
+
     class EDITOR_API EditorPageManager : public TManager<EditorPageManager>
     {
         friend class TManager<EditorPageManager>;
 
     public:
-        wxFlatNotebook* getNotebook() { return notebook; }
+        EditorNotebook* getNotebook() { return notebook; }
 
         void addEditorPage(EditorPage* page);
 
@@ -41,14 +57,18 @@ namespace hare
 
         EditorPage* getPage(int index);
 
-    private:
+        bool queryClosePage(EditorPage* page);
+        bool queryCloseAllPages();
 
-        wxFlatNotebook* notebook;
+        bool saveAll();
+
+    private:
+        EditorNotebook* notebook;
         TextEditorStyle* textEditorStyle;
 
     private:
-         EditorPageManager();
-        ~EditorPageManager();
+        EditorPageManager();
+       ~EditorPageManager();
     };
 }
 

@@ -85,6 +85,17 @@ FontEditorPage::~FontEditorPage()
     mime->page = NULL;
 }
 
+bool FontEditorPage::Show(bool show)
+{
+    if (show)
+    {
+        Manager::getInstancePtr()->getExplorerManager()->removeAllProperties();
+        if (fontPtr)
+            Manager::getInstancePtr()->getExplorerManager()->bindProperty(wxT("FontProperity"), fontPtr);
+    }
+    return EditorPage::Show(show);
+}
+
 void FontEditorPage::onTextUpdate(wxCommandEvent& event)
 {
     txtListener.text = txtSample->GetValue().ToUTF8().data();

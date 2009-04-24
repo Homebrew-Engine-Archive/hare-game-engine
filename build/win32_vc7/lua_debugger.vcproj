@@ -19,7 +19,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\ext\wxWidgets\lib\vc_dll\mswud;..\..\ext\wxWidgets\include;..\..\include;..\..\ext\lua\src;..\..\include\editor\wxTreeListCtrl\include"
+				AdditionalIncludeDirectories="..\..\ext\wxWidgets\lib\vc_dll\mswud;..\..\ext\wxWidgets\include;..\..\include;..\..\ext\lua\src;..\..\include\editor\wxTreeListCtrl\include;..\..\include\editor\wxFlatNotebook\include"
 				PreprocessorDefinitions="WIN32;_USRDLL;DLL_EXPORTS;WXUSINGDLL;__WXDEBUG__;__WXMSW__;_DEBUG;WXUSINGDLL_TL"
 				MinimalRebuild="TRUE"
 				BasicRuntimeChecks="3"

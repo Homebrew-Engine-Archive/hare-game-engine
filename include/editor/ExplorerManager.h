@@ -43,7 +43,7 @@ namespace hare
 
     private:
         ExplorerManager();
-        ~ExplorerManager();
+       ~ExplorerManager();
     };
 }
 

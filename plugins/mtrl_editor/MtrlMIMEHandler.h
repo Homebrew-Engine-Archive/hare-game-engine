@@ -61,6 +61,8 @@ private:
     void onMouseLeftDown(wxMouseEvent& event);
     void onMouseLeftUp(wxMouseEvent& event);
 
+    virtual bool Show(bool show = true);
+
     void drawMaterial(Material* mtrl, const PointF& pos);
     void selectMaterial(Material* mtrl);
 

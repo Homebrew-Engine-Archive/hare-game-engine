@@ -23,14 +23,14 @@ namespace hare
     public:
         EditorPage();
         EditorPage(wxWindow* parent);
+        virtual ~EditorPage();
 
         const wxString& getTitle();
         void setTitle(const wxString& str);
 
-        virtual bool save()
-        {
-            return true;
-        }
+        virtual bool save() { return true; }
+        virtual bool getIsModified() const { return false; }
+        virtual void setModified(bool modified = true) {}
 
         virtual void undo() {}
         virtual void redo() {}

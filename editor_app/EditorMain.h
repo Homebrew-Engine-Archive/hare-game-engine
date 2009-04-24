@@ -75,6 +75,9 @@ public:
     void onEditMenuUpdateUI(wxUpdateUIEvent& event);
 
     void onEditorUpdateUI(EditorEvent& event);
+    void onEditorActivated(EditorEvent& event);
+    void onEditorClose(EditorEvent& event);
+
     void onPluginAttached(EditorEvent& event);
     void onLayoutSwitch(EditorEvent& event);
     void onLayoutQuery(EditorEvent& event);

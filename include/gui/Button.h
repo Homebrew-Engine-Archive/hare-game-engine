@@ -43,10 +43,10 @@ namespace hare
         }
 
     protected:
-        RectUV normalRect;
-        RectUV hoverRect;
-        RectUV pushedRect;
-        RectUV disabledRect;
+        RectUV rect_normal;
+        RectUV rect_hover;
+        RectUV rect_pushed;
+        RectUV rect_disabled;
     };
 }
 

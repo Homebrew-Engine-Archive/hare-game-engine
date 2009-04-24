@@ -19,6 +19,10 @@
 
 namespace hare
 {
+    EDITOR_API Object*  Editor_importObject(const wxString& fileName);
+    EDITOR_API bool     Editor_saveToXml(Object* object, const wxString& fileName);
+    EDITOR_API bool     Editor_saveToBin(Object* object, const wxString& fileName);
+
     class EDITOR_API AppConfigFile : public Object
     {
         HARE_DECLARE_DYNAMIC_CLASS(AppConfigFile)

@@ -11,12 +11,131 @@
 //
 //***************************************************************
 #include "PCH.h"
+#include "EditorManager.h"
 #include "ConfigManager.h"
 #include <wx/intl.h>
 #include <wx/font.h>
+#include <wx/file.h>
 
 namespace hare
 {
+    Object* Editor_importObject(const wxString& fileName)
+    {
+        wxFile file;
+        if (!file.Open(fileName))
+            return NULL;
+
+        wxFileOffset size = file.Length();
+
+        if (size < 3)
+        {
+            file.Close();
+            return NULL;
+        }
+
+        wxByte* buffer = (wxByte*)malloc(sizeof(wxByte) * (size + 1));
+        if (!buffer)
+        {
+            file.Close();
+            return NULL;
+        }
+
+        size_t readBytes = file.Read((void*)buffer, size);
+
+        assert(readBytes == size);
+
+        Object* object = 0;
+
+        if (strncmp((const char*)buffer, "BIN", 3) == 0)
+        {
+            std::stringstream stream((const char*)buffer);
+            BinVisitor visitror;
+            visitror.stream = &stream;
+            visitror.action = BinVisitor::VA_Load;
+            visitror.visitObject("Object", object, 0, 0);
+        }
+        else
+        {
+            TiXmlDocument doc;
+            doc.Parse((const char*)buffer);
+            XmlVisitor visitror;
+            visitror.node = &doc;
+            visitror.action = XmlVisitor::VA_Load;
+            visitror.visitObject("Object", object, 0, 0);
+        }
+
+        free(buffer);
+        file.Close();
+
+        return object;
+    }
+
+    bool Editor_saveToXml(Object* object, const wxString& fileName)
+    {
+        if (!object)
+            return false;
+
+        wxFile file;
+        if (!file.Open(fileName, wxFile::write))
+            return false;
+
+        String old_url = object->getUrl();
+        object->setUrl(StringUtil::EMPTY);
+
+        TiXmlDocument doc;
+        TiXmlDeclaration dec("1.0", "utf-8", "yes");
+        doc.InsertEndChild(dec);
+
+        XmlVisitor visitor;
+        visitor.node = &doc;
+        visitor.action = XmlVisitor::VA_Save;
+
+        visitor.visitObject("Object", object, object->getClassInfo(), 0);
+
+        TiXmlPrinter printer;
+        doc.Accept(&printer);
+
+        file.Write((void*)printer.CStr(), printer.Size());
+        file.Close();
+
+        object->setUrl(old_url);
+
+        return true;
+    }
+
+    bool Editor_saveToBin(Object* object, const wxString& fileName)
+    {
+        if (!object)
+            return false;
+
+        wxFile file;
+        if (!file.Open(fileName, wxFile::write))
+            return false;
+
+        String old_url = object->getUrl();
+        object->setUrl(StringUtil::EMPTY);
+
+        std::stringstream stream;
+
+        stream.write("BIN", 3);
+
+        BinVisitor visitor;
+        visitor.stream = &stream;
+        visitor.action = BinVisitor::VA_Save;
+
+        visitor.visitObject(object->getClassInfo()->className, object, object->getClassInfo(), 0);
+
+        size_t size = stream.tellp();
+        stream.seekg(0);
+
+        file.Write((void*)stream.str().c_str(), size);
+        file.Close();
+
+        object->setUrl(old_url);
+
+        return true;
+    }
+
     HARE_ENUM_BEGIN(AppConfigFile::FoldIndicator)
         HARE_ENUM_NAME_VALUE(Arrow, AppConfigFile::FI_Arrow)
         HARE_ENUM_NAME_VALUE(Circle, AppConfigFile::FI_Circle)
@@ -110,13 +229,15 @@ namespace hare
 
     ConfigManager::ConfigManager()
     {
-        appConfigFile = (AppConfigFile*)Object::importObject("app_config.xml");
+        wxString fileName = Manager::getInstancePtr()->convToEditorDataDir(wxT("app_config.xml"));
+        appConfigFile = (AppConfigFile*)Editor_importObject(fileName);
         if (!appConfigFile)
             appConfigFile = new AppConfigFile;
     }
 
     ConfigManager::~ConfigManager()
     {
-        appConfigFile->saveToXml("app_config.xml");
+        wxString fileName = Manager::getInstancePtr()->convToEditorDataDir(wxT("app_config.xml"));
+        Editor_saveToXml(appConfigFile, fileName);
     }
 }

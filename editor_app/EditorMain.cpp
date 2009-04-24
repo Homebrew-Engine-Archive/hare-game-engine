@@ -133,20 +133,19 @@ EditorFrame::EditorFrame(wxFrame *frame, const wxString& title)
 #endif // __WXMSW__
 
     FileSystem* fs = FileSystem::getSingletonPtr();
-    // load resources for games
+    
+    // Read resource config file
     ConfigFile resource;
     resource.load("resource.cfg");
+    
+    // NB: ScriptDir will not be added to search path in editor,
+    //     it's used for Workspace.
     String scriptDir = resource.getSetting("ScriptDir");
-    StringVector searchPaths = resource.getMultiSetting("SearchPath");
-    for (size_t i = 0; i < searchPaths.size(); ++i)
-    {
-        wxFileName fn(wxString::FromUTF8(searchPaths[i].c_str()));
-        if (fn.IsOk())
-        {
-            fn.Normalize();
-            fs->addSearchPath(fn.GetFullPath().ToUTF8().data());
-        }
-    }
+    
+    // NB: SearchPath is same as WriteDir, so we can save edited result. 
+    String writeDir = resource.getSetting("WriteDir");
+    fs->addSearchPath(writeDir);
+    fs->setWriteDir(writeDir);
 
 #if HARE_PLATFORM == HARE_PLATFORM_WIN32
     // create canvas and hide it, we mush have a window to init graphics moudle
@@ -228,8 +227,8 @@ void EditorFrame::createIDE()
         FloatingSize(bestSize).MinSize(wxSize(50, 100)).Left().CloseButton(true).MaximizeButton(true));
 
     findReplaceDlg = new FindReplaceDialog(this);
-
-    wxString pluginPath = Manager::getInstancePtr()->getAppDir() + wxT("/editor_data/plugins/");
+    
+    wxString pluginPath = Manager::getInstancePtr()->convToEditorDataDir(wxT("plugins/"));
 
     Manager::getInstancePtr()->getPluginManager()->scanForPlugins(pluginPath);
     Manager::getInstancePtr()->getPluginManager()->loadAllPlugins();
@@ -242,7 +241,7 @@ void EditorFrame::createIDE()
 
 void EditorFrame::preLoadXRC()
 {
-    wxString fullPath = Manager::getInstancePtr()->getAppDir() + wxT("/editor_data/resources/");
+    wxString fullPath = Manager::getInstancePtr()->convToEditorDataDir(wxT("resources/"));
     wxXmlResource::Get()->Load(fullPath + wxT("/*.xrc"));
 }
 
@@ -258,7 +257,7 @@ void EditorFrame::createToolBar()
         wxAUI_TB_DEFAULT_STYLE | wxAUI_TB_OVERFLOW | wxAUI_TB_HORZ_LAYOUT);
     mainToolBar->SetToolBitmapSize(wxSize(16, 16));
 
-    wxString fullPath = Manager::getInstancePtr()->getAppDir() + wxT("/editor_data/resources/");
+    wxString fullPath = Manager::getInstancePtr()->convToEditorDataDir(wxT("resources/"));
     wxBitmap bmp;
 
     bmp.LoadFile(fullPath + wxT("new.png"), wxBITMAP_TYPE_PNG);

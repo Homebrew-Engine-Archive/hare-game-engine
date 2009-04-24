@@ -46,7 +46,7 @@ void EditorApp::InitLocale()
         {
             locale.Init(info->Language);
 
-            wxString fullPath = Manager::getInstancePtr()->getAppDir() + wxT("/editor_data/locale/");
+            wxString fullPath = Manager::getInstancePtr()->convToEditorDataDir(wxT("locale/"));
             wxLocale::AddCatalogLookupPathPrefix(fullPath);
             fullPath += info->CanonicalName + wxT("/LC_MESSAGES/");
 
@@ -86,16 +86,6 @@ bool EditorApp::OnInit()
     {
         getHareApp()->loadPlugin(pluginDir + plugins[i]);
     }
-
-    FileSystem* fs = FileSystem::getSingletonPtr();
-
-    // editor's resources and write dir
-    String editorDir = fs->getBaseDir() + String("editor_data/");
-    wxFileName fn(wxString::FromUTF8(editorDir.c_str()));
-    fn.Normalize();
-    editorDir = fn.GetFullPath().ToUTF8().data();
-    fs->setWriteDir(editorDir);
-    fs->addSearchPath(editorDir);
 
     getHareApp()->startUp();
 

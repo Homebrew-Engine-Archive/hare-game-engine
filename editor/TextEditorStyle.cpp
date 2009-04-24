@@ -99,7 +99,8 @@ namespace hare
             MAKE_OptionColour("No matching brace highlight",
                 35, MAKE_RGB(255,0,0),      MAKE_RGB(255,0,0),     1, 0, 0);
 
-            opt->saveToXml("lexers/lexer_lua.xml");
+            wxString fileName = Manager::getInstancePtr()->convToEditorDataDir(wxT("lexers/lexer_lua.xml"));
+            Editor_saveToXml(opt, fileName);
         }
 
         // make lexer_xml.xml for xml
@@ -124,7 +125,8 @@ namespace hare
             MAKE_OptionColour("XML End",         13, MAKE_RGB(128,0,128),MAKE_RGB(255,255,255), 0, 0, 0);
             MAKE_OptionColour("CDATA Section",   17, MAKE_RGB(0,0,0),    MAKE_RGB(255,255,255), 0, 1, 0);
 
-            opt->saveToXml("lexers/lexer_xml.xml");
+            wxString fileName = Manager::getInstancePtr()->convToEditorDataDir(wxT("lexers/lexer_xml.xml"));
+            Editor_saveToXml(opt, fileName);
         }
 #endif
         load();
@@ -273,19 +275,14 @@ namespace hare
     {
         for (OptionSetsMap::iterator it = setsMap.begin(); it != setsMap.end(); ++it)
         {
-            it->second->saveToXml("lexer_" + it->second->lang + ".xml");
+            wxString fileName = Manager::getInstancePtr()->convToEditorDataDir(
+                wxT("lexers/lexer_") + wxString::FromUTF8(it->second->lang.c_str()) + wxT(".xml"));
+            Editor_saveToXml(it->second, fileName);
         }
     }
 
     bool TextEditorStyle::reset(HighlightLanguage lang)
     {
-        String language = lang.ToUTF8().data();
-        OptionSet::Ptr org = (OptionSet*)Object::loadFromXml("lexer_" + language + ".org");
-
-        if (!org)
-            return false;
-
-        setsMap[lang] = org;
         return true;
     }
 
@@ -293,17 +290,15 @@ namespace hare
     {
         wxDir dir;
         wxString filename;
-        static const String path = "lexers/";
-
-        wxString fullPath = Manager::getInstancePtr()->getAppDir() + wxT("/editor_data/lexers/");
+        wxString fullPath = Manager::getInstancePtr()->convToEditorDataDir(wxT("lexers/"));
 
         if (dir.Open(fullPath))
         {
             bool ok = dir.GetFirst(&filename, wxT("lexer_*.xml"), wxDIR_FILES);
             while (ok)
             {
-                String name = path + filename.ToUTF8().data();
-                OptionSet::Ptr opt = (OptionSet*)Object::importObject(name);
+                wxString name = fullPath + filename;
+                OptionSet::Ptr opt = (OptionSet*)Editor_importObject(name);
                 if (opt)
                 {
                     wxString name = wxString::FromUTF8(opt->lang.c_str());

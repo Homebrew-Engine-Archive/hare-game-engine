@@ -85,6 +85,11 @@ namespace hare
         return appDir;
     }
 
+    wxString Manager::convToEditorDataDir(const wxString& fileName)
+    {
+        return appDir + wxT("/editor_data/") + fileName;
+    }
+
     ExplorerManager* Manager::getExplorerManager() const
     {
         return ExplorerManager::getInstancePtr();

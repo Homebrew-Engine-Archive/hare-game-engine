@@ -52,6 +52,8 @@ namespace hare
         const wxString getAppDir() const;
         void setAppDir(const wxString& dir);
 
+        wxString convToEditorDataDir(const wxString& fileName);
+
         static void shutdown();
 
         static bool isAppShuttingDown()

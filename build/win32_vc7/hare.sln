@@ -30,14 +30,17 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dx9_renderer", "dx9_rendere
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "lua_debugger", "lua_debugger.vcproj", "{4DA1AEDA-70D0-4EB5-BB57-F692C907B405}"
 	ProjectSection(ProjectDependencies) = postProject
+		{BC97E7F3-E37E-47A8-B4D1-705FD7FD61D0} = {BC97E7F3-E37E-47A8-B4D1-705FD7FD61D0}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "font_editor", "font_editor.vcproj", "{DED2B450-0ED2-493B-9BBC-A443B7F0666F}"
 	ProjectSection(ProjectDependencies) = postProject
+		{BC97E7F3-E37E-47A8-B4D1-705FD7FD61D0} = {BC97E7F3-E37E-47A8-B4D1-705FD7FD61D0}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "particle_editor", "particle_editor.vcproj", "{8966F408-1DA4-4CEC-9CC5-CB0C687FCA33}"
 	ProjectSection(ProjectDependencies) = postProject
+		{BC97E7F3-E37E-47A8-B4D1-705FD7FD61D0} = {BC97E7F3-E37E-47A8-B4D1-705FD7FD61D0}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gl_renderer", "gl_renderer.vcproj", "{8E83E98C-F83A-4470-B63C-16C7C1151FD4}"
@@ -48,10 +51,12 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gui_editor", "gui_editor.vcproj", "{2A663F90-96FA-4121-9B4E-AAFFD54E143B}"
 	ProjectSection(ProjectDependencies) = postProject
 		{508C8324-5017-4336-A249-2F9741C0AD8D} = {508C8324-5017-4336-A249-2F9741C0AD8D}
+		{BC97E7F3-E37E-47A8-B4D1-705FD7FD61D0} = {BC97E7F3-E37E-47A8-B4D1-705FD7FD61D0}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mtrl_editor", "mtrl_editor.vcproj", "{C77B3474-2C3D-4138-A8EF-183D356703FB}"
 	ProjectSection(ProjectDependencies) = postProject
+		{BC97E7F3-E37E-47A8-B4D1-705FD7FD61D0} = {BC97E7F3-E37E-47A8-B4D1-705FD7FD61D0}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gui", "gui.vcproj", "{508C8324-5017-4336-A249-2F9741C0AD8D}"

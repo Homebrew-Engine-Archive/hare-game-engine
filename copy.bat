@@ -8,4 +8,5 @@
 @copy ext\physfs\debug\*.dll 			lib
 @copy ext\physfs\debug\*.pdb 			lib
 @copy ext\devil\lib\*.dll 			lib
+@copy ext\glew\bin\*.dll 			lib
 @pause

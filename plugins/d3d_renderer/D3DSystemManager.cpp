@@ -45,7 +45,7 @@ RenderWindow* D3DSystemManager::createRenderWindow(const WindowParams& params)
 void D3DSystemManager::destoryRenderWindow(RenderWindow* renderWindow)
 {
 	//不能在这销毁主窗口
-	assert(renderWindow != pPrimaryWindow && pPrimaryWindow != NULL);
+	//assert(renderWindow != pPrimaryWindow && pPrimaryWindow != NULL);
 
 	SecondaryWindowList::iterator it = secondaryWindowList.begin();
 	for (;it != secondaryWindowList.end(); ++it){

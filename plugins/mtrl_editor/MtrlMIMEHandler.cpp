@@ -15,6 +15,8 @@
 #include <wx/panel.h>
 #include <wx/wxFlatNotebook/wxFlatNotebook.h>
 
+const int MtrlEditorPage::GRID_SIZE = 150;
+
 HARE_IMPLEMENT_DYNAMIC_CLASS(MaterialEditState, Object, 0)
 {
 }
@@ -40,6 +42,9 @@ MtrlEditorPage::MtrlEditorPage(wxWindow* parent, MtrlMIMEHandler* handler, Mater
     sizer->Add(canvas, 1, wxEXPAND, 0);
     SetSizer(sizer);
     Layout();
+
+    font = (Font*)Object::importObject("/editor/default.font");
+    getCanvas()->setFont(font);
 
     addMaterial(mtrl);
 }
@@ -81,7 +86,7 @@ void MtrlEditorPage::addMaterial(Material* mtrl)
    
     MaterialEditState* newItem = new MaterialEditState;
     newItem->mtrl = mtrl;
-    newItem->pos = PointF(200.0f, 200.0f);
+    newItem->pos = PointF(100, 100);
     mtrlStates.push_back(newItem);
 
     Manager::getInstancePtr()->getExplorerManager()->removeAllProperties();
@@ -112,7 +117,7 @@ void MtrlEditorPage::renderScene()
 
 void MtrlEditorPage::drawMaterial(Material* mtrl, const PointF& pos)
 {
-    RectF rect(0.0f, 0.0f, 100.0f, 100.0f);
+    RectF rect(0, 0, GRID_SIZE, GRID_SIZE);
     rect.moveTo(pos);
 
     uint32 color = 0xFFFFFFFF;
@@ -123,9 +128,10 @@ void MtrlEditorPage::drawMaterial(Material* mtrl, const PointF& pos)
     uint32 oldclr = getCanvas()->getColor();
     getCanvas()->setColor(color);
     getCanvas()->drawRect(rect.minX, rect.minY, rect.maxX, rect.maxY);
+    getCanvas()->drawText(rect.minX + 5, rect.minY + 15, mtrl->getClassInfo()->className);
     getCanvas()->setColor(oldclr);
 
-    rect.deflate(5, 5, 5, 5);
+    rect.deflate(20, 20, 20, 20);
     getCanvas()->drawImage(rect, mtrl);
 
     AttVisitor v;
@@ -141,7 +147,7 @@ void MtrlEditorPage::drawMaterial(Material* mtrl, const PointF& pos)
             {
                 Material* subMtrl = (Material*)obj;
                 PointF subPos = pos;
-                subPos.move(101, 0);
+                subPos.move(0, GRID_SIZE);
                 drawMaterial(subMtrl, subPos);
             }
         }
@@ -171,7 +177,7 @@ void MtrlEditorPage::onMouseLeftUp(wxMouseEvent& event)
         return;
 
     PointF pt(event.GetPosition().x, event.GetPosition().y);
-    RectF rect(0.0f, 0.0f, 100.0f, 100.0f);
+    RectF rect(0, 0, GRID_SIZE, GRID_SIZE);
 
     MaterialEditState::List::iterator it0 = mtrlStates.begin();
     for (; it0 != mtrlStates.end(); ++it0)
@@ -192,10 +198,10 @@ void MtrlEditorPage::onMouseLeftUp(wxMouseEvent& event)
             if (attr->attrType == Attribute::attrObject && attr->data)
             {
                 Object* obj = *(Object**)attr->data;
-                if (obj->isA(&Material::CLASS_INFO))
+                if (editMtrl->mtrl->isA(attr->classInfo))
                 {
                     Material* subMtrl = (Material*)obj;
-                    rect.moveTo(st->pos.x + 101, st->pos.y);
+                    rect.moveTo(st->pos.x, st->pos.y + GRID_SIZE);
                     if (rect.isPointIn(pt))
                     {
                         Object** pMtrl = (Object**)attr->data;
@@ -217,7 +223,7 @@ void MtrlEditorPage::onMouseLeftDown(wxMouseEvent& event)
     mouseDownPos = event.GetPosition();
 
     PointF pt(mouseDownPos.x, mouseDownPos.y);
-    RectF rect(0.0f, 0.0f, 100.0f, 100.0f);
+    RectF rect(0.0f, 0.0f, GRID_SIZE, GRID_SIZE);
 
     MaterialEditState::List::iterator it0 = mtrlStates.begin();
     for (; it0 != mtrlStates.end(); ++it0)
@@ -245,7 +251,7 @@ void MtrlEditorPage::onMouseLeftDown(wxMouseEvent& event)
                 if (obj->isA(&Material::CLASS_INFO))
                 {
                     Material* subMtrl = (Material*)obj;
-                    rect.moveTo(st->pos.x + 101, st->pos.y);
+                    rect.moveTo(st->pos.x, st->pos.y + GRID_SIZE);
                     if (rect.isPointIn(pt))
                     {
                         selectMaterial(subMtrl);

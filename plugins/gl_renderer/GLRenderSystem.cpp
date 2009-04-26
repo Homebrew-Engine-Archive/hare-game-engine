@@ -199,8 +199,6 @@ void GLRenderSystem::makeGLMatrix(GLfloat gl_matrix[16], const Matrix4& mat)
 
 void GLRenderSystem::initalizeParam()
 {
-	glewInit();
-	GLenum ret = glGetError();
 	glEnable(GL_TEXTURE_2D);
 	glDisable(GL_LIGHTING);
 	setShaderParams(curShaderParams);

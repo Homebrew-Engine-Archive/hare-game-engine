@@ -39,6 +39,9 @@ ParticleEditorPage::ParticleEditorPage(wxWindow* parent, ParticleMIMEHandler* ha
     Connect(wxEVT_ERASE_BACKGROUND, wxEraseEventHandler(ParticleEditorPage::onEraseBackground), NULL, this);
     canvasParticle->Connect(wxEVT_MOTION, wxMouseEventHandler(ParticleEditorPage::onMouseMove), NULL, this);
 
+    font = (Font*)Object::importObject("/editor/default.font");
+    getCanvas()->setFont(font);
+
     changeParticle(par);
 }
 
@@ -57,6 +60,15 @@ ParticleEditorPage::~ParticleEditorPage()
 
     mime->page = NULL;
 }
+
+void ParticleEditorPage::renderScene()
+{
+    String fps = StringUtil::format("FPS : %.2f", getTimer().getFPS());
+    getCanvas()->drawText(10, 20, fps);
+    if (parPtr)
+        parPtr->render();
+}
+
 
 bool ParticleEditorPage::Show(bool show)
 {

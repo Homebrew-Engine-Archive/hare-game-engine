@@ -32,24 +32,17 @@ private:
         return parPtr.pointer() != NULL;
     }
 
-    virtual void beginScene()
-    {
-    }
+    virtual void beginScene() {}
 
-    virtual void endScene()
-    {
-    }
+    virtual void endScene() {}
     
-    virtual void renderScene()
-    {
-        if (parPtr)
-            parPtr->render();
-    }
+    virtual void renderScene();
 
 private:
     wxHareCanvas* canvasParticle;
     SceneManager* sceneParticle;
     Particle::Ptr parPtr;
+    Font::Ptr font;
 
     ParticleMIMEHandler* mime;
 

@@ -10,8 +10,8 @@
         <direction class="float" value="0.000000" />
         <spread class="float" value="0.000000" />
         <relative class="bool" value="0" />
-        <speedMin class="float" value="100.000000" />
-        <speedMax class="float" value="300.000000" />
+        <speedMin class="float" value="200.000000" />
+        <speedMax class="float" value="200.000000" />
         <gravityMin class="float" value="0.000000" />
         <gravityMax class="float" value="0.000000" />
         <radialAccelMin class="float" value="0.000000" />
@@ -20,7 +20,7 @@
         <tangentialAccelMax class="float" value="0.000000" />
         <sizeStart class="float" value="1.000000" />
         <sizeEnd class="float" value="1.000000" />
-        <sizeVar class="float" value="1.000000" />
+        <sizeVar class="float" value="0.000000" />
         <spinStart class="float" value="0.000000" />
         <spinEnd class="float" value="0.000000" />
         <spinVar class="float" value="0.000000" />

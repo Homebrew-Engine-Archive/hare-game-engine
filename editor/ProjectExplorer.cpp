@@ -138,7 +138,7 @@ namespace hare
         }
 
         // the saved workspace, compared with the fs workspace
-        Workspace::Ptr savedWorkspace = (Workspace*)Object::loadFromXml("workspace.xml");
+        Workspace::Ptr savedWorkspace = (Workspace*)Object::loadFromXml("/editor/workspace.xml");
         if (savedWorkspace)
         {
             Project::List::iterator it0 = savedWorkspace->projects.begin();

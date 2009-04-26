@@ -47,10 +47,13 @@ private:
     MaterialEditState::List mtrlStates;
     MaterialEditState::Ptr editMtrl;
     Material::Ptr selectedMtrl;
+    Font::Ptr font;
 
     MtrlMIMEHandler* mime;
     wxHareCanvas* canvas;
     SceneManager* scene;
+
+    static const int GRID_SIZE;
 
     wxPoint mouseDownPos;
 

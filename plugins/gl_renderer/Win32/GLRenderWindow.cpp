@@ -179,6 +179,7 @@ void GLRenderWindow::swapBuffer()
     SwapBuffers(hDC);
 
     GLRenderSystem::getSingletonPtr()->clear(windowParams.bZbuffer);
+
 }
 
 void GLRenderWindow::destoryWindow()
@@ -199,6 +200,10 @@ void GLRenderWindow::destoryWindow()
 
 void GLRenderWindow::active()
 {
+    if (!wglMakeCurrent(NULL, NULL)){
+        HARE_EXCEPT(Exception::ERR_INTERNAL_ERROR, "can't make current OpenGL render Context NULL!", "GLRenderWindow::destoryGLResource"); 
+    }
+
     if(!wglMakeCurrent(hDC,hRC)){
         HARE_EXCEPT(Exception::ERR_INTERNAL_ERROR, "can't active RenderContext!", "GLRenderWindow::active");
     }
@@ -271,9 +276,14 @@ void GLRenderWindow::createGLResource()
 			HARE_EXCEPT(Exception::ERR_INTERNAL_ERROR, "can't wglMakeCurrent context!", "GLRenderWindow::createGLResource"); 
 	}
 
-	(static_cast<GLRenderSystem*>(RenderSystem::getSingletonPtr()))->initalizeParam();
+    
+    if (isMainWnd){
+        glewInit();
+    }
 
-    wglSwapIntervalEXT(0);
+    wglSwapIntervalEXT(0);  
+
+    (static_cast<GLRenderSystem*>(RenderSystem::getSingletonPtr()))->initalizeParam();
 }
 
 void GLRenderWindow::destoryGLResource()
@@ -284,9 +294,9 @@ void GLRenderWindow::destoryGLResource()
     }
 
     if (hRC){
-        if (!wglMakeCurrent(NULL, NULL)){
-            HARE_EXCEPT(Exception::ERR_INTERNAL_ERROR, "can't make current OpenGL render Context NULL!", "GLRenderWindow::destoryGLResource"); 
-        }
+        //if (!wglMakeCurrent(NULL, NULL)){
+        //    HARE_EXCEPT(Exception::ERR_INTERNAL_ERROR, "can't make current OpenGL render Context NULL!", "GLRenderWindow::destoryGLResource"); 
+        //}
 
         if (!wglDeleteContext(hRC)){
             HARE_EXCEPT(Exception::ERR_INTERNAL_ERROR, "can't destory OpenGL render Context!", "GLRenderWindow::destoryGLResource"); 

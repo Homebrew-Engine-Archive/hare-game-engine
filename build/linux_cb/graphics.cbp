@@ -27,6 +27,7 @@
 			<Add option="`freetype-config --libs`" />
 			<Add library="IL" />
 		</Linker>
+		<Unit filename="../../graphics/Animation.cpp" />
 		<Unit filename="../../graphics/Canvas.cpp" />
 		<Unit filename="../../graphics/Codec.cpp" />
 		<Unit filename="../../graphics/DataHolder.cpp" />
@@ -61,6 +62,7 @@
 		<Unit filename="../../graphics/Texture.cpp" />
 		<Unit filename="../../graphics/Triple.cpp" />
 		<Unit filename="../../include/graphics/2PassScale.h" />
+		<Unit filename="../../include/graphics/Animation.h" />
 		<Unit filename="../../include/graphics/Canvas.h" />
 		<Unit filename="../../include/graphics/Codec.h" />
 		<Unit filename="../../include/graphics/D3DRenderTexture.h" />

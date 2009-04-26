@@ -193,7 +193,7 @@ bool load_scripts(const String& game, lua_State *L)
     return true;
 }
 
-#if HARE_PLATFORM != HARE_PLATFORM_WIN32
+#if HARE_PLATFORM == HARE_PLATFORM_WIN32
 INT WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR cmd, INT)
 {
     core_init(NULL);

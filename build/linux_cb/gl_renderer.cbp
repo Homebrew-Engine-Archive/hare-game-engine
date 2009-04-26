@@ -36,6 +36,8 @@
 		<Unit filename="../../plugins/gl_renderer/GLTexture.h" />
 		<Unit filename="../../plugins/gl_renderer/GLTypeConverter.cpp" />
 		<Unit filename="../../plugins/gl_renderer/GLTypeConverter.h" />
+		<Unit filename="../../plugins/gl_renderer/GLVertexBufferManager.cpp" />
+		<Unit filename="../../plugins/gl_renderer/GLVertexBufferManager.h" />
 		<Unit filename="../../plugins/gl_renderer/Linux/GLRenderWindow.cpp" />
 		<Unit filename="../../plugins/gl_renderer/Linux/GLRenderWindow.h" />
 		<Unit filename="../../plugins/gl_renderer/PCH.cpp" />

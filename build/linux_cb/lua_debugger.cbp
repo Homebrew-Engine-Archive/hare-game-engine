@@ -7,7 +7,7 @@
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="lua_debugger">
-				<Option output="../../lib/editor_data/plugins/lua_debugger.plugin" prefix_auto="0" extension_auto="0" />
+				<Option output="../../lib/editor_plugins/lua_debugger.plugin" prefix_auto="0" extension_auto="0" />
 				<Option working_dir="../../lib/editor_data/plugins" />
 				<Option type="3" />
 				<Option compiler="gcc" />
@@ -17,6 +17,7 @@
 					<Add directory="../../include" />
 					<Add directory="../../ext/lua/src" />
 					<Add directory="../../include/editor/wxTreeListCtrl/include" />
+					<Add directory="../../include/editor/wxFlatNotebook/include" />
 				</Compiler>
 				<Linker>
 					<Add directory="../../lib" />

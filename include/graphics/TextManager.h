@@ -2,11 +2,10 @@
 #define _TEXTMANAGER_H_
 
 #include "GraphicsPrerequisites.h"
+#include "Font.h"
 
 namespace hare
 {
-	class Font;
-
 	class GRAPHICS_API TextManager : public Singleton<TextManager>
 	{
 		HARE_DECLARE_SINGLETON(TextManager)
@@ -15,12 +14,10 @@ namespace hare
 		~TextManager();
 
 		Font* createFont(const String& name, float size);
-		void  destroyFont(Font* f);
 
 		void setFontResolution(uint32 resolution);
 		void setCacheSize(uint32 cacheSize);
 	private:
-		std::list<Font*> fontList;
 		uint32 fontResolution;
 		uint32 fontCacheSize;
 	};

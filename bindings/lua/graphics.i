@@ -174,7 +174,6 @@ class TextManager
 {
 public:
 	Font* createFont(const String& name, float size);
-	void  destroyFont(Font* f);
 };
 
 TextManager* getTextManager();

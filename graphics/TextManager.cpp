@@ -18,11 +18,7 @@ namespace hare
 
 	TextManager::~TextManager()
 	{
-		std::list<Font*>::iterator it = fontList.begin();
-		for (;it != fontList.end(); ++it){
-			delete (Font*)(*it);
-		}
-		fontList.clear();
+
 	}
 
 	Font* TextManager::createFont(const String& name, float size)
@@ -30,21 +26,11 @@ namespace hare
 		Font* font;
 		try{
 			font = new Font(name, size, fontResolution, fontCacheSize);
-			fontList.push_back(font);
 		}catch(...){
 			font = NULL;
 		}
 
 		return font;
-	}
-
-	void TextManager::destroyFont(Font* f)
-	{
-		std::list<Font*>::iterator it = std::find(fontList.begin(), fontList.end(), f);
-		if (it != fontList.end()){
-			delete f;
-			fontList.erase(it);
-		}
 	}
 
 	void TextManager::setFontResolution(uint32 resolution)

@@ -211,6 +211,11 @@ namespace hare
 		font = f;
 	}
 
+	Font* Canvas::getFont()
+	{
+		return font;
+	}
+
 	void Canvas::setColor(uint32 c)
 	{
 		color = c;

@@ -189,7 +189,8 @@ void GLRenderWindow::destoryWindow()
     if (getIsMainWnd()){
         if (!isExternal){
             //exit main Process
-            PostQuitMessage(0);
+            //PostQuitMessage(0);
+			getHareApp()->end();
         }
     }else{
         //destory window 
@@ -276,10 +277,11 @@ void GLRenderWindow::createGLResource()
 			HARE_EXCEPT(Exception::ERR_INTERNAL_ERROR, "can't wglMakeCurrent context!", "GLRenderWindow::createGLResource"); 
 	}
 
-    
-    if (isMainWnd){
+	if (isMainWnd){
         glewInit();
-    }
+	}
+
+	(static_cast<GLRenderSystem*>(RenderSystem::getSingletonPtr()))->initalizeParam();
 
     wglSwapIntervalEXT(0);  
 

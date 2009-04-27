@@ -1,10 +1,11 @@
 #ifndef _CANVAS_H_
 #define _CANVAS_H_
 
+#include "Font.h"
+
 namespace hare
 {
 	class Material;
-	class Font;
 
 	class GRAPHICS_API Canvas : public Singleton<Canvas>
 	{
@@ -27,6 +28,8 @@ namespace hare
 
 		void setFont(Font* f);
 
+		Font* getFont();
+
 		void setColor(uint32 c);
 
 		uint32  getColor();
@@ -36,7 +39,7 @@ namespace hare
 		float  getZ();
 
 	private:
-		Font* font;
+		Font::Ptr font;
 		float   z;
 		uint32   color;
 	};

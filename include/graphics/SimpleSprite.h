@@ -33,6 +33,10 @@ namespace hare
 		Quad			 quad;
 		Shader*		     shader;
 		Particle::Ptr    particle;
+
+		//renderToTex test
+		Texture*     _tex;
+		TextureMtrl::Ptr _texMtrl;
 	};
 }
 

@@ -83,14 +83,14 @@ void D3DTexture::inactive()
 void D3DTexture::beforeResetDevice()
 {
 	assert(bIsRenderable);
-	release();
+	doRelease();
 
 }
 
 void D3DTexture::afterResetDevice()
 {
 	assert(bIsRenderable);
-	doCreate();
+	assert(doCreate());
 }
 
 void D3DTexture::upload(const Image &img, uint32 destX, uint32 destY)
@@ -154,11 +154,7 @@ void D3DTexture::release()
 		DeviceManager::getSingletonPtr()->unregisterDeviceObject(this);
 	}
 	
-	if (bIsRenderable){	
-		SAFE_RELEASE(pDepthStencilSurface)	
-	}
-
-	SAFE_RELEASE(d3dTexture)
+	doRelease();
 }
 
 bool D3DTexture::doCreate()
@@ -181,29 +177,24 @@ bool D3DTexture::doCreate()
 		}
 
 		if (bIsRenderable){
-			D3DRenderWindow* curWindow = (D3DRenderWindow*)static_cast<D3DRenderSystem*>(RenderSystem::getSingletonPtr())->getCurRenderWindow();
-			D3DPRESENT_PARAMETERS*	curWindowD3Dpp = curWindow->getPresentationParameters();
-			const D3DMULTISAMPLE_TYPE MultiSample = D3DMULTISAMPLE_NONE;
-			const DWORD MultisampleQuality = 0;
-			const bool Discard = TRUE;
+            const D3DMULTISAMPLE_TYPE MultiSample = D3DMULTISAMPLE_NONE;
+            const DWORD MultisampleQuality = 0;
+            const bool Discard = TRUE;
 
-			if (curWindow->getWindowParams().bZbuffer){
-				if (FAILED(pD3DDevice->CreateDepthStencilSurface(
-					width,
-					height,
-					curWindowD3Dpp->AutoDepthStencilFormat,
-					MultiSample,
-					MultisampleQuality,
-					Discard,
-					&pDepthStencilSurface,
-					NULL
-					))){
-						return false;
-					}					
-			}
+			if (FAILED(pD3DDevice->CreateDepthStencilSurface(
+				width,
+				height,
+				D3DFMT_D16,
+				MultiSample,
+				MultisampleQuality,
+				Discard,
+				&pDepthStencilSurface,
+				NULL
+				))){
+					return false;
+				}					
 		}
 
-			
 	}else{
 		Image img;
 		assert(!fileName.empty());
@@ -280,10 +271,14 @@ bool D3DTexture::doCreate()
 	return true;
 }
 
+void D3DTexture::doRelease()
+{
+	if (bIsRenderable){	
+		SAFE_RELEASE(pDepthStencilSurface)	
+	}
 
-
-
-
+	SAFE_RELEASE(d3dTexture)
+}
 
 
 

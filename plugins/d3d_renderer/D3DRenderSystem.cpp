@@ -93,13 +93,12 @@ void D3DRenderSystem::createDevice(D3DRenderWindow* renderWindow)
 			
 			hr = pD3DDevice->GetRenderTarget(0, &(renderWindow->pRenderSurface));
 
-			hr = pD3DDevice->GetDepthStencilSurface(&(renderWindow->pDepthStencilSurface));
-
+			if (renderWindow->getWindowParams().bZbuffer)
+			    hr = pD3DDevice->GetDepthStencilSurface(&(renderWindow->pDepthStencilSurface));
 			
 			if (FAILED(hr)){
 				assert(false);
 			}
-
 
 			return ;
 		}
@@ -124,6 +123,7 @@ void D3DRenderSystem::createDevice(D3DRenderWindow* renderWindow)
 			D3DCREATE_HARDWARE_VERTEXPROCESSING,//硬件顶点处理
 			renderWindow->getPresentationParameters(),
 			&pD3DDevice);
+
 		if (FAILED(hr)){
 			hr = pD3DInterface->CreateDevice(
 				D3DADAPTER_DEFAULT, 
@@ -133,6 +133,7 @@ void D3DRenderSystem::createDevice(D3DRenderWindow* renderWindow)
 				renderWindow->getPresentationParameters(),
 				&pD3DDevice);
 		}
+
 		if (FAILED(hr)){
 			assert(false);
 		}
@@ -182,7 +183,6 @@ void D3DRenderSystem::createDevice(D3DRenderWindow* renderWindow)
 				NULL);			
 		}
 
-
 		if (FAILED(hr)){
 			assert(false);
 		}
@@ -198,11 +198,11 @@ void D3DRenderSystem::resetDevice()
 
 	hr = pD3DDevice->Reset(pPrimaryWindow->getPresentationParameters());
 
-    clear(pPrimaryWindow->getWindowParams().bZbuffer);
-
 	if (FAILED(hr)){
 		assert(false);
 	}
+	
+	clear(pPrimaryWindow->getWindowParams().bZbuffer);
 
 	DeviceManager::getSingletonPtr()->afterResetDevice();
 }

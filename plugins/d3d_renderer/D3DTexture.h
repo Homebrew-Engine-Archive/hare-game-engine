@@ -30,6 +30,7 @@ public:
 
 protected:
 	bool doCreate();
+    void doRelease();
 
 private:
 	LPDIRECT3DTEXTURE9 d3dTexture;

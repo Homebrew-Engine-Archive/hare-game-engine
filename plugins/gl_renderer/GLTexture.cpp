@@ -66,7 +66,6 @@ void GLTexture::upload(const Image& img, uint32 destX, uint32 destY)
 
 #ifdef _DEBUG
 	GLenum ret = glGetError();
-
 	assert(ret == GL_NO_ERROR);
 #endif
 }
@@ -114,28 +113,20 @@ bool GLTexture::doCreate()
         delete [] data;
 
 		if (bIsRenderable){
-			glGenFramebuffersEXT(1, &fbo);
-			glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, fbo);
-    
-			bool bZBuffer = GLRenderSystem::getSingletonPtr()->getCurRenderWindow()->getWindowParams().bZbuffer;
-			if (bZBuffer){
-				glGenRenderbuffersEXT(1, &depthbuffer);
-				glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, depthbuffer);
-                glRenderbufferStorageEXT(GL_RENDERBUFFER_EXT, GL_DEPTH_COMPONENT, width, height);
-			    glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, 0);
-			}
+            glGenFramebuffersEXT(1, &fbo);
+            glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, fbo);
 
-			glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT, GL_TEXTURE_2D, glTexture, 0);
-		
-			if (bZBuffer){
-				glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT, GL_DEPTH_ATTACHMENT_EXT, GL_RENDERBUFFER_EXT, depthbuffer);
-			}
+            glGenRenderbuffersEXT(1, &depthbuffer);
+            glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, depthbuffer);
+            glRenderbufferStorageEXT(GL_RENDERBUFFER_EXT, GL_DEPTH_COMPONENT, width, height);
+            glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, 0);
 
-			glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
+            glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT, GL_TEXTURE_2D, glTexture, 0);
+            glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT, GL_DEPTH_ATTACHMENT_EXT, GL_RENDERBUFFER_EXT, depthbuffer);
+            glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
 
 #ifdef _DEBUG
 			GLenum status = glCheckFramebufferStatusEXT(GL_FRAMEBUFFER_EXT);
-
 			assert(status == GL_FRAMEBUFFER_COMPLETE_EXT);
 #endif
 
@@ -198,10 +189,6 @@ bool GLTexture::doCreate()
 
         glGenTextures(1, &glTexture);
 
-#ifdef _DEBUG
-		GLenum ret = glGetError();
-#endif
-
         glBindTexture(GL_TEXTURE_2D, glTexture);
 
         glTexImage2D(GL_TEXTURE_2D, 
@@ -213,14 +200,14 @@ bool GLTexture::doCreate()
             GLTypeConverter::toGLFormat(texPixelFormat), 
             GL_UNSIGNED_BYTE, 
             (GLvoid*)pDestBuf);
-#ifdef _DEBUG
-		//default filter
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-		
-		glBindTexture(GL_TEXTURE_2D, 0);
 
-		ret = glGetError();
+		//default filter
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		
+        glBindTexture(GL_TEXTURE_2D, 0);
+#ifdef _DEBUG
+		GLenum ret = glGetError();
 #endif
         delete [] pDestBuf;
 

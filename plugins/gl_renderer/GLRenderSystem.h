@@ -23,7 +23,7 @@ public:
 
     virtual Texture* createTexture();
 
-	void initalizeParam();
+	void initalizeParam(bool bZBuffer);
 protected:
     void makeGLMatrix(GLfloat gl_matrix[16], const Matrix4& mat);
 

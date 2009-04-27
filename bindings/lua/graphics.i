@@ -165,7 +165,11 @@ public:
 	void drawText(int x, int y, const String& text);
 	void drawImage(int x, int y, Material* mtrl);
 	void setFont(Font* f);
+	Font* getFont();
 	void setColor(uint32 c);
+	uint32 getColor();
+	void setZ(float z);
+	float getZ();
 };
 
 Canvas* getCanvas();

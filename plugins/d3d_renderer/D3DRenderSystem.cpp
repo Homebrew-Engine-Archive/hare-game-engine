@@ -355,6 +355,17 @@ void D3DRenderSystem::setShaderParams(const ShaderParams& shaderParams)
 	pD3DDevice->SetRenderState(D3DRS_ALPHAREF, shaderParams.AlphaRef);
 	
 	//pD3DDevice->SetRenderState(D3DRS_ZENABLE, D3DZB_TRUE);
+
+	RenderWindow* w = getCurRenderWindow();
+	if (w){
+		if (w->getWindowParams().bZbuffer){
+			if (shaderParams.AlphaBlendEnable){
+	            pD3DDevice->SetRenderState(D3DRS_ZENABLE, D3DZB_FALSE);
+			}else{
+	            pD3DDevice->SetRenderState(D3DRS_ZENABLE, D3DZB_TRUE);
+			}		
+		}
+	}
 }
 
 void D3DRenderSystem::setTextureStage(const TextureStage& textureStage)

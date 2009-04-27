@@ -148,12 +148,27 @@ void GLRenderSystem::clear(bool z)
 
 void GLRenderSystem::setShaderParams(const ShaderParams& shaderParams)
 {
+	RenderWindow* w = getCurRenderWindow();
+
 	if(shaderParams.AlphaBlendEnable){
+		if (w){	
+			if (w->getWindowParams().bZbuffer){
+                glDisable(GL_DEPTH_TEST);
+			}
+		}
+
 		glEnable(GL_BLEND);
 
 		glBlendFunc(GLTypeConverter::toGLSceneBlendArg((ShaderParams::SceneBlendArgument)shaderParams.SceneBlendSrcArg)
 			, GLTypeConverter::toGLSceneBlendArg((ShaderParams::SceneBlendArgument)shaderParams.SceneBlendDesArg));
 	}else{
+		if (w){	
+			if (w->getWindowParams().bZbuffer){
+				glEnable(GL_DEPTH_TEST);
+				glDepthFunc(GL_LEQUAL);			
+			}
+		}
+
 		glDisable(GL_BLEND);
 	}
 
@@ -197,10 +212,15 @@ void GLRenderSystem::makeGLMatrix(GLfloat gl_matrix[16], const Matrix4& mat)
     }
 }
 
-void GLRenderSystem::initalizeParam()
+void GLRenderSystem::initalizeParam(bool bZBuffer)
 {
 	glEnable(GL_TEXTURE_2D);
 	glDisable(GL_LIGHTING);
+	if (bZBuffer){
+		glEnable(GL_DEPTH_TEST);
+		glDepthMask(GL_TRUE);
+		glDepthFunc(GL_LEQUAL);	
+	}
 	setShaderParams(curShaderParams);
 	setTextureStage(curTextureStage);
 }

@@ -28,9 +28,10 @@ public:
     {
         if (!font)
             return;
-
+        Font::Ptr old_font = getCanvas()->getFont();
         getCanvas()->setFont(font);
         getCanvas()->drawText(100, 100, text);
+        getCanvas()->setFont(old_font);
     }
 public:
     Font* font;

@@ -49,10 +49,9 @@ wxHareCanvas::~wxHareCanvas()
 {
     if (renderWindow)
     {
-        SystemManager::getSingletonPtr()->destoryRenderWindow(renderWindow);
-        //renderWindow->destoryWindow();
+        renderWindow->destoryWindow();
+        renderWindow = NULL;
     }
-    renderWindow = NULL;
 }
 
 bool wxHareCanvas::Create(wxWindow *parent, wxWindowID id, const wxPoint& pos, 

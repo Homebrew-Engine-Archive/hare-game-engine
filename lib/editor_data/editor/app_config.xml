@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <Object store="0" class="AppConfigFile" version="0">
-    <openFilePath class="String" value="F:\work\lib\editor_data\sample" />
+    <openFilePath class="String" value="E:\hare_googlecode\lib\editor_data\sample" />
     <openFileFilters class="String" value="*.*" />
     <openFileFilterIndex class="int8" value="0" />
     <font class="String" value="0;-13;0;0;0;400;0;0;0;0;3;2;1;49;Courier New" />

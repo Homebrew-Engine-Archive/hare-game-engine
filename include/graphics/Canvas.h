@@ -16,6 +16,7 @@ namespace hare
 		void drawLine(float x1, float y1, float x2, float y2);
 
         void drawRect(float l, float t, float r, float b);
+        
         void drawRectFill(float l, float t, float r, float b);
 
 		void drawText(int x, int y, const String& text);
@@ -32,16 +33,16 @@ namespace hare
 
 		void setColor(uint32 c);
 
-		uint32  getColor();
+		uint32 getColor();
 
 		void setZ(float z);
 
-		float  getZ();
+		float getZ();
 
 	private:
 		Font::Ptr font;
-		float   z;
-		uint32   color;
+		float z;
+		uint32 color;
 	};
 
 	GRAPHICS_API Canvas* getCanvas();

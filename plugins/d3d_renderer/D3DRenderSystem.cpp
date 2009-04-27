@@ -359,10 +359,10 @@ void D3DRenderSystem::setShaderParams(const ShaderParams& shaderParams)
 	RenderWindow* w = getCurRenderWindow();
 	if (w){
 		if (w->getWindowParams().bZbuffer){
-			if (shaderParams.AlphaBlendEnable){
-	            pD3DDevice->SetRenderState(D3DRS_ZENABLE, D3DZB_FALSE);
-			}else{
+			if (shaderParams.bUseZ){
 	            pD3DDevice->SetRenderState(D3DRS_ZENABLE, D3DZB_TRUE);
+			}else{
+	            pD3DDevice->SetRenderState(D3DRS_ZENABLE, D3DZB_FALSE);
 			}		
 		}
 	}

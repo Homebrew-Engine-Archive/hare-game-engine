@@ -25,6 +25,7 @@ namespace hare
 		HARE_ENUM(SceneBlendOP,     uint8, SceneBlendOperation)
 		HARE_ENUM(SceneBlendSrcArg, uint8, SceneBlendArgument)
 		HARE_ENUM(SceneBlendDesArg, uint8, SceneBlendArgument)
+        HARE_META(bUseZ,            bool)
 	}
 
 	ShaderParams::ShaderParams()
@@ -34,6 +35,7 @@ namespace hare
 		,SceneBlendDesArg(SBA_Invsrcalpha)
 		,AlphaTestEnable(true)
 		,AlphaRef(1)
+		,bUseZ(true)
 	{
 
 	}
@@ -45,7 +47,8 @@ namespace hare
 		|| SceneBlendSrcArg  != right.SceneBlendSrcArg
 		|| SceneBlendDesArg  != right.SceneBlendDesArg
 		|| AlphaTestEnable   != right.AlphaTestEnable
-		|| AlphaRef          != right.AlphaRef){
+		|| AlphaRef          != right.AlphaRef
+		|| bUseZ             != right.bUseZ){
 			return true;
 		}
 
@@ -65,6 +68,7 @@ namespace hare
 		SceneBlendDesArg = right.SceneBlendDesArg;
 		AlphaTestEnable  = right.AlphaTestEnable;
 		AlphaRef         = right.AlphaRef;
+		bUseZ            = right.bUseZ;
 
 		return *this;
 	}
@@ -110,6 +114,7 @@ namespace hare
 	{
 		shaderParams->AlphaBlendEnable = true;
 		shaderParams->AlphaTestEnable = false;
+		shaderParams->bUseZ = false;
 	}
 
 	ParticleShader::~ParticleShader()

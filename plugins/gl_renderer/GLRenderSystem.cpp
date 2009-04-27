@@ -148,28 +148,25 @@ void GLRenderSystem::clear(bool z)
 
 void GLRenderSystem::setShaderParams(const ShaderParams& shaderParams)
 {
-	RenderWindow* w = getCurRenderWindow();
-
 	if(shaderParams.AlphaBlendEnable){
-		if (w){	
-			if (w->getWindowParams().bZbuffer){
-                glDisable(GL_DEPTH_TEST);
-			}
-		}
-
 		glEnable(GL_BLEND);
 
 		glBlendFunc(GLTypeConverter::toGLSceneBlendArg((ShaderParams::SceneBlendArgument)shaderParams.SceneBlendSrcArg)
-			, GLTypeConverter::toGLSceneBlendArg((ShaderParams::SceneBlendArgument)shaderParams.SceneBlendDesArg));
+			,GLTypeConverter::toGLSceneBlendArg((ShaderParams::SceneBlendArgument)shaderParams.SceneBlendDesArg));
 	}else{
-		if (w){	
-			if (w->getWindowParams().bZbuffer){
-				glEnable(GL_DEPTH_TEST);
-				glDepthFunc(GL_LEQUAL);			
+		glDisable(GL_BLEND);
+	}
+
+	RenderWindow* w = getCurRenderWindow();
+
+	if (w){	
+		if (w->getWindowParams().bZbuffer){
+			if (shaderParams.bUseZ){
+                glEnable(GL_DEPTH_TEST);
+			}else{
+                glDisable(GL_DEPTH_TEST);			
 			}
 		}
-
-		glDisable(GL_BLEND);
 	}
 
 	if(shaderParams.AlphaTestEnable){

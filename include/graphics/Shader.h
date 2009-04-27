@@ -37,6 +37,8 @@ namespace hare
 		bool  AlphaTestEnable;
 		uint8 AlphaRef;
 
+		bool  bUseZ;
+
 		bool operator != (const ShaderParams& right);
 		bool operator == (const ShaderParams& right);
 

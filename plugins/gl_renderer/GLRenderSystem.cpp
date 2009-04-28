@@ -221,3 +221,8 @@ void GLRenderSystem::initalizeParam(bool bZBuffer)
 	setShaderParams(curShaderParams);
 	setTextureStage(curTextureStage);
 }
+
+GLuint GLRenderSystem::getCurTexture()
+{
+	return curRenderTexture;
+}

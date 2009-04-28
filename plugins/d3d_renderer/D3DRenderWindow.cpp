@@ -11,7 +11,7 @@ static LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM l
 	switch( uMsg )
 	{
 	case WM_SIZE:
-        {
+		if (wParam != SIZE_RESTORED){// not Alt + Tab
             int w = LOWORD(lParam) > 0 ? LOWORD(lParam) : 1;
             int h = HIWORD(lParam) > 0 ? HIWORD(lParam) : 1;
 

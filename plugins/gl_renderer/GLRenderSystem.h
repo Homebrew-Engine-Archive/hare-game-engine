@@ -24,6 +24,9 @@ public:
     virtual Texture* createTexture();
 
 	void initalizeParam(bool bZBuffer);
+
+    GLuint getCurTexture();
+
 protected:
     void makeGLMatrix(GLfloat gl_matrix[16], const Matrix4& mat);
 

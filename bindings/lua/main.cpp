@@ -97,7 +97,7 @@ bool load_scripts(const String& game, lua_State *L)
 INT WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR cmd, INT)
 {
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
-	_CrtSetBreakAlloc(598);
+	//_CrtSetBreakAlloc(598);
     core_init(NULL);
     CmdLineParser cmdLine(cmd);
 #else // HARE_PLATFORM == HARE_PLATFORM_WIN32

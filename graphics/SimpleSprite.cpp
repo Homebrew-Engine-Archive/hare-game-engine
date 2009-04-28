@@ -21,11 +21,11 @@ namespace hare
 		anim = new Animation;
 
 
-		//_tex = RenderSystem::getSingletonPtr()->createTexture();
-		//_tex->create(256, 256, HPF_A8R8G8B8, true);
+		_tex = RenderSystem::getSingletonPtr()->createTexture();
+		_tex->create(256, 256, HPF_A8R8G8B8, true);
 
-		//_texMtrl = new TextureMtrl;
-		//_texMtrl->setTexture(_tex);
+		_texMtrl = new TextureMtrl;
+		_texMtrl->setTexture(_tex);
 
 	}
 	SimpleSprite::~SimpleSprite()
@@ -112,7 +112,6 @@ namespace hare
 
 	void SimpleSprite::renderScene()
 	{
-
 		//simple test
 		RenderTarget* target = RenderSystem::getSingletonPtr()->getRenderTarget();
 
@@ -122,17 +121,15 @@ namespace hare
 
 		anim->render();
 
+		RenderSystem::getSingletonPtr()->setRenderTarget(_tex);
 
-		//RenderSystem::getSingletonPtr()->setRenderTarget(_tex);
+		shader->getMaterial()->frameMove();
+		RenderSystem::getSingletonPtr()->render(&quad);
 
-		//shader->getMaterial()->frameMove();
-		//RenderSystem::getSingletonPtr()->render(&quad);
+		RenderSystem::getSingletonPtr()->setRenderTarget(target);
 
-		//RenderSystem::getSingletonPtr()->setRenderTarget(target);
-
-
-  //      //getCanvas()->drawImage(300, 300, shader, RectF(0.5,0.5,1.0,1.0));
-  //      getCanvas()->drawImage(600, 300, _texMtrl);
+        //getCanvas()->drawImage(300, 300, shader, RectF(0.5,0.5,1.0,1.0));
+        getCanvas()->drawImage(600, 300, _texMtrl);
 
 	}
 

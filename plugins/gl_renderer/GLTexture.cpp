@@ -48,6 +48,7 @@ void GLTexture::inactive()
 {
     assert(bIsRenderable);
 
+	GLRenderSystem::getSingletonPtr()->render();
 	//release bind
 	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
 
@@ -68,6 +69,8 @@ void GLTexture::upload(const Image& img, uint32 destX, uint32 destY)
 	GLenum ret = glGetError();
 	assert(ret == GL_NO_ERROR);
 #endif
+
+	glBindTexture(GL_TEXTURE_2D, (static_cast<GLRenderSystem*>(GLRenderSystem::getSingletonPtr()))->getCurTexture());
 }
 
 void GLTexture::download(Image& img, const RectN& rc)
@@ -109,7 +112,9 @@ bool GLTexture::doCreate()
             GL_UNSIGNED_BYTE, 
             0);
 
-		glBindTexture(GL_TEXTURE_2D, 0);
+		//back buffer manager need bind old texture
+		glBindTexture(GL_TEXTURE_2D, (static_cast<GLRenderSystem*>(GLRenderSystem::getSingletonPtr()))->getCurTexture());
+
         delete [] data;
 
 		if (bIsRenderable){
@@ -205,7 +210,9 @@ bool GLTexture::doCreate()
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		
-        glBindTexture(GL_TEXTURE_2D, 0);
+        //back buffer manager need bind old texture
+		glBindTexture(GL_TEXTURE_2D, (static_cast<GLRenderSystem*>(GLRenderSystem::getSingletonPtr()))->getCurTexture());
+
 #ifdef _DEBUG
 		GLenum ret = glGetError();
 #endif

@@ -16,6 +16,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "hare_lua", "hare_lua.vcproj
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "graphics", "graphics.vcproj", "{FB59907C-A100-4146-A240-9FEA023F6BB6}"
 	ProjectSection(ProjectDependencies) = postProject
+		{B7DA67A0-0F8C-479A-A7BB-7EC5DCDCA017} = {B7DA67A0-0F8C-479A-A7BB-7EC5DCDCA017}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "editor_app", "editor_app.vcproj", "{0EDB1E57-20D3-496C-8E8A-024072ECD6E1}"

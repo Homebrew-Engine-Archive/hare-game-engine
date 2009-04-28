@@ -23,8 +23,11 @@ namespace hare
 
 		//first loadplugin
 		//second startUp
+		//init plugin system exp: d3d gl SceneManger Particle
+		//NB: d3d or gl must be initalized first
 		void startUp();
 
+		//NB: d3d or gl must be released in the end
 		void shutDown();
 
 		void setGraphicsSystem(SystemManager* systemManager);
@@ -52,12 +55,14 @@ namespace hare
 	private:
 		DynamicLibrary* plugin;
 		SystemManager* graphicsSystemManager;
-		TextManager* textManager;
 
 	};
 
 	GRAPHICS_API HareApp* getHareApp();
 
+    GRAPHICS_API void graphics_init();
+
+    GRAPHICS_API void graphics_quit();
 }
 
 #endif

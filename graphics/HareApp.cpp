@@ -23,12 +23,12 @@ namespace hare
 	void HareApp::startUp()
 	{
 		DevILImageCodec::startUp();
-		textManager = new TextManager();
+        graphicsSystemManager->startUp();
 	}
 
 	void HareApp::shutDown()
 	{
-		delete textManager;
+		graphicsSystemManager->shutDown();
         DevILImageCodec::shutDown();
 	}
 
@@ -91,5 +91,15 @@ namespace hare
 	{
 		static HareApp hareApp;
 		return HareApp::getSingletonPtr();
+	}
+
+	void graphics_init()
+	{
+        getHareApp()->startUp();
+	}
+
+	void graphics_quit()
+	{
+        getHareApp()->shutDown();
 	}
 }

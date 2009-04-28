@@ -14,6 +14,7 @@ namespace hare
 	class RenderSystem;
 	class Texture;
 	class Canvas;
+	class TextManager;
 
 
 	class GRAPHICS_API SystemManager : public Singleton<SystemManager>
@@ -23,6 +24,11 @@ namespace hare
 		SystemManager();
 
 		virtual ~SystemManager();
+
+		//here: init some system which are not be inherited
+		void startUp();
+
+		void shutDown();
 
 		virtual RenderWindow* createRenderWindow(const WindowParams& params) = 0;
 
@@ -56,6 +62,7 @@ namespace hare
 
 		RenderSystem* renderSystem;
 		Canvas*       canvas;
+		TextManager*  textManager;
 
 		bool bResume;
 		bool bEnd;

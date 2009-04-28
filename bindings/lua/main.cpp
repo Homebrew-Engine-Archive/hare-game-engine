@@ -97,6 +97,7 @@ bool load_scripts(const String& game, lua_State *L)
 INT WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR cmd, INT)
 {
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+	_CrtSetBreakAlloc(598);
     core_init(NULL);
     CmdLineParser cmdLine(cmd);
 #else // HARE_PLATFORM == HARE_PLATFORM_WIN32
@@ -149,7 +150,7 @@ int main(int argc, char *argv[])
         fs->addSearchPath(searchPaths[i]);
     }
 
-  	getHareApp()->startUp();
+  	graphics_init();
 
 #if HARE_PLATFORM != HARE_PLATFORM_PSP
     LuaDebuggee* debuggee = 0;
@@ -187,7 +188,7 @@ int main(int argc, char *argv[])
 #endif
     lua_close(L);
 
-	getHareApp()->shutDown();
+	graphics_quit();
 	getHareApp()->freePlugin();
 
     core_quit();

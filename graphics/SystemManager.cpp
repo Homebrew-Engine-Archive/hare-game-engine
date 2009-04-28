@@ -3,6 +3,7 @@
 #include "SceneManager.h"
 #include "RenderSystem.h"
 #include "Canvas.h"
+#include "TextManager.h"
 
 namespace hare
 {
@@ -13,16 +14,29 @@ namespace hare
 		,bResume(true)
 	    ,bEnd(false)
 	{
-		canvas = new Canvas;
+
 	}
 
 	SystemManager::~SystemManager()
+	{
+
+	}
+
+	void SystemManager::startUp()
+	{
+		canvas      = new Canvas;
+		textManager = new TextManager();
+	}
+
+	void SystemManager::shutDown()
 	{
 		SceneManagerList::iterator it = sceneManagerList.begin();
 		for (;it != sceneManagerList.end(); ++it){
 			delete *it;
 		}
 		sceneManagerList.clear();
+
+        delete textManager;
 		delete canvas;
 	}
 

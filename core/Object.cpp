@@ -41,7 +41,7 @@ namespace hare
             getObjectUrlMap()[obj->getUrl()] = obj;
     }
 
-    void Attribute::doRelease()
+    void Attribute::_doRelease()
     {
         delete this;
     }
@@ -53,7 +53,7 @@ namespace hare
 
     /* special RTTI for base class Object
     */
-    void Object::doRelease()
+    void Object::_doRelease()
     {
         delete this;
     }

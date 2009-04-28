@@ -54,7 +54,7 @@ namespace hare
     private:
         void* handle;
 
-        virtual void doRelease()
+        virtual void _doRelease()
         {
             delete this;
         }

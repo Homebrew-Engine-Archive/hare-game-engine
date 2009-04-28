@@ -37,7 +37,7 @@ namespace hare
             assert(numRef > 0);
             --numRef;
             if (numRef == 0)
-                doRelease();
+                _doRelease();
         }
         int getRef() const
         {
@@ -56,7 +56,7 @@ namespace hare
 
     private:
         // do "delete this;"
-        virtual void doRelease() = 0;
+        virtual void _doRelease() = 0;
 
         int numRef;
     };

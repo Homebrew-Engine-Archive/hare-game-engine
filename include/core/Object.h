@@ -53,7 +53,7 @@ namespace hare
         }
 
     private:
-        virtual void doRelease();
+        virtual void _doRelease();
     };
 
 

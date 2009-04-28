@@ -378,7 +378,7 @@ namespace hare
         long selection = -1;
         
         if (attr->hasFlag(Object::propImport))
-            choices.Add(wxT("[Import From File ...]"), IMPORT_OBJECT);
+            choices.Add(wxT("<Import From File ...>"), IMPORT_OBJECT);
 
         Object* obj = *(Object**)attr->data;
         ClassInfo* objCls = obj ? obj->getClassInfo() : attr->classInfo;

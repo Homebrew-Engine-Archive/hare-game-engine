@@ -25,11 +25,6 @@ end
 function endScene()
 end
 
-function test()
-	local t = hare.importObject("/editor/default.font")
-    hare.getCanvas():setFont(t)
-end
-
 function init()
     hareApp = hare.getHareApp()
     p = hare.WindowParams()
@@ -40,9 +35,6 @@ function init()
     w = hareApp:createRenderWindow(p)
     s = hareApp:createSceneManager()
     w:setSceneManager(s)
-
-    test()
-
     sprite2 = hare.SimpleSprite()
     sprite2:loadFromImage("/sample/images/sample.png")
     s:addSprite(sprite2)    
@@ -51,6 +43,11 @@ function init()
     listener:setRenderSceneListenFunc(renderScene)
     listener:setEndSceneListenFunc(endScene)
     s:setSceneListener(listener)
+    
+	fnt = hare.importObject("/editor/default.font") 
+	canvas = hare.getCanvas()
+	canvas:setFont(fnt)
+
 end
 
 function quit()

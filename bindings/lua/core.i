@@ -10,8 +10,18 @@ typedef std::string     String;
 typedef std::vector<String> StringVector;
 
 %typemap(out) Object* {
-	dynamicCastObject(L, $1, $owner); SWIG_arg++;
+	if ($1 && $owner) ($1)->addRef(); 
+	dynamicCastObject(L, $1, $owner); 
+	SWIG_arg++; 
 }
+
+%newobject importObject;
+Object* importObject(const String &url, bool share = true);
+
+%newobject cloneObject;
+Object* cloneObject(Object* object);
+
+%typemap(out) Object*;
 
 class Object
 {
@@ -20,36 +30,40 @@ public:
     bool saveToBin(const String &path);
 };
 
-Object* importObject(const String &url, bool share = true);
-Object* cloneObject(Object* object);
 
 %{
+    Object* importObject(const String &url, bool share = true)
+    {
+	    return Object::importObject(url, share);
+    }
 
-Object* importObject(const String &url, bool share = true)
-{
-	return Object::importObject(url, share);
-}
+    Object* cloneObject(Object* object)
+    {
+	    return Object::cloneObject(object);
+    }
 
-Object* cloneObject(Object* object)
-{
-	return Object::cloneObject(object);
-}
+    void dynamicCastObject(lua_State* L, Object* object, int owner)
+    {
+        if (object) {
+      	    
+       	    swig_type_info* info = 0;
+	        const ClassInfo* cls = object->getClassInfo();
+	        
+	        do {
+		        String name = String("_p_") + cls->className;
+		        info = SWIG_TypeQuery(name.c_str());
+		        if (!info) {
+			        cls = cls->getBaseClass();
+			        info = 0;
+		        }
+	        } while(!info && cls);
 
-void dynamicCastObject(lua_State* L, Object* object, int owner)
-{
-	const ClassInfo* cls = object->getClassInfo();
-	swig_type_info* info = 0;
-	do {
-		String name = String("_p_") + cls->className;
-		info = SWIG_TypeQuery(name.c_str());
-		if (!info) {
-			cls = cls->getBaseClass();
-			info = 0;
-		}
-	} while(!info && cls);
-
-	SWIG_NewPointerObj(L, (void*)object, info, owner);
-}
+      	    SWIG_NewPointerObj(L, object, info, owner);
+      	    
+        } else { 
+            SWIG_NewPointerObj(L, 0, SWIGTYPE_p_Object, owner);
+        }
+    }
 %}
 
 typedef void* FileHandle;

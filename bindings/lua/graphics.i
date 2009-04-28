@@ -153,8 +153,6 @@ HareApp* getHareApp();
 
 class Font : public Object
 {
-private:
-	Font();
 };
 
 class Canvas

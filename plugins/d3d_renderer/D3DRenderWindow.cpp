@@ -160,11 +160,11 @@ void D3DRenderWindow::destoryWindow()
     sceneManager = NULL;
 
 	if (getIsMainWnd()){
-        if (!isExternal){
+        //if (!isExternal){
 			//如果是主窗口则退出程序
 			//PostQuitMessage(0);
 			getHareApp()->end();
-        }
+        //}
 	}else{
 		//副窗口则释放资源
 		D3DSystemManager::getSingletonPtr()->destoryRenderWindow(this);	

@@ -187,11 +187,11 @@ void GLRenderWindow::destoryWindow()
     sceneManager = NULL;
 
     if (getIsMainWnd()){
-        if (!isExternal){
+        //if (!isExternal){
             //exit main Process
             //PostQuitMessage(0);
 			getHareApp()->end();
-        }
+        //}
     }else{
         //destory window 
         GLSystemManager::getSingletonPtr()->destoryRenderWindow(this);	

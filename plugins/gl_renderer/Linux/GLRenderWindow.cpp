@@ -218,8 +218,6 @@ void GLRenderWindow::inactive()
 
 }
 
-
-
 void GLRenderWindow::createGLResource()
 {
 	glContext = glXCreateContext((Display*)windowParams.hwnd.dpy,
@@ -230,11 +228,12 @@ void GLRenderWindow::createGLResource()
         main_context = glContext;
 	}
 
-	glewInit();
+	if (isMainWnd){
+		active();
+	    glewInit();	
+	}
 
-	GLenum ret = glGetError();
-	glEnable(GL_TEXTURE_2D);
-	glDisable(GL_LIGHTING);
+	GLRenderSystem::getSingletonPtr()->initalizeParam(windowParams.bZbuffer);
 }
 
 void GLRenderWindow::destoryGLResource()
@@ -273,15 +272,33 @@ void GLRenderWindow::destoryGLResource()
 
 void GLXProc(const XEvent &event, GLRenderWindow* win)
 {
-	if( win == 0 ) return;
+    if(win == 0) 
+        return;
 
     switch(event.type)
     {
+	case KeyPress:
+		{
+            KeySym     keysym;
+            XKeyEvent *kevent;
+            char       buffer[1];
+			/* It is necessary to convert the keycode to a
+			* keysym before checking if it is an escape */
+            kevent = (XKeyEvent*)&event;
+            if ((XLookupString((XKeyEvent *)&event, buffer, 1, &keysym, NULL) == 1)
+                && (keysym == (KeySym)XK_Escape) )
+				win->destoryWindow();   
+		}
+        break;
     case ClientMessage:
 
         break;
-	case ConfigureNotify:	//Moving or Resizing
-
+	case ConfigureNotify://Moving or Resizing
+		{
+			uint32 w = event.xconfigure.width > 0  ? event.xconfigure.width  : 1;
+			uint32 h = event.xconfigure.height > 0 ? event.xconfigure.height : 1;
+            renderWindow->resize(w, h);
+		}
 		break;
 	case MapNotify:   //Restored
 

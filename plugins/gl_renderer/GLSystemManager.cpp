@@ -118,13 +118,27 @@ void GLSystemManager::hareRun()
 #elif HARE_PLATFORM == HARE_PLATFORM_LINUX
 
     while(1){
-        XEvent event;
-
         Display* dpy = ((GLRenderWindow*)pPrimaryWindow)->getDisplay();
-        do{
+        while(XPending(dpy) > 0)
+		{
+            XEvent event;
             XNextEvent(dpy, &event);
+			GLXProc(event, pPrimaryWindow);
             break;
-       } while(XPending(dpy));
+        }
+
+		SecondaryWindowList::iterator it = secondaryWindowList.begin();
+		for (;it != secondaryWindowList.end(); ++it){
+            GLRenderWindow* glwindow = (GLRenderWindow*)(*it);
+			dpy = glwindow->getDisplay();
+			while(XPending(dpy) > 0)
+			{
+				XEvent event;
+				XNextEvent(dpy, &event);
+				GLXProc(event, glwindow);
+				break;
+			}
+		}
 
         int ret = hareRunFrame();
 

@@ -148,9 +148,16 @@ namespace hare
             plugins.Add(elem);
         }
 
-        if (registeredPlugins.empty())
+        size_t count = registeredPlugins.size();
+
+        if (0 == count)
         {
             wxPluginManager::UnloadLibrary(fileName);
+        }
+        else
+        {
+            while (--count)
+                lib->RefLib();
         }
 
         return true;

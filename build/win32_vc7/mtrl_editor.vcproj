@@ -122,6 +122,9 @@
 				RelativePath="..\..\plugins\mtrl_editor\MtrlMIMEHandler.cpp">
 			</File>
 			<File
+				RelativePath="..\..\plugins\mtrl_editor\MtrlWizard.cpp">
+			</File>
+			<File
 				RelativePath="..\..\plugins\mtrl_editor\PCH.cpp">
 				<FileConfiguration
 					Name="Debug|Win32">
@@ -140,6 +143,9 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
 			<File
 				RelativePath="..\..\plugins\mtrl_editor\MtrlMIMEHandler.h">
+			</File>
+			<File
+				RelativePath="..\..\plugins\mtrl_editor\MtrlWizard.h">
 			</File>
 			<File
 				RelativePath="..\..\plugins\mtrl_editor\PCH.h">

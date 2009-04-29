@@ -30,7 +30,7 @@
 							<orient>wxVERTICAL</orient>
 							<object class="sizeritem">
 								<object class="wxListCtrl" name="listCtrlItems">
-									<style>wxLC_ICON|wxLC_ALIGN_TOP|wxLC_AUTOARRANGE|wxLC_SINGLE_SEL</style>
+									<style>wxLC_ICON|wxLC_AUTOARRANGE|wxLC_SINGLE_SEL</style>
 								</object>
 								<flag>wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
 								<border>1</border>

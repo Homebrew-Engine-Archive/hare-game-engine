@@ -1,0 +1,32 @@
+//***************************************************************
+//  File:    MtrlWizard.h
+//  Data:    04/29/2009
+//  Author:  littlesome (littlesome@live.cn)
+//-------------------------------------------------------------
+//  
+//-------------------------------------------------------------
+//  This file is part of Hare2D Game Engine.
+//  Copyright (C) All Rights Reserved
+//***************************************************************
+// 
+//***************************************************************
+#ifndef MTRLWIZARD_H
+#define MTRLWIZARD_H
+
+class MtrlWizard : public WizardPlugin
+{
+public:
+    MtrlWizard();
+
+    virtual wxString getFolder() const;
+    virtual const wxBitmap& getBitmap(int index) const;
+    virtual wxString getTitle(int index) const;
+    virtual wxString getDesc(int index) const;
+    virtual int getCount() const;
+    virtual Object* wizard(int index);
+
+private:
+    wxBitmap bitmap;
+};
+
+#endif

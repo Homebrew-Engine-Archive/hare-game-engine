@@ -18,11 +18,6 @@
 
 namespace hare
 {
-    class EDITOR_API WizardResult : public Object
-    {
-        HARE_DECLARE_DYNAMIC_CLASS(WizardResult)
-    };
-
     class EDITOR_API WizardPlugin : public EditorPlugin
     {
     public:
@@ -30,12 +25,22 @@ namespace hare
         virtual ~WizardPlugin();
 
     public:
-        virtual const wxString& getFolderPath() const = 0;
+        virtual wxString getFolder() const = 0;
         virtual const wxBitmap& getBitmap(int index) const = 0;
-        virtual const wxString& getTitle(int index) const = 0;
-        virtual const wxString& getDesc(int index) const = 0;
+        virtual wxString getTitle(int index) const = 0;
+        virtual wxString getDesc(int index) const = 0;
         virtual int getCount() const = 0;
-        virtual WizardResult* wizard(int index) = 0;
+        virtual Object* wizard(int index) = 0;
+
+    private:
+        virtual bool buildMenuBar(wxMenuBar* menuBar)
+        {
+            return false;
+        }
+        virtual bool buildToolBar(wxAuiToolBar* toolBar)
+        {
+            return false;
+        }
     };
 }
 

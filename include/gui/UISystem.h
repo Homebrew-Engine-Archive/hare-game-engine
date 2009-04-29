@@ -13,7 +13,7 @@ namespace hare
         LeftButton,
         RightButton,
         MiddleButton,
-        MouseButtonMax,
+        MB_MAX,
     };
 
     class UI_API UISystem : public Singleton<UISystem>

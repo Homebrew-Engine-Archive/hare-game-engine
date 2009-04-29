@@ -21,10 +21,7 @@ namespace hare
         HARE_ENUM_VALUE(uiShaped)
         HARE_ENUM_VALUE(uiFixed_Minsize)
     HARE_ENUM_END()
-}
 
-namespace hare
-{
     // ---------------------------------------------------------------
     // SizerItem
     // ---------------------------------------------------------------

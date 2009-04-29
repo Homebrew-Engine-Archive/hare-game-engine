@@ -12,10 +12,21 @@
 //***************************************************************
 #include "PCH.h"
 #include "MtrlMIMEHandler.h"
+#include "MtrlWizard.h"
 
+//////////////////////////////////////////////////////////////////////////
 static const PluginInfo mtrlMIMEHandler = {
     wxT("MtrlMIMEHandler"), 
     wxT("MtrlMIMEHandler"),
     wxT("This is a plugin for material editing.") };
 
 PluginRegistrant<MtrlMIMEHandler> regMtrlMIMEHandler(mtrlMIMEHandler);
+
+//////////////////////////////////////////////////////////////////////////
+static const PluginInfo mtrlWizard = {
+    wxT("MtrlWizard"), 
+    wxT("MtrlWizard"),
+    wxT("This is a plugin for material creating.") };
+
+PluginRegistrant<MtrlWizard> regMtrlWizard(mtrlWizard);
+//////////////////////////////////////////////////////////////////////////

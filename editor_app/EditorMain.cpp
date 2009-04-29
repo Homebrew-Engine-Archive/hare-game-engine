@@ -210,12 +210,13 @@ void EditorFrame::createIDE()
         wxAuiPaneInfo().Name(wxT("ExplorerPane")).Caption(_("Explorer")).BestSize(bestSize).
         FloatingSize(bestSize).MinSize(wxSize(50, 100)).Left().CloseButton(true).MaximizeButton(true));
 
-    findReplaceDlg = new FindReplaceDialog(this);
-
     wxString pluginPath = Manager::getInstancePtr()->getAppDir() + wxT("/editor_plugins/");
 
     Manager::getInstancePtr()->getPluginManager()->scanForPlugins(pluginPath);
     Manager::getInstancePtr()->getPluginManager()->loadAllPlugins();
+
+    findReplaceDlg = new FindReplaceDialog(this);
+    newFileDlg = new NewFileDialog(this);
 
     Manager::getInstancePtr()->getExplorerManager()->getNotebook()->SetDropTarget(new FileDropTarget(this));
     Manager::getInstancePtr()->getEditorPageManager()->getNotebook()->SetDropTarget(new FileDropTarget(this));
@@ -629,6 +630,15 @@ void EditorFrame::onApplicationClose(wxCloseEvent& event)
 void EditorFrame::onFileNew(wxCommandEvent& event)
 {
     int id = event.GetId();
+
+    static bool firstTimeShow = true;
+    if (firstTimeShow)
+    {
+        newFileDlg->Center();
+        firstTimeShow = false;
+    }
+    newFileDlg->Show();
+    newFileDlg->SetFocus();
 }
 
 void EditorFrame::onFileOpen(wxCommandEvent& event)

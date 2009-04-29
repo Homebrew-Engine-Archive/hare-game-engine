@@ -28,6 +28,7 @@ private:
     wxAuiToolBar* mainToolBar;
     wxAuiToolBar* fullScreenToolBar;
     FindReplaceDialog* findReplaceDlg;
+    NewFileDialog* newFileDlg;
 
     PluginToolBarMap pluginToolBars;
 

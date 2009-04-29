@@ -11,7 +11,7 @@ namespace hare
         RectF rect;
         Window* window;
     };
-    MouseClickTracker clickTrackers[MouseButtonMax];
+    MouseClickTracker clickTrackers[MB_MAX];
 
     bool UISystem::notifyMousePosition(float posX, float posY)
     {

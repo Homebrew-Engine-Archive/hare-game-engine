@@ -14,6 +14,8 @@
 #define NEWFILEDIALOG_H
 
 #include "EditorPrerequisites.h"
+#include "PluginManager.h"
+#include "WizardPlugin.h"
 #include <wx/treectrl.h>
 #include <wx/listctrl.h>
 #include <wx/dialog.h>
@@ -23,20 +25,30 @@ namespace hare
     class EDITOR_API NewFileDialog : public wxDialog
     {
     public:
-        NewFileDialog(wxWindow* parent, wxString initial = wxEmptyString);
+        NewFileDialog(wxWindow* parent, const String& initial = StringUtil::EMPTY);
         virtual ~NewFileDialog();
 
-        bool createFolder(const wxString& folder);
-        bool selectFolder(const wxString& folder, bool expand = true);
+        void rebuildTree();
 
     protected:
-        //void onCategoryChanged(wxCommandEvent& event);
-        //void onUpdateUI(wxUpdateUIEvent& event);
+        void onTreeSelectChanged(wxTreeEvent& event);
+        void onListActivated(wxListEvent& event);
+        void onListSelected(wxListEvent& event);
+        
+        void rebuildList(WizardPlugin* plugin);
+        bool createTreeItem(const String& folder, WizardPlugin* plugin);
 
     private:
         wxListCtrl* listCtrlItems;
         wxTreeCtrl* treeCtrlFilter;
+        wxStaticText* textDesc;
+
+        wxImageList* treeImageList;
+        wxImageList* listImageList;
+
         wxTreeItemId rootId;
+
+        PluginsArray plugins;
 
         DECLARE_EVENT_TABLE()
     };

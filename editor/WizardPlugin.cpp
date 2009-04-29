@@ -15,7 +15,12 @@
 
 namespace hare
 {
-    HARE_IMPLEMENT_DYNAMIC_CLASS(WizardResult, Object, 0)
+    WizardPlugin::WizardPlugin()
+    {
+        type = EPT_Wizard;
+    }
+
+    WizardPlugin::~WizardPlugin()
     {
     }
 }

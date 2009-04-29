@@ -21,7 +21,6 @@ namespace hare
     enum EditorPluginType
     {
         EPT_Unknown,
-        EPT_Compiler,
         EPT_Debugger,
         EPT_Wizard,
         EPT_MIMEHandler,

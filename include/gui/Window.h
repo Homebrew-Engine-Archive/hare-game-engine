@@ -11,7 +11,6 @@ namespace hare
     {
         HARE_DECLARE_ABSTRACT_CLASS(Window)
     public:
-
         void setId(int id) 
         { 
             windowId = id; 
@@ -145,18 +144,11 @@ namespace hare
         virtual float adjustForLayoutDirection(float x, float width, float widthTotal) const;
 
     public:
-        virtual void setTitle(const String& title)
-        {
-        }
-        virtual String getTitle() const
-        {
-            return StringUtil::EMPTY;
-        }
+        SizeF getSize() const;
 
-        virtual SizeF getSize()
-        {
-            return minSize;
-        }
+        PointF getPosition() const;
+
+        RectF getRect() const;
 
         virtual void raise()
         {
@@ -182,6 +174,8 @@ namespace hare
 
         SizeF minSize;
         SizeF maxSize;
+
+        RectF area;
 
         String themeName;
     };

@@ -30,19 +30,21 @@ bool notify_error(lua_State *L)
 {
     String err = luaL_checkstring(L, -1);
 
+    Log::getSingleton().logError("Lua error : %s", err.c_str());
+    
     if (LuaDebuggee::getSingletonPtr())
         return LuaDebuggee::getSingletonPtr()->notifyError(err + "\n");
-    else
-    {
-        printf("%s\n", err.c_str());
-        return false;
-    }
+
+    return false;
 }
 
 void main_loop(lua_State *L)
 {
     if (init_handle < 0 || quit_handle < 0)
+    {
+        Log::getSingleton().logWarning("Can not find init() or quit() in script, quit main loop");
         return;
+    }
 
     lua_rawgeti(L, LUA_REGISTRYINDEX, init_handle);
     int status = lua_pcall(L, 0, LUA_MULTRET, 0);
@@ -63,7 +65,11 @@ bool load_scripts(const String& game, lua_State *L)
     String fileName = game + "/script.lua";
     FileHandle fh = fs->openFile(fileName, FM_Read);
     if (!fh)
+    {
+        Log::getSingleton().logError("Failed to load script, file : '%s'",
+            fileName.c_str());
         return false;
+    }
     int size = fs->size(fh);
     if (size <= 0)
     {
@@ -94,17 +100,21 @@ bool load_scripts(const String& game, lua_State *L)
 }
 
 #if HARE_PLATFORM == HARE_PLATFORM_WIN32
+
 INT WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR cmd, INT)
 {
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
-	//_CrtSetBreakAlloc(598);
+	//_CrtSetBreakAlloc(404);
     core_init(NULL);
     CmdLineParser cmdLine(cmd);
+
 #else // HARE_PLATFORM == HARE_PLATFORM_WIN32
+
 int main(int argc, char *argv[])
 {
     core_init(argv[0]);
     CmdLineParser cmdLine(argc, argv);
+
 #endif // HARE_PLATFORM == HARE_PLATFORM_WIN32
 
 #if HARE_PLATFORM == HARE_PLATFORM_PSP
@@ -131,7 +141,9 @@ int main(int argc, char *argv[])
     StringVector plugins = plugin.getMultiSetting("Plugin");
     for (size_t i = 0; i < plugins.size(); ++i)
     {
-        getHareApp()->loadPlugin(pluginDir + plugins[i]);
+        String fileName = pluginDir + plugins[i];
+        Log::getSingleton().logInfo("Load plugin : '%s'", fileName.c_str());
+        getHareApp()->loadPlugin(fileName);
     }
 
     // load all resources
@@ -143,12 +155,26 @@ int main(int argc, char *argv[])
     StringVector searchPaths = resource.getMultiSetting("SearchPath");
 
     FileSystem* fs = FileSystem::getSingletonPtr();
+    
     fs->setWriteDir(writeDir);
+    Log::getSingleton().logInfo("Filesystem write dir : '%s'", 
+        writeDir.c_str());
+    
     fs->addSearchPath(scriptDir);
+    Log::getSingleton().logInfo("Filesystem add search path : '%s'", 
+        scriptDir.c_str());
+    
     for (size_t i = 0; i < searchPaths.size(); ++i)
     {
         fs->addSearchPath(searchPaths[i]);
+        Log::getSingleton().logInfo("Filesystem add search path : '%s'", 
+            searchPaths[i].c_str());
     }
+
+    Log::getSingleton().logInfo("Test logInfo");
+    Log::getSingleton().logWarning("Test logWarning");
+    Log::getSingleton().logError("Test logError");
+    Log::getSingleton().logDebug("Test logDebug");
 
   	graphics_init();
 
@@ -189,7 +215,7 @@ int main(int argc, char *argv[])
     lua_close(L);
 
 	graphics_quit();
-	getHareApp()->freePlugin();
+	getHareApp()->freeAllPlugins();
 
     core_quit();
 

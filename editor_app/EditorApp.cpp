@@ -129,7 +129,7 @@ int EditorApp::OnExit()
 
     getHareApp()->shutDown();
 
-    getHareApp()->freePlugin();
+    getHareApp()->freeAllPlugins();
 
     core_quit();
 

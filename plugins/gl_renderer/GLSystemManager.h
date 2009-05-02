@@ -4,6 +4,8 @@
 
 class GLSystemManager : public SystemManager
 {
+    HARE_DECLARE_DYNAMIC_CLASS(GLSystemManager)
+
 public:
 	GLSystemManager();
 

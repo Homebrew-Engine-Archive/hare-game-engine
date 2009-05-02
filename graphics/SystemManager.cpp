@@ -9,6 +9,10 @@ namespace hare
 {
 	HARE_IMPLEMENT_SINGLETON(SystemManager)
 
+    HARE_IMPLEMENT_ABSTRACT_CLASS(SystemManager, Object, 0)
+    {
+    }
+
 	SystemManager::SystemManager()
 		:pPrimaryWindow(NULL)
 		,bResume(true)

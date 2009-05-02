@@ -16,11 +16,13 @@
 #include "CmdLineParser.h"
 #include "Socket.h"
 #include "MathUtil.h"
+#include "Log.h"
 
 namespace hare
 {
     void CORE_API core_init(const char* argv0)
     {
+        static Log theLog;
         static FileSystem theFileSystem(argv0);
 		MathUtil::rand_seed(0);
 
@@ -33,6 +35,8 @@ namespace hare
 
     void CORE_API core_quit()
     {
+        Log::getSingleton().dumpMessages();
+
 #if HARE_PLATFORM == HARE_PLATFORM_WIN32
         WSACleanup();
 #endif

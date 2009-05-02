@@ -20,6 +20,8 @@ namespace hare
     typedef HashMap<String, ClassInfo*> ClassNameMap;
     typedef Object* (*ObjectConstructorFunc)();
 
+    typedef std::vector<ClassInfo*> ClassInfoList;
+
     class CORE_API ClassInfo
     {
     public:
@@ -70,7 +72,7 @@ namespace hare
             return base != 0 && (base == this || (baseClass && baseClass->isDerivedFrom(base)));
         }
 
-        int findSubs(std::vector<ClassInfo*>& list);
+        int findSubs(ClassInfoList& list);
 
     public:
         const char*             className;

@@ -129,6 +129,7 @@ namespace hare
 
     CORE_API ObjectUrlMap& getObjectUrlMap();
     CORE_API void setObjUrl(Object *obj, const String& url);
+    CORE_API const char* getVersionString();
 
     CORE_API void core_init(const char* argv0);
     CORE_API void core_quit();

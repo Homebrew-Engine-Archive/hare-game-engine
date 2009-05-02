@@ -32,9 +32,9 @@ namespace hare
 
 		void setGraphicsSystem(SystemManager* systemManager);
 
-		void loadPlugin(const String& moduleName);
+		DynamicLibrary* loadPlugin(const String& moduleName);
 
-		void freePlugin();
+		void freeAllPlugins();
 
 		RenderWindow* createRenderWindow(const WindowParams& params);
 
@@ -53,9 +53,10 @@ namespace hare
 		void end();
 
 	private:
-		DynamicLibrary* plugin;
-		SystemManager* graphicsSystemManager;
+        typedef std::map<String, DynamicLibrary*> PluginMap;
+        PluginMap pluginMap;
 
+        SystemManager::Ptr graphicsSystemManager;
 	};
 
 	GRAPHICS_API HareApp* getHareApp();

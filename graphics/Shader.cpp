@@ -34,7 +34,7 @@ namespace hare
 		,SceneBlendSrcArg(SBA_Srcalpha)
 		,SceneBlendDesArg(SBA_Invsrcalpha)
 		,AlphaTestEnable(true)
-		,AlphaRef(1)
+		,AlphaRef(128)
 		,bUseZ(true)
 	{
 

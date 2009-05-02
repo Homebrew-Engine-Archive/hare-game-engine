@@ -287,12 +287,29 @@ MtrlMIMEHandler::MtrlMIMEHandler() : page(0)
 
 bool MtrlMIMEHandler::canHandle(const wxString& filename) const
 {
-    return filename.Lower().EndsWith(wxT(".material"));
+    return filename.Lower().EndsWith(wxT(".material")) ||
+        filename.Lower().EndsWith(wxT(".bmp")) ||
+        filename.Lower().EndsWith(wxT(".png")) ||
+        filename.Lower().EndsWith(wxT(".tga"));
+
 }
 
 bool MtrlMIMEHandler::openFile(const wxString& filename)
 {
-    Material* mtrl = (Material*)Object::importObject(filename.ToUTF8().data());
+    Material* mtrl = NULL;
+
+    if (filename.Lower().EndsWith(wxT(".material")))
+        mtrl = (Material*)Object::importObject(filename.ToUTF8().data());
+    else if (
+        filename.Lower().EndsWith(wxT(".bmp")) ||
+        filename.Lower().EndsWith(wxT(".png")) ||
+        filename.Lower().EndsWith(wxT(".tga")))
+    {
+        TextureMtrl* texMtrl = new TextureMtrl();
+        texMtrl->fileName = filename.ToUTF8().data();
+        texMtrl->postLoaded();
+        mtrl = texMtrl;
+    }
 
     if (!mtrl)
         return false;

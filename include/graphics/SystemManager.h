@@ -17,10 +17,13 @@ namespace hare
 	class TextManager;
 
 
-	class GRAPHICS_API SystemManager : public Singleton<SystemManager>
+	class GRAPHICS_API SystemManager : public Object, public Singleton<SystemManager>
 	{
+        HARE_DECLARE_ABSTRACT_CLASS(SystemManager)
+
 		HARE_DECLARE_SINGLETON(SystemManager)
-	public:
+
+    public:
 		SystemManager();
 
 		virtual ~SystemManager();

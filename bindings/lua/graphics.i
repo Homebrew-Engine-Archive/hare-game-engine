@@ -136,10 +136,6 @@ public:
 class HareApp
 {
 public:
-	void loadPlugin(const String& moduleName);
-
-	void freePlugin();
-
 	RenderWindow* createRenderWindow(const WindowParams& params);
 
 	SceneManager* createSceneManager();

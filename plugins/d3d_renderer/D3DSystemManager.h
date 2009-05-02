@@ -3,6 +3,8 @@
 
 class D3DSystemManager : public SystemManager
 {
+    HARE_DECLARE_DYNAMIC_CLASS(D3DSystemManager)
+
 public:
 	D3DSystemManager();
 

@@ -21,6 +21,11 @@
 
 namespace hare
 {
+    const char* getVersionString()
+    {
+        return "Hare 1.0.0";
+    }
+
     ObjectUrlMap& getObjectUrlMap()
     {
         static ObjectUrlMap objects;

@@ -13,7 +13,9 @@
 #include "GLTexture.h"
 #include "GLVertexBufferManager.h"
 
-
+HARE_IMPLEMENT_DYNAMIC_CLASS(GLSystemManager, SystemManager, 0)
+{
+}
 
 GLVertexBufferManager* vertexBufferManager;
 

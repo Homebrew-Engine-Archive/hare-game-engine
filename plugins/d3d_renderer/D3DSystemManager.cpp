@@ -4,8 +4,9 @@
 #include "D3DRenderWindow.h"
 #include "D3DTexture.h"
 
-
-
+HARE_IMPLEMENT_DYNAMIC_CLASS(D3DSystemManager, SystemManager, 0)
+{
+}
 
 D3DSystemManager::D3DSystemManager()
 {

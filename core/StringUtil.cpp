@@ -94,6 +94,13 @@ namespace hare
         return buff;
     }
 
+    String StringUtil::formatV(const char* formats, va_list ap)
+    {
+        char buff[4097];
+        vsprintf(buff, formats, ap);
+        return buff;
+    }
+
     void StringUtil::trim(String& str, bool left, bool right)
     {
         static const String delims = " \t\r";

@@ -10,41 +10,78 @@ namespace hare
 	HARE_IMPLEMENT_SINGLETON(HareApp)
 
 	HareApp::HareApp()
-		:graphicsSystemManager(NULL)
 	{
-
 	}
 
 	HareApp::~HareApp()
 	{
-
 	}
 
 	void HareApp::startUp()
 	{
 		DevILImageCodec::startUp();
-        graphicsSystemManager->startUp();
+
+        ClassInfoList subSystems;
+        SystemManager::CLASS_INFO.findSubs(subSystems);
+        if (subSystems.size() > 0)
+        {
+            graphicsSystemManager = (SystemManager*)subSystems[0]->createObject();
+            graphicsSystemManager->startUp();
+        }
+        else
+        {
+            Log::getSingleton().logError("HareApp::startUp no renderer loaded");
+        }
 	}
 
 	void HareApp::shutDown()
 	{
-		graphicsSystemManager->shutDown();
+        if (graphicsSystemManager)
+		    graphicsSystemManager->shutDown();
+        graphicsSystemManager = NULL;
         DevILImageCodec::shutDown();
 	}
 
-	void HareApp::setGraphicsSystem(SystemManager* systemManager)
+	/*void HareApp::setGraphicsSystem(SystemManager* systemManager)
 	{
 		graphicsSystemManager = systemManager;
+	}*/
+
+	DynamicLibrary* HareApp::loadPlugin(const String& moduleName)
+	{
+        PluginMap::iterator it = pluginMap.find(moduleName);
+        if (it != pluginMap.end())
+        {
+            it->second->addRef();
+            return it->second;
+        }
+        else
+        {
+            DynamicLibrary* plugin = new DynamicLibrary(moduleName);
+            if (plugin->isLoaded())
+            {
+                plugin->addRef();
+                pluginMap[moduleName] = plugin;
+            }
+            else
+            {
+                Log::getSingleton().logError("HareApp::loadPlugin failed to load '%s'",
+                    moduleName.c_str());
+                delete plugin;
+                plugin = NULL;
+            }
+            return plugin;
+        }
 	}
 
-	void HareApp::loadPlugin(const String& moduleName)
+    void HareApp::freeAllPlugins()
 	{
-        plugin = new DynamicLibrary(moduleName);
-	}
-
-	void HareApp::freePlugin()
-	{
-        SAFE_DELETE(plugin);
+        PluginMap::iterator it = pluginMap.begin();
+        for (; it != pluginMap.end(); ++it)
+        {
+            it->second->decRef();
+        }
+        pluginMap.clear();
 	}
 
 	RenderWindow* HareApp::createRenderWindow(const WindowParams& params)

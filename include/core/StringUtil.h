@@ -27,6 +27,7 @@ namespace hare
         static StringVector split(const String &str, const String& delims = "\t\n\r ");
 
         static String format(const char* formats, ...);
+        static String formatV(const char* formats, va_list ap);
 
         static void trim(String& str, bool left = true, bool right = true);
 		static void splitFilename(const String& fullName, String& outBasename, String& outExtention);

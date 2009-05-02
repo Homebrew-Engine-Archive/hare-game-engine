@@ -7,10 +7,6 @@ fnt = nil
 lastTime = 0
 
 function beginScene()
-    if hare.getTime() - lastTime > 1 then
-        lastTime = hare.getTime()
-        print("fps:", hare.getTimer():getFPS(), lastTime)
-    end
 end
 
 function renderScene()
@@ -21,13 +17,12 @@ function renderScene()
 	canvas:drawRect(50, 50, 100, 100)
 	canvas:setZ(-0.9)
 	canvas:setColor(0xff00ff00)
-	canvas:drawText(80, 80,'Hello hare~!!')
+	canvas:drawText(80, 80, tostring(hare.getTimer():getFPS()))
 	canvas:setColor(0xffffffff)
 	canvas:setZ(0)
 end
 
 function endScene()
-
 end
 
 function init()
@@ -41,7 +36,7 @@ function init()
     s = hareApp:createSceneManager()
     w:setSceneManager(s)
     sprite2 = hare.SimpleSprite()
-    sprite2:loadFromImage("/sample/images/sample.png")
+    sprite2:loadFromImage("/editor/grid.png")
     s:addSprite(sprite2)    
     listener = hare.LuaSceneListener()
     listener:setBeginSceneListenFunc(beginScene)
@@ -56,12 +51,11 @@ function init()
     --p.bZbuffer = true
     --w = hareApp:createRenderWindow(p)
     --w:setSceneManager(s)
-    
-    
-	tm = hare.getTextManager() 
-	fnt = tm:createFont("comic.ttf", 50) 
-	canvas = hare.getCanvas()
-	canvas:setFont(fnt)
+
+    tm = hare.getTextManager() 
+    fnt = tm:createFont("/editor/comic.ttf", 50) 
+    canvas = hare.getCanvas()
+    canvas:setFont(fnt)
 
 end
 

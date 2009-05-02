@@ -89,9 +89,6 @@ void MtrlEditorPage::addMaterial(Material* mtrl)
     newItem->pos = PointF(100, 100);
     mtrlStates.push_back(newItem);
 
-    Manager::getInstancePtr()->getExplorerManager()->removeAllProperties();
-    Manager::getInstancePtr()->getExplorerManager()->bindProperty(wxT("MaterialProperity"), mtrl);
-
     setTitle(wxT("[MaterialEditor]"));
 }
 

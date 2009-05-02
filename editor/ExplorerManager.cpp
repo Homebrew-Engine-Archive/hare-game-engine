@@ -77,6 +77,12 @@ namespace hare
 
     ExplorerManager::~ExplorerManager()
     {
+        // Must destroy this notebook before unload plugins, because
+        // PropGridManager's page may hold the ref to an object which
+        // should be released before unload the renderer plugin.
+        // propGridManager->Clear() doesn't work :( , for it do not 
+        // delete the page.
+        notebook->Destroy();
     }
 
     void ExplorerManager::bindProperty(const wxString& name, Object* object)

@@ -610,6 +610,8 @@ void EditorFrame::onApplicationClose(wxCloseEvent& event)
         return;
     }
 
+    ExplorerManager::getInstancePtr()->removeAllProperties();
+
     EditorEvent evt(editorEVT_APP_BEFORE_SHUTDOWN);
     Manager::getInstancePtr()->processEvent(evt);
 

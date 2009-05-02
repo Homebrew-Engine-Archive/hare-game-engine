@@ -22,11 +22,13 @@ namespace hare
     {
     public:
         DynamicLibrary() : handle(0) {}
+
         DynamicLibrary(const String& path)
         {
             load(path);
         }
-       ~DynamicLibrary()
+       
+        ~DynamicLibrary()
         {
             unload();
         }
@@ -35,12 +37,11 @@ namespace hare
 
         void* getSymbol(const String& name);
 
-        void* getHandle() const
-        {
-            return handle;
-        }
+        bool isLoaded() { return handle != 0; }
 
-        void unload()
+        void* getHandle() const { return handle; }
+
+        void unload() 
         {
             if (handle)
             {

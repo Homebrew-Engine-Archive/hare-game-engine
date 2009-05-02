@@ -74,8 +74,8 @@ namespace hare
 
     public:
         const char*             className;
-        uint32                     classVersion;
-        uint32                     objectSize;
+        uint32                  classVersion;
+        uint32                  objectSize;
         ObjectConstructorFunc   objectConstructor;
     private:
         const ClassInfo*        baseClass;

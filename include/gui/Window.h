@@ -144,7 +144,10 @@ namespace hare
         virtual float adjustForLayoutDirection(float x, float width, float widthTotal) const;
 
     public:
-        SizeF getSize() const;
+        SizeF getSize() const
+        {
+            return SizeF(0,0);
+        }
 
         PointF getPosition() const;
 

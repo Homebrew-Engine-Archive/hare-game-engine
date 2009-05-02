@@ -65,6 +65,8 @@ namespace hare
             maxLogLevel = maxLevel;
         }
 
+        void changeFileName(const String& fileName);
+
         bool dumpMessages();
 
     protected:
@@ -74,6 +76,7 @@ namespace hare
         uint32 maxLogLevel;
         std::queue<LogMessage> messages;
         std::ofstream file;
+        String logFileName;
 
         void pushMessage(const String &text, uint32 level);
         void pushMessage(int level, const char *msg, va_list ap);

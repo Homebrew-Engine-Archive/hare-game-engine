@@ -78,6 +78,8 @@ bool EditorApp::OnInit()
     wxString argv0 = argv[0];
     core_init(argv0.ToUTF8().data());
 
+    Log::getSingleton().changeFileName("EditorLog.html");
+
     FileSystem* fs = FileSystem::getSingletonPtr();
 
     // -------------------------------------------------------------------

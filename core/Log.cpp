@@ -23,6 +23,7 @@ namespace hare
         firstTick = getTime();
         maxNumMessages = 1024;
         maxLogLevel = 4;
+        logFileName = "EngineLog.html";
     }
 
     Log::~Log()
@@ -118,13 +119,27 @@ namespace hare
             return "";
     }
 
+    void Log::changeFileName(const String& fileName)
+    {
+        if (file.is_open())
+        {
+            file << "</table>\n";
+            file << "</div>\n";
+            file << "</body>\n";
+            file << "</html>";
+            file.close();
+        }
+
+        logFileName = fileName;
+    }
+
     bool Log::dumpMessages()
     {
         if (!file.is_open())
         {
             file.setf(std::ios::fixed);
             file.precision(3);
-            file.open("EngineLog.html", std::ios::out);
+            file.open(logFileName.c_str(), std::ios::out);
             if (!file) return false;
 
             file << "<html>\n";

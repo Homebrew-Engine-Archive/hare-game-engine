@@ -171,11 +171,6 @@ int main(int argc, char *argv[])
             searchPaths[i].c_str());
     }
 
-    Log::getSingleton().logInfo("Test logInfo");
-    Log::getSingleton().logWarning("Test logWarning");
-    Log::getSingleton().logError("Test logError");
-    Log::getSingleton().logDebug("Test logDebug");
-
   	graphics_init();
 
 #if HARE_PLATFORM != HARE_PLATFORM_PSP

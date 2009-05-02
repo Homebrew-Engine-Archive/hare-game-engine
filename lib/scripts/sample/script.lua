@@ -35,13 +35,13 @@ function init()
     p = hare.WindowParams()
     p.width = 800
     p.height = 600
-    p.bFullScreen = true
+    p.bFullScreen = false
     p.bZbuffer = false
     w = hareApp:createRenderWindow(p)
     s = hareApp:createSceneManager()
     w:setSceneManager(s)
     sprite2 = hare.SimpleSprite()
-    sprite2:loadFromImage("yu.png")
+    sprite2:loadFromImage("/sample/images/sample.png")
     s:addSprite(sprite2)    
     listener = hare.LuaSceneListener()
     listener:setBeginSceneListenFunc(beginScene)

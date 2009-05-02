@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <Object store="0" class="SimpleParticle" version="0">
     <super_version_Particle class="uint32" value="0" />
-    <particleMtrl store="1" ref="/sample/par0.material" />
+    <particleMtrl store="1" ref="/sample/par1.material" />
     <particleInfo store="0" class="ParticleInfo" version="0">
         <emission class="int32" value="100" />
         <lifeTime class="float" value="-1.000000" />

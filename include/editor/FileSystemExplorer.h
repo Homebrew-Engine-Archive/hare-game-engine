@@ -71,10 +71,10 @@ namespace hare
     //---------------------------------------------------------------
     // FileSystemDialog : this is a dialog for selecting files
     //---------------------------------------------------------------
-    class FileSystemDialog : public wxDialog
+    class EDITOR_API FileSystemDialog : public wxDialog
     {
     public:
-        FileSystemDialog(wxWindow *parent,
+        FileSystemDialog(wxWindow *parent, bool addStdDialogButton = false,
             const wxString& message = wxT("FileSystemDialog"),
             const wxString& defaultPath = wxEmptyString,
             long style = wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER,
@@ -82,8 +82,9 @@ namespace hare
             const wxSize& size = wxDefaultSize,
             const wxString& name = wxT("FileSystemDialog"));
 
-       wxString GetPath() const;
-       void SetPath(const wxString& path);
+        wxString GetPath() const;
+        wxString GetDir() const;
+        void SetPath(const wxString& path);
 
     private:
         FileSystemPanel* panel;

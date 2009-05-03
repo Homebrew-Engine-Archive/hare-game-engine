@@ -56,6 +56,7 @@ private:
     static const int GRID_SIZE;
 
     wxPoint mouseDownPos;
+    bool canDragMtrl;
 
 private:
     void onSize(wxSizeEvent& event);
@@ -66,8 +67,10 @@ private:
 
     virtual bool Show(bool show = true);
 
-    void drawMaterial(Material* mtrl, const PointF& pos);
+    void drawMaterial(Material* mtrl, uint32 color, const PointF& pos);
     void selectMaterial(Material* mtrl);
+    Material* subMtrlHitTest(Material* parent, RectF rect, const PointF& mousePos);
+    bool replaceSubMtrl(Material* parent, RectF rect, const PointF& mousePos);
 
     DECLARE_ABSTRACT_CLASS(MtrlEditorPage)
 };

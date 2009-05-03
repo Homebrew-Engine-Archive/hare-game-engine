@@ -180,6 +180,7 @@ namespace hare
 
     void NewFileDialog::onListActivated(wxListEvent& event)
     {
+        Hide();
         NFDListItemData* data = (NFDListItemData*)event.GetData();
         data->getPlugin()->wizard(data->getIndex());
     }

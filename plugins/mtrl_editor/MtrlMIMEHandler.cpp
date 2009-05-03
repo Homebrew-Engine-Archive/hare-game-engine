@@ -24,7 +24,7 @@ HARE_IMPLEMENT_DYNAMIC_CLASS(MaterialEditState, Object, 0)
 IMPLEMENT_ABSTRACT_CLASS(MtrlEditorPage, EditorPage)
 
 MtrlEditorPage::MtrlEditorPage(wxWindow* parent, MtrlMIMEHandler* handler, Material* mtrl)
- : EditorPage(parent), mime(handler), selectedMtrl(0)
+ : EditorPage(parent), mime(handler), selectedMtrl(0), canDragMtrl(false)
 {
     Connect(wxEVT_ERASE_BACKGROUND, wxEraseEventHandler(MtrlEditorPage::onEraseBackground), NULL, this);
 
@@ -108,44 +108,53 @@ void MtrlEditorPage::renderScene()
     for (; rit != mtrlStates.rend(); ++rit)
     {
         MaterialEditState* st = *rit;
-        drawMaterial(st->mtrl, st->pos);
+
+        uint32 selectedColor = 0xFF808080;
+        if (editMtrl && editMtrl->mtrl == st->mtrl)
+            selectedColor = 0xFFFFFFFF;
+
+        drawMaterial(st->mtrl, selectedColor, st->pos);
     }
 }
 
-void MtrlEditorPage::drawMaterial(Material* mtrl, const PointF& pos)
+void MtrlEditorPage::drawMaterial(Material* mtrl, uint32 color, const PointF& pos)
 {
     RectF rect(0, 0, GRID_SIZE, GRID_SIZE);
     rect.moveTo(pos);
 
-    uint32 color = 0xFFFFFFFF;
+    uint32 borderColor = 0xFFFFFFFF;
 
     if (selectedMtrl && selectedMtrl == mtrl)
-        color = 0xFFFFFF00;
+        borderColor = 0xFFFFFF00;
+    else
+        borderColor = color;
     
     uint32 oldclr = getCanvas()->getColor();
-    getCanvas()->setColor(color);
+    getCanvas()->setColor(borderColor);
     getCanvas()->drawRect(rect.minX, rect.minY, rect.maxX, rect.maxY);
-    getCanvas()->drawText(rect.minX + 5, rect.minY + 15, mtrl->getClassInfo()->className);
+    getCanvas()->drawText(rect.minX + 5, rect.minY + 15, mtrl ? mtrl->getClassInfo()->className : "NullObject");
     getCanvas()->setColor(oldclr);
 
     rect.deflate(20, 20, 20, 20);
     getCanvas()->drawImage(rect, mtrl);
 
-    AttVisitor v;
-    mtrl->accept(v);
-    Attribute::List::iterator it = v.attributes.begin();
-    for (; it != v.attributes.end(); ++it)
+    if (mtrl)
     {
-        Attribute* attr = *it;
-        if (attr->attrType == Attribute::attrObject && attr->data)
+        AttVisitor v;
+        mtrl->accept(v);
+        Attribute::List::iterator it = v.attributes.begin();
+        for (; it != v.attributes.end(); ++it)
         {
-            Object* obj = *(Object**)attr->data;
-            if (obj->isA(&Material::CLASS_INFO))
+            Attribute* attr = *it;
+            if (attr->attrType == Attribute::attrObject && attr->data && attr->classInfo)
             {
-                Material* subMtrl = (Material*)obj;
-                PointF subPos = pos;
-                subPos.move(0, GRID_SIZE);
-                drawMaterial(subMtrl, subPos);
+                if (attr->classInfo->isDerivedFrom(&Material::CLASS_INFO))
+                {
+                    PointF subPos = pos;
+                    subPos.move(0, GRID_SIZE);
+                    Object* obj = *(Object**)attr->data;
+                    drawMaterial((Material*)obj, color, subPos);
+                }
             }
         }
     }
@@ -170,6 +179,11 @@ void MtrlEditorPage::onSize(wxSizeEvent& event)
 
 void MtrlEditorPage::onMouseLeftUp(wxMouseEvent& event)
 {
+    if (!canDragMtrl)
+        return;
+    else
+        canDragMtrl = false;
+
     if (!editMtrl)
         return;
 
@@ -186,38 +200,95 @@ void MtrlEditorPage::onMouseLeftUp(wxMouseEvent& event)
 
         rect.moveTo(st->pos);
 
-        AttVisitor v;
-        st->mtrl->accept(v);
-        Attribute::List::iterator it1 = v.attributes.begin();
-        for (; it1 != v.attributes.end(); ++it1)
+        if (replaceSubMtrl(st->mtrl, rect, pt))
         {
-            Attribute* attr = *it1;
-            if (attr->attrType == Attribute::attrObject && attr->data)
-            {
-                Object* obj = *(Object**)attr->data;
-                if (editMtrl->mtrl->isA(attr->classInfo))
-                {
-                    Material* subMtrl = (Material*)obj;
-                    rect.moveTo(st->pos.x, st->pos.y + GRID_SIZE);
-                    if (rect.isPointIn(pt))
-                    {
-                        Object** pMtrl = (Object**)attr->data;
-                        subMtrl->decRef();
-                        editMtrl->mtrl->addRef();
-                        *pMtrl = editMtrl->mtrl;
-                        mtrlStates.remove(editMtrl);
-                        editMtrl = st;
-                        return;
-                    }
-                }
-            }
+            mtrlStates.remove(editMtrl);
+            editMtrl = st;
+            return;
         }
     }
 }
 
+bool MtrlEditorPage::replaceSubMtrl(Material* parent, RectF rect, const PointF& mousePos)
+{
+    if (!parent)
+        return false;
+
+    if (editMtrl->mtrl == parent)
+        return false;
+
+    AttVisitor v;
+    parent->accept(v);
+    Attribute::List::iterator it = v.attributes.begin();
+    for (int i = 0; it != v.attributes.end(); ++it)
+    {
+        Attribute* attr = *it;
+        if (attr->attrType == Attribute::attrObject && attr->data && attr->classInfo)
+        {
+            if (editMtrl->mtrl->isA(attr->classInfo))
+            {
+                Object* obj = *(Object**)attr->data;
+                Material* subMtrl = (Material*)obj;
+                rect.move(0, GRID_SIZE);
+                if (rect.isPointIn(mousePos))
+                {
+                    Object** pMtrl = (Object**)attr->data;
+                    if (editMtrl->mtrl) 
+                        editMtrl->mtrl->addRef();
+                    if (subMtrl) 
+                        subMtrl->decRef();
+                    *pMtrl = editMtrl->mtrl;
+                    return true;
+                }
+                else
+                {
+                    return replaceSubMtrl(subMtrl, rect, mousePos);
+                }
+            }
+        }
+    }
+    return false;
+}
+
+
+Material* MtrlEditorPage::subMtrlHitTest(Material* parent, RectF rect, const PointF& mousePos)
+{
+    if (!parent)
+        return NULL;
+
+    AttVisitor v;
+    parent->accept(v);
+    Attribute::List::iterator it = v.attributes.begin();
+    for (int i = 0; it != v.attributes.end(); ++it)
+    {
+        Attribute* attr = *it;
+        if (attr->attrType == Attribute::attrObject && attr->data && attr->classInfo)
+        {
+            if (attr->classInfo->isDerivedFrom(&Material::CLASS_INFO))
+            {
+                Object* obj = *(Object**)attr->data;
+                Material* subMtrl = (Material*)obj;
+                rect.move(0, GRID_SIZE);
+                if (rect.isPointIn(mousePos))
+                {
+                    return subMtrl;
+                }
+                else
+                {
+                    return subMtrlHitTest(subMtrl, rect, mousePos);
+                }
+            }
+        }
+    }
+    return NULL;
+}
+
+
 void MtrlEditorPage::onMouseLeftDown(wxMouseEvent& event)
 {
     mouseDownPos = event.GetPosition();
+
+    SetFocus();
 
     PointF pt(mouseDownPos.x, mouseDownPos.y);
     RectF rect(0.0f, 0.0f, GRID_SIZE, GRID_SIZE);
@@ -233,39 +304,27 @@ void MtrlEditorPage::onMouseLeftDown(wxMouseEvent& event)
             editMtrl = st;
             mtrlStates.erase(it0);
             mtrlStates.push_front(st);
+            canDragMtrl = true;
             return;
         }
-
-        AttVisitor v;
-        st->mtrl->accept(v);
-        Attribute::List::iterator it1 = v.attributes.begin();
-        for (; it1 != v.attributes.end(); ++it1)
+        
+        Material* subMtrl = subMtrlHitTest(st->mtrl, rect, pt);
+        if (subMtrl)
         {
-            Attribute* attr = *it1;
-            if (attr->attrType == Attribute::attrObject && attr->data)
-            {
-                Object* obj = *(Object**)attr->data;
-                if (obj->isA(&Material::CLASS_INFO))
-                {
-                    Material* subMtrl = (Material*)obj;
-                    rect.moveTo(st->pos.x, st->pos.y + GRID_SIZE);
-                    if (rect.isPointIn(pt))
-                    {
-                        selectMaterial(subMtrl);
-                        editMtrl = st;
-                        mtrlStates.erase(it0);
-                        mtrlStates.push_front(st);
-                        return;
-                    }
-                }
-            }
+            selectMaterial(subMtrl);
+            editMtrl = st;
+            mtrlStates.erase(it0);
+            mtrlStates.push_front(st);
+            canDragMtrl = true;
+            return;
         }
     }
+    canDragMtrl = false;
 }
 
 void MtrlEditorPage::onMouseMove(wxMouseEvent& event)
 {
-    if (editMtrl && event.Dragging() && event.LeftIsDown())
+    if (canDragMtrl && editMtrl && event.Dragging() && event.LeftIsDown())
     {
         wxPoint offset = event.GetPosition() - mouseDownPos;
         mouseDownPos = event.GetPosition();

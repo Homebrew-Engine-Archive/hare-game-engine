@@ -17,6 +17,8 @@
 #include <wx/propgrid/manager.h>
 #include <wx/propgrid/advprops.h>
 
+WX_PG_DECLARE_VARIANT_DATA(wxPGVariantDataPointF, PointF, WXDLLIMPEXP_PG)
+
 namespace hare
 {
     // --------------------------------------------------------
@@ -86,6 +88,23 @@ namespace hare
         virtual ~RGBAColourProperty();
 
         WX_PG_DECLARE_PARENTAL_METHODS()
+    };
+
+    class PointFProperty : public wxPGProperty
+    {
+        WX_PG_DECLARE_PROPERTY_CLASS(PointFProperty)
+    public:
+        PointFProperty(const wxString& label = wxPG_LABEL, const wxString& name = wxPG_LABEL,
+            const PointF& value = PointF(0, 0));
+        virtual ~PointFProperty();
+
+        WX_PG_DECLARE_PARENTAL_METHODS()
+        WX_PG_DECLARE_BASIC_TYPE_METHODS()
+    protected:
+        void SetValueI(const PointF& value)
+        {
+            m_value = PointFToVariant(value);
+        }
     };
 
     void setPropertyGridObject(PropertyGridPage* page, Object* obj);

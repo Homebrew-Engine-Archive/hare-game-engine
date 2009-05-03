@@ -27,6 +27,7 @@ public:
 
 private:
     wxBitmap bitmap;
+    wxBitmap wizardBitmap;
 };
 
 #endif

@@ -235,9 +235,9 @@ namespace hare
     }
 
     // ---------------------------------------------------------------
-    // FileSystemExplorer
+    // FileSystemDialog
     // ---------------------------------------------------------------
-    FileSystemDialog::FileSystemDialog(wxWindow *parent,
+    FileSystemDialog::FileSystemDialog(wxWindow *parent, bool addStdDialogButton,
         const wxString& message, const wxString& defaultPath, long style,
         const wxPoint& pos, const wxSize& size, const wxString& name)
      : wxDialog(parent, wxID_ANY, message, pos, size, style, name)
@@ -245,6 +245,16 @@ namespace hare
         wxBoxSizer* sizer = new wxBoxSizer(wxVERTICAL);
         panel = new FileSystemPanel(this);
         sizer->Add(panel, 1, wxALIGN_LEFT | wxALIGN_TOP | wxEXPAND, 0);
+
+        if (addStdDialogButton)
+        {
+            wxStdDialogButtonSizer* sdbSizer = new wxStdDialogButtonSizer();
+            sdbSizer->AddButton(new wxButton(this, wxID_OK));
+            sdbSizer->AddButton(new wxButton(this, wxID_CANCEL));
+            sdbSizer->Realize();
+            sizer->Add(sdbSizer, 0, wxEXPAND | wxALL, 5);
+        }
+
         SetSizer(sizer);
         Layout();
 
@@ -257,6 +267,11 @@ namespace hare
     wxString FileSystemDialog::GetPath() const
     {
         return panel->getUrl() + file;
+    }
+
+    wxString FileSystemDialog::GetDir() const
+    {
+        return panel->getUrl();
     }
 
     void FileSystemDialog::SetPath(const wxString& path)

@@ -24,11 +24,91 @@
 #undef max
 #endif
 
+WX_PG_IMPLEMENT_VARIANT_DATA(wxPGVariantDataPointF, PointF)
+
 namespace hare
 {
     static const int IMPORT_OBJECT = -2; 
 
     IMPLEMENT_DYNAMIC_CLASS(ObjectEnumProperty, wxEnumProperty)
+
+    WX_PG_IMPLEMENT_PROPERTY_CLASS(PointFProperty, wxPGProperty, PointF, const PointF&, TextCtrl)
+
+    PointFProperty::PointFProperty(const wxString& label, const wxString& name,
+        const PointF& value) : wxPGProperty(label, name)
+    {
+        SetValueI(value);
+        AddChild(new wxFloatProperty(wxT("x"), wxPG_LABEL, value.x));
+        AddChild(new wxFloatProperty(wxT("y"), wxPG_LABEL, value.y));
+    }
+
+    PointFProperty::~PointFProperty() {}
+
+    wxString PointFProperty::GetValueAsString(int arg_flags) const
+    {
+        const PointF& point = PointFFromVariant(m_value);
+
+        wxString x, y;
+        wxString template_str;
+
+        wxPropertyGrid::DoubleToString(x, point.x, -1, true, &template_str);
+        wxPropertyGrid::DoubleToString(y, point.y, -1, true, &template_str);
+
+        return x + wxT(" ") + y;
+    }
+
+    bool PointFProperty::StringToValue(wxVariant& variant, const wxString& text, int) const
+    {
+        PointF point(0, 0);
+        int count = 0;
+
+        WX_PG_TOKENIZER1_BEGIN(text, wxT(" "))
+            if (token.length())
+            {
+                double tval = 0;
+                if (token.ToDouble(&tval))
+                {
+                    if (count == 0) 
+                        point.x = (float)tval;
+                    else if (count == 1) 
+                        point.y = (float)tval;
+
+                    count++;
+
+                    if (count >= 2)
+                        break;
+                }
+            }
+        WX_PG_TOKENIZER1_END()
+
+        if (count >= 2)
+        {
+            variant = PointFToVariant(point);
+            return true;
+        }
+
+        return false;
+    }
+
+    void PointFProperty::RefreshChildren()
+    {
+        if (!GetCount()) return;
+        const PointF& point = PointFFromVariant(m_value);
+        Item(0)->SetValue(point.x);
+        Item(1)->SetValue(point.y);
+    }
+
+    void PointFProperty::ChildChanged(wxVariant& thisValue, int childIndex, wxVariant& childValue) const
+    {
+        PointF& point = PointFFromVariant(thisValue);
+        double val;
+        wxPGVariantToDouble(childValue, &val);
+        switch (childIndex)
+        {
+        case 0: point.x = val; break;
+        case 1: point.y = val; break;
+        }
+    }
 
     //-----------------------------------------------------------------------------------
     // RGBAColourProperty
@@ -94,10 +174,9 @@ namespace hare
 
     bool FSUrlProperty::OnButtonClick(wxPropertyGrid* propGrid, wxString& value)
     {
-        wxSize size(300, 400);
+        wxSize size(400, 400);
 
-        FileSystemDialog dlg(propGrid, _("FileSystem"), value,
-            wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER,
+        FileSystemDialog dlg(propGrid, true, _("FileSystem"), value, 0,
             propGrid->GetGoodEditorDialogPosition(this, size),
             size);
 
@@ -189,6 +268,16 @@ namespace hare
             attr->owner->postEdited(attr);
             val = (double)*oldData;
         }
+    }
+
+    template <>
+    void doModifyMeta<PointF>(Attribute* attr, wxVariant& val)
+    {
+        PointF& value = PointFFromVariant(val);
+        PointF* oldData = (PointF*)attr->data;
+        *oldData = value;
+        attr->owner->postEdited(attr);
+        val = PointFToVariant(*oldData);
     }
 
     /*template <typename T>
@@ -352,6 +441,18 @@ namespace hare
             prop->SetFlag(wxPG_PROP_READONLY | wxPG_PROP_DISABLED);
     }
 
+    template <>
+    void doBindMeta<PointF>(Attribute* attr, PropertyGridPage* page, wxPGProperty* parent)
+    {
+        PointF* value = (PointF*)attr->data;
+        wxPGProperty* prop = page->AppendIn(parent, new PointFProperty(wxString::FromUTF8(attr->name), wxPG_LABEL,
+            *value));
+        prop->SetClientData(attr);
+        prop->SetHelpString(wxT("[Point]"));
+        if (attr->hasFlag(Object::propReadOnly))
+            prop->SetFlag(wxPG_PROP_READONLY | wxPG_PROP_DISABLED);
+    }
+
     /*template <typename T>
     void doBindMetaArray(Attribute* attr, PropertyGridPage* page, wxPGProperty* parent)
     {
@@ -455,8 +556,7 @@ namespace hare
             {
                 wxSize size(300, 400);
 
-                FileSystemDialog dlg(prop->GetGrid(), _("FileSystem"), wxT("/"),
-                    wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER,
+                FileSystemDialog dlg(prop->GetGrid(), true, _("FileSystem"), wxT("/"), 0,
                     prop->GetGrid()->GetGoodEditorDialogPosition(prop, size),
                     size);
 
@@ -553,6 +653,8 @@ namespace hare
                     doModifyMeta<float>(attr, value);
                 else if (attr->typeName == String("double"))
                     doModifyMeta<double>(attr, value);
+                else if (attr->typeName == String("PointF"))
+                    doModifyMeta<PointF>(attr, value);
                 else
                     assert(false);
 
@@ -632,6 +734,8 @@ namespace hare
                     doBindMeta<float>(attr, page, parent);
                 else if (attr->typeName == String("double"))
                     doBindMeta<double>(attr, page, parent);
+                else if (attr->typeName == String("PointF"))
+                    doBindMeta<PointF>(attr, page, parent);
                 else
                     assert(false);
             }

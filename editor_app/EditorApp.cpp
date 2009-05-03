@@ -44,6 +44,9 @@ void EditorApp::InitLocale()
 
         if (info)
         {
+            Log::getSingleton().logInfo("Setup locale for editor, '%s' '%s'", 
+                info->CanonicalName.ToUTF8().data(), info->Description.ToUTF8().data());
+
             locale.Init(info->Language);
 
             wxString fullPath = Manager::getInstancePtr()->getAppDir() + wxT("/locale/");
@@ -60,6 +63,8 @@ void EditorApp::InitLocale()
                     do
                     {
                         locale.AddCatalog(moName);
+                        Log::getSingleton().logInfo("Add catalog for locale : '%s'", 
+                            moName.ToUTF8().data());
                     }
                     while (dir.GetNext(&moName));
                 }
@@ -93,10 +98,17 @@ bool EditorApp::OnInit()
     String scriptDir = resource.getSetting("ScriptDir");
     wxString workspaceDir = wxString::FromUTF8(scriptDir.c_str());
 
+    Log::getSingleton().logInfo("ScriptDir '%s' is used for workspace in editor mode.",
+        scriptDir.c_str());
+
     // NB: SearchPath is same as WriteDir, so we can save edited result. 
     String writeDir = resource.getSetting("WriteDir");
     fs->addSearchPath(writeDir);
     fs->setWriteDir(writeDir);
+
+    Log::getSingleton().logInfo("Filesystem write dir '%s' is used for search path in editor mode.",
+        writeDir.c_str());
+
 
     // -------------------------------------------------------------------
     // Read plugin config file
@@ -109,7 +121,9 @@ bool EditorApp::OnInit()
     
     for (size_t i = 0; i < plugins.size(); ++i)
     {
-        getHareApp()->loadPlugin(pluginDir + plugins[i]);
+        String fileName = pluginDir + plugins[i];
+        getHareApp()->loadPlugin(fileName);
+        Log::getSingleton().logInfo("Load plugin : '%s'", fileName.c_str());
     }
 
     getHareApp()->startUp();

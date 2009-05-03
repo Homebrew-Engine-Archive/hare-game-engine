@@ -69,6 +69,9 @@ namespace hare
         if (!elem)
             return;
 
+        Log::getSingleton().logInfo("Unload plugin : file %s, name %s", 
+            elem->fileName.ToUTF8().data(), elem->info.name.ToUTF8().data());
+
         detachPlugin(elem->plugin);
 
         if (elem->freeProc)
@@ -194,6 +197,9 @@ namespace hare
             minor != PLUGIN_SDK_VERSION_MINOR ||
             release != PLUGIN_SDK_VERSION_RELEASE)
         {
+            Log::getSingleton().logWarning("Failed to register plugin %s, version : editor(%d,%d,%d), plugin(%d,%d,%d)",
+                PLUGIN_SDK_VERSION_MAJOR, PLUGIN_SDK_VERSION_MINOR, PLUGIN_SDK_VERSION_RELEASE,
+                major, minor, release);
             return;
         }
 

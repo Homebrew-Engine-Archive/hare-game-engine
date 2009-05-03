@@ -88,7 +88,7 @@ namespace hare
 
 		virtual void frameMove()
 		{
-			if (!mtrl)
+			if (mtrl)
 				mtrl->frameMove();
 		}
 
@@ -122,7 +122,7 @@ namespace hare
 
 		virtual void frameMove()
 		{
-			if (!mtrl)
+			if (mtrl)
 				mtrl->frameMove();
 		}
 

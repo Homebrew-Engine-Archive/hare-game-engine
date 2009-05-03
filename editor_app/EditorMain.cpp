@@ -377,6 +377,11 @@ void EditorFrame::onPluginAttached(EditorEvent& event)
 {
     if (event.plugin)
     {
+        const PluginInfo* info = Manager::getInstancePtr()->getPluginManager()->getPluginInfo(event.plugin);
+
+        Log::getSingleton().logInfo("Editor plugin attached : type %d, name %s", event.plugin->getType(),
+            info->name.ToUTF8().data());
+
         event.plugin->buildMenuBar(GetMenuBar());
 
         wxAuiToolBar* toolBar = new wxAuiToolBar(this, wxID_ANY, wxDefaultPosition, wxSize(16, 16),
@@ -386,8 +391,6 @@ void EditorFrame::onPluginAttached(EditorEvent& event)
         {
             toolBar->Realize();
             toolBar->SetInitialSize();
-
-            const PluginInfo* info = Manager::getInstancePtr()->getPluginManager()->getPluginInfo(event.plugin);
 
             static int next_row = 1;
             layoutManager.AddPane(toolBar, wxAuiPaneInfo().Name(info->name + wxT("Toolbar"))

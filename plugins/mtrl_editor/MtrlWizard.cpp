@@ -12,9 +12,113 @@
 //***************************************************************
 #include "PCH.h"
 #include "MtrlWizard.h"
+#include <wx/wizard.h>
+
+class Mtrl_WizardPage : public wxWizardPageSimple
+{
+public:
+    Mtrl_WizardPage(wxWizard* parent) : wxWizardPageSimple(parent)
+    {
+        wxBoxSizer* boxSizer1 = new wxBoxSizer(wxVERTICAL);
+        {
+            wxStaticText* staticText = new wxStaticText(this, wxID_ANY,
+                _T("This wizard helps you to create materials."), wxPoint(5,5));
+            boxSizer1->Add(staticText, 0, wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 8);
+        }
+        {
+            wxStaticText* staticText = new wxStaticText(this, wxID_ANY, _("File name:"));
+            boxSizer1->Add(staticText, 0, wxTOP|wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 8);
+            txtFileName = new wxTextCtrl(this, wxID_ANY);
+            boxSizer1->Add(txtFileName, 0, wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 8);
+        }
+        {
+            wxStaticText* staticText = new wxStaticText(this, wxID_ANY, _("File ext:"));
+            boxSizer1->Add(staticText, 0, wxTOP|wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 8);
+            txtFileExt = new wxTextCtrl(this, wxID_ANY);
+            boxSizer1->Add(txtFileExt, 0, wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 8);
+        }
+        {
+            wxStaticText* staticText = new wxStaticText(this, wxID_ANY, _("Folder to create material in:"));
+            boxSizer1->Add(staticText, 0, wxTOP|wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 8);
+            txtPath = new wxTextCtrl(this, wxID_ANY);
+            txtPath->Disable();
+            wxBoxSizer* boxSizer2 = new wxBoxSizer(wxHORIZONTAL);
+            boxSizer2->Add(txtPath, 1, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+            btnBrowse = new wxButton(this, wxID_ANY, wxT("..."), 
+                wxDefaultPosition, wxSize(22,22));
+            boxSizer2->Add(btnBrowse, 0, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+            boxSizer1->Add(boxSizer2, 0, wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 8);
+        }
+        SetSizer(boxSizer1);
+        boxSizer1->Fit(this);
+        boxSizer1->SetSizeHints(this);
+
+        txtFileExt->SetValue(wxT(".material"));
+        txtPath->SetValue(wxT("/"));
+        Connect(wxEVT_WIZARD_PAGE_CHANGING, wxWizardEventHandler(Mtrl_WizardPage::onWizardPageChanging), 0, this);
+        btnBrowse->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(Mtrl_WizardPage::onBrowse), 0, this);
+    }
+
+    wxString getResult()
+    {
+        return txtPath->GetValue() + txtFileName->GetValue() + txtFileExt->GetValue();
+    }
+
+    void onWizardPageChanging(wxWizardEvent& event)
+    {
+        if (txtPath->GetValue().IsEmpty() ||
+            txtFileName->GetValue().IsEmpty())
+        {
+            wxMessageBox(_T("File name or folder can not be empty."), _T("Not allowed"),
+                wxICON_WARNING | wxOK, this);
+            event.Veto();
+        }
+    }
+
+    void onBrowse(wxCommandEvent& event)
+    {
+        FileSystemDialog dlg(this, true, _("FileSystem"), getResult(), 
+            wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER, 
+            wxDefaultPosition, wxSize(300, 400));
+
+        if (dlg.ShowModal() == wxID_OK)
+        {
+            txtPath->SetValue(dlg.GetDir());
+        }
+    }
+
+private:
+    wxTextCtrl* txtFileName;
+    wxTextCtrl* txtFileExt;
+    wxTextCtrl* txtPath;
+    wxButton* btnBrowse;
+};
+
+class Mtrl_Wizard : public wxWizard
+{
+public:
+    Mtrl_Wizard(wxWindow* parent, const wxString& title, wxBitmap& bitmap)
+        : wxWizard(parent, wxID_ANY, title, bitmap, wxDefaultPosition, wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER)
+    {
+        page = new Mtrl_WizardPage(this);
+        SetPageSize(wxSize(400, 300));
+    }
+
+    wxWizardPageSimple* GetFirstPage()
+    {
+        return page;
+    }
+
+    wxString getResult()
+    {
+        return page->getResult();
+    }
+
+private:
+    Mtrl_WizardPage* page;
+};
 
 const ClassInfo* mtrlClasses[] = {
-    &TextureMtrl::CLASS_INFO,
     &PannerMod::CLASS_INFO,
     &ScalerMod::CLASS_INFO,
     &RotatorMod::CLASS_INFO,
@@ -26,6 +130,7 @@ MtrlWizard::MtrlWizard()
 {
     wxString fullPath = Manager::getInstancePtr()->getAppDir() + wxT("/resources/");
     bitmap.LoadFile(fullPath + wxT("file32.png"), wxBITMAP_TYPE_PNG);
+    wizardBitmap.LoadFile(fullPath + wxT("mtrl_edit.png"), wxBITMAP_TYPE_PNG);
 }
 
 wxString MtrlWizard::getFolder() const
@@ -55,5 +160,28 @@ int MtrlWizard::getCount() const
 
 Object* MtrlWizard::wizard(int index)
 {
-    return mtrlClasses[index]->createObject();
+    Mtrl_Wizard wizard(Manager::getInstancePtr()->getAppWindow(), _("Material Wizard [create material]"),
+        wizardBitmap);
+
+    if (wizard.RunWizard(wizard.GetFirstPage()))
+    {
+        Object::Ptr object = mtrlClasses[index]->createObject();
+
+        if (object)
+        {
+            String fileName = wizard.getResult().ToUTF8().data();
+            if (object->saveToXml(fileName))
+            {
+                EditorPlugin* plugin = PluginManager::getInstancePtr()->findPluginByName(wxT("MtrlMIMEHandler"));
+                if (plugin && plugin->getType() == EPT_MIMEHandler)
+                {
+                    MIMEHandlerPlugin* handler = (MIMEHandlerPlugin*)plugin;
+                    handler->openFile(wizard.getResult());
+                }
+                return object;
+            }
+        }
+    }
+
+    return NULL;
 }

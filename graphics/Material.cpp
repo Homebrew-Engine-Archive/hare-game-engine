@@ -141,7 +141,7 @@ namespace hare
 	//节点包裹材质
 	HARE_IMPLEMENT_ABSTRACT_CLASS(WrapperMtrl, StandardMtrl, 0)
 	{
-		HARE_OBJ(mtrl, StandardMtrl)
+		HARE_OBJ_F(mtrl, StandardMtrl, propHide)
 	}
 
 	WrapperMtrl::WrapperMtrl()
@@ -158,12 +158,12 @@ namespace hare
 	//平移材质修改器
 	HARE_IMPLEMENT_DYNAMIC_CLASS(PannerMod, WrapperMtrl, 0)
 	{
-        HARE_META_F(offset, PointF, propHide)
-		HARE_META_F(panDirection, PointF, propHide)
+        HARE_META(offset, PointF)
+		HARE_META(panDirection, PointF)
 		HARE_META(panRate, float)
-		HARE_META_F(oscillationPhase, PointF, propHide)
-		HARE_META_F(oscillationAmplitude, PointF, propHide)
-		HARE_META_F(oscillationRate, PointF, propHide)
+		HARE_META(oscillationPhase, PointF)
+		HARE_META(oscillationAmplitude, PointF)
+		HARE_META(oscillationRate, PointF)
 	}
 
 	PannerMod::PannerMod()
@@ -221,11 +221,11 @@ namespace hare
 	//缩放材质修改器
 	HARE_IMPLEMENT_DYNAMIC_CLASS(ScalerMod, WrapperMtrl, 0)
 	{
-        HARE_META_F(scale, PointF, propHide)
-        HARE_META_F(center, PointF, propHide)
-        HARE_META_F(oscillationPhase, PointF, propHide)
-        HARE_META_F(oscillationAmplitude, PointF, propHide)
-		HARE_META_F(oscillationRate, PointF, propHide)
+        HARE_META(scale, PointF)
+        HARE_META(center, PointF)
+        HARE_META(oscillationPhase, PointF)
+        HARE_META(oscillationAmplitude, PointF)
+		HARE_META(oscillationRate, PointF)
 	}
 
 	ScalerMod::ScalerMod()
@@ -289,7 +289,7 @@ namespace hare
 	//旋转材质修改器
 	HARE_IMPLEMENT_DYNAMIC_CLASS(RotatorMod, WrapperMtrl, 0)
 	{
-        HARE_META_F(center, PointF, propHide)
+        HARE_META(center, PointF)
 		HARE_META(rotation, float)
 		HARE_META(speed, float)
 		HARE_META(oscillationPhase, float)

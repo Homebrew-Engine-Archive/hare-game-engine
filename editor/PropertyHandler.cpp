@@ -554,7 +554,7 @@ namespace hare
 
             if (value == IMPORT_OBJECT)
             {
-                wxSize size(300, 400);
+                wxSize size(400, 400);
 
                 FileSystemDialog dlg(prop->GetGrid(), true, _("FileSystem"), wxT("/"), 0,
                     prop->GetGrid()->GetGoodEditorDialogPosition(prop, size),

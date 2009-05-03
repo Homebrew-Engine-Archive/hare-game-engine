@@ -79,7 +79,7 @@ public:
     {
         FileSystemDialog dlg(this, true, _("FileSystem"), getResult(), 
             wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER, 
-            wxDefaultPosition, wxSize(300, 400));
+            wxDefaultPosition, wxSize(400, 400));
 
         if (dlg.ShowModal() == wxID_OK)
         {

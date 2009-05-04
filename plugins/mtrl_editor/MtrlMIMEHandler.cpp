@@ -244,12 +244,12 @@ void MtrlEditorPage::drawMaterial(Material* mtrl, ClassInfo* cls, uint32 color, 
     }
 }
 
-void MtrlEditorPage::selectMaterial(Material* mtrl)
+void MtrlEditorPage::selectMaterial(Material* mtrl, bool bindObject)
 {
     selectedMtrl = mtrl;
 
     Manager::getInstancePtr()->getExplorerManager()->removeAllProperties();
-    if (selectedMtrl)
+    if (bindObject && selectedMtrl)
         Manager::getInstancePtr()->getExplorerManager()->bindProperty(wxT("MaterialProperity"), 
             selectedMtrl);
 }
@@ -355,8 +355,8 @@ Material* MtrlEditorPage::subMtrlHitTest(Material* parent, RectF rect, const Poi
                 Material* subMtrl = (Material*)obj;
 
                 // Can not edit refed object !!!
-                if (subMtrl && !subMtrl->getUrl().empty())
-                    return NULL;
+                //if (subMtrl && !subMtrl->getUrl().empty())
+                //    return NULL;
 
                 rect.move(0, GRID_SIZE);
                 if (rect.isPointIn(mousePos))
@@ -401,7 +401,8 @@ void MtrlEditorPage::onMouseLeftDown(wxMouseEvent& event)
         Material* subMtrl = subMtrlHitTest(st->mtrl, rect, pt);
         if (subMtrl)
         {
-            selectMaterial(subMtrl);
+            bool bindObject = subMtrl->getUrl().empty();
+            selectMaterial(subMtrl, bindObject);
             editMtrl = st;
             mtrlStates.erase(it0);
             mtrlStates.push_front(st);

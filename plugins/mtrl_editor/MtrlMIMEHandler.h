@@ -74,7 +74,7 @@ private:
     virtual bool Show(bool show = true);
 
     void drawMaterial(Material* mtrl, ClassInfo* cls, uint32 color, const PointF& pos, bool isRoot);
-    void selectMaterial(Material* mtrl);
+    void selectMaterial(Material* mtrl, bool bindObject = true);
     Material* subMtrlHitTest(Material* parent, RectF rect, const PointF& mousePos);
     bool replaceSubMtrl(Material* parent, RectF rect, const PointF& mousePos);
     bool deleteSubMtrl(Material* parent);

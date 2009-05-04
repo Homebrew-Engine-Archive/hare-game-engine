@@ -65,6 +65,7 @@ private:
 
 private:
     void onSize(wxSizeEvent& event);
+    void onKeyDown(wxKeyEvent& event);
     void onEraseBackground(wxEraseEvent& event);
     void onMouseMove(wxMouseEvent& event);
     void onMouseLeftDown(wxMouseEvent& event);
@@ -76,6 +77,7 @@ private:
     void selectMaterial(Material* mtrl);
     Material* subMtrlHitTest(Material* parent, RectF rect, const PointF& mousePos);
     bool replaceSubMtrl(Material* parent, RectF rect, const PointF& mousePos);
+    bool deleteSubMtrl(Material* parent);
 
     void updateTitle();
 

@@ -37,6 +37,7 @@ MtrlEditorPage::MtrlEditorPage(wxWindow* parent, MtrlMIMEHandler* handler)
     canvas->Connect(wxEVT_MOTION, wxMouseEventHandler(MtrlEditorPage::onMouseMove), 0, this);
     canvas->Connect(wxEVT_LEFT_DOWN, wxMouseEventHandler(MtrlEditorPage::onMouseLeftDown), 0, this);
     canvas->Connect(wxEVT_LEFT_UP, wxMouseEventHandler(MtrlEditorPage::onMouseLeftUp), 0, this);
+    canvas->Connect(wxEVT_KEY_DOWN, wxKeyEventHandler(MtrlEditorPage::onKeyDown), NULL, this);
     
     wxBoxSizer* sizer = new wxBoxSizer(wxVERTICAL);
     sizer->Add(canvas, 1, wxEXPAND, 0);
@@ -424,6 +425,62 @@ void MtrlEditorPage::onMouseMove(wxMouseEvent& event)
 
 void MtrlEditorPage::onEraseBackground(wxEraseEvent& event)
 {
+}
+
+bool MtrlEditorPage::deleteSubMtrl(Material* parent)
+{
+    if (!parent || !selectedMtrl)
+        return false;
+
+    AttVisitor v;
+    parent->accept(v);
+    Attribute::List::iterator it = v.attributes.begin();
+    for (int i = 0; it != v.attributes.end(); ++it)
+    {
+        Attribute* attr = *it;
+        if (attr->attrType == Attribute::attrObject && attr->data && attr->classInfo)
+        {
+            if (attr->classInfo->isDerivedFrom(&Material::CLASS_INFO))
+            {
+                Object* obj = *(Object**)attr->data;
+                Material* subMtrl = (Material*)obj;
+                if (subMtrl == selectedMtrl)
+                {
+                    if (subMtrl) 
+                        subMtrl->decRef();
+                    selectedMtrl = 0;
+                    Object** pMtrl = (Object**)attr->data;
+                    *pMtrl = 0;
+                    setModified(true);
+                    return true;
+                }
+                deleteSubMtrl(subMtrl);
+            }
+        }
+    }
+    return false;
+}
+
+void MtrlEditorPage::onKeyDown(wxKeyEvent& event)
+{
+    if (event.GetKeyCode() == WXK_DELETE)
+    {
+        MaterialEditState::List::iterator it = mtrlStates.begin();
+        for (; it != mtrlStates.end(); ++it)
+        {
+            MaterialEditState* st = *it;
+            if (st->mtrl == selectedMtrl)
+            {
+                mtrlStates.erase(it);
+                return;
+            }
+        }
+
+        if (editMtrl && editMtrl->mtrl)
+        {
+            deleteSubMtrl(editMtrl->mtrl);
+        }
+    }
 }
 
 MtrlMIMEHandler::MtrlMIMEHandler() : page(0)

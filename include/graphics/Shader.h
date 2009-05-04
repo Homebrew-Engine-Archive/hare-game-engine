@@ -54,10 +54,8 @@ namespace hare
 		Shader();
 		virtual ~Shader();
 
-		virtual void frameMove() = 0;
 		virtual void setMaterial(StandardMtrl* m) = 0;
 		virtual StandardMtrl* getMaterial() = 0;
-		virtual TextureMtrl* getTextureMtrl() = 0;
 
 		virtual Shader* getShader()
 		{

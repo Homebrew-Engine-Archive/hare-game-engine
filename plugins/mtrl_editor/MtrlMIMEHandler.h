@@ -28,7 +28,7 @@ public:
 class MtrlEditorPage : public EditorPage, public SceneListenerBase
 {
 public:
-    MtrlEditorPage(wxWindow* parent, MtrlMIMEHandler* handler, Material* mtrl);
+    MtrlEditorPage(wxWindow* parent, MtrlMIMEHandler* handler);
     virtual ~MtrlEditorPage(); 
 
     bool isOk() const
@@ -36,8 +36,12 @@ public:
         return mtrlStates.size() > 0;
     }
 
-    void addMaterial(Material* mtrl);
-    void addMaterialFromFile(const String& url);
+    void addMaterial(Material* mtrl, bool isMtrlModified);
+
+    virtual void setModified(bool modified);
+    virtual bool getIsModified() const { return isModified; }
+    virtual bool save();
+    bool saveAs(Material* mtrl);
 
     virtual void beginScene();
     virtual void endScene();
@@ -57,6 +61,7 @@ private:
 
     wxPoint mouseDownPos;
     bool canDragMtrl;
+    bool isModified;
 
 private:
     void onSize(wxSizeEvent& event);
@@ -67,10 +72,12 @@ private:
 
     virtual bool Show(bool show = true);
 
-    void drawMaterial(Material* mtrl, uint32 color, const PointF& pos);
+    void drawMaterial(Material* mtrl, ClassInfo* cls, uint32 color, const PointF& pos, bool isRoot);
     void selectMaterial(Material* mtrl);
     Material* subMtrlHitTest(Material* parent, RectF rect, const PointF& mousePos);
     bool replaceSubMtrl(Material* parent, RectF rect, const PointF& mousePos);
+
+    void updateTitle();
 
     DECLARE_ABSTRACT_CLASS(MtrlEditorPage)
 };
@@ -82,6 +89,8 @@ public:
 
     virtual bool canHandle(const wxString& filename) const;
     virtual bool openFile(const wxString& filename);
+
+    bool addMaterial(Material* mtrl, bool isMtrlModified);
 
 private:
     friend class MtrlEditorPage;

@@ -103,31 +103,48 @@ public:
 	virtual void release() = 0;
 };
 
-class StandardMtrl
-{	
+class Material : public Object
+{
 public:
 	virtual void frameMove() = 0;
+	virtual TextureMtrl* getTextureMtrl() = 0;
+	virtual Shader* getShader() = 0;
+};
+
+class StandardMtrl : public Material
+{	
 };
 
 class TextureMtrl : public StandardMtrl
 {
 public:
 	virtual void frameMove();
+	virtual TextureMtrl* getTextureMtrl();
+	virtual Shader* getShader();
 	void setTexture(Texture* tex);
-	
 };
 
-class Shader
+class Shader : public Material
 {
 public:
 	virtual void setMaterial(StandardMtrl* m) = 0;
 	virtual StandardMtrl* getMaterial() = 0;
-	virtual TextureMtrl* getTextureMtrl() = 0;
+	virtual Shader* getShader();
 };
 
 class SimpleShader : public Shader
 {
 public:
+    virtual void frameMove();
+	virtual void setMaterial(StandardMtrl* m);
+	virtual StandardMtrl* getMaterial();
+	virtual TextureMtrl* getTextureMtrl();
+};
+
+class ParticleShader : public Shader
+{
+public:
+    virtual void frameMove();
 	virtual void setMaterial(StandardMtrl* m);
 	virtual StandardMtrl* getMaterial();
 	virtual TextureMtrl* getTextureMtrl();

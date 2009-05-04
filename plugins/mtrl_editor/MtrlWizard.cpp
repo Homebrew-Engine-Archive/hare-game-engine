@@ -12,6 +12,7 @@
 //***************************************************************
 #include "PCH.h"
 #include "MtrlWizard.h"
+#include "MtrlMIMEHandler.h"
 #include <wx/wizard.h>
 
 class Mtrl_WizardPage : public wxWizardPageSimple
@@ -29,12 +30,14 @@ public:
             wxStaticText* staticText = new wxStaticText(this, wxID_ANY, _("File name:"));
             boxSizer1->Add(staticText, 0, wxTOP|wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 8);
             txtFileName = new wxTextCtrl(this, wxID_ANY);
+            txtFileName->Disable();
             boxSizer1->Add(txtFileName, 0, wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 8);
         }
         {
             wxStaticText* staticText = new wxStaticText(this, wxID_ANY, _("File ext:"));
             boxSizer1->Add(staticText, 0, wxTOP|wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 8);
             txtFileExt = new wxTextCtrl(this, wxID_ANY);
+            txtFileExt->Disable();
             boxSizer1->Add(txtFileExt, 0, wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 8);
         }
         {
@@ -46,8 +49,14 @@ public:
             boxSizer2->Add(txtPath, 1, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
             btnBrowse = new wxButton(this, wxID_ANY, wxT("..."), 
                 wxDefaultPosition, wxSize(22,22));
+            btnBrowse->Disable();
             boxSizer2->Add(btnBrowse, 0, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
             boxSizer1->Add(boxSizer2, 0, wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 8);
+        }
+        {
+            chkNoSave = new wxCheckBox(this, wxID_ANY, _T("Create for editing, do not save to file now."));
+            chkNoSave->SetValue(true);
+            boxSizer1->Add(chkNoSave, 0, wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 8);
         }
         SetSizer(boxSizer1);
         boxSizer1->Fit(this);
@@ -57,6 +66,12 @@ public:
         txtPath->SetValue(wxT("/"));
         Connect(wxEVT_WIZARD_PAGE_CHANGING, wxWizardEventHandler(Mtrl_WizardPage::onWizardPageChanging), 0, this);
         btnBrowse->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(Mtrl_WizardPage::onBrowse), 0, this);
+        chkNoSave->Connect(wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler(Mtrl_WizardPage::onCheckChanged), 0, this);
+    }
+
+    bool getIsChecked()
+    {
+        return chkNoSave->IsChecked();
     }
 
     wxString getResult()
@@ -66,7 +81,9 @@ public:
 
     void onWizardPageChanging(wxWizardEvent& event)
     {
-        if (txtPath->GetValue().IsEmpty() ||
+        if (chkNoSave->IsChecked())
+            return;
+        else if (txtPath->GetValue().IsEmpty() ||
             txtFileName->GetValue().IsEmpty())
         {
             wxMessageBox(_T("File name or folder can not be empty."), _T("Not allowed"),
@@ -87,11 +104,20 @@ public:
         }
     }
 
+    void onCheckChanged(wxCommandEvent& event)
+    {
+        bool enable = !chkNoSave->IsChecked();
+        txtFileName->Enable(enable);
+        txtFileExt->Enable(enable);
+        btnBrowse->Enable(enable);
+    }
+
 private:
     wxTextCtrl* txtFileName;
     wxTextCtrl* txtFileExt;
     wxTextCtrl* txtPath;
     wxButton* btnBrowse;
+    wxCheckBox* chkNoSave;
 };
 
 class Mtrl_Wizard : public wxWizard
@@ -112,6 +138,11 @@ public:
     wxString getResult()
     {
         return page->getResult();
+    }
+
+    bool getIsChecked()
+    {
+        return page->getIsChecked();
     }
 
 private:
@@ -169,16 +200,23 @@ Object* MtrlWizard::wizard(int index)
 
         if (object)
         {
-            String fileName = wizard.getResult().ToUTF8().data();
-            if (object->saveToXml(fileName))
+            EditorPlugin* plugin = PluginManager::getInstancePtr()->findPluginByName(wxT("MtrlMIMEHandler"));
+            if (plugin && plugin->getType() == EPT_MIMEHandler)
             {
-                EditorPlugin* plugin = PluginManager::getInstancePtr()->findPluginByName(wxT("MtrlMIMEHandler"));
-                if (plugin && plugin->getType() == EPT_MIMEHandler)
+                MtrlMIMEHandler* handler = (MtrlMIMEHandler*)plugin;
+                if (wizard.getIsChecked())
                 {
-                    MIMEHandlerPlugin* handler = (MIMEHandlerPlugin*)plugin;
-                    handler->openFile(wizard.getResult());
+                    handler->addMaterial((Material*)object.pointer(), true);
                 }
-                return object;
+                else
+                {
+                    String fileName = wizard.getResult().ToUTF8().data();
+                    if (object->saveToXml(fileName))
+                    {
+                        handler->openFile(wizard.getResult());
+                        return object;
+                    }
+                }
             }
         }
     }

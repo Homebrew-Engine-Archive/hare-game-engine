@@ -23,8 +23,8 @@ HARE_IMPLEMENT_DYNAMIC_CLASS(MaterialEditState, Object, 0)
 
 IMPLEMENT_ABSTRACT_CLASS(MtrlEditorPage, EditorPage)
 
-MtrlEditorPage::MtrlEditorPage(wxWindow* parent, MtrlMIMEHandler* handler, Material* mtrl)
- : EditorPage(parent), mime(handler), selectedMtrl(0), canDragMtrl(false)
+MtrlEditorPage::MtrlEditorPage(wxWindow* parent, MtrlMIMEHandler* handler)
+    : EditorPage(parent), mime(handler), selectedMtrl(0), canDragMtrl(false), isModified(false)
 {
     Connect(wxEVT_ERASE_BACKGROUND, wxEraseEventHandler(MtrlEditorPage::onEraseBackground), NULL, this);
 
@@ -46,7 +46,7 @@ MtrlEditorPage::MtrlEditorPage(wxWindow* parent, MtrlMIMEHandler* handler, Mater
     font = (Font*)Object::importObject("/editor/default.font");
     getCanvas()->setFont(font);
 
-    addMaterial(mtrl);
+    updateTitle();
 }
 
 MtrlEditorPage::~MtrlEditorPage()
@@ -57,6 +57,69 @@ MtrlEditorPage::~MtrlEditorPage()
     }
 
     mime->page = NULL;
+}
+
+bool MtrlEditorPage::saveAs(Material* mtrl)
+{
+    if (!mtrl)
+        return false;
+
+    bool ret = false;
+
+    wxString title = wxString::Format(wxT("Save material [%s] as"), 
+        wxString::FromUTF8(mtrl->getClassInfo()->className).c_str());
+
+    wxFileDialog* dlg = new wxFileDialog(Manager::getInstancePtr()->getAppWindow(),
+        title,
+        _T(""),
+        _T(""),
+        _T("Material (*.material)|*.material|Any file (*)|*"),
+        wxSAVE | wxOVERWRITE_PROMPT);
+
+    if (dlg->ShowModal() == wxID_OK)
+    {
+        FileSystem::getSingletonPtr()->remove("/editor/~material.temp");
+        mtrl->saveToXml("/editor/~material.temp");
+        String dir = FileSystem::getSingletonPtr()->getRealDir("/editor/~material.temp");
+        dir += "/editor/~material.temp";
+        wxString tempFile = wxString::FromUTF8(dir.c_str());
+        wxFileName fName(tempFile);
+        if (fName.FileExists())
+        {
+            wxString fileName = dlg->GetPath();
+            ret = wxCopyFile(fName.GetFullPath(), fileName);
+        }
+    }
+    
+    dlg->Destroy();
+    return ret;
+}
+
+bool MtrlEditorPage::save()
+{
+    MaterialEditState::List::iterator it = mtrlStates.begin();
+    bool allSaved = true;
+    for (; it != mtrlStates.end(); ++it)
+    {
+        MaterialEditState* st = *it;
+        if (st->mtrl)
+        {
+            String url = st->mtrl->getUrl();
+            if (!url.empty())
+            {
+                if (!st->mtrl->saveToXml(url))
+                    allSaved = allSaved && saveAs(st->mtrl);
+            }
+            else
+            {
+                allSaved = allSaved && saveAs(st->mtrl);
+            }
+        }
+    }
+    if (allSaved)
+        setModified(false);
+
+    return true;
 }
 
 bool MtrlEditorPage::Show(bool show)
@@ -71,15 +134,7 @@ bool MtrlEditorPage::Show(bool show)
     return EditorPage::Show(show);
 }
 
-void MtrlEditorPage::addMaterialFromFile(const String& url)
-{
-    TextureMtrl::Ptr texMtrl = new TextureMtrl();
-    texMtrl->fileName = url;
-    texMtrl->postLoaded();
-    addMaterial(texMtrl);
-}
-
-void MtrlEditorPage::addMaterial(Material* mtrl)
+void MtrlEditorPage::addMaterial(Material* mtrl, bool isMtrlModified)
 {
     if (!mtrl)
         return;
@@ -89,17 +144,34 @@ void MtrlEditorPage::addMaterial(Material* mtrl)
     newItem->pos = PointF(100, 100);
     mtrlStates.push_back(newItem);
 
-    setTitle(wxT("[MaterialEditor]"));
+    if (isMtrlModified)
+        setModified(true);
 }
+
+void MtrlEditorPage::updateTitle()
+{
+    if (isModified)
+        setTitle(wxT("*[MaterialEditor]"));
+    else
+        setTitle(wxT("[MaterialEditor]"));
+}
+
+void MtrlEditorPage::setModified(bool modified)
+{
+    if (modified != isModified)
+    {
+        isModified = modified;
+        updateTitle();
+    }
+}
+
 
 void MtrlEditorPage::beginScene()
 {
-
 }
 
 void MtrlEditorPage::endScene()
 {
-
 }
 
 void MtrlEditorPage::renderScene()
@@ -113,11 +185,11 @@ void MtrlEditorPage::renderScene()
         if (editMtrl && editMtrl->mtrl == st->mtrl)
             selectedColor = 0xFFFFFFFF;
 
-        drawMaterial(st->mtrl, selectedColor, st->pos);
+        drawMaterial(st->mtrl, st->mtrl->getClassInfo(), selectedColor, st->pos, true);
     }
 }
 
-void MtrlEditorPage::drawMaterial(Material* mtrl, uint32 color, const PointF& pos)
+void MtrlEditorPage::drawMaterial(Material* mtrl, ClassInfo* cls, uint32 color, const PointF& pos, bool isRoot)
 {
     RectF rect(0, 0, GRID_SIZE, GRID_SIZE);
     rect.moveTo(pos);
@@ -128,33 +200,44 @@ void MtrlEditorPage::drawMaterial(Material* mtrl, uint32 color, const PointF& po
         borderColor = 0xFFFFFF00;
     else
         borderColor = color;
-    
+
     uint32 oldclr = getCanvas()->getColor();
     getCanvas()->setColor(borderColor);
     getCanvas()->drawRect(rect.minX, rect.minY, rect.maxX, rect.maxY);
-    getCanvas()->drawText(rect.minX + 5, rect.minY + 15, mtrl ? mtrl->getClassInfo()->className : "NullObject");
+    getCanvas()->drawText(rect.minX + 5, rect.minY + 15, 
+        mtrl ? mtrl->getClassInfo()->className : cls->className);
+    if (mtrl && !mtrl->getUrl().empty())
+    {
+        String text = isRoot ? "Url:" : "Ref:";
+        getCanvas()->drawText(rect.minX + 5, rect.maxY - 5, text + mtrl->getUrl());
+    }
     getCanvas()->setColor(oldclr);
 
     rect.deflate(20, 20, 20, 20);
     getCanvas()->drawImage(rect, mtrl);
 
-    if (mtrl)
+    if (!mtrl)
+        return;
+
+    if (!isRoot && !mtrl->getUrl().empty())
     {
-        AttVisitor v;
-        mtrl->accept(v);
-        Attribute::List::iterator it = v.attributes.begin();
-        for (; it != v.attributes.end(); ++it)
+        return;
+    }
+
+    AttVisitor v;
+    mtrl->accept(v);
+    Attribute::List::iterator it = v.attributes.begin();
+    for (; it != v.attributes.end(); ++it)
+    {
+        Attribute* attr = *it;
+        if (attr->attrType == Attribute::attrObject && attr->data && attr->classInfo)
         {
-            Attribute* attr = *it;
-            if (attr->attrType == Attribute::attrObject && attr->data && attr->classInfo)
+            if (attr->classInfo->isDerivedFrom(&Material::CLASS_INFO))
             {
-                if (attr->classInfo->isDerivedFrom(&Material::CLASS_INFO))
-                {
-                    PointF subPos = pos;
-                    subPos.move(0, GRID_SIZE);
-                    Object* obj = *(Object**)attr->data;
-                    drawMaterial((Material*)obj, color, subPos);
-                }
+                PointF subPos = pos;
+                subPos.move(0, GRID_SIZE);
+                Material* subMtrl = (Material*)(*(Object**)attr->data);
+                drawMaterial(subMtrl, attr->classInfo, color, subPos, false);
             }
         }
     }
@@ -204,6 +287,7 @@ void MtrlEditorPage::onMouseLeftUp(wxMouseEvent& event)
         {
             mtrlStates.remove(editMtrl);
             editMtrl = st;
+            setModified(true);
             return;
         }
     }
@@ -268,6 +352,11 @@ Material* MtrlEditorPage::subMtrlHitTest(Material* parent, RectF rect, const Poi
             {
                 Object* obj = *(Object**)attr->data;
                 Material* subMtrl = (Material*)obj;
+
+                // Can not edit refed object !!!
+                if (subMtrl && !subMtrl->getUrl().empty())
+                    return NULL;
+
                 rect.move(0, GRID_SIZE);
                 if (rect.isPointIn(mousePos))
                 {
@@ -350,10 +439,33 @@ bool MtrlMIMEHandler::canHandle(const wxString& filename) const
 
 }
 
+bool MtrlMIMEHandler::addMaterial(Material* mtrl, bool isMtrlModified)
+{
+    EditorPageManager* epm = Manager::getInstancePtr()->getEditorPageManager();
+
+    if (!page)
+    {
+        epm->getNotebook()->Freeze();
+        page = new MtrlEditorPage(epm->getNotebook(), this);
+        epm->addEditorPage(page);
+        epm->getNotebook()->Thaw();
+    }
+
+    page->addMaterial(mtrl, isMtrlModified);
+
+    int index = epm->getNotebook()->GetPageIndex(page);
+
+    if (index != -1)
+        epm->getNotebook()->SetSelection(index);
+
+    return page->isOk();
+}
+
 bool MtrlMIMEHandler::openFile(const wxString& filename)
 {
     Material* mtrl = NULL;
-
+    bool isMtrlModified = false;
+    
     if (filename.Lower().EndsWith(wxT(".material")))
         mtrl = (Material*)Object::importObject(filename.ToUTF8().data());
     else if (
@@ -365,27 +477,11 @@ bool MtrlMIMEHandler::openFile(const wxString& filename)
         texMtrl->fileName = filename.ToUTF8().data();
         texMtrl->postLoaded();
         mtrl = texMtrl;
+        isMtrlModified = true;
     }
 
     if (!mtrl)
         return false;
 
-    EditorPageManager* epm = Manager::getInstancePtr()->getEditorPageManager();
-
-    if (!page)
-    {
-        epm->getNotebook()->Freeze();
-        page = new MtrlEditorPage(epm->getNotebook(), this, mtrl);
-        epm->addEditorPage(page);
-        epm->getNotebook()->Thaw();
-    }
-    else
-        page->addMaterial(mtrl);
-
-    int index = epm->getNotebook()->GetPageIndex(page);
-
-    if (index != -1)
-        epm->getNotebook()->SetSelection(index);
-
-    return page->isOk();
+    return addMaterial(mtrl, isMtrlModified);
 }

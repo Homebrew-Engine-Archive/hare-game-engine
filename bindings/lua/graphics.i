@@ -177,8 +177,9 @@ class Canvas
 public:
 	void drawLine(float x1, float y1, float x2, float y2);
 	void drawRect(float l, float t, float r, float b);
-	void drawText(int x, int y, const String& text);
-	void drawImage(int x, int y, Material* mtrl);
+	void drawRectFill(float l, float t, float r, float b);
+	void drawText(float x, float y, const String& text);
+	void drawImage(float x, float y, Material* mtrl);
 	void setFont(Font* f);
 	Font* getFont();
 	void setColor(uint32 c);

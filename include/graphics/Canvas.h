@@ -19,9 +19,9 @@ namespace hare
         
         void drawRectFill(float l, float t, float r, float b);
 
-		void drawText(int x, int y, const String& text);
+		void drawText(float x, float y, const String& text);
 
-		void drawImage(int x, int y, Material* mtrl, const RectF& uvRect = RectF(0,0,1,1));
+		void drawImage(float x, float y, Material* mtrl, const RectF& uvRect = RectF(0,0,1,1));
 
 		void drawImage(const RectF& rect, Material* mtrl, const RectF& uvRect = RectF(0,0,1,1));
 

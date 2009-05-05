@@ -290,6 +290,22 @@ namespace hare
     void TextEditorPage::onEditorChange(wxScintillaEvent& event)
     {
         setModified(getControl()->GetModify());
+
+        int linesAdded = event.GetLinesAdded();
+        int isAdd = event.GetModificationType() & wxSCI_MOD_INSERTTEXT;
+        int isDel = event.GetModificationType() & wxSCI_MOD_DELETETEXT;
+        if ((isAdd || isDel) && linesAdded != 0)
+        {
+            if (projectFile)
+            {
+                Manager* man = Manager::getInstancePtr();
+                ProjectExplorer* pe = man->getExplorerManager()->getProjectExplorer();
+                Project* prj = pe->getActiveProject();
+                if (prj)
+                {
+                }
+            }
+        }
     }
 
     void TextEditorPage::updateLineNumberColWidth()

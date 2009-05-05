@@ -98,8 +98,10 @@ namespace hare
 
     void ExplorerManager::removeAllProperties()
     {
-        propGridManager->Clear();
-        propGridManager->Refresh();
+        if (!Manager::isAppShuttingDown())
+        {
+            propGridManager->Clear();
+            propGridManager->Refresh();
+        }
     }
-
 }

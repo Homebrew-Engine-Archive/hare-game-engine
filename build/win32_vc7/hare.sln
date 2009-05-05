@@ -49,18 +49,16 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gl_renderer", "gl_renderer.
 		{FB59907C-A100-4146-A240-9FEA023F6BB6} = {FB59907C-A100-4146-A240-9FEA023F6BB6}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gui_editor", "gui_editor.vcproj", "{2A663F90-96FA-4121-9B4E-AAFFD54E143B}"
-	ProjectSection(ProjectDependencies) = postProject
-		{508C8324-5017-4336-A249-2F9741C0AD8D} = {508C8324-5017-4336-A249-2F9741C0AD8D}
-		{BC97E7F3-E37E-47A8-B4D1-705FD7FD61D0} = {BC97E7F3-E37E-47A8-B4D1-705FD7FD61D0}
-	EndProjectSection
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mtrl_editor", "mtrl_editor.vcproj", "{C77B3474-2C3D-4138-A8EF-183D356703FB}"
 	ProjectSection(ProjectDependencies) = postProject
 		{BC97E7F3-E37E-47A8-B4D1-705FD7FD61D0} = {BC97E7F3-E37E-47A8-B4D1-705FD7FD61D0}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gui", "gui.vcproj", "{508C8324-5017-4336-A249-2F9741C0AD8D}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "uv_editor", "uv_editor.vcproj", "{09CCE340-9DC9-4461-A6AB-AB2E3680DFCA}"
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
@@ -110,10 +108,6 @@ Global
 		{8E83E98C-F83A-4470-B63C-16C7C1151FD4}.Debug.Build.0 = Debug|Win32
 		{8E83E98C-F83A-4470-B63C-16C7C1151FD4}.Release.ActiveCfg = Release|Win32
 		{8E83E98C-F83A-4470-B63C-16C7C1151FD4}.Release.Build.0 = Release|Win32
-		{2A663F90-96FA-4121-9B4E-AAFFD54E143B}.Debug.ActiveCfg = Debug|Win32
-		{2A663F90-96FA-4121-9B4E-AAFFD54E143B}.Debug.Build.0 = Debug|Win32
-		{2A663F90-96FA-4121-9B4E-AAFFD54E143B}.Release.ActiveCfg = Release|Win32
-		{2A663F90-96FA-4121-9B4E-AAFFD54E143B}.Release.Build.0 = Release|Win32
 		{C77B3474-2C3D-4138-A8EF-183D356703FB}.Debug.ActiveCfg = Debug|Win32
 		{C77B3474-2C3D-4138-A8EF-183D356703FB}.Debug.Build.0 = Debug|Win32
 		{C77B3474-2C3D-4138-A8EF-183D356703FB}.Release.ActiveCfg = Release|Win32
@@ -122,6 +116,10 @@ Global
 		{508C8324-5017-4336-A249-2F9741C0AD8D}.Debug.Build.0 = Debug|Win32
 		{508C8324-5017-4336-A249-2F9741C0AD8D}.Release.ActiveCfg = Release|Win32
 		{508C8324-5017-4336-A249-2F9741C0AD8D}.Release.Build.0 = Release|Win32
+		{09CCE340-9DC9-4461-A6AB-AB2E3680DFCA}.Debug.ActiveCfg = Debug|Win32
+		{09CCE340-9DC9-4461-A6AB-AB2E3680DFCA}.Debug.Build.0 = Debug|Win32
+		{09CCE340-9DC9-4461-A6AB-AB2E3680DFCA}.Release.ActiveCfg = Release|Win32
+		{09CCE340-9DC9-4461-A6AB-AB2E3680DFCA}.Release.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 	EndGlobalSection

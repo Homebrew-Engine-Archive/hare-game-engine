@@ -11,7 +11,7 @@ static LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM l
 	switch( uMsg )
 	{
 	case WM_SIZE:
-		if (wParam != SIZE_RESTORED){// not Alt + Tab
+		if (renderWindow && !renderWindow->getWindowParams().bFullScreen){// not Alt + Tab
             int w = LOWORD(lParam) > 0 ? LOWORD(lParam) : 1;
             int h = HIWORD(lParam) > 0 ? HIWORD(lParam) : 1;
 
@@ -227,8 +227,8 @@ void D3DRenderWindow::active()
 	D3DXMatrixTranslation(&matTEMP, -0.5f, windowParams.height + 0.5f, 0.0f);
 	D3DXMatrixMultiply(&MatProj, &MatProj, &matTEMP);
 
-	D3DXMatrixOrthoOffCenterRH(&matTEMP, 0, (float)windowParams.width, 0, 
-		(float)windowParams.height, 0.0f, 1.0f);//正交投影
+	D3DXMatrixOrthoOffCenterRH(&matTEMP, cameraPos.x, (float)windowParams.width + cameraPos.x, -cameraPos.y, 
+		(float)windowParams.height - cameraPos.y, 0.0f, 1.0f);//正交投影
 
 	D3DXMatrixMultiply(&MatProj, &MatProj, &matTEMP);
 	D3DXMatrixIdentity(&MatView);

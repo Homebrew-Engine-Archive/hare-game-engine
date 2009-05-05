@@ -117,6 +117,7 @@ namespace hare
 
         shader->getMaterial()->frameMove();
 		RenderSystem::getSingletonPtr()->render(&quad);
+
 		particle->render();
 
 		anim->render();

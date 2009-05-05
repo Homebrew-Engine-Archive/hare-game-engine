@@ -31,6 +31,8 @@ private:
 	GLuint fbo;
 	GLuint depthbuffer;
 
+	static bool bSupportFBO;
+
 };
 
 

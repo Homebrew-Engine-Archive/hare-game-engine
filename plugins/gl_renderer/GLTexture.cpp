@@ -2,6 +2,7 @@
 #include "GLTexture.h"
 #include "GLTypeConverter.h"
 #include "GLRenderSystem.h"
+#include "GLUtility.h"
 
 #ifdef min
 #undef min
@@ -10,12 +11,14 @@
 #undef max
 #endif
 
+bool GLTexture::bSupportFBO = false;
+
 GLTexture::GLTexture()
     :glTexture(0)
 	,fbo(0)
     ,depthbuffer(0)
 {
-
+    bSupportFBO = IsExtensionSupported("GL_EXT_framebuffer_object");
 }
 
 GLTexture::~GLTexture()
@@ -27,14 +30,19 @@ void GLTexture::active()
 {
     assert(bIsRenderable);
 
-    glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, fbo);
-
-    GLRenderSystem::getSingletonPtr()->clear(GLRenderSystem::getSingletonPtr()->getCurRenderWindow()->getWindowParams().bZbuffer);
+	if (bSupportFBO){
+        glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, fbo);
+        GLRenderSystem::getSingletonPtr()->clear(GLRenderSystem::getSingletonPtr()->getCurRenderWindow()->getWindowParams().bZbuffer);
+	}else{
+		glPushAttrib(GL_COLOR_BUFFER_BIT | GL_PIXEL_MODE_BIT); // for GL_DRAW_BUFFER and GL_READ_BUFFER
+        glDrawBuffer(GL_BACK);
+        glReadBuffer(GL_BACK);
+	}
 
 	glMatrixMode(GL_PROJECTION);
     glLoadIdentity(); 
 
-    //NB: glOrtho funcation last tow args is used as negative       near far                
+    //NB: glOrtho funcation last tow args is used as negative       near far 
     glOrtho(0, (GLfloat)projectionWidth,  0, (GLfloat)projectionHeight,-1.0, 1.0); 
 
     glMatrixMode(GL_MODELVIEW);
@@ -50,8 +58,20 @@ void GLTexture::inactive()
 
 	GLRenderSystem::getSingletonPtr()->render();
 	//release bind
-	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
+	if (bSupportFBO){
+	    glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);	
+	}else{
+	    // copy the framebuffer pixels to a texture
+        glBindTexture(GL_TEXTURE_2D, glTexture);
+		//glCopyTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE, 0, 0, width, height, 0);
+        glCopyTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 0, 0, width, height);
+        glBindTexture(GL_TEXTURE_2D, 0);
+        glPopAttrib(); // GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT
 
+        //GLRenderSystem::getSingletonPtr()->clear(GLRenderSystem::getSingletonPtr()->getCurRenderWindow()->getWindowParams().bZbuffer);
+
+        glBindTexture(GL_TEXTURE_2D, (static_cast<GLRenderSystem*>(GLRenderSystem::getSingletonPtr()))->getCurTexture());
+	}
 }
 
 void GLTexture::upload(const Image& img, uint32 destX, uint32 destY)
@@ -117,24 +137,23 @@ bool GLTexture::doCreate()
 
         delete [] data;
 
-		if (bIsRenderable){
-            glGenFramebuffersEXT(1, &fbo);
-            glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, fbo);
+		if (bIsRenderable && bSupportFBO){
+			glGenFramebuffersEXT(1, &fbo);
+			glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, fbo);
 
-            glGenRenderbuffersEXT(1, &depthbuffer);
-            glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, depthbuffer);
-            glRenderbufferStorageEXT(GL_RENDERBUFFER_EXT, GL_DEPTH_COMPONENT, width, height);
-            glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, 0);
+			glGenRenderbuffersEXT(1, &depthbuffer);
+			glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, depthbuffer);
+			glRenderbufferStorageEXT(GL_RENDERBUFFER_EXT, GL_DEPTH_COMPONENT, width, height);
+			glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, 0);
 
-            glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT, GL_TEXTURE_2D, glTexture, 0);
-            glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT, GL_DEPTH_ATTACHMENT_EXT, GL_RENDERBUFFER_EXT, depthbuffer);
-            glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
+			glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT, GL_TEXTURE_2D, glTexture, 0);
+			glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT, GL_DEPTH_ATTACHMENT_EXT, GL_RENDERBUFFER_EXT, depthbuffer);
+			glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
 
 #ifdef _DEBUG
 			GLenum status = glCheckFramebufferStatusEXT(GL_FRAMEBUFFER_EXT);
 			assert(status == GL_FRAMEBUFFER_COMPLETE_EXT);
 #endif
-
 		}
 
     }else{
@@ -235,7 +254,7 @@ void GLTexture::release()
         glDeleteTextures(1, &glTexture);
         glTexture = 0;
     }
-	if (bIsRenderable){
+	if (bIsRenderable && bSupportFBO){
 		if (depthbuffer){
 			glDeleteRenderbuffersEXT(1, &depthbuffer);
 			depthbuffer = 0;

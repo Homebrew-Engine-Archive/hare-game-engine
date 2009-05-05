@@ -3,10 +3,22 @@ sprite2 = nil
 sceneListen = nil
 par = nil
 fnt = nil
-
+w   = nil
+x = 0
+y = 0
+i = 1
 lastTime = 0
 
 function beginScene()
+    w:moveCameraTo(x, y)
+    x = x + i
+    y = y + i
+    if x == 100 then
+        i = -1
+    end
+    if x == 0 then
+        i = 1
+    end
 end
 
 function renderScene()
@@ -65,4 +77,5 @@ function quit()
     sceneListen = nil
     par = nil
     fnt = nil
+    w = nil
 end

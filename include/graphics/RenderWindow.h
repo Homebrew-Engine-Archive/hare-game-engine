@@ -88,6 +88,10 @@ namespace hare
 			return windowParams;
 		}
 
+		void moveCamera(float dx, float dy);
+
+        void moveCameraTo(float x, float y);
+
 	protected:
 		bool isMainWnd;
         bool isExternal;
@@ -95,6 +99,8 @@ namespace hare
 		WindowParams windowParams;
 
 		SceneManager* sceneManager;
+
+		PointF cameraPos;
 	};
 }
 

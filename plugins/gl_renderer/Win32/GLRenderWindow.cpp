@@ -158,7 +158,7 @@ void GLRenderWindow::setProjection()
 
     //NB: glOrtho funcation last tow args is used as negative
     //left right bottom top                                                 near far
-    glOrtho(0, (GLfloat)windowParams.width, (GLfloat)windowParams.height, 0, -1.0, 1.0); 
+    glOrtho(-cameraPos.x, (GLfloat)windowParams.width - cameraPos.x, (GLfloat)windowParams.height - cameraPos.y, -cameraPos.y, -1.0, 1.0); 
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity(); 

@@ -93,6 +93,10 @@ public:
 	virtual void swapBuffer() = 0;
 
 	virtual void destoryWindow() = 0;
+	
+	void moveCamera(float dx, float dy);
+
+    void moveCameraTo(float x, float y);
 };	
 
 class Texture

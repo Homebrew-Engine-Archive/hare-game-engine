@@ -105,7 +105,7 @@ namespace hare
         frameMove();
 
 		if (rectPos.isEmpty()){
-            getCanvas()->drawImage((int)rectPos.minX, (int)rectPos.minY, animFrame->getMaterial());		
+            getCanvas()->drawImage(rectPos.minX, rectPos.minY, animFrame->getMaterial());		
 		}else{
 		    getCanvas()->drawImage(rectPos, animFrame->getMaterial());
 		}

@@ -48,7 +48,7 @@ namespace hare
         RenderSystem::getSingletonPtr()->render(&quad);
     }
 
-	void Canvas::drawText(int x, int y, const String& text)
+	void Canvas::drawText(float x, float y, const String& text)
 	{
 		if (!font || text.empty())
 			return;
@@ -59,7 +59,7 @@ namespace hare
 		texMtrl->setTexture(font->getFontTexture());
 		//shader->setShaderParams(font->getFontExtParams());
 		shader->setMaterial(texMtrl);
-		float layout_x = (float)x;
+		float layout_x = x;
 		float layout_y = 0;
 
 		for (uint32 batchCount = 0; batchCount <= wstr.size() / font->getCacheBufferSize(); ++batchCount){
@@ -104,7 +104,7 @@ namespace hare
 
 	}
 
-	void Canvas::drawImage(int x, int y, Material* mtrl, const RectF& uvRect)
+	void Canvas::drawImage(float x, float y, Material* mtrl, const RectF& uvRect)
 	{
 		if (!mtrl)
 			return;
@@ -113,7 +113,7 @@ namespace hare
 
 		Quad quad;
 		quad.setMaterial(mtrl);
-		quad.moveTo((float)x, (float)y);
+		quad.moveTo(x, y);
 		quad.setDepth(z);
 		quad.setColor(color);
 		quad.setTextureUVMap(uvRect);

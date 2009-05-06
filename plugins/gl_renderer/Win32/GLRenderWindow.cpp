@@ -153,12 +153,12 @@ void GLRenderWindow::create(const WindowParams& params)
 
 void GLRenderWindow::setProjection()
 {
-    int l = cameraPos.x;
+    int l = (int)cameraPos.x;
     int r = windowParams.width + (int)cameraPos.x;
     int b = windowParams.height + (int)cameraPos.y;
-    int t = cameraPos.y;
+    int t = (int)cameraPos.y;
 
-    RenderSystem::getSingletonPtr()->setProjection(l, r, b, t);
+    RenderSystem::getSingletonPtr()->setProjection((float)l, (float)r, (float)b, (float)t);
 }
 
 void GLRenderWindow::resize(uint32 w, uint32 h)

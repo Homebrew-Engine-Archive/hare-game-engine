@@ -239,7 +239,7 @@ void GLRenderSystem::setProjection(float l, float r, float b, float t)
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity(); 
 
-    glViewport (0, 0, (GLsizei)(r - l), (GLsizei)(t - b));
+    glViewport (0, 0, (GLsizei)(r - l), (GLsizei)(b - t));
 }
 
 void GLRenderSystem::prepareCanvasRender()

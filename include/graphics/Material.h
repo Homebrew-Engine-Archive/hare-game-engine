@@ -189,15 +189,15 @@ namespace hare
 
 		virtual void frameMove();
 	public:
-		PointF   offset;
-		PointF   panDirection;
-		float      panRate;
+		PointF  offset;
+		PointF  panDirection;
+		float   panRate;
 
-		PointF   oscillationPhase;
-		PointF   oscillationAmplitude;
-		PointF   oscillationRate;
+		PointF  oscillationPhase;
+		PointF  oscillationAmplitude;
+		PointF  oscillationRate;
 	protected:
-		float      startTime;
+		float   startTime;
 
 	};
 
@@ -218,7 +218,7 @@ namespace hare
 		PointF	oscillationAmplitude;
 		PointF	oscillationRate;
 	protected:
-		float		startTime;
+		float   startTime;
 
 	};
 

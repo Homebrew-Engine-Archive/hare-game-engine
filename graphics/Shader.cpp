@@ -76,7 +76,7 @@ namespace hare
 
 	HARE_IMPLEMENT_ABSTRACT_CLASS(Shader, Material, 0)
 	{
-		HARE_OBJ(shaderParams, ShaderParams)
+		HARE_OBJ_F(shaderParams, ShaderParams, propAvoidNull)
 	}
 
 	Shader::Shader()

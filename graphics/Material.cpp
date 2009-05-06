@@ -47,7 +47,7 @@ namespace hare
 		|| AlphaBlendArg2 != right.AlphaBlendArg2
 		|| wrapModeU      != right.wrapModeU
 		|| wrapModeV      != right.wrapModeV
-		|| fliterType         != right.fliterType){
+		|| fliterType     != right.fliterType){
 			return true;
 		}
 
@@ -106,7 +106,7 @@ namespace hare
 	HARE_IMPLEMENT_DYNAMIC_CLASS(TextureMtrl, StandardMtrl, 0)
 	{
 		HARE_META_F(fileName, String, propFSUrl)
-		HARE_OBJ(textureStage, TextureStage)
+		HARE_OBJ_F(textureStage, TextureStage, propAvoidNull)
 	}
 
 	TextureMtrl::TextureMtrl()

@@ -113,17 +113,13 @@ namespace hare
 
 	HARE_IMPLEMENT_DYNAMIC_CLASS(SimpleParticle, Particle, 0)
 	{
-		HARE_OBJ(particleInfo, ParticleInfo)
-		HARE_META(tx, float)
-		HARE_META(ty, float)
+		HARE_OBJ_F(particleInfo, ParticleInfo, propAvoidNull)
 	}
 
 	SimpleParticle::SimpleParticle()
 		:age(-2.0f)
         ,emissionResidue(0)
         ,prevLocation(0,0)
-		,tx(0)
-		,ty(0)
 		,particlesAlive(0)
 	{
 		particleInfo = new ParticleInfo;
@@ -137,6 +133,9 @@ namespace hare
 	void SimpleParticle::render()
 	{
 		frameMove();
+
+        if (!particleMtrl)
+            return;
 
 		TextureMtrl* texMtrl = particleMtrl->getTextureMtrl();
         

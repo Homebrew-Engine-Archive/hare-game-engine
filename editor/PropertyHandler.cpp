@@ -28,8 +28,9 @@ WX_PG_IMPLEMENT_VARIANT_DATA(wxPGVariantDataPointF, PointF)
 
 namespace hare
 {
-    static const int IMPORT_OBJECT = -2; 
-    static const int NULL_OBJECT   = -3; 
+    static const int IMPORT_OBJECT       = -2; 
+    static const int NULL_OBJECT         = -3; 
+    static const int INVALID_SELECTION   = -1000; 
 
     IMPLEMENT_DYNAMIC_CLASS(ObjectEnumProperty, wxEnumProperty)
 
@@ -477,7 +478,7 @@ namespace hare
         prop->Empty();
 
         wxPGChoices choices;
-        long selection = -1;
+        long selection = INVALID_SELECTION;
 
         if (!attr->hasFlag(Object::propAvoidNull))
             choices.Add(wxT("NullObjcet"), NULL_OBJECT);
@@ -486,21 +487,20 @@ namespace hare
             choices.Add(wxT("<Import From File ...>"), IMPORT_OBJECT);
 
         Object* obj = *(Object**)attr->data;
-        ClassInfo* objCls = obj ? obj->getClassInfo() : attr->classInfo;
-        wxString className = wxString::FromUTF8(objCls->className);
         
         attr->classInfo->findSubs(prop->subClasses);
         size_t i = 0;
         for (; i != prop->subClasses.size(); ++i)
         {
             choices.Add(wxString::FromUTF8(prop->subClasses[i]->className), i);
-            if (prop->subClasses[i] == objCls)
+            if (obj && obj->getClassInfo() == prop->subClasses[i])
                 selection = i;
         }
         
         // for referenced object, we should display the URL after its class name.
         if (obj && !obj->getUrl().empty())
         {
+            wxString className = wxString::FromUTF8(obj->getClassInfo()->className);
             wxString lable = className + wxT(" [") + wxString::FromUTF8(obj->getUrl().c_str()) + wxT("]");
             selection = i;
             choices.Add(lable, i);
@@ -521,13 +521,19 @@ namespace hare
 
             prop->SetExpanded(false);
         }
+        else
+        {
+            if (!attr->hasFlag(Object::propAvoidNull))
+                selection = NULL_OBJECT;
+        }
         prop->SetChoices(choices);
-        if (selection != -1)
+        if (selection != INVALID_SELECTION)
         {
             prop->SetValue(selection);
             prop->currentSelection = selection;
         }
         
+        wxString className = wxString::FromUTF8(attr->classInfo->className);
         prop->SetHelpString(className);
         prop->SetClientData(attr);
 

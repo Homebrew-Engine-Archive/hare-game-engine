@@ -77,8 +77,8 @@ namespace hare
 			float	  size;
 			float	  sizeDelta;
 
-			Color color;
-			Color colorDelta;
+			Color     color;
+			Color     colorDelta;
 
 			float	  age;
 			float	  terminalAge;
@@ -106,12 +106,8 @@ namespace hare
 	protected:
 		float		age;
 		float		emissionResidue;
-
-		Vector2	prevLocation;
-
-		float		tx, ty;
-
-		int		particlesAlive;
+		Vector2	    prevLocation;
+		int		    particlesAlive;
 
 		ParticleInfo::Ptr particleInfo;
 		ParticleUnit particleUnits[MAX_PARTICLES];

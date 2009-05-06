@@ -244,8 +244,6 @@ void GLRenderSystem::setProjection(float l, float r, float b, float t)
 
 void GLRenderSystem::prepareCanvasRender()
 {
-    glEnable(GL_TEXTURE_2D);
-
     int l = 0;
     int r = RenderSystem::getSingletonPtr()->getCurRenderWindow()->getWindowParams().width;
     int b = RenderSystem::getSingletonPtr()->getCurRenderWindow()->getWindowParams().height;

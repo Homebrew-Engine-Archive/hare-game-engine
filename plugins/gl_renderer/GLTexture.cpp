@@ -71,6 +71,8 @@ void GLTexture::upload(const Image& img, uint32 destX, uint32 destY)
 
 	int desWidth = std::min(img.getWidth(), width - destX);
 	int desHeight= std::min(img.getHeight(), height - destY);
+    
+    glEnable(GL_TEXTURE_2D);
 
 	glBindTexture(GL_TEXTURE_2D, glTexture);
 

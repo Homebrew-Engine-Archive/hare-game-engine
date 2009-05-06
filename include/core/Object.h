@@ -80,6 +80,7 @@ namespace hare
             propColor           = 1 << 5,   // edit this value as color, value type must be uint32
             propImport          = 1 << 6,   // object can be imported form a file
             propAvoidNull       = 1 << 7,   // object can not set null in editor
+            propAllowSubs       = 1 << 8,   // object can be created from sub-classes in editor
         };
 
         bool isA(const ClassInfo* base) const;

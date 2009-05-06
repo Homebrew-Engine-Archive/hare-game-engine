@@ -30,6 +30,7 @@ namespace hare
 {
     static const int IMPORT_OBJECT       = -2; 
     static const int NULL_OBJECT         = -3; 
+    static const int EMBEDDED_OBJECT     = -4;
     static const int INVALID_SELECTION   = -1000; 
 
     IMPLEMENT_DYNAMIC_CLASS(ObjectEnumProperty, wxEnumProperty)
@@ -476,6 +477,7 @@ namespace hare
     void reBindObject(Attribute* attr, ObjectEnumProperty* prop, PropertyGridPage* page)
     {
         prop->Empty();
+        prop->subClasses.clear();
 
         wxPGChoices choices;
         long selection = INVALID_SELECTION;
@@ -487,14 +489,24 @@ namespace hare
             choices.Add(wxT("<NullObjcet>"), NULL_OBJECT);
 
         Object* obj = *(Object**)attr->data;
-        
-        attr->classInfo->findSubs(prop->subClasses);
         size_t i = 0;
-        for (; i != prop->subClasses.size(); ++i)
+
+        if (attr->hasFlag(Object::propAllowSubs))
         {
-            choices.Add(wxString::FromUTF8(prop->subClasses[i]->className), i);
-            if (obj && obj->getClassInfo() == prop->subClasses[i])
-                selection = i;
+            attr->classInfo->findSubs(prop->subClasses);
+            for (; i != prop->subClasses.size(); ++i)
+            {
+                choices.Add(wxString::FromUTF8(prop->subClasses[i]->className), i);
+                if (obj && obj->getClassInfo() == prop->subClasses[i])
+                    selection = i;
+            }
+        }
+        else if (obj && obj->getUrl().empty())
+        {
+            // Special case : If we do not allow creating object form sub-classes in editor, 
+            //   but the object already has an embedded object, we should display the class name.
+            choices.Add(wxString::FromUTF8(obj->getClassInfo()->className), EMBEDDED_OBJECT);
+            selection = EMBEDDED_OBJECT;
         }
         
         // for referenced object, we should display the URL after its class name.
@@ -519,7 +531,7 @@ namespace hare
                 bindAttribute(at, page, prop);
             }
 
-            prop->SetExpanded(false);
+            //prop->SetExpanded(false);
         }
         else
         {

@@ -44,8 +44,6 @@ namespace hare
         createProjectPage();
         createFileSystemPage();
         createPropertyPage();
-
-        bindProperty(wxT("AppConfigFile"), Manager::getInstancePtr()->getConfigManager()->getAppConfigFile());
     }
 
     void ExplorerManager::createFileSystemPage()

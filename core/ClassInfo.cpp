@@ -29,6 +29,7 @@ namespace hare
         {
             classMap = new ClassNameMap;
         }
+        assert(!findClass(className));
         (*classMap)[className] = this;
     }
 

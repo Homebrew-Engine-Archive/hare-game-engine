@@ -247,6 +247,25 @@ UVRCMIMEHandler::UVRCMIMEHandler()
 {
 }
 
+bool UVRCMIMEHandler::newPage(UVEditorState* state)
+{
+    EditorPageManager* epm = Manager::getInstancePtr()->getEditorPageManager();
+
+    epm->getNotebook()->Freeze();
+    UVRCEditorPage* page = new UVRCEditorPage(epm->getNotebook(), this);
+    epm->addEditorPage(page);
+    epm->getNotebook()->Thaw();
+
+    page->setUVState(state);
+
+    int index = epm->getNotebook()->GetPageIndex(page);
+
+    if (index != -1)
+        epm->getNotebook()->SetSelection(index);
+
+    return true;
+}
+
 bool UVRCMIMEHandler::canHandle(const wxString& filename) const
 {
     return filename.Lower().EndsWith(wxT(".uvrc"));
@@ -260,19 +279,5 @@ bool UVRCMIMEHandler::openFile(const wxString& filename)
     if (!uvState)
         return false;
 
-    EditorPageManager* epm = Manager::getInstancePtr()->getEditorPageManager();
-
-    epm->getNotebook()->Freeze();
-    UVRCEditorPage* page = new UVRCEditorPage(epm->getNotebook(), this);
-    epm->addEditorPage(page);
-    epm->getNotebook()->Thaw();
-
-    page->setUVState(uvState);
-
-    int index = epm->getNotebook()->GetPageIndex(page);
-
-    if (index != -1)
-        epm->getNotebook()->SetSelection(index);
-
-    return true;
+    return newPage(uvState);
 }

@@ -123,6 +123,7 @@ void UVEditorPage::drawImpl()
     float v = (float)winH / gridMtrl->getTextureMtrl()->getTexture()->getHeight();
     getCanvas()->drawImage(RectF(0, 0, winW, winH), gridMtrl, RectF(0, 0, u, v));
     getCanvas()->drawImage(rect, getMaterial());
+    getCanvas()->drawRect(rect.minX, rect.minY, rect.maxX, rect.maxY);
 
     uint32 color = 0;
     bool drawSizers = false;

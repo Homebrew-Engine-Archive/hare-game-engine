@@ -136,6 +136,9 @@
 			<File
 				RelativePath="..\..\plugins\uv_editor\UVRCMIMEHandler.cpp">
 			</File>
+			<File
+				RelativePath="..\..\plugins\uv_editor\UVRCWizard.cpp">
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -149,6 +152,9 @@
 			</File>
 			<File
 				RelativePath="..\..\plugins\uv_editor\UVRCMIMEHandler.h">
+			</File>
+			<File
+				RelativePath="..\..\plugins\uv_editor\UVRCWizard.h">
 			</File>
 		</Filter>
 		<Filter

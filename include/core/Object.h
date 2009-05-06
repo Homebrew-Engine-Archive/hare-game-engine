@@ -79,6 +79,7 @@ namespace hare
             propFSUrl           = 1 << 4,   // string is url of file system
             propColor           = 1 << 5,   // edit this value as color, value type must be uint32
             propImport          = 1 << 6,   // object can be imported form a file
+            propAvoidNull       = 1 << 7,   // object can not set null in editor
         };
 
         bool isA(const ClassInfo* base) const;

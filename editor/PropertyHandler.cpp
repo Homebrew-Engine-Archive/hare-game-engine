@@ -29,6 +29,7 @@ WX_PG_IMPLEMENT_VARIANT_DATA(wxPGVariantDataPointF, PointF)
 namespace hare
 {
     static const int IMPORT_OBJECT = -2; 
+    static const int NULL_OBJECT   = -3; 
 
     IMPLEMENT_DYNAMIC_CLASS(ObjectEnumProperty, wxEnumProperty)
 
@@ -477,6 +478,9 @@ namespace hare
 
         wxPGChoices choices;
         long selection = -1;
+
+        if (!attr->hasFlag(Object::propAvoidNull))
+            choices.Add(wxT("NullObjcet"), NULL_OBJECT);
         
         if (attr->hasFlag(Object::propImport))
             choices.Add(wxT("<Import From File ...>"), IMPORT_OBJECT);
@@ -547,6 +551,7 @@ namespace hare
         long value = wxPGVariantToInt(val);
 
         Object::Ptr newObject;
+        bool nullObject = false;
         
         if (value < 0)
         {
@@ -572,6 +577,10 @@ namespace hare
                     }
                 }
             }
+            else if (value == NULL_OBJECT)
+            {
+                nullObject = true;
+            }
         }
         else
         {
@@ -583,11 +592,12 @@ namespace hare
                 newObject->postLoaded();
         }
 
-        if (newObject)
+        if (newObject || nullObject)
         {
             Object** objPtr = (Object**)attr->data;
 
-            newObject->addRef();
+            if (newObject)
+                newObject->addRef();
 
             if ((*objPtr))
                 (*objPtr)->decRef();

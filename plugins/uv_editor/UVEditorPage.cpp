@@ -208,6 +208,8 @@ void UVEditorPage::addRectUV(const String& name, const RectUV& rect, RectState::
     this->state->rects.push_back(st);
 
     list->Append(wxString::FromUTF8(st->name.c_str()), st);
+
+    setModified(true);
 }
 
 void UVEditorPage::onToolCommand(wxCommandEvent& event)
@@ -236,6 +238,8 @@ void UVEditorPage::onToolCommand(wxCommandEvent& event)
                 
                 if (event.GetId() == idSameHeight || event.GetId() == idSameSize)
                     st->rect.maxY = st->rect.minY + focused->rect.maxY - focused->rect.minY;
+
+                setModified(true);
             }
         }
     }
@@ -400,9 +404,14 @@ void UVEditorPage::onMouseLeftDown(wxMouseEvent& event)
 
     PointF pt(mouseDownPos.x, mouseDownPos.y);
 
+    RectState* focused = getFocusedRect();
+
     RectState::List::iterator it = state->rects.begin();
     for (; it != state->rects.end(); ++it) 
     {
+        if (dragAction >= DA_SizingLeftTop && dragAction <= DA_SizingRightBottom)
+            break;
+
         RectState* st = *it;
 
         float l = st->rect.minX * rect.width() + rect.minX;
@@ -414,8 +423,6 @@ void UVEditorPage::onMouseLeftDown(wxMouseEvent& event)
 
         if (rc.isPointIn(pt))
         {
-            RectState* focused = getFocusedRect();
-
             if (focused)
             {
                 if (event.ControlDown())
@@ -484,10 +491,12 @@ void UVEditorPage::onMouseMove(wxMouseEvent& event)
         rect.scale<float>(state->scale, state->scale);
         rect.move(canvas->GetSize().GetWidth() / 2.0f, canvas->GetSize().GetHeight() / 2.0f);
 
-        float l = getFocusedRect()->rect.minX * rect.width() + rect.minX;
-        float t = getFocusedRect()->rect.minY * rect.height() + rect.minY;
-        float r = getFocusedRect()->rect.maxX * rect.width() + rect.minX;
-        float b = getFocusedRect()->rect.maxY * rect.height() + rect.minY;
+        RectState* focused = getFocusedRect();
+
+        float l = focused->rect.minX * rect.width() + rect.minX;
+        float t = focused->rect.minY * rect.height() + rect.minY;
+        float r = focused->rect.maxX * rect.width() + rect.minX;
+        float b = focused->rect.maxY * rect.height() + rect.minY;
 
         float u = (l + r) / 2; 
         float v = (t + b) / 2; 
@@ -573,6 +582,7 @@ void UVEditorPage::onMouseMove(wxMouseEvent& event)
                     }
 
                     st->rect.normalize();
+                    setModified(true);
                 }
             }
         }

@@ -53,7 +53,7 @@ public:
     virtual bool canHandle(const wxString& filename) const;
     virtual bool openFile(const wxString& filename);
 
-    bool newPage(UVEditorState* state);
+    bool newPage(UVEditorState* state, bool isModified = true);
 };
 
 #endif

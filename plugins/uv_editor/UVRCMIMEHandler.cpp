@@ -138,10 +138,17 @@ bool UVRCEditorPage::save()
     if (!state)
         return true;
 
-    if (state->getUrl().empty())
-        return saveAs();
+    bool ret = false;
 
-    return state->saveToXml(state->getUrl());
+    if (state->getUrl().empty())
+        ret = saveAs();
+    else
+        ret = state->saveToXml(state->getUrl());
+
+    if (ret)
+        setModified(false);
+
+    return ret;
 }
 
 void UVRCEditorPage::setUVState(UVEditorState* state)
@@ -247,7 +254,7 @@ UVRCMIMEHandler::UVRCMIMEHandler()
 {
 }
 
-bool UVRCMIMEHandler::newPage(UVEditorState* state)
+bool UVRCMIMEHandler::newPage(UVEditorState* state, bool isModified)
 {
     EditorPageManager* epm = Manager::getInstancePtr()->getEditorPageManager();
 
@@ -257,6 +264,9 @@ bool UVRCMIMEHandler::newPage(UVEditorState* state)
     epm->getNotebook()->Thaw();
 
     page->setUVState(state);
+
+    if (isModified)
+        page->setModified(isModified);
 
     int index = epm->getNotebook()->GetPageIndex(page);
 
@@ -279,5 +289,5 @@ bool UVRCMIMEHandler::openFile(const wxString& filename)
     if (!uvState)
         return false;
 
-    return newPage(uvState);
+    return newPage(uvState, false);
 }

@@ -11,8 +11,8 @@ lastTime = 0
 
 function beginScene()
     w:moveCameraTo(x, y)
-    x = x + i --* hare.getTimer():getDeltaTime()
-    y = y + i --* hare.getTimer():getDeltaTime()
+    x = x + 50 * i * hare.getTimer():getDeltaTime()
+    y = y + 50 * i * hare.getTimer():getDeltaTime()
     if x > 100 then
         i = -1
     end
@@ -65,7 +65,7 @@ function init()
     --w2:setSceneManager(s)
 
     tm = hare.getTextManager() 
-    fnt = tm:createFont("/editor/comic.ttf", 50) 
+    fnt = tm:createFont("/editor/comic.ttf", 30) 
     canvas = hare.getCanvas()
     canvas:setFont(fnt)
 

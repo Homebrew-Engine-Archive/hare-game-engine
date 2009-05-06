@@ -100,6 +100,12 @@ void UVEditorPage::drawImpl()
     if (!state->mtrl)
         return;
 
+    if (!getMaterial()->getTextureMtrl())
+        return;
+
+    if (!getMaterial()->getTextureMtrl()->getTexture())
+        return;
+
     int32 mtrlW = getMaterial()->getTextureMtrl()->getTexture()->getWidth();
     int32 mtrlH = getMaterial()->getTextureMtrl()->getTexture()->getHeight();
     int32 mtrlHalfW = mtrlW / 2;

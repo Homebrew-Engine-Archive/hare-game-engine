@@ -480,11 +480,11 @@ namespace hare
         wxPGChoices choices;
         long selection = INVALID_SELECTION;
 
-        if (!attr->hasFlag(Object::propAvoidNull))
-            choices.Add(wxT("NullObjcet"), NULL_OBJECT);
-        
         if (attr->hasFlag(Object::propImport))
             choices.Add(wxT("<Import From File ...>"), IMPORT_OBJECT);
+
+        if (!attr->hasFlag(Object::propAvoidNull))
+            choices.Add(wxT("<NullObjcet>"), NULL_OBJECT);
 
         Object* obj = *(Object**)attr->data;
         

@@ -1,5 +1,5 @@
-#ifndef RENDEROPERATION
-#define RENDEROPERATION
+#ifndef _RENDEROPERATION_H_
+#define _RENDEROPERATION_H_
 
 
 #include "GraphicsPrerequisites.h"

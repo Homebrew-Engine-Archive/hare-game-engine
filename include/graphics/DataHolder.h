@@ -1,5 +1,5 @@
-#ifndef DATAHOLDER
-#define DATAHOLDER
+#ifndef _DATAHOLDER_H_
+#define _DATAHOLDER_H_
 
 #include "GraphicsPrerequisites.h"
 

@@ -37,19 +37,10 @@ void GLTexture::active()
 		glPushAttrib(GL_COLOR_BUFFER_BIT | GL_PIXEL_MODE_BIT); // for GL_DRAW_BUFFER and GL_READ_BUFFER
         glDrawBuffer(GL_BACK);
         glReadBuffer(GL_BACK);
+        return;
 	}
 
-	glMatrixMode(GL_PROJECTION);
-    glLoadIdentity(); 
-
-    //NB: glOrtho funcation last tow args is used as negative       near far 
-    glOrtho(0, (GLfloat)projectionWidth,  0, (GLfloat)projectionHeight,-1.0, 1.0); 
-
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity(); 
-
-    glViewport(0, 0, (GLsizei)projectionWidth, (GLsizei)projectionHeight);
-
+    RenderSystem::getSingletonPtr()->setProjection(0, projectionWidth, 0, projectionHeight);
 }
 
 void GLTexture::inactive()

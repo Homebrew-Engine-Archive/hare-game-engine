@@ -2,6 +2,8 @@
 #include "SceneManager.h"
 #include "Sprite.h"
 #include "SceneListener.h"
+#include "RenderSystem.h"
+#include "RenderWindow.h"
 
 
 namespace hare
@@ -34,9 +36,13 @@ namespace hare
 		for (;it != spriteList.end(); ++it){
 			(*it)->renderScene();
 		}
+        RenderSystem::getSingletonPtr()->render();
+
+        RenderSystem::getSingletonPtr()->prepareCanvasRender();
 		if (sceneListener){
 			sceneListener->renderScene();
 		}
+        RenderSystem::getSingletonPtr()->render();
 	}
 
 	void SceneManager::endScene()

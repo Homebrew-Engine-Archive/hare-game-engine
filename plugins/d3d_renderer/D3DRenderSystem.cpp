@@ -425,3 +425,29 @@ Texture* D3DRenderSystem::createTexture()
 	return new D3DTexture;
 }
 
+void D3DRenderSystem::setProjection(float l, float r, float b, float t)
+{
+    D3DXMATRIX matTEMP;
+
+	D3DXMatrixScaling(&MatProj, 1.0f, -1.0f, 1.0f);
+	D3DXMatrixTranslation(&matTEMP, -0.5f, t - b + 0.5f, 0.0f);
+	D3DXMatrixMultiply(&MatProj, &MatProj, &matTEMP);
+
+	D3DXMatrixOrthoOffCenterRH(&matTEMP, l, r, b, t, 0.0f, 1.0f);//正交投影
+
+	D3DXMatrixMultiply(&MatProj, &MatProj, &matTEMP);
+	D3DXMatrixIdentity(&MatView);
+
+	pD3DDevice->SetTransform(D3DTS_VIEW, &MatView);
+	pD3DDevice->SetTransform(D3DTS_PROJECTION, &MatProj);
+}
+
+void D3DRenderSystem::prepareCanvasRender()
+{
+    int l = 0;
+    int r = getCurRenderWindow()->getWindowParams().width;
+    int b = 0;
+    int t = getCurRenderWindow()->getWindowParams().height;
+
+    setProjection((float)l, (float)r, (float)b, (float)t);
+}

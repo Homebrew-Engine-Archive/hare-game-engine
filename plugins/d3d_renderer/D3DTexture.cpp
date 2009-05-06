@@ -53,21 +53,7 @@ void D3DTexture::active()
 
     D3DRenderSystem::getSingletonPtr()->clear(pDepthStencilSurface != NULL);
 
-	//重新设置投影矩阵
-	D3DXMATRIX matTEMP;
-
-	D3DXMatrixScaling(&MatProj, 1.0f, -1.0f, 1.0f);
-	D3DXMatrixTranslation(&matTEMP, -0.5f, projectionHeight + 0.5f, 0.0f);
-	D3DXMatrixMultiply(&MatProj, &MatProj, &matTEMP);
-
-	D3DXMatrixOrthoOffCenterLH(&matTEMP, 0, projectionWidth, 0, 
-		projectionHeight, 0.0f, 1.0f);//正交投影
-
-	D3DXMatrixMultiply(&MatProj, &MatProj, &matTEMP);
-	D3DXMatrixIdentity(&MatView);
-
-	pD3DDevice->SetTransform(D3DTS_VIEW, &MatView);
-	pD3DDevice->SetTransform(D3DTS_PROJECTION, &MatProj);
+    RenderSystem::getSingletonPtr()->setProjection(0, projectionWidth, 0, projectionHeight);
 
 }
 

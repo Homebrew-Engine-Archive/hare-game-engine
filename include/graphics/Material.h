@@ -1,5 +1,5 @@
-#ifndef MATERIAL
-#define MATERIAL
+#ifndef _MATERIAL_H_
+#define _MATERIAL_H_
 
 //²ÄÖÊ
 #include "GraphicsPrerequisites.h"

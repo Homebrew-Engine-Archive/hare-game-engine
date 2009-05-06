@@ -1,5 +1,5 @@
-#ifndef IMAGECODEC
-#define IMAGECODEC
+#ifndef _IMAGECODEC_H_
+#define _IMAGECODEC_H_
 
 #include "GraphicsPrerequisites.h"
 #include "DataHolder.h"

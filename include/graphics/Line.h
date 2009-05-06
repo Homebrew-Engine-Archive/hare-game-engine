@@ -1,5 +1,5 @@
-#ifndef LINE
-#define LINE
+#ifndef _LINE_H_
+#define _LINE_H_
 
 #include "GraphicsPrerequisites.h"
 #include "RenderUnit.h"

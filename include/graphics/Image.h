@@ -1,5 +1,5 @@
-#ifndef IMAGE
-#define IMAGE
+#ifndef _IMAGE_H_
+#define _IMAGE_H_
 
 #include "GraphicsPrerequisites.h"
 #include "HareGraphicsType.h"

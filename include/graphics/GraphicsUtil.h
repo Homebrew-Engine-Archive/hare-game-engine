@@ -1,5 +1,5 @@
-#ifndef GRAPHICSUTIL
-#define GRAPHICSUTIL
+#ifndef _GRAPHICSUTIL_H_
+#define _GRAPHICSUTIL_H_
 
 #include "GraphicsPrerequisites.h"
 #include "HareGraphicsType.h"

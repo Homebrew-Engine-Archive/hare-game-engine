@@ -1,5 +1,5 @@
-#ifndef DEVIDIMAGECODEC
-#define DEVIDIMAGECODEC
+#ifndef _DEVIDIMAGECODEC_H_
+#define _DEVIDIMAGECODEC_H_
 
 #include "GraphicsPrerequisites.h"
 #include "ImageCodec.h"

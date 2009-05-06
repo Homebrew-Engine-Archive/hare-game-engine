@@ -153,17 +153,12 @@ void GLRenderWindow::create(const WindowParams& params)
 
 void GLRenderWindow::setProjection()
 {
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
+    int l = cameraPos.x;
+    int r = windowParams.width + (int)cameraPos.x;
+    int b = windowParams.height + (int)cameraPos.y;
+    int t = cameraPos.y;
 
-    //NB: glOrtho funcation last tow args is used as negative
-    //left right bottom top                                                 near far
-    glOrtho(-cameraPos.x, (GLfloat)windowParams.width - cameraPos.x, (GLfloat)windowParams.height - cameraPos.y, -cameraPos.y, -1.0, 1.0); 
-
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity(); 
-
-    glViewport (0, 0, windowParams.width, windowParams.height);
+    RenderSystem::getSingletonPtr()->setProjection(l, r, b, t);
 }
 
 void GLRenderWindow::resize(uint32 w, uint32 h)

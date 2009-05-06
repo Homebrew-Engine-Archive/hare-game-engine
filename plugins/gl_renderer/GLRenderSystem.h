@@ -22,6 +22,8 @@ public:
     virtual void setTextureStage(const TextureStage& textureStage);
 
     virtual Texture* createTexture();
+    virtual void setProjection(float l, float r, float b, float t);
+    virtual void prepareCanvasRender();
 
 	void initalizeParam(bool bZBuffer);
 

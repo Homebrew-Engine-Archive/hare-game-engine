@@ -1,5 +1,5 @@
-#ifndef RENDERTARGET
-#define RENDERTARGET
+#ifndef _RENDERTARGET_H_
+#define _RENDERTARGET_H_
 
 #include "GraphicsPrerequisites.h"
 

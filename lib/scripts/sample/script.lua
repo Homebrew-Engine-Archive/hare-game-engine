@@ -11,12 +11,12 @@ lastTime = 0
 
 function beginScene()
     w:moveCameraTo(x, y)
-    x = x + i
-    y = y + i
-    if x == 100 then
+    x = x + i --* hare.getTimer():getDeltaTime()
+    y = y + i --* hare.getTimer():getDeltaTime()
+    if x > 100 then
         i = -1
     end
-    if x == 0 then
+    if x < -100 then
         i = 1
     end
 end
@@ -61,8 +61,8 @@ function init()
     --p.height = 600
     --p.bFullScreen = false
     --p.bZbuffer = true
-    --w = hareApp:createRenderWindow(p)
-    --w:setSceneManager(s)
+    --w2 = hareApp:createRenderWindow(p)
+    --w2:setSceneManager(s)
 
     tm = hare.getTextManager() 
     fnt = tm:createFont("/editor/comic.ttf", 50) 

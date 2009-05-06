@@ -1,5 +1,5 @@
-#ifndef SIMPLESPRITE
-#define SIMPLESPRITE
+#ifndef _SIMPLESPRITE_H_
+#define _SIMPLESPRITE_H_
 
 #include "Sprite.h"
 #include "Quad.h"
@@ -26,9 +26,12 @@ namespace hare
 
 		virtual void endScene();
 
+		virtual void move(float dx, float dy);
+
+        virtual void moveTo(float x, float y);
+
 		void loadFromImage(const String& filename);
 
-		void move(float x, float y);
 	protected:
 		Quad			 quad;
 		Shader*		     shader;

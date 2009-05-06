@@ -1,5 +1,5 @@
-#ifndef RENDERSYSTEM
-#define RENDERSYSTEM
+#ifndef _RENDERSYSTEM_H_
+#define _RENDERSYSTEM_H_
 
 #include "GraphicsPrerequisites.h"
 #include "Material.h"
@@ -38,6 +38,8 @@ namespace hare
 		RenderWindow* getCurRenderWindow();
 
 		virtual Texture* createTexture() = 0;
+        virtual void setProjection(float l, float r, float b, float t) = 0;
+        virtual void prepareCanvasRender() = 0;
 
 	protected:
 		RenderTarget* curRenderTarget;

@@ -1,5 +1,5 @@
-#ifndef SPRITE
-#define SPRITE
+#ifndef _SPRITE_H_
+#define _SPRITE_H_
 
 #include "GraphicsPrerequisites.h"
 
@@ -10,6 +10,10 @@ namespace hare
 	public:
 		Sprite();
 		virtual ~Sprite();
+
+        virtual void move(float dx, float dy) = 0;
+
+        virtual void moveTo(float x, float y) = 0;
 
 		virtual void beginScene() = 0;
 

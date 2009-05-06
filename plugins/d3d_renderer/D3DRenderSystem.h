@@ -30,6 +30,8 @@ public:
 	virtual void setTextureStage(const TextureStage& textureStage);
 
 	virtual Texture* createTexture();
+    virtual void setProjection(float l, float r, float b, float t);
+    virtual void prepareCanvasRender();
 
 	LPDIRECT3DDEVICE9 getD3DDevice();
 
@@ -71,6 +73,8 @@ private:
 
     bool bUseIndex;
 
+    D3DXMATRIX MatView;
+	D3DXMATRIX MatProj;
 };
 
 

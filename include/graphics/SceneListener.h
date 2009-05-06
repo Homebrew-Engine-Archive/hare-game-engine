@@ -1,5 +1,5 @@
-#ifndef SCENELISTENER
-#define SCENELISTENER
+#ifndef _SCENELISTENER_H_
+#define _SCENELISTENER_H_
 
 #include "GraphicsPrerequisites.h"
 

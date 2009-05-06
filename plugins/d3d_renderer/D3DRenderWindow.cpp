@@ -221,21 +221,12 @@ void D3DRenderWindow::active()
 	if (FAILED(hr))
 		assert(false);
 
-	D3DXMATRIX matTEMP;
+    int l = (int)cameraPos.x;
+    int r = windowParams.width + (int)cameraPos.x;
+    int b = -(int)cameraPos.y;
+    int t = windowParams.height - (int)cameraPos.y;
 
-	D3DXMatrixScaling(&MatProj, 1.0f, -1.0f, 1.0f);
-	D3DXMatrixTranslation(&matTEMP, -0.5f, windowParams.height + 0.5f, 0.0f);
-	D3DXMatrixMultiply(&MatProj, &MatProj, &matTEMP);
-
-	D3DXMatrixOrthoOffCenterRH(&matTEMP, cameraPos.x, (float)windowParams.width + cameraPos.x, -cameraPos.y, 
-		(float)windowParams.height - cameraPos.y, 0.0f, 1.0f);//正交投影
-
-	D3DXMatrixMultiply(&MatProj, &MatProj, &matTEMP);
-	D3DXMatrixIdentity(&MatView);
-
-
-	pD3DDevice->SetTransform(D3DTS_VIEW, &MatView);
-	pD3DDevice->SetTransform(D3DTS_PROJECTION, &MatProj);
+    RenderSystem::getSingletonPtr()->setProjection((float)l, (float)r, (float)b, (float)t);
 
 	D3DRenderSystem::getSingletonPtr()->setCurRenderWindow(this);
 

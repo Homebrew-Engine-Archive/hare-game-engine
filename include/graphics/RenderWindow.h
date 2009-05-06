@@ -1,5 +1,5 @@
-#ifndef RENDERWINDOW
-#define RENDERWINDOW
+#ifndef _RENDERWINDOW_H_
+#define _RENDERWINDOW_H_
 
 
 #include "GraphicsPrerequisites.h"

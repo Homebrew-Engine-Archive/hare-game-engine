@@ -1,5 +1,5 @@
-#ifndef QUAD
-#define QUAD
+#ifndef _QUAD_H_
+#define _QUAD_H_
 
 
 #include "GraphicsPrerequisites.h"

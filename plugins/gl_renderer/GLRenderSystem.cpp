@@ -226,3 +226,30 @@ GLuint GLRenderSystem::getCurTexture()
 {
 	return curRenderTexture;
 }
+
+void GLRenderSystem::setProjection(float l, float r, float b, float t)
+{
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+
+    //NB: glOrtho funcation last tow args is used as negative
+    //left right bottom top                                                 near far
+    glOrtho(l, r, b, t, -1.0, 1.0); 
+
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity(); 
+
+    glViewport (0, 0, (GLsizei)(r - l), (GLsizei)(t - b));
+}
+
+void GLRenderSystem::prepareCanvasRender()
+{
+    glEnable(GL_TEXTURE_2D);
+
+    int l = 0;
+    int r = RenderSystem::getSingletonPtr()->getCurRenderWindow()->getWindowParams().width;
+    int b = RenderSystem::getSingletonPtr()->getCurRenderWindow()->getWindowParams().height;
+    int t = 0;
+
+    setProjection((float)l, (float)r, (float)b, (float)t);
+}

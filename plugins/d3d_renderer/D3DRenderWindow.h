@@ -45,9 +45,6 @@ private:
 	LPDIRECT3DSURFACE9	    pDepthStencilSurface;
 	D3DPRESENT_PARAMETERS	D3Dpp;
 
-	D3DXMATRIX MatView;
-
-	D3DXMATRIX MatProj;
 };
 
 #endif

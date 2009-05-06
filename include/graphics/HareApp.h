@@ -1,5 +1,5 @@
-#ifndef HAREAPP
-#define HAREAPP
+#ifndef _HAREAPP_H_
+#define _HAREAPP_H_
 
 #include "GraphicsPrerequisites.h"
 #include "RenderWindow.h"

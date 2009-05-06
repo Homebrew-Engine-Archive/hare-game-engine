@@ -1,5 +1,5 @@
-#ifndef FREEIMAGECODEC
-#define FREEIMAGECODEC
+#ifndef _FREEIMAGECODEC_H_
+#define _FREEIMAGECODEC_H_
 
 #include "ImageCodec.h"
 

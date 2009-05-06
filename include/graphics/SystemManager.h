@@ -1,5 +1,5 @@
-#ifndef SYSTEMMANAGER
-#define SYSTEMMANAGER
+#ifndef _SYSTEMMANAGER_H_
+#define _SYSTEMMANAGER_H_
 
 
 #include "GraphicsPrerequisites.h"

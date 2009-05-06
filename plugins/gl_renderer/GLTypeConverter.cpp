@@ -74,7 +74,9 @@ GLenum GLTypeConverter::toGLTextureWrapMode(TextureStage::WrapMode wrapMode)
 	switch(wrapMode)
 	{
 	case TextureStage::WM_Clamp: retWrapMode = GL_CLAMP;break;
-	case TextureStage::WM_Mirror:retWrapMode = GL_REPEAT;break;
+	case TextureStage::WM_Mirror:retWrapMode = GL_MIRRORED_REPEAT;break;
+    case TextureStage::WM_Wrap:  retWrapMode = GL_REPEAT;break;
+    case TextureStage::WM_Shadow:retWrapMode = GL_CLAMP_TO_BORDER;break;
 	}
 	return retWrapMode;
 }

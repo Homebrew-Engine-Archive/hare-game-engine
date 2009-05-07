@@ -43,6 +43,8 @@ namespace hare
     struct DynamicEventTableEntry;
 }
 
+#define HARE_GUI_UV(X)  HARE_META_F(X, RectUV, propHide)
+
 enum uiWindowIDs
 {
     uiID_Any = -1,

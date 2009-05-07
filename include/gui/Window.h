@@ -10,6 +10,7 @@ namespace hare
     class UI_API Window : public EventHandler
     {
         HARE_DECLARE_ABSTRACT_CLASS(Window)
+    
     public:
         void setId(int id) 
         { 
@@ -144,14 +145,48 @@ namespace hare
         virtual float adjustForLayoutDirection(float x, float width, float widthTotal) const;
 
     public:
-        SizeF getSize() const
+        void setArea(float x, float y, float width, float height)
         {
-            return SizeF(0,0);
+            setArea(PointF(x, y), SizeF(width, height));
         }
 
-        PointF getPosition() const;
+        void setArea(const PointF& pos, const SizeF& size)
+        {
+            setArea_impl(pos, size);
+        }
 
-        RectF getRect() const;
+        void setPosition(float x, float y)
+        {
+            setArea(PointF(x, y), getSize());
+        }
+
+        void setSize(float cx, float cy)
+        {
+            setArea(getPosition(), SizeF(cx, cy));
+        }
+
+        virtual void setArea_impl(const PointF& pos, const SizeF& size, bool topLeftSizing = false, bool fireEvents = true);
+        
+        SizeF getSize() const
+        {
+            return SizeF(area.width(), area.height());
+        }
+
+        PointF getPosition() const
+        {
+            return PointF(area.minX, area.minY);
+        }
+
+        RectF getArea() const { return area; }
+        SizeF getPixelSize() const { return pixelSize; }
+        RectF getPixelRect() const;
+        RectF getPixelRect_impl() const;
+        RectF getUnclippedPixelRect() const;
+        RectF getUnclippedInnerRect() const;
+        RectF getUnclippedInnerRect_impl() const;
+        RectF getInnerRect() const;
+
+        bool isClippedByParent() const { return clippedByParent; }
 
         virtual void raise()
         {
@@ -161,8 +196,8 @@ namespace hare
         }
 
     protected:
-        Sizer* windowSizer; // sizer of this window
-        Sizer* parentSizer; // which sizer this window belongs to
+        Sizer* windowSizer;         // sizer of this window
+        Sizer* parentSizer;         // which sizer this window belongs to
 
         Window::List children;
         Window* parent;
@@ -178,10 +213,27 @@ namespace hare
         SizeF minSize;
         SizeF maxSize;
 
+        bool clippedByParent;
+
         RectF area;
+
+        mutable RectF pixelRect;
+        mutable bool  pixelRectValid;
+        mutable RectF unclippedRect;
+        mutable bool  unclippedRectValid;
+        mutable RectF unclippedInnerRect;
+        mutable bool  unclippedInnerRectValid;
+        mutable RectF innerRect;
+        mutable bool  innerRectValid;
+
+        SizeF pixelSize;
 
         String themeName;
     };
+
+
+    PointF windowToScreen(const Window& window, const PointF& pos);
+    RectF windowToScreen(const Window& window, const RectF& rect);
 }
 
 #endif

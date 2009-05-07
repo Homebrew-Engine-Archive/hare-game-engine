@@ -22,38 +22,38 @@ namespace hare
 
     HARE_IMPLEMENT_DYNAMIC_CLASS(ButtonTheme, Theme, 0)
     {
-        HARE_META_F(normalRect, RectUV, propHide)
-        HARE_META_F(hoverRect, RectUV, propHide)
-        HARE_META_F(pushedRect, RectUV, propHide)
-        HARE_META_F(disabledRect, RectUV, propHide)
+        HARE_GUI_UV(rectNormal)
+        HARE_GUI_UV(rectHover)
+        HARE_GUI_UV(rectPushed)
+        HARE_GUI_UV(rectDisabled)
     }
 
     void ButtonTheme::drawWindow(Window* window)
     {
         if (!window)
             return;
-
-        Button* button = (Button*)window;
+        
         RectF* rect = NULL;
+        Button* button = (Button*)window;
 
         if (!button->isEnabled())
         {
-            rect = &disabledRect;
+            rect = &rectDisabled;
         }
         else if (button->isPushed())
         {
-            rect = &pushedRect;
+            rect = &rectPushed;
         }
         else if (button->isHovering())
         {
-            rect = &hoverRect;
+            rect = &rectHover;
         }
         else
         {
-            rect = &normalRect;
+            rect = &rectNormal;
         }
 
-        //getCanvas()->drawImage(button->getRect(), getMaterial(), *rect);
+        getCanvas()->drawImage(button->getPixelRect(), getMaterial(), *rect);
     }
 }
 

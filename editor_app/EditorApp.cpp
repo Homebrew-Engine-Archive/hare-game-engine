@@ -31,7 +31,6 @@ END_EVENT_TABLE()
 void EditorApp::InitLocale()
 {
     AppConfigFile* appConfig = Manager::getInstancePtr()->getConfigManager()->getAppConfigFile();
-
     if (appConfig)
     {
         wxString lang = appConfig->getLanguage();

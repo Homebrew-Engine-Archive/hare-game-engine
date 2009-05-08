@@ -24,7 +24,7 @@ namespace hare
 
     HARE_IMPLEMENT_ABSTRACT_CLASS(Window, EventHandler, 0)
     {
-        HARE_OBJ_LIST(children, Window)
+        HARE_OBJ_F(windowSizer, Sizer, propHide)
     }
 
     SizeF Window::getEffectiveMinSize() const

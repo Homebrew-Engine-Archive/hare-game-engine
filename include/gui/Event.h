@@ -342,7 +342,7 @@ namespace hare
         void assign(const MouseEvent& rhs);
 
     protected:
-        friend class UISystem;
+        friend class GUI;
 
         bool leftDown;
         bool middleDown;

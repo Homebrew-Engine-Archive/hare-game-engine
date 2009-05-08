@@ -1,24 +1,41 @@
-//***************************************************************
-//  File:    Gui.h
-//  Data:    04/21/2009
-//  Author:  littlesome (littlesome@live.cn)
-//-------------------------------------------------------------
-//  
-//-------------------------------------------------------------
-//  This file is part of Hare2D Game Engine.
-//  Copyright (C) All Rights Reserved
-//***************************************************************
-// 
-//***************************************************************
-#ifndef _GUI_H_
-#define _GUI_H_
+#ifndef GUI_H
+#define GUI_H
 
-#include "UISystem.h"
-#include "Window.h"
-#include "Sizer.h"
+#include "UIPrerequisites.h"
 #include "Event.h"
-#include "Theme.h"
-#include "Button.h"
-#include "BoxSizer.h"
+
+namespace hare
+{
+    class UI_API GUI
+    {
+    public:
+        void setRoot(Window* window);
+        Window*	getRoot() const	{ return root; }
+
+        bool notifyMouseMove(float deltaX, float deltaY);
+        bool notifyMouseWheel(float delta);
+        bool notifyMousePosition(float posX, float posY);
+        bool notifyMouseButtonUp(MouseButton button);
+        bool notifyMouseButtonDown(MouseButton button);
+
+        bool notifyKeyDown(uint32 key);
+        bool notifyKeyUp(uint32 key);
+        bool notifyChar(uint32 cp);
+
+        Window* getWindowFromPoint(const PointF& pt);
+
+        Window* getMouseInputWindow(const PointF& pt)
+        {
+            return 0;
+        }
+
+        bool updateWindowContainingMouse();
+
+    private:
+        Window* root;
+        Window* windowWithMouse;
+        PointF mousePos;
+    };
+}
 
 #endif

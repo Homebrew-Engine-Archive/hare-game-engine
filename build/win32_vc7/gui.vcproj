@@ -123,6 +123,9 @@
 				RelativePath="..\..\gui\Event.cpp">
 			</File>
 			<File
+				RelativePath="..\..\gui\GUI.cpp">
+			</File>
+			<File
 				RelativePath="..\..\gui\PCH.cpp">
 				<FileConfiguration
 					Name="Debug|Win32">
@@ -135,10 +138,10 @@
 				RelativePath="..\..\gui\Sizer.cpp">
 			</File>
 			<File
-				RelativePath="..\..\gui\Theme.cpp">
+				RelativePath="..\..\gui\SizerItem.cpp">
 			</File>
 			<File
-				RelativePath="..\..\gui\UISystem.cpp">
+				RelativePath="..\..\gui\Theme.cpp">
 			</File>
 			<File
 				RelativePath="..\..\gui\Window.cpp">
@@ -155,7 +158,10 @@
 				RelativePath="..\..\include\gui\Event.h">
 			</File>
 			<File
-				RelativePath="..\..\include\gui\Gui.h">
+				RelativePath="..\..\include\gui\GUI.h">
+			</File>
+			<File
+				RelativePath="..\..\include\gui\GUIDefines.h">
 			</File>
 			<File
 				RelativePath="..\..\include\gui\PCH.h">
@@ -164,13 +170,13 @@
 				RelativePath="..\..\include\gui\Sizer.h">
 			</File>
 			<File
+				RelativePath="..\..\include\gui\SizerItem.h">
+			</File>
+			<File
 				RelativePath="..\..\include\gui\Theme.h">
 			</File>
 			<File
 				RelativePath="..\..\include\gui\UIPrerequisites.h">
-			</File>
-			<File
-				RelativePath="..\..\include\gui\UISystem.h">
 			</File>
 			<File
 				RelativePath="..\..\include\gui\Window.h">

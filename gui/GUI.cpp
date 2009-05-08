@@ -1,5 +1,5 @@
 #include "PCH.h"
-#include "UISystem.h"
+#include "GUI.h"
 #include "Window.h"
 
 namespace hare
@@ -13,12 +13,12 @@ namespace hare
     };
     MouseClickTracker clickTrackers[MB_MAX];
 
-    bool UISystem::notifyMousePosition(float posX, float posY)
+    bool GUI::notifyMousePosition(float posX, float posY)
     {
         return notifyMouseMove(posX - mousePos.x, posY - mousePos.y);
     }
 
-    bool UISystem::notifyMouseMove(float deltaX, float deltaY)
+    bool GUI::notifyMouseMove(float deltaX, float deltaY)
     {
         updateWindowContainingMouse();
 
@@ -30,14 +30,13 @@ namespace hare
         if (window)
         {
             MouseEvent event(uiEVT_MOTION);
-            makeMouseEvent(event);
             return window->processEvent(event);
         }
 
         return false;
     }
 
-    bool UISystem::notifyMouseWheel(float delta)
+    bool GUI::notifyMouseWheel(float delta)
     {
         MouseEvent event(uiEVT_MOUSEWHEEL);
         event.wheelDelta = delta;
@@ -50,7 +49,7 @@ namespace hare
         return false;
     }
 
-    bool UISystem::notifyMouseButtonUp(MouseButton button)
+    bool GUI::notifyMouseButtonUp(MouseButton button)
     {
         Window* window = 0;
 
@@ -81,18 +80,18 @@ namespace hare
         return true;
     }
 
-    bool UISystem::notifyMouseButtonDown(MouseButton button)
+    bool GUI::notifyMouseButtonDown(MouseButton button)
     {
         return true;
     }
 
 
-    Window* UISystem::getWindowFromPoint(const PointF& pt)
+    Window* GUI::getWindowFromPoint(const PointF& pt)
     {
         return 0;
     }
 
-    bool UISystem::updateWindowContainingMouse()
+    bool GUI::updateWindowContainingMouse()
     {
         Window* window = getWindowFromPoint(mousePos);
 
@@ -123,4 +122,9 @@ namespace hare
     //bool UIManager::notifyKeyDown(uint32 key);
     //bool UIManager::notifyKeyUp(uint32 key);
     //bool UIManager::notifyChar(uint32 cp);
+
+    void GUI::setRoot(Window* window)
+    {
+        root = window;
+    }
 }

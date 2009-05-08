@@ -24,7 +24,7 @@ using namespace hare;
 
 namespace hare
 {
-    class UISystem;
+    class GUI;
     class Window;
     class Theme;
     class Sizer;
@@ -41,13 +41,15 @@ namespace hare
     struct EventTableEntryBase;
     struct EventTableEntry;
     struct DynamicEventTableEntry;
+
+    typedef TRect<float> RectUV;
+
+    typedef Pointer<Window> WindowPtr;
+    typedef Pointer<Sizer> SizerPtr;
+    typedef Pointer<SizerSpacer> SizerSpacerPtr;
+    
 }
 
-#define HARE_GUI_UV(X)  HARE_META_F(X, RectUV, propHide)
-
-enum uiWindowIDs
-{
-    uiID_Any = -1,
-};
+#include "GUIDefines.h"
 
 #endif // _UI_PREREQUISITES_H_

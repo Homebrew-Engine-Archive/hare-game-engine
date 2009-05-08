@@ -24,7 +24,7 @@ using namespace hare;
 
 namespace hare
 {
-    class GUI;
+    class GUISystem;
     class Window;
     class Theme;
     class Sizer;

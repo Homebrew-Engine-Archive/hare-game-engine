@@ -11,11 +11,11 @@
 // 
 //***************************************************************
 #include "PCH.h"
-#include "ThemeMIMEHandler.h"
+#include "GUIMIMEHandler.h"
 
-static const PluginInfo themeMIMEHandler = {
-    wxT("ThemeMIMEHandler"), 
-    wxT("ThemeMIMEHandler"),
-    wxT("This is a plugin for theme editing.") };
+static const PluginInfo guiMIMEHandler = {
+    wxT("GUIMIMEHandler"), 
+    wxT("GUIMIMEHandler"),
+    wxT("This is a plugin for gui editing.") };
 
-PluginRegistrant<ThemeMIMEHandler> regThemeMIMEHandler(themeMIMEHandler);
+PluginRegistrant<GUIMIMEHandler> regGUIMIMEHandler(guiMIMEHandler);

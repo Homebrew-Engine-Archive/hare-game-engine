@@ -4,7 +4,7 @@
 #include "UIPrerequisites.h"
 #include "Window.h"
 #include "Theme.h"
-#include "GUI.h"
+#include "GUISystem.h"
 
 namespace hare
 {

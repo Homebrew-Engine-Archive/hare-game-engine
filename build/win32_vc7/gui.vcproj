@@ -123,7 +123,7 @@
 				RelativePath="..\..\gui\Event.cpp">
 			</File>
 			<File
-				RelativePath="..\..\gui\GUI.cpp">
+				RelativePath="..\..\gui\GUISystem.cpp">
 			</File>
 			<File
 				RelativePath="..\..\gui\PCH.cpp">
@@ -162,6 +162,9 @@
 			</File>
 			<File
 				RelativePath="..\..\include\gui\GUIDefines.h">
+			</File>
+			<File
+				RelativePath="..\..\include\gui\GUISystem.h">
 			</File>
 			<File
 				RelativePath="..\..\include\gui\PCH.h">

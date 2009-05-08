@@ -119,6 +119,12 @@
 			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}">
 			<File
+				RelativePath="..\..\plugins\gui_editor\GUIEditorPage.cpp">
+			</File>
+			<File
+				RelativePath="..\..\plugins\gui_editor\GUIMIMEHandler.cpp">
+			</File>
+			<File
 				RelativePath="..\..\plugins\gui_editor\PCH.cpp">
 				<FileConfiguration
 					Name="Debug|Win32">
@@ -130,25 +136,19 @@
 			<File
 				RelativePath="..\..\plugins\gui_editor\PluginMain.cpp">
 			</File>
-			<File
-				RelativePath="..\..\plugins\gui_editor\ThemeMIMEHandler.cpp">
-			</File>
-			<File
-				RelativePath="..\..\plugins\gui_editor\UVEditorPage.cpp">
-			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
 			<File
+				RelativePath="..\..\plugins\gui_editor\GUIEditorPage.h">
+			</File>
+			<File
+				RelativePath="..\..\plugins\gui_editor\GUIMIMEHandler.h">
+			</File>
+			<File
 				RelativePath="..\..\plugins\gui_editor\PCH.h">
-			</File>
-			<File
-				RelativePath="..\..\plugins\gui_editor\ThemeMIMEHandler.h">
-			</File>
-			<File
-				RelativePath="..\..\plugins\gui_editor\UVEditorPage.h">
 			</File>
 		</Filter>
 		<Filter

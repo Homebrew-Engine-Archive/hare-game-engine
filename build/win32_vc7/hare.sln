@@ -62,6 +62,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "uv_editor", "uv_editor.vcpr
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gui_editor", "gui_editor.vcproj", "{2A663F90-96FA-4121-9B4E-AAFFD54E143B}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfiguration) = preSolution
 		Debug = Debug
@@ -120,6 +124,10 @@ Global
 		{09CCE340-9DC9-4461-A6AB-AB2E3680DFCA}.Debug.Build.0 = Debug|Win32
 		{09CCE340-9DC9-4461-A6AB-AB2E3680DFCA}.Release.ActiveCfg = Release|Win32
 		{09CCE340-9DC9-4461-A6AB-AB2E3680DFCA}.Release.Build.0 = Release|Win32
+		{2A663F90-96FA-4121-9B4E-AAFFD54E143B}.Debug.ActiveCfg = Debug|Win32
+		{2A663F90-96FA-4121-9B4E-AAFFD54E143B}.Debug.Build.0 = Debug|Win32
+		{2A663F90-96FA-4121-9B4E-AAFFD54E143B}.Release.ActiveCfg = Release|Win32
+		{2A663F90-96FA-4121-9B4E-AAFFD54E143B}.Release.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 	EndGlobalSection

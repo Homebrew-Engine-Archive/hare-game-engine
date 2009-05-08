@@ -173,7 +173,7 @@ namespace hare
     void SizerItemWindow::setDimension(const PointF& ps, const SizeF& sz)
     {
         SizerItem::setDimension(ps, sz);
-        //window->setSize();
+        window->setArea(rect);
     }
     // ---------------------------------------------------------------
     // SizerItemSizer

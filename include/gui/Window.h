@@ -150,6 +150,11 @@ namespace hare
             setArea(PointF(x, y), SizeF(width, height));
         }
 
+        void setArea(const RectF& rect)
+        {
+            setArea(PointF(rect.minX, rect.minY), SizeF(rect.width(), rect.height()));
+        }
+
         void setArea(const PointF& pos, const SizeF& size)
         {
             setArea_impl(pos, size);

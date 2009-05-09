@@ -1,5 +1,6 @@
 #include "PCH.h"
 #include "Window.h"
+#include "Theme.h"
 
 namespace hare
 {
@@ -121,5 +122,23 @@ namespace hare
         }
 
         return innerRect;
+    }
+
+    void Window::render(ThemePackage* themes)
+    {
+        if (themes)
+        {
+            Theme* theme = themes->getTheme(this);
+            if (theme)
+            {
+                theme->render(this);
+            }
+        }
+
+        Window::List::iterator it = children.begin();
+        for (; it != children.end(); ++it)
+        {
+            (*it)->render(themes);
+        }
     }
 }

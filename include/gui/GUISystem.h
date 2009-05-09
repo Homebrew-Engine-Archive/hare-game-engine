@@ -2,7 +2,9 @@
 #define _GUISYSTEM_H_
 
 #include "UIPrerequisites.h"
+#include "Window.h"
 #include "Event.h"
+#include "Theme.h"
 
 namespace hare
 {
@@ -10,7 +12,12 @@ namespace hare
     {
     public:
         void setRoot(Window* window);
-        Window*	getRoot() const	{ return root; }
+        Window*	getRoot() { return root; }
+
+        void setTheme(ThemePackage* themes);
+        ThemePackage* getTheme() { return themes; }
+
+        void render();
 
         bool notifyMouseMove(float deltaX, float deltaY);
         bool notifyMouseWheel(float delta);
@@ -32,7 +39,9 @@ namespace hare
         bool updateWindowContainingMouse();
 
     private:
-        Window* root;
+        Window::Ptr root;
+        ThemePackage::Ptr themes;
+
         Window* windowWithMouse;
         PointF mousePos;
     };

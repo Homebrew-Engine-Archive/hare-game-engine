@@ -30,23 +30,26 @@ namespace hare
         HARE_DECLARE_EVENT_TABLE()
     };
 
-    class UI_API ButtonTheme : public MaterialTheme
+    class UI_API ButtonTheme : public Theme
     {
         HARE_DECLARE_DYNAMIC_CLASS(ButtonTheme)
-
     public:
-        virtual void drawWindow(Window* window);
-
-        virtual bool canHandle(Window* window)
+        virtual ClassInfo* getWindowClass()
         {
-            return window && window->isA(&Button::CLASS_INFO);
+            return &Button::CLASS_INFO;
         }
+        virtual void render(Window* window);
 
     protected:
+        Material::Ptr mtrl;
         RectUV rectNormal;
+        RectUV rectNormalInner;
         RectUV rectHover;
+        RectUV rectHoverInner;
         RectUV rectPushed;
+        RectUV rectPushedInner;
         RectUV rectDisabled;
+        RectUV rectDisabledInner;
     };
 }
 

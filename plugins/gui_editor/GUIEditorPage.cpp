@@ -19,9 +19,18 @@ GUIEditorPage::GUIEditorPage(wxWindow* parent)
     panel->GetSizer()->Add(canvas, 1, wxEXPAND, 0);
     canvas->getRenderWindow()->setSceneManager(scene);
 
+    guiSys = new GUISystem();
+
     Layout();
 }
 
 GUIEditorPage::~GUIEditorPage()
 {
+    delete guiSys;
+    guiSys = 0;
+}
+
+void GUIEditorPage::renderScene()
+{
+    guiSys->render();
 }

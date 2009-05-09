@@ -28,12 +28,13 @@ namespace hare
         HARE_GUI_UV(rectDisabled)
     }
 
-    void ButtonTheme::drawWindow(Window* window)
+    void ButtonTheme::render(Window* window)
     {
         if (!window)
             return;
         
         RectF* rect = NULL;
+        RectF* rectInner = NULL;
         Button* button = (Button*)window;
 
         if (!button->isEnabled())
@@ -53,7 +54,7 @@ namespace hare
             rect = &rectNormal;
         }
 
-        getCanvas()->drawImage(button->getPixelRect(), getMaterial(), *rect);
+        getCanvas()->drawImage(button->getPixelRect(), mtrl, *rect);
     }
 }
 

@@ -125,6 +125,19 @@ namespace hare
 
     void GUISystem::setRoot(Window* window)
     {
-        root = window;
+        this->root = window;
+    }
+
+    void GUISystem::setTheme(ThemePackage* themes)
+    {
+        this->themes = themes;
+    }
+
+    void GUISystem::render()
+    {
+        if (root)
+        {
+            root->render(themes);
+        }
     }
 }

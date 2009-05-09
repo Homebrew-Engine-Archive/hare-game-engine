@@ -27,6 +27,7 @@ namespace hare
     class GUISystem;
     class Window;
     class Theme;
+    class ThemePackage;
     class Sizer;
     class BoxSizer;
     class SizerItem;

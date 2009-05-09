@@ -200,6 +200,8 @@ namespace hare
         {
         }
 
+        virtual void render(ThemePackage* themes);
+
     protected:
         Sizer* windowSizer;         // sizer of this window
         Sizer* parentSizer;         // which sizer this window belongs to
@@ -232,8 +234,6 @@ namespace hare
         mutable bool  innerRectValid;
 
         SizeF pixelSize;
-
-        String themeName;
     };
 
 

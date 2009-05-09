@@ -14,20 +14,20 @@ public:
     virtual ~GUIEditorPage(); 
 
 protected:
-
     virtual void beginScene()
     {
     }
     virtual void endScene()
     {
     }
-    virtual void renderScene()
-    {
-    }
+    virtual void renderScene();
 
 private:
     wxHareCanvas* canvas;
     SceneManager* scene;
+    GUISystem* guiSys;
+    ThemePackage::Ptr themes;
+    Window::Ptr root;
 
     DECLARE_EVENT_TABLE();
     DECLARE_ABSTRACT_CLASS(GUIEditorPage)

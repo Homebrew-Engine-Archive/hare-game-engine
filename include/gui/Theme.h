@@ -9,30 +9,26 @@ namespace hare
     {
         HARE_DECLARE_ABSTRACT_CLASS(Theme)
     public:
-        virtual void drawWindow(Window* window) = 0;
-
-        virtual bool canHandle(Window* window)
-        {
-            return false;
-        }
-    protected:
-        String name;
+        virtual ClassInfo* getWindowClass() = 0;
+        virtual void render(Window* window) = 0;
     };
 
-    class UI_API MaterialTheme : public Theme
+    typedef HashMap<String, Theme*> ThemeHashMap;
+
+    class UI_API ThemePackage : public Object
     {
-        HARE_DECLARE_ABSTRACT_CLASS(MaterialTheme)
+        HARE_DECLARE_DYNAMIC_CLASS(ThemePackage)
     public:
-        Material* getMaterial()
-        {
-            return material;
-        }
-        void setMaterial(Material* mtrl)
-        {
-            material = mtrl;
-        }
+        Theme* getTheme(Window* window);
+        Theme* getTheme(ClassInfo* classInfo);
+        Theme* getTheme(const String& className);
+
     protected:
-        Material::Ptr material;
+        void postLoaded();
+
+    protected:
+        ThemeHashMap themeMap;
+        Theme::Array themes;
     };
 }
 

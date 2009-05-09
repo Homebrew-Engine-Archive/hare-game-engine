@@ -280,16 +280,27 @@
 			Name="Sprite"
 			Filter="">
 			<File
+				RelativePath="..\..\graphics\Animation.cpp">
+			</File>
+			<File
+				RelativePath="..\..\include\graphics\Animation.h">
+			</File>
+			<File
 				RelativePath="..\..\graphics\ComponentSprite.cpp">
 				<FileConfiguration
-					Name="Debug|Win32"
-					ExcludedFromBuild="TRUE">
+					Name="Debug|Win32">
 					<Tool
 						Name="VCCLCompilerTool"/>
 				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\..\include\graphics\ComponentSprite.h">
+			</File>
+			<File
+				RelativePath="..\..\graphics\ImageSprite.cpp">
+			</File>
+			<File
+				RelativePath="..\..\include\graphics\ImageSprite.h">
 			</File>
 			<File
 				RelativePath="..\..\graphics\SimpleSprite.cpp">
@@ -375,16 +386,6 @@
 			</File>
 			<File
 				RelativePath="..\..\include\graphics\SimpleParticle.h">
-			</File>
-		</Filter>
-		<Filter
-			Name="Animation"
-			Filter="">
-			<File
-				RelativePath="..\..\graphics\Animation.cpp">
-			</File>
-			<File
-				RelativePath="..\..\include\graphics\Animation.h">
 			</File>
 		</Filter>
 		<File

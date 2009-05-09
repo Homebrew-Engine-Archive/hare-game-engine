@@ -2,11 +2,13 @@
 #define _COMPONENTSPRITE_H_
 
 #include "GraphicsPrerequisites.h"
+#include "Sprite.h"
 
 namespace hare
 {
     class GRAPHICS_API ComponentSprite : public Sprite
     {
+        HARE_DECLARE_DYNAMIC_CLASS(ComponentSprite)
     public:
         ComponentSprite();
 		virtual ~ComponentSprite();
@@ -28,12 +30,15 @@ namespace hare
         bool removePart(Sprite* s);
 
         //NB: swap render sequence
-        void swapPart(int partID_1, int partID_2);
+        bool swapPart(int partID_1, int partID_2);
+
+        Sprite* getPart(int partID);
     
     protected:
+        Sprite::List::iterator getPartIT(int partID);
+
         Sprite::List components;
     };
 }
-
 
 #endif

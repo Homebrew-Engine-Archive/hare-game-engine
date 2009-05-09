@@ -9,12 +9,10 @@ namespace hare
 	HARE_IMPLEMENT_DYNAMIC_CLASS(AnimFrame, Object, 0)
 	{
         HARE_META(frameTime, float)
-        HARE_META_F(rectUV, RectF, propHide)
 	}
 
 	AnimFrame::AnimFrame()
 		:frameTime(0)
-		,rectUV(0,0,1,1)
 	{
 
 	}
@@ -24,45 +22,55 @@ namespace hare
 
 	}
 
-	void AnimFrame::frameMove()
+    void AnimFrame::move(float dx, float dy)
+    {
+        if (sprite)
+            sprite->move(dx, dy);
+    }
+
+    void AnimFrame::moveTo(float x, float y)
+    {
+        if (sprite)
+            sprite->moveTo(x, y);
+    }
+
+    void AnimFrame::beginScene()
+    {
+        if (sprite)
+            sprite->beginScene();
+    }
+
+    void AnimFrame::renderScene()
+    {
+        if (sprite)
+            sprite->renderScene();
+    }
+
+    void AnimFrame::endScene()
+    {
+        if (sprite)
+            sprite->endScene();
+    }
+
+    void AnimFrame::setSprite(Sprite* s)
+    {
+        sprite = s;
+    }
+
+    Sprite* AnimFrame::getSprite()
+    {
+        return sprite;
+    }
+
+
+
+	HARE_IMPLEMENT_DYNAMIC_CLASS(Animation, Sprite, 0)
 	{
-		if (!mtrl)
-			return ;
-
-		TextureMtrl* texMtrl = mtrl->getTextureMtrl();
-		if (texMtrl){
-			Matrix4 mat;
-			mat = Matrix4::IDENTITY;
-
-			mat._11 = rectUV.width();
-			mat._22 = rectUV.height();
-			mat._13 = rectUV.minX;
-			mat._23 = rectUV.minY;
-
-			texMtrl->texMat = mat;
-		}
-	}
-
-	void AnimFrame::setMaterial(Material* m)
-	{
-        mtrl = m;
-	}
-
-	Material* AnimFrame::getMaterial()
-	{
-        return mtrl;
-	}
-
-
-
-	HARE_IMPLEMENT_DYNAMIC_CLASS(Animation, Object, 0)
-	{
-		HARE_OBJ_ARRAY(animFrameList, AnimFrame)
+		HARE_OBJ_LIST(animFrameList, AnimFrame)
 	}
 
 	Animation::Animation()
 		:curAnimFrameID(0)
-		,rectPos(0, 0, 0, 0)
 	{
 
 	}
@@ -83,43 +91,138 @@ namespace hare
 
 		if (frameStartTime >= animFrame->frameTime){
 			curAnimFrameID = (curAnimFrameID + 1) % animFrameList.size();
-			animFrame = animFrameList[curAnimFrameID];
+			animFrame = getFrame(curAnimFrameID);
 			frameStartTime = 0;
 		}
-
-		animFrame->frameMove();
 	}
 
-	void Animation::addFrame(AnimFrame* frame)
-	{
-        animFrameList.push_back(frame);
-        curAnimFrameID = 0;
-        animFrame = animFrameList[curAnimFrameID];
-	}
-
-	void Animation::render()
-	{
-		if (!animFrame)
-			return;
+    void Animation::beginScene()
+    {
+        if (!animFrame)
+            return;
 
         frameMove();
 
-		if (rectPos.isEmpty()){
-            getCanvas()->drawImage(rectPos.minX, rectPos.minY, animFrame->getMaterial());		
-		}else{
-		    getCanvas()->drawImage(rectPos, animFrame->getMaterial());
-		}
-	}
+        animFrame->beginScene();
+    }
+
+    void Animation::renderScene()
+    {
+        if (animFrame)
+            animFrame->renderScene();
+    }
+
+    void Animation::endScene()
+    {
+        if (animFrame)
+            animFrame->endScene();
+    }
 
 	void Animation::move(float dx, float dy)
 	{
-		rectPos.move(dx, dy);
+        AnimFrame::List::iterator it = animFrameList.begin();
+        for (;it != animFrameList.end(); ++it){
+            (*it)->move(dx, dy);
+        }
 	}
 
 	void Animation::moveTo(float x, float y)
 	{
-        rectPos.moveTo(x, y);
+        AnimFrame::List::iterator it = animFrameList.begin();
+        for (;it != animFrameList.end(); ++it){
+            (*it)->moveTo(x, y);
+        }
 	}
+
+    int Animation::addFrame(AnimFrame* frame)
+    {
+        animFrameList.push_back(frame);
+        curAnimFrameID = 0;
+        animFrame = getFrame(curAnimFrameID);
+        return animFrameList.size() - 1;
+    }
+
+    bool Animation::insertFrame(int frameID, AnimFrame* frame)
+    {
+        AnimFrame::List::iterator it = getFrameIT(frameID);
+        
+        if (it != animFrameList.end()){
+            animFrameList.insert(it, frame);
+            return true;
+        }
+
+        return false;
+    }
+
+    AnimFrame* Animation::getFrame(int frameID)
+    {
+        AnimFrame::List::iterator it = getFrameIT(frameID);
+
+        if (it != animFrameList.end())
+            return *it;
+        else 
+            return NULL;
+    }
+
+    bool Animation::removeFrame(int frameID)
+    {
+        AnimFrame::List::iterator it = getFrameIT(frameID);
+
+        if (it != animFrameList.end()){
+            animFrameList.erase(it);
+            return true;
+        }else{
+            return false;
+        } 
+    }
+
+    bool Animation::removeFrame(AnimFrame* frame)
+    {
+        AnimFrame::List::iterator it = std::find(animFrameList.begin(), animFrameList.end(), frame);
+    
+        if (it != animFrameList.end()){
+            animFrameList.erase(it);
+            return true;
+        }else{
+            return false;
+        }   
+    }
+
+    bool Animation::swapFrame(int frameID_1, int frameID_2)
+    {
+        if (frameID_1 == frameID_2)
+            return true;
+
+        AnimFrame::Ptr anim = getFrame(frameID_1);
+        if (!anim)
+            return false;
+
+        AnimFrame::List::iterator it = getFrameIT(frameID_2);
+        if (it == animFrameList.end())
+            return false;
+
+        if (!removeFrame(frameID_1))
+            return false;
+
+        animFrameList.insert(it, anim);
+
+        return false;
+    }
+
+    AnimFrame::List::iterator Animation::getFrameIT(int frameID)
+    {
+        if (frameID < 0)
+            return animFrameList.end();
+
+        if (frameID >= (int)animFrameList.size())
+            return animFrameList.end();
+
+        AnimFrame::List::iterator it = animFrameList.begin();
+        for (int i = 0; i < frameID; ++i, ++it);
+
+        return it;
+    }
+
 }
 
 

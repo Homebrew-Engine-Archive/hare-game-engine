@@ -221,25 +221,35 @@ class AnimFrame : public Object
 public:
     AnimFrame();
     virtual ~AnimFrame();
-    
-    void setMaterial(Material* m);
-    Material* getMaterial();
+	void setSprite(Sprite* s);
+	Sprite* getSprite();
 
 public:
-    float frameTime;
-    RectF rectUV;
+	float frameTime;
+
 };
 
-class Animation : public Object
+class Animation : public Sprite
 {
 public:
     Animation();
     virtual ~Animation();
 
-    void addFrame(AnimFrame* frame);
-    void render();
-    void move(float dx, float dy);
-    void moveTo(float x, float y);
+    int addFrame(AnimFrame* frame);
+
+    AnimFrame* getFrame(int frameID);
+
+    bool insertFrame(int frameID, AnimFrame* frame);
+
+    bool removeFrame(int frameID);
+
+    bool removeFrame(AnimFrame* frame);
+
+    bool swapFrame(int frameID_1, int frameID_2);
+
+    virtual void move(float dx, float dy);
+
+    virtual void moveTo(float x, float y);
 
 };
 

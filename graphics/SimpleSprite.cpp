@@ -12,13 +12,12 @@
 namespace hare
 {
 
-	Animation* anim;
+
 
 	SimpleSprite::SimpleSprite()
 		:shader(NULL)
 	{
 		quad.setMaterial(NULL);
-		anim = new Animation;
 
 
 		//_tex = RenderSystem::getSingletonPtr()->createTexture();
@@ -30,7 +29,7 @@ namespace hare
 	}
 	SimpleSprite::~SimpleSprite()
 	{
-        delete anim;
+
 	}
 
 	void SimpleSprite::loadFromImage(const String& filename)
@@ -85,24 +84,6 @@ namespace hare
 		particle->setMaterial(particleMtrl);
 		particle->fireAt(200, 200);
 
-		AnimFrame* frame = new AnimFrame;
-		frame->frameTime = 1;
-		frame->setMaterial(shader);
-        anim->addFrame(frame);
-
-		frame = new AnimFrame;
-		frame->frameTime = 2;
-
-		tex = RenderSystem::getSingletonPtr()->createTexture();
-		tex->createFromFile("/sample/images/sample.png");
-		texMtrl = new TextureMtrl;
-		texMtrl->setTexture(tex);
-
-		frame->setMaterial(texMtrl);
-        anim->addFrame(frame);
-
-		anim->moveTo(300, 500);
-
 	}
 
 	void SimpleSprite::beginScene()
@@ -119,8 +100,6 @@ namespace hare
 		RenderSystem::getSingletonPtr()->render(&quad);
 
 		particle->render();
-
-		anim->render();
 
 		//RenderSystem::getSingletonPtr()->setRenderTarget(_tex);
 
@@ -151,3 +130,5 @@ namespace hare
         particle->moveTo(x, y);
     }
 }
+
+

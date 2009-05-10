@@ -11,7 +11,7 @@
 				<border>5</border>
 				<object class="wxToolBar" name="idToolBar">
 					<style>wxTB_FLAT|wxTB_HORIZONTAL</style>
-					<bitmapsize></bitmapsize>
+					<bitmapsize>22,22</bitmapsize>
 					<margins></margins>
 					<packing>1</packing>
 					<separation>5</separation>
@@ -20,76 +20,88 @@
 						<label>tool</label>
 						<tooltip></tooltip>
 						<longhelp></longhelp>
-						<bitmap>left.png</bitmap>
+						<bitmap>align_left.png</bitmap>
+						<radio>1</radio>
 					</object>
 					<object class="tool" name="idAlignCenterHorizontally">
 						<label>tool</label>
 						<tooltip></tooltip>
 						<longhelp></longhelp>
-						<bitmap>top.png</bitmap>
+						<bitmap>align_center_h.png</bitmap>
+						<radio>1</radio>
 					</object>
 					<object class="tool" name="idAlignRight">
 						<label>tool</label>
 						<tooltip></tooltip>
 						<longhelp></longhelp>
-						<bitmap>right.png</bitmap>
+						<bitmap>align_right.png</bitmap>
+						<radio>1</radio>
 					</object>
 					<object class="separator" />
 					<object class="tool" name="idAlignTop">
 						<label>tool</label>
 						<tooltip></tooltip>
 						<longhelp></longhelp>
-						<bitmap>same_w.png</bitmap>
+						<bitmap>align_top.png</bitmap>
+						<radio>1</radio>
 					</object>
 					<object class="tool" name="idAlignCenterVertically">
 						<label>tool</label>
 						<tooltip></tooltip>
 						<longhelp></longhelp>
-						<bitmap>same_h.png</bitmap>
+						<bitmap>align_center_v.png</bitmap>
+						<radio>1</radio>
 					</object>
 					<object class="tool" name="idAlignBottom">
 						<label>tool</label>
 						<tooltip></tooltip>
 						<longhelp></longhelp>
-						<bitmap>bottom.png</bitmap>
+						<bitmap>align_bottom.png</bitmap>
+						<radio>1</radio>
 					</object>
 					<object class="separator" />
 					<object class="tool" name="idExpand">
 						<label>tool</label>
 						<tooltip></tooltip>
 						<longhelp></longhelp>
-						<bitmap>same_size.png</bitmap>
+						<bitmap>expand.png</bitmap>
+						<toggle>1</toggle>
 					</object>
 					<object class="tool" name="idStretch">
 						<label>tool</label>
 						<tooltip></tooltip>
 						<longhelp></longhelp>
-						<bitmap>same_size.png</bitmap>
+						<bitmap>stretch.png</bitmap>
+						<toggle>1</toggle>
 					</object>
 					<object class="separator" />
 					<object class="tool" name="idLeftBorder">
 						<label>tool</label>
 						<tooltip></tooltip>
 						<longhelp></longhelp>
-						<bitmap>same_size.png</bitmap>
+						<bitmap>left_border.png</bitmap>
+						<toggle>1</toggle>
 					</object>
 					<object class="tool" name="idRightBorder">
 						<label>tool</label>
 						<tooltip></tooltip>
 						<longhelp></longhelp>
-						<bitmap>same_size.png</bitmap>
+						<bitmap>right_border.png</bitmap>
+						<toggle>1</toggle>
 					</object>
 					<object class="tool" name="idTopBorder">
 						<label>tool</label>
 						<tooltip></tooltip>
 						<longhelp></longhelp>
-						<bitmap>same_size.png</bitmap>
+						<bitmap>top_border.png</bitmap>
+						<toggle>1</toggle>
 					</object>
 					<object class="tool" name="idBottomBorder">
 						<label>tool</label>
 						<tooltip></tooltip>
 						<longhelp></longhelp>
-						<bitmap>same_size.png</bitmap>
+						<bitmap>bottom_border.png</bitmap>
+						<toggle>1</toggle>
 					</object>
 					<object class="separator" />
 				</object>

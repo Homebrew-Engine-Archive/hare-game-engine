@@ -1,5 +1,6 @@
 #include "PCH.h"
 #include "UVEditorPage.h"
+#include "drag_hand.xpm"
 
 HARE_IMPLEMENT_DYNAMIC_CLASS(RectState, Object, 0)
 {
@@ -73,10 +74,7 @@ UVEditorPage::UVEditorPage(wxWindow* parent)
     text = XRCCTRL(*this, "idScaleTxt", wxTextCtrl);
     list = XRCCTRL(*this, "idListItems", wxListBox);
 
-    wxImage img;
-    wxString fullPath = Manager::getInstancePtr()->getAppDir() + wxT("/resources/");
-    img.LoadFile(fullPath + wxT("drag.png"));
-    dragCursor = new wxCursor(img);
+    dragCursor = new wxCursor((const char**)drag_hand_xpm);
 
     if (!gridMtrl)
     {
@@ -594,6 +592,7 @@ void UVEditorPage::onMouseMove(wxMouseEvent& event)
         }
     }
     updateMouseState();
+    event.Skip();
 }
 
 void UVEditorPage::updateMouseState()

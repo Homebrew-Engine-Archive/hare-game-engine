@@ -248,6 +248,8 @@ void UVRCEditorPage::onRightClick(wxMouseEvent& event)
         PopupMenu(menu);
 
     delete menu;
+
+    event.Skip();
 }
 
 UVRCMIMEHandler::UVRCMIMEHandler()

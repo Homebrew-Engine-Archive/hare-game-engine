@@ -1,3 +1,15 @@
+//***************************************************************
+//  File:    Animation.h
+//  Date:    5/10/2009
+//  Author:  wanglei (wanglei010407@163.com)
+//-------------------------------------------------------------
+//
+//-------------------------------------------------------------
+//  This file is part of Hare2D Game Engine.
+//  Copyright (C) All Rights Reserved
+//***************************************************************
+//
+//***************************************************************
 #ifndef _ANIMATION_H_
 #define _ANIMATION_H_
 
@@ -37,12 +49,12 @@ namespace hare
 	};
 
 
-	class GRAPHICS_API Animation : public Sprite
+	class GRAPHICS_API AnimationSprite : public Sprite
 	{
-		HARE_DECLARE_DYNAMIC_CLASS(Animation)
+		HARE_DECLARE_DYNAMIC_CLASS(AnimationSprite)
 	public:
-		Animation();
-		virtual ~Animation();
+		AnimationSprite();
+		virtual ~AnimationSprite();
 
 		int addFrame(AnimFrame* frame);
 

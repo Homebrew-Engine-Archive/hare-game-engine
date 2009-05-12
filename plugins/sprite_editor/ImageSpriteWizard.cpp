@@ -50,7 +50,7 @@ public:
             boxSizer2->Add(rectNamesCtrl, 0, wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 8);
         }
 
-        wxHareCanvas* canvas = new wxHareCanvas(this);
+        canvas = new wxHareCanvas(this);
         
         wxBoxSizer* boxSizer3 = new wxBoxSizer(wxHORIZONTAL);
         {
@@ -75,9 +75,9 @@ public:
         scene->setSceneListener(this);
         canvas->getRenderWindow()->setSceneManager(scene);
 
-        uvrcFilesCtrl->Connect(wxEVT_LEFT_DOWN, wxMouseEventHandler(ImageSpriteWizardPage::onUVRCListLDown), NULL, this);
-        rectNamesCtrl->Connect(wxEVT_LEFT_DOWN, wxMouseEventHandler(ImageSpriteWizardPage::onRectNameListLDown), NULL, this);
-
+        uvrcFilesCtrl->Connect(wxEVT_COMMAND_LISTBOX_SELECTED, wxMouseEventHandler(ImageSpriteWizardPage::onUVRCListLDown), NULL, this);
+        rectNamesCtrl->Connect(wxEVT_COMMAND_LISTBOX_SELECTED, wxMouseEventHandler(ImageSpriteWizardPage::onRectNameListLDown), NULL, this);
+        canvas->Connect(wxEVT_SIZE, wxSizeEventHandler(ImageSpriteWizardPage::onSize), 0, this);
     }
 
     Material* getMaterial()
@@ -146,7 +146,8 @@ public:
 
     void drawReview()
     {
-        int width  = 100;//reviewPanel->m_height > reviewPanel->m_width ? reviewPanel->m_width : reviewPanel->m_height;
+        wxSize size = canvas->GetClientSize();
+        int width  = size.GetWidth() > size.GetHeight() ? size.GetHeight() : size.GetWidth();
         RectF rect;
         rect.minX = rect.minY = 0;
         rect.maxX = rect.maxY = width;
@@ -166,10 +167,20 @@ public:
         rectUV = getRectUV();
     }
 
+    void onSize(wxSizeEvent& event)
+    {
+        wxSize size = canvas->GetClientSize();
+        if (size.GetWidth() > 0 && size.GetHeight() > 0)
+        {
+            canvas->getRenderWindow()->resize(size.GetWidth(), size.GetHeight());
+        }
+        event.Skip();
+    }
+
 protected:
     wxListBox* uvrcFilesCtrl;
     wxListBox* rectNamesCtrl;
-    //wxPanel*   reviewPanel;
+    wxHareCanvas* canvas;
 
     Material::Ptr mtrl;
     RectF rectUV;

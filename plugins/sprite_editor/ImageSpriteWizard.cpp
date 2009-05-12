@@ -48,19 +48,19 @@ public:
             boxSizer2->Add(rectNamesCtrl, 0, wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 8);
         }
 
-
+        wxHareCanvas* canvas = new wxHareCanvas(this);
+        
         wxBoxSizer* boxSizer3 = new wxBoxSizer(wxHORIZONTAL);
         {
             boxSizer3->Add(boxSizer2, 1, wxEXPAND, 5);
-            reviewPanel = new wxPanel(this, wxID_ANY);
-            boxSizer3->Add(reviewPanel, 1, wxEXPAND | wxALL, 5);
+            boxSizer3->Add(canvas, 1, wxEXPAND | wxALL, 5);
             boxSizer1->Add(boxSizer3, 0, wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 8);
         }
 
         SetSizer(boxSizer1);
-        boxSizer1->Fit(this);
-        boxSizer1->SetSizeHints(this);
-        //Layout();
+        //boxSizer1->Fit(this);
+        //boxSizer1->SetSizeHints(this);
+        Layout();
 
         wxString fileName = wxT("haha.uvrc");
         Object::Ptr obj = Object::importObject(fileName.ToUTF8().data());
@@ -70,7 +70,7 @@ public:
             uvrcFilesCtrl->Insert(fileName, 0, data);
         }
 
-        wxHareCanvas* canvas = new wxHareCanvas(reviewPanel);
+        //wxHareCanvas* canvas = new wxHareCanvas(reviewPanel);
         SceneManager* scene = getHareApp()->createSceneManager();
         scene->setSceneListener(this);
         canvas->getRenderWindow()->setSceneManager(scene);
@@ -163,7 +163,7 @@ public:
 protected:
     wxListBox* uvrcFilesCtrl;
     wxListBox* rectNamesCtrl;
-    wxPanel*   reviewPanel;
+    //wxPanel*   reviewPanel;
 
     Material::Ptr mtrl;
     RectF rectUV;

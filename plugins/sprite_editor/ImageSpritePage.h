@@ -32,6 +32,8 @@ public:
     virtual void endScene();
     virtual void renderScene();
 
+    //void add
+
 protected:
     SpriteMIMEHandler* mime;
     wxHareCanvas* canvas;

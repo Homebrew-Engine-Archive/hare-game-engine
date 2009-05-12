@@ -70,7 +70,14 @@ public:
             uvrcFilesCtrl->Insert(fileName, 0, data);
         }
 
-        //wxHareCanvas* canvas = new wxHareCanvas(reviewPanel);
+        fileName = wxT("hehe.uvrc");
+        obj = Object::importObject(fileName.ToUTF8().data());
+        if (obj){
+            ImageSpriteClientData* data = new ImageSpriteClientData;
+            data->obj = obj;
+            uvrcFilesCtrl->Insert(fileName, 0, data);
+        }
+
         SceneManager* scene = getHareApp()->createSceneManager();
         scene->setSceneListener(this);
         canvas->getRenderWindow()->setSceneManager(scene);

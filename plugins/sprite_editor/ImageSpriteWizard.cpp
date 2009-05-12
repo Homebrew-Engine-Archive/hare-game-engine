@@ -39,12 +39,14 @@ public:
             wxStaticText* staticText = new wxStaticText(this, wxID_ANY, _("File name:"));
             boxSizer2->Add(staticText, 0, wxTOP|wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 8);
             uvrcFilesCtrl = new wxListBox(this, wxID_ANY);
+            uvrcFilesCtrl->SetWindowStyle(wxLB_SINGLE|wxNO_BORDER);
             boxSizer2->Add(uvrcFilesCtrl, 0, wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 8);
         }
         {
             wxStaticText* staticText = new wxStaticText(this, wxID_ANY, _("Rect name:"));
             boxSizer2->Add(staticText, 0, wxTOP|wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 8);
             rectNamesCtrl = new wxListBox(this, wxID_ANY);
+            rectNamesCtrl->SetWindowStyle(wxLB_SINGLE|wxNO_BORDER);
             boxSizer2->Add(rectNamesCtrl, 0, wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 8);
         }
 
@@ -58,8 +60,6 @@ public:
         }
 
         SetSizer(boxSizer1);
-        //boxSizer1->Fit(this);
-        //boxSizer1->SetSizeHints(this);
         Layout();
 
         wxString fileName = wxT("haha.uvrc");
@@ -82,7 +82,10 @@ public:
 
     Material* getMaterial()
     {
-        ImageSpriteClientData* data = (ImageSpriteClientData*)(uvrcFilesCtrl->GetClientObject(uvrcFilesCtrl->GetSelection()));
+        int selectID = uvrcFilesCtrl->GetSelection();
+        if (selectID == -1)
+            return NULL;
+        ImageSpriteClientData* data = (ImageSpriteClientData*)(uvrcFilesCtrl->GetClientObject(selectID));
         if (!data)
             return NULL;
 
@@ -104,7 +107,10 @@ public:
     RectF getRectUV()
     {
         RectF retRect(0, 0, 1, 1);
-        ImageSpriteClientData* data = (ImageSpriteClientData*)(uvrcFilesCtrl->GetClientObject(uvrcFilesCtrl->GetSelection()));
+        int selectID = uvrcFilesCtrl->GetSelection();
+        if (selectID == -1)
+            return retRect;
+        ImageSpriteClientData* data = (ImageSpriteClientData*)(uvrcFilesCtrl->GetClientObject(selectID));
         if (!data)
             retRect;
 

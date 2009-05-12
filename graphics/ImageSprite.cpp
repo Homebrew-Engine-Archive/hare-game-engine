@@ -43,8 +43,8 @@ namespace hare
     void ImageSprite::renderScene()
     {
         RectF r = rectUV;
-        int origoX = origoPos.x;
-        int origoY = origoPos.y;
+        float origoX = origoPos.x;
+        float origoY = origoPos.y;
         if (!bFaceX){
             r.minX = rectUV.maxX;
             r.maxX = rectUV.minX;

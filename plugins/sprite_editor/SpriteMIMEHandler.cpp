@@ -1,5 +1,5 @@
 //***************************************************************
-//  File:    GLSystemManager.h
+//  File:    SpriteMIMEHandler.cpp
 //  Date:    5/10/2009
 //  Author:  wanglei (wanglei010407@163.com)
 //-------------------------------------------------------------
@@ -10,29 +10,21 @@
 //***************************************************************
 //
 //***************************************************************
-#ifndef _GLSYSTEMMANAGER_H_
-#define _GLSYSTEMMANAGER_H_
+#include "PCH.h"
+#include "SpriteMIMEHandler.h"
 
-
-class GLSystemManager : public SystemManager
+SpriteMIMEHandler::SpriteMIMEHandler()
 {
-    HARE_DECLARE_DYNAMIC_CLASS(GLSystemManager)
-
-public:
-	GLSystemManager();
-
-	virtual ~GLSystemManager();
-
-	virtual RenderWindow* createRenderWindow(const WindowParams& params);
-
-	virtual void destoryRenderWindow(RenderWindow* renderWindow);
-
-	virtual Texture* createTexture();
-
-	virtual int hareRunFrame();
-
-	virtual void hareRun();
-};
+    
+}
 
 
-#endif
+bool SpriteMIMEHandler::canHandle(const wxString& filename) const
+{
+    return false;
+}
+
+bool SpriteMIMEHandler::openFile(const wxString& filename)
+{
+    return false;
+}

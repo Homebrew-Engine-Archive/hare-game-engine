@@ -1,5 +1,5 @@
 //***************************************************************
-//  File:    Animation.cpp
+//  File:    AnimationSprite.cpp
 //  Date:    5/10/2009
 //  Author:  wanglei (wanglei010407@163.com)
 //-------------------------------------------------------------
@@ -11,7 +11,7 @@
 //
 //***************************************************************
 #include "PCH.h"
-#include "Animation.h"
+#include "AnimationSprite.h"
 #include "RenderSystem.h"
 #include "Quad.h"
 #include "Canvas.h"

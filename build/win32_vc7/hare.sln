@@ -66,6 +66,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gui_editor", "gui_editor.vc
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sprite_editor", "sprite_editor.vcproj", "{E42360F5-F290-4B33-A327-1179E46BBEB6}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfiguration) = preSolution
 		Debug = Debug
@@ -128,6 +132,10 @@ Global
 		{2A663F90-96FA-4121-9B4E-AAFFD54E143B}.Debug.Build.0 = Debug|Win32
 		{2A663F90-96FA-4121-9B4E-AAFFD54E143B}.Release.ActiveCfg = Release|Win32
 		{2A663F90-96FA-4121-9B4E-AAFFD54E143B}.Release.Build.0 = Release|Win32
+		{E42360F5-F290-4B33-A327-1179E46BBEB6}.Debug.ActiveCfg = Debug|Win32
+		{E42360F5-F290-4B33-A327-1179E46BBEB6}.Debug.Build.0 = Debug|Win32
+		{E42360F5-F290-4B33-A327-1179E46BBEB6}.Release.ActiveCfg = Release|Win32
+		{E42360F5-F290-4B33-A327-1179E46BBEB6}.Release.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 	EndGlobalSection

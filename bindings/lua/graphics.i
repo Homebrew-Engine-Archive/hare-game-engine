@@ -229,11 +229,11 @@ public:
 
 };
 
-class Animation : public Sprite
+class AnimationSprite : public Sprite
 {
 public:
-    Animation();
-    virtual ~Animation();
+    AnimationSprite();
+    virtual ~AnimationSprite();
 
     int addFrame(AnimFrame* frame);
 

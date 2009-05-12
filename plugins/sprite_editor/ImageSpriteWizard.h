@@ -1,6 +1,6 @@
 //***************************************************************
-//  File:    PCH.h
-//  Date:    5/10/2009
+//  File:    ImageSpriteWizard.h
+//  Date:    5/11/2009
 //  Author:  wanglei (wanglei010407@163.com)
 //-------------------------------------------------------------
 //
@@ -10,20 +10,27 @@
 //***************************************************************
 //
 //***************************************************************
-#ifndef _PCH_H_
-#define _PCH_H_
+#ifndef _IMAGESPRITEWIZARD_H_
+#define _IMAGESPRITEWIZARD_H_
 
-#include <vector>
-#include <list>
-#include <map>
-#include <xutility>
-using namespace std;
+#include <wx/wizard.h>
 
-#include "core/Core.h"
-#include "graphics/Graphics.h"
-using namespace hare;
+class ImageSpriteWizardPage;
 
-#include <d3d9.h>
-#include <d3dx9.h>
+class ImageSpriteWizard : public wxWizard
+{
+public:
+    ImageSpriteWizard(wxWindow* parent, const wxString& title, wxBitmap& bitmap);
+
+    wxWizardPageSimple* GetFirstPage();
+
+    Material::Ptr getMaterial();
+
+    RectF getRectUV();
+
+private:
+    ImageSpriteWizardPage* page;
+};
 
 #endif
+

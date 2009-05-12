@@ -8,12 +8,10 @@
                 <item0 store="0" class="ProjectFile" version="0">
                     <fileName class="String" value="script.lua" />
                     <editorOpen class="bool" value="1" />
-                    <editorPos class="int32" value="382" />
-                    <editorTopLine class="int32" value="0" />
+                    <editorPos class="int32" value="718" />
+                    <editorTopLine class="int32" value="27" />
                     <editorTabPos class="int32" value="1" />
-                    <breakPoints class="meta_array" number="1">
-                        <item0 class="int32" value="63" />
-                    </breakPoints>
+                    <breakPoints class="meta_array" number="0" />
                 </item0>
             </files>
         </item0>

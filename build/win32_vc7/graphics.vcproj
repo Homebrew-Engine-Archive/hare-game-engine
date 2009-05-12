@@ -280,18 +280,13 @@
 			Name="Sprite"
 			Filter="">
 			<File
-				RelativePath="..\..\graphics\Animation.cpp">
+				RelativePath="..\..\graphics\AnimationSprite.cpp">
 			</File>
 			<File
-				RelativePath="..\..\include\graphics\Animation.h">
+				RelativePath="..\..\include\graphics\AnimationSprite.h">
 			</File>
 			<File
 				RelativePath="..\..\graphics\ComponentSprite.cpp">
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"/>
-				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\..\include\graphics\ComponentSprite.h">

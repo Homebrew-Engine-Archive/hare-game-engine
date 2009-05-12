@@ -34,11 +34,12 @@
 #include "Texture.h"
 #include "SimpleSprite.h"
 #include "Sprite.h"
-#include "SimpleSprite.h"
+#include "ImageSprite.h"
+#include "AnimationSprite.h"
+#include "ComponentSprite.h"
 #include "SceneListener.h"
 #include "Canvas.h"
 #include "Font.h"
 #include "TextManager.h"
-#include "Animation.h"
 
 #endif

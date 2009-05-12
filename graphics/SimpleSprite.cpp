@@ -18,7 +18,7 @@
 #include "RenderSystem.h"
 #include "Canvas.h"
 #include "SimpleParticle.h"
-#include "Animation.h"
+#include "AnimationSprite.h"
 
 
 namespace hare

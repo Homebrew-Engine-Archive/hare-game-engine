@@ -2,6 +2,7 @@
 #define EDITOR_PREREQUISITES_H
 
 #include "core/Core.h"
+#include "graphics/Graphics.h"
 using namespace hare;
 
 #if HARE_PLATFORM == HARE_PLATFORM_WIN32

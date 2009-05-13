@@ -33,5 +33,6 @@
 #include "TextEditorStyle.h"
 #include "TManager.h"
 #include "FindReplaceDialog.h"
+#include "UVRectState.h"
 
 #endif

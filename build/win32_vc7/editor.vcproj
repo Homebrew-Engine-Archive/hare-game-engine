@@ -195,6 +195,9 @@
 				RelativePath="..\..\editor\TextEditorStyle.cpp">
 			</File>
 			<File
+				RelativePath="..\..\editor\UVRectState.cpp">
+			</File>
+			<File
 				RelativePath="..\..\editor\WizardPlugin.cpp">
 			</File>
 		</Filter>
@@ -206,6 +209,9 @@
 			</File>
 			<File
 				RelativePath="..\..\include\editor\DebuggerPlugin.h">
+			</File>
+			<File
+				RelativePath="..\..\include\editor\Editor.h">
 			</File>
 			<File
 				RelativePath="..\..\include\editor\EditorEvent.h">
@@ -263,6 +269,9 @@
 			</File>
 			<File
 				RelativePath="..\..\include\editor\TManager.h">
+			</File>
+			<File
+				RelativePath="..\..\include\editor\UVRectState.h">
 			</File>
 			<File
 				RelativePath="..\..\include\editor\WizardPlugin.h">

@@ -2,18 +2,6 @@
 #include "UVEditorPage.h"
 #include "drag_hand.xpm"
 
-HARE_IMPLEMENT_DYNAMIC_CLASS(RectState, Object, 0)
-{
-    HARE_META(name, String)
-    HARE_META_F(rect, RectUV, propHide)
-}
-
-HARE_IMPLEMENT_DYNAMIC_CLASS(UVEditorState, Object, 0)
-{
-    HARE_OBJ_LIST(rects, RectState)
-    HARE_OBJ_F(mtrl, Material, propImport)
-}
-
 int idScaleSlider = XRCID("idScaleSlider");
 int idScaleTxt = XRCID("idScaleTxt");
 int idPanelR = XRCID("idPanelR");

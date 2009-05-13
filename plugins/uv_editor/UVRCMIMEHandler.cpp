@@ -84,7 +84,7 @@ UVRCEditorPage::~UVRCEditorPage()
 
 void UVRCEditorPage::updateTitle()
 {
-    String title = "[UVRCEditPage]";
+    String title = "[UVRCEditor]";
     if (state) title += state->getUrl();
 
     if (isModified)

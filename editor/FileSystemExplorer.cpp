@@ -51,7 +51,7 @@ namespace hare
 
         smallList = new wxImageList(16, 16);
 
-        wxBitmap bmp[4];
+        wxBitmap bmp[2];
         wxString fullPath = Manager::getInstancePtr()->getAppDir() + wxT("/resources/");
         bmp[0].LoadFile(fullPath + wxT("folder.png"), wxBITMAP_TYPE_PNG);
         bmp[1].LoadFile(fullPath + wxT("file.png"), wxBITMAP_TYPE_PNG);

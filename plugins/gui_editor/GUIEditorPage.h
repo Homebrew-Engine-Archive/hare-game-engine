@@ -11,8 +11,11 @@ class GUIEditorPage : public EditorPage, public SceneListenerBase
 {
 public:
     GUIEditorPage(wxWindow* parent);
-    virtual ~GUIEditorPage(); 
+    virtual ~GUIEditorPage();
 
+    void setWindow(Window* window);
+    void setTheme(ThemePackage* themes);
+    
 protected:
     virtual void beginScene()
     {
@@ -22,12 +25,18 @@ protected:
     }
     virtual void renderScene();
 
+    void onTreeItemSelected(wxTreeEvent& event);
+    void onTreeItemRightClick(wxTreeEvent& event);
+
 private:
     wxHareCanvas* canvas;
     SceneManager* scene;
     GUISystem* guiSys;
-    ThemePackage::Ptr themes;
-    Window::Ptr root;
+    wxTreeCtrl* treeCtrl;
+    wxImageList* imageList;
+    int rootImage;
+
+    std::list<ClassInfo*> winClasses;
 
     DECLARE_EVENT_TABLE();
     DECLARE_ABSTRACT_CLASS(GUIEditorPage)

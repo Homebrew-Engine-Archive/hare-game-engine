@@ -21,6 +21,10 @@ public:
     virtual bool canHandle(const wxString& filename) const;
     virtual bool openFile(const wxString& filename);
 
+    bool newPageImageSprite(ImageSprite* imageSprite, bool isModified = true);
+    bool newPageAnimationSprite(AnimationSprite* animation, bool isModified = true);
+    bool newPageComponentSprite(ComponentSprite* component, bool isModified = true);
+
 private:
 
 };

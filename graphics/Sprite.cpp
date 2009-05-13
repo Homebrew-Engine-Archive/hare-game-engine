@@ -37,6 +37,11 @@ namespace hare
         origoPos.x = x;origoPos.y = y;
     }
 
+    void Sprite::moveOrigoPos(float dx, float dy)
+    {
+        origoPos.move(dx, dy);
+    }
+
     const PointF& Sprite::getOrigoPos()
     {
         return origoPos;

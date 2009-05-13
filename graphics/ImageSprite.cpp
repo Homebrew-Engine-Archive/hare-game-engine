@@ -20,14 +20,13 @@ namespace hare
 {
     HARE_IMPLEMENT_DYNAMIC_CLASS(ImageSprite, Sprite, 0)
     {
-        HARE_META(rectUV, RectF)
-        HARE_OBJ(textureMtrl, TextureMtrl)   
+        HARE_META_F(rectUV, RectF, propHide)
+        HARE_OBJ(mtrl, Material)   
     }
 
     ImageSprite::ImageSprite()
         :rectUV(0, 0, 1, 1)
     {
-        textureMtrl = new TextureMtrl;
     }
 
     ImageSprite::~ImageSprite()
@@ -42,7 +41,22 @@ namespace hare
 
     void ImageSprite::renderScene()
     {
+        if (!mtrl)
+            return;
+
+        TextureMtrl* textureMtrl = mtrl->getTextureMtrl();
+        if (!textureMtrl)
+            return;
+
+        Texture* texture = textureMtrl->getTexture();
+
         RectF r = rectUV;
+        RectF drawRect;
+        drawRect.minX = 0;
+        drawRect.minY = 0;
+        drawRect.maxX = (rectUV.maxX - rectUV.minX) * texture->getWidth();
+        drawRect.maxY = (rectUV.maxY - rectUV.minY) * texture->getHeight();
+
         float origoX = origoPos.x;
         float origoY = origoPos.y;
         if (!bFaceX){
@@ -55,8 +69,10 @@ namespace hare
             r.maxY = rectUV.minY;
             origoY = -origoY;
         }
+
+        drawRect.moveTo(pos.x + origoX, pos.y + origoY);
        
-        getCanvas()->drawImage(pos.x + origoX, pos.y + origoY, textureMtrl, r);
+        getCanvas()->drawImage(drawRect, mtrl, r);
     }
 
     void ImageSprite::endScene()
@@ -69,8 +85,14 @@ namespace hare
         Texture* tex;
         tex = RenderSystem::getSingletonPtr()->createTexture();
         tex->createFromFile(filename);
-
+        TextureMtrl* textureMtrl = new TextureMtrl;
         textureMtrl->setTexture(tex);
+        mtrl = textureMtrl;
+    }
+
+    void ImageSprite::loadFromMaterial(Material* m)
+    {
+        mtrl = m;
     }
 
     void ImageSprite::setUV(float l, float r, float t, float b)
@@ -86,8 +108,8 @@ namespace hare
         rectUV = rect;
     }
 
-    TextureMtrl* ImageSprite::getTextureMtrl()
+    Material* ImageSprite::getMaterial()
     {
-        return textureMtrl;
+        return mtrl;
     }
 }

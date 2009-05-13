@@ -36,6 +36,8 @@ namespace hare
     
         void setOrigoPos(float x, float y);
 
+        void moveOrigoPos(float dx, float dy);
+
         const PointF& getOrigoPos();
 
         void setFaceX(bool b);

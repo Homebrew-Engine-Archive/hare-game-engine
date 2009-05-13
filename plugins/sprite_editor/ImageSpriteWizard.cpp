@@ -14,11 +14,39 @@
 #include "ImageSpriteWizard.h"
 #include <wx/harecanvas.h>
 
+
 class ImageSpriteClientData : public wxClientData
 {
 public:
-    Object::Ptr obj;
+    UVEditorState::Ptr obj;
 };
+
+void searchUVRC(const String& basePath, wxListBox* listBox)
+{
+    FileSystem* fs = FileSystem::getSingletonPtr();
+    StringVector files = fs->enumFiles(basePath);
+    for (size_t i = 0; i < files.size(); ++i){
+        String fullFileName = basePath + files[i];
+        if (fs->isDir(fullFileName)){
+            searchUVRC(fullFileName + "/", listBox);
+        }else{
+            String baseName;
+            String ext;
+            StringUtil::splitFilename(fullFileName, baseName, ext);
+            StringUtil::toLowerCase(ext);
+            if (ext == "uvrc"){
+                UVEditorState* obj = (UVEditorState*)Object::importObject(fullFileName.c_str());
+                if (obj){
+                    ImageSpriteClientData* data = new ImageSpriteClientData;
+                    data->obj = obj;
+                    wxString item = wxString::FromUTF8((basePath + files[i]).c_str());
+                    listBox->Insert(item, 0, data);            
+                }
+            }
+        } 
+    }
+}
+
 
 class ImageSpriteWizardPage : public wxWizardPageSimple, public SceneListenerBase
 {
@@ -62,20 +90,12 @@ public:
         SetSizer(boxSizer1);
         Layout();
 
-        wxString fileName = wxT("haha.uvrc");
-        Object::Ptr obj = Object::importObject(fileName.ToUTF8().data());
-        if (obj){
-            ImageSpriteClientData* data = new ImageSpriteClientData;
-            data->obj = obj;
-            uvrcFilesCtrl->Insert(fileName, 0, data);
-        }
+        searchUVRC("/", uvrcFilesCtrl);
 
-        fileName = wxT("hehe.uvrc");
-        obj = Object::importObject(fileName.ToUTF8().data());
-        if (obj){
-            ImageSpriteClientData* data = new ImageSpriteClientData;
-            data->obj = obj;
-            uvrcFilesCtrl->Insert(fileName, 0, data);
+        if (uvrcFilesCtrl->GetCount() > 0){
+            uvrcFilesCtrl->SetSelection(0, true);
+            wxMouseEvent event;
+            onUVRCListLDown(event);
         }
 
         SceneManager* scene = getHareApp()->createSceneManager();
@@ -96,19 +116,9 @@ public:
         if (!data)
             return NULL;
 
-        AttVisitor attVisitor;
-        data->obj->accept(attVisitor);
-        Attribute::List::iterator it = attVisitor.attributes.begin();
-        for (;it != attVisitor.attributes.end(); ++it){
-            Attribute* attribute = *it;
-            if (attribute->attrType == Attribute::attrObject && attribute->data && attribute->classInfo){
-                if (attribute->classInfo->isDerivedFrom(&Material::CLASS_INFO)){
-                    return (Material*)(*(Object**)attribute->data);
-                }
-            }
-        }
+        UVEditorState::Ptr uvState = data->obj;
 
-        return NULL;
+        return uvState->mtrl;
     }
 
     RectF getRectUV()
@@ -117,22 +127,27 @@ public:
         int selectID = uvrcFilesCtrl->GetSelection();
         if (selectID == -1)
             return retRect;
+
         ImageSpriteClientData* data = (ImageSpriteClientData*)(uvrcFilesCtrl->GetClientObject(selectID));
         if (!data)
             retRect;
 
-        //AttVisitor attVisitor;
-        //data->obj->accept(attVisitor);
-        //Attribute::List::iterator it = attVisitor.attributes.begin();
-        //for (;it != attVisitor.attributes.end(); ++it){
-        //    Attribute* attribute = *it;
-        //    wxString className = wxString::FromUTF8(attribute->typeName);
-        //    wxString tmp = wxT("RectState");
-        //    if (className == tmp){
+        selectID = rectNamesCtrl->GetSelection();
+        if (selectID == -1)
+            return retRect;
 
-        //        return retRect;
-        //    }
-        //}
+        wxString rectName = rectNamesCtrl->GetString(selectID);
+
+        UVEditorState::Ptr uvState = data->obj;
+        RectState::List list = uvState->rects;
+        RectState::List::iterator it = list.begin();
+        for (;it != list.end(); ++it){
+            RectState* rectState = *it;
+            if (rectState->name == String(rectName.ToUTF8().data())){
+                return rectState->rect;
+            }
+        }
+
         return retRect;
     }
 
@@ -166,6 +181,23 @@ public:
     {
         mtrl = getMaterial();
         rectNamesCtrl->Clear();
+
+        int selectID = uvrcFilesCtrl->GetSelection();
+        if (selectID == -1)
+            return;
+        ImageSpriteClientData* data = (ImageSpriteClientData*)(uvrcFilesCtrl->GetClientObject(selectID));
+        if (!data)
+            return;
+
+        UVEditorState::Ptr uvState = data->obj;
+        RectState::List list = uvState->rects;
+        RectState::List::iterator it = list.begin();
+        for (;it != list.end(); ++it){
+            RectState* rectState = *it;
+            wxString tmp = wxString::FromUTF8(rectState->name.c_str());
+            rectNamesCtrl->Insert(tmp, 0);
+        }
+
         rectUV = getRectUV();
     }
 

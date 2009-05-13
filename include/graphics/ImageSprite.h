@@ -34,14 +34,16 @@ namespace hare
 
         void loadFromImage(const String& filename);
 
+        void loadFromMaterial(Material* m);
+
         void setUV(float l, float r, float t, float b);
 
         void setUV(const RectF& rect);
 
-        TextureMtrl* getTextureMtrl();
+        Material* getMaterial();
     
     protected:
-        TextureMtrl::Ptr textureMtrl;
+        Material::Ptr mtrl;
         RectF rectUV;
 
     };

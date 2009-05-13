@@ -27,17 +27,29 @@ public:
     virtual void setModified(bool modified);
     virtual bool getIsModified() const { return isModified; }
     virtual bool save();
+    bool saveAs();
 
     virtual void beginScene();
     virtual void endScene();
     virtual void renderScene();
 
-    //void add
+    void setImageSprite(ImageSprite* sprite);
+    void updateTitle();
+
+protected:
+    void onSize(wxSizeEvent& event);
+    void onLButtonDown(wxMouseEvent& event);
+    void onLButtonUp(wxMouseEvent& event);
+    void onMouseMove(wxMouseEvent& event);
+private:
+    wxPoint mousePos;
 
 protected:
     SpriteMIMEHandler* mime;
     wxHareCanvas* canvas;
     SceneManager* scene;
+
+    ImageSprite::Ptr imageSprite;
 
     bool isModified;
 };

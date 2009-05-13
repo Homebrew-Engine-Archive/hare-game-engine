@@ -13,6 +13,7 @@
 #include "PCH.h"
 #include "SpriteWizard.h"
 #include "ImageSpriteWizard.h"
+#include "SpriteMIMEHandler.h"
 
 
 const ClassInfo* spriteClasses[] = {
@@ -68,7 +69,14 @@ Object* SpriteWizard::wizard(int index)
                 Object::Ptr object = spriteClasses[index]->createObject();
 
                 if (object){
-
+                    EditorPlugin* plugin = PluginManager::getInstancePtr()->findPluginByName(wxT("spriteMIMEHandler"));
+                    if (plugin && plugin->getType() == EPT_MIMEHandler){
+                        ImageSprite* sprite = (ImageSprite*)object.pointer();
+                        sprite->loadFromMaterial(wizard.getMaterial());
+                        sprite->setUV(wizard.getRectUV());
+                        SpriteMIMEHandler* handler = (SpriteMIMEHandler*)plugin;
+                        handler->newPageImageSprite(sprite);
+                    }
                 }
             }
         }

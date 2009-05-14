@@ -249,7 +249,12 @@ namespace hare
         visitor.stream = &stream;
         visitor.action = BinVisitor::VA_Save;
 
+        String savedUrl = obj->getUrl();
+        obj->setUrl(StringUtil::EMPTY);
+
         visitor.visitObject(obj->getClassInfo()->className, obj, obj->getClassInfo(), 0);
+
+        obj->setUrl(savedUrl);
 
         stream.seekg(0);
 

@@ -40,6 +40,8 @@ private:
     wxTreeCtrl* treeCtrl;
     wxImageList* imageList;
     int rootImage;
+    int ctrlImage;
+    int sizerImage;
     
     ClassInfoList windowClasses;
     ClassInfoList sizerClasses;

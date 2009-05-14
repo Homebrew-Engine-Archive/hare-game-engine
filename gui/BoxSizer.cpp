@@ -4,9 +4,14 @@
 
 namespace hare
 {
+    HARE_ENUM_BEGIN(uiOrientation)
+        HARE_ENUM_VALUE(uiHorizontal)
+        HARE_ENUM_VALUE(uiVertical)
+    HARE_ENUM_END()
+
     HARE_IMPLEMENT_DYNAMIC_CLASS(BoxSizer, Sizer, 0)
     {
-        HARE_META(orient, int)
+        HARE_ENUM(orient, int32, uiOrientation)
     }
 
     BoxSizer::BoxSizer(int orientation)

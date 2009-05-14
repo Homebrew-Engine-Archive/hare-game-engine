@@ -82,7 +82,7 @@ void D3DRenderWindow::initalizeD3DConfigParam()
 	D3Dpp.hDeviceWindow = (HWND)windowParams.hwnd;
 	D3Dpp.BackBufferWidth = windowParams.width;
 	D3Dpp.BackBufferHeight = windowParams.height;
-	D3Dpp.PresentationInterval = D3DPRESENT_INTERVAL_IMMEDIATE;
+	D3Dpp.PresentationInterval = D3DPRESENT_INTERVAL_ONE; //D3DPRESENT_INTERVAL_IMMEDIATE;
 	
   	if (windowParams.bZbuffer){
 		D3Dpp.EnableAutoDepthStencil = TRUE;	

@@ -28,15 +28,17 @@ namespace hare
     enum uiEnumFlags
     {
         // Alignment
-        uiAlign_Default             = 0x0000,
-        uiAlign_Center_Horizontal   = 0x0100,
-        uiAlign_Left                = uiAlign_Default,
-        uiAlign_Top                 = uiAlign_Default,
-        uiAlign_Right               = 0x0200,
-        uiAlign_Bottom              = 0x0400,
-        uiAlign_Center_Vertical     = 0x0800,
+        uiAlign_Left                = 0x0100,
+        uiAlign_Top                 = 0x0200,
+        uiAlign_Right               = 0x0400,
+        uiAlign_Bottom              = 0x0800,
+        uiAlign_Default             = (uiAlign_Left | uiAlign_Top),
+
+        uiAlign_Center_Horizontal   = 0x1000,
+        uiAlign_Center_Vertical     = 0x2000,
         uiAlign_Center              = (uiAlign_Center_Horizontal | uiAlign_Center_Vertical),
-        uiAlign_Mask                = 0x0F00,
+        
+        uiAlign_Mask                = 0xFF00,
 
         // Direction
         uiWest                      = 0x0010,
@@ -46,9 +48,9 @@ namespace hare
         uiAll_Direction             = uiWest | uiEast | uiNorth | uiSouth,
 
         // Stretch
-        uiExpand                    = 0x2000,
-        uiShaped                    = 0x4000,
-        uiFixed_Minsize             = 0x8000,
+        uiExpand                    = 0x00020000,
+        uiShaped                    = 0x00040000,
+        uiFixed_Minsize             = 0x00080000,
     };
 
     enum uiOrientation

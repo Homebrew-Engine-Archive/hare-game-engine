@@ -4,14 +4,32 @@
 
 namespace hare
 {
+    HARE_ENUM_BEGIN(uiEnumFlags)
+        HARE_ENUM_VALUE(uiAlign_Top)
+        HARE_ENUM_VALUE(uiAlign_Bottom)
+        HARE_ENUM_VALUE(uiAlign_Left)
+        HARE_ENUM_VALUE(uiAlign_Right)
+        HARE_ENUM_VALUE(uiAlign_Center_Vertical)
+        HARE_ENUM_VALUE(uiAlign_Center_Horizontal)
+        //HARE_ENUM_VALUE(uiAlign_Center)
+        HARE_ENUM_VALUE(uiWest)
+        HARE_ENUM_VALUE(uiEast)
+        HARE_ENUM_VALUE(uiNorth)
+        HARE_ENUM_VALUE(uiSouth)
+        //HARE_ENUM_VALUE(uiAll_Direction)
+        HARE_ENUM_VALUE(uiExpand)
+        HARE_ENUM_VALUE(uiShaped)
+        HARE_ENUM_VALUE(uiFixed_Minsize)
+    HARE_ENUM_END()
+
     // ---------------------------------------------------------------
     // SizerItem
     // ---------------------------------------------------------------
     HARE_IMPLEMENT_ABSTRACT_CLASS(SizerItem, Object, 0)
     {
         HARE_META(proportion, uint32)
-            HARE_META(border, uint32)
-            HARE_ENUM_F(flag, uint32, uiEnumFlags, propEnumIsFlag)
+        HARE_META(border, uint32)
+        HARE_ENUM_F(flag, uint32, uiEnumFlags, propEnumIsFlag)
     }
 
     SizerItem::SizerItem(int prop, int flg, int bdr)
@@ -178,8 +196,6 @@ namespace hare
 
     SizerItemSizer::~SizerItemSizer()
     {
-        delete sizer;
-        sizer = 0;
     }
 
     SizeF SizerItemSizer::getSize() const

@@ -64,6 +64,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "uv_editor", "uv_editor.vcpr
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gui_editor", "gui_editor.vcproj", "{2A663F90-96FA-4121-9B4E-AAFFD54E143B}"
 	ProjectSection(ProjectDependencies) = postProject
+		{508C8324-5017-4336-A249-2F9741C0AD8D} = {508C8324-5017-4336-A249-2F9741C0AD8D}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sprite_editor", "sprite_editor.vcproj", "{E42360F5-F290-4B33-A327-1179E46BBEB6}"

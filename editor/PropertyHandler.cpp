@@ -25,6 +25,7 @@
 #endif
 
 WX_PG_IMPLEMENT_VARIANT_DATA(wxPGVariantDataPointF, PointF)
+WX_PG_IMPLEMENT_VARIANT_DATA(wxPGVariantDataSizeF, SizeF)
 
 namespace hare
 {
@@ -35,6 +36,7 @@ namespace hare
 
     IMPLEMENT_DYNAMIC_CLASS(ObjectEnumProperty, wxEnumProperty)
 
+    //////////////////////////////////////////////////////////////////////////
     WX_PG_IMPLEMENT_PROPERTY_CLASS(PointFProperty, wxPGProperty, PointF, const PointF&, TextCtrl)
 
     PointFProperty::PointFProperty(const wxString& label, const wxString& name,
@@ -110,6 +112,85 @@ namespace hare
         {
         case 0: point.x = val; break;
         case 1: point.y = val; break;
+        }
+    }
+
+    //////////////////////////////////////////////////////////////////////////
+    WX_PG_IMPLEMENT_PROPERTY_CLASS(SizeFProperty, wxPGProperty, SizeF, const SizeF&, TextCtrl)
+
+    SizeFProperty::SizeFProperty(const wxString& label, const wxString& name,
+        const SizeF& value) : wxPGProperty(label, name)
+    {
+        SetValueI(value);
+        AddChild(new wxFloatProperty(wxT("cx"), wxPG_LABEL, value.cx));
+        AddChild(new wxFloatProperty(wxT("cy"), wxPG_LABEL, value.cy));
+    }
+
+    SizeFProperty::~SizeFProperty() {}
+
+    wxString SizeFProperty::GetValueAsString(int arg_flags) const
+    {
+        const SizeF& size = SizeFFromVariant(m_value);
+
+        wxString cx, cy;
+        wxString template_str;
+
+        wxPropertyGrid::DoubleToString(cx, size.cx, -1, true, &template_str);
+        wxPropertyGrid::DoubleToString(cy, size.cy, -1, true, &template_str);
+
+        return cx + wxT(" ") + cy;
+    }
+
+    bool SizeFProperty::StringToValue(wxVariant& variant, const wxString& text, int) const
+    {
+        SizeF size(0, 0);
+        int count = 0;
+
+        WX_PG_TOKENIZER1_BEGIN(text, wxT(" "))
+            if (token.length())
+            {
+                double tval = 0;
+                if (token.ToDouble(&tval))
+                {
+                    if (count == 0) 
+                        size.cx = (float)tval;
+                    else if (count == 1) 
+                        size.cy = (float)tval;
+
+                    count++;
+
+                    if (count >= 2)
+                        break;
+                }
+            }
+            WX_PG_TOKENIZER1_END()
+
+                if (count >= 2)
+                {
+                    variant = SizeFToVariant(size);
+                    return true;
+                }
+
+                return false;
+    }
+
+    void SizeFProperty::RefreshChildren()
+    {
+        if (!GetCount()) return;
+        const SizeF& size = SizeFFromVariant(m_value);
+        Item(0)->SetValue(size.cx);
+        Item(1)->SetValue(size.cy);
+    }
+
+    void SizeFProperty::ChildChanged(wxVariant& thisValue, int childIndex, wxVariant& childValue) const
+    {
+        SizeF& size = SizeFFromVariant(thisValue);
+        double val;
+        wxPGVariantToDouble(childValue, &val);
+        switch (childIndex)
+        {
+        case 0: size.cx = val; break;
+        case 1: size.cy = val; break;
         }
     }
 
@@ -283,6 +364,15 @@ namespace hare
         val = PointFToVariant(*oldData);
     }
 
+    template <>
+    void doModifyMeta<SizeF>(Attribute* attr, wxVariant& val)
+    {
+        SizeF& value = SizeFFromVariant(val);
+        SizeF* oldData = (SizeF*)attr->data;
+        *oldData = value;
+        attr->owner->postEdited(attr);
+        val = SizeFToVariant(*oldData);
+    }
     /*template <typename T>
     void doModifyMetaArray(Attribute* attr, wxVariant& val)
     {
@@ -313,6 +403,7 @@ namespace hare
         {
             prop = page->AppendIn(parent, new wxFlagsProperty(wxString::FromUTF8(attr->name), wxPG_LABEL,
                 choices, (long)value));
+            page->SetPropertyAttribute(prop, wxPG_BOOL_USE_CHECKBOX, true, wxPG_RECURSE);
         }
         else
         {
@@ -452,6 +543,18 @@ namespace hare
             *value));
         prop->SetClientData(attr);
         prop->SetHelpString(wxT("[Point]"));
+        if (attr->hasFlag(Object::propReadOnly))
+            prop->SetFlag(wxPG_PROP_READONLY | wxPG_PROP_DISABLED);
+    }
+
+    template <>
+    void doBindMeta<SizeF>(Attribute* attr, PropertyGridPage* page, wxPGProperty* parent)
+    {
+        SizeF* value = (SizeF*)attr->data;
+        wxPGProperty* prop = page->AppendIn(parent, new SizeFProperty(wxString::FromUTF8(attr->name), wxPG_LABEL,
+            *value));
+        prop->SetClientData(attr);
+        prop->SetHelpString(wxT("[Size]"));
         if (attr->hasFlag(Object::propReadOnly))
             prop->SetFlag(wxPG_PROP_READONLY | wxPG_PROP_DISABLED);
     }
@@ -683,6 +786,8 @@ namespace hare
                     doModifyMeta<double>(attr, value);
                 else if (attr->typeName == String("PointF"))
                     doModifyMeta<PointF>(attr, value);
+                else if (attr->typeName == String("SizeF"))
+                    doModifyMeta<SizeF>(attr, value);
                 else
                     assert(false);
 
@@ -764,6 +869,8 @@ namespace hare
                     doBindMeta<double>(attr, page, parent);
                 else if (attr->typeName == String("PointF"))
                     doBindMeta<PointF>(attr, page, parent);
+                else if (attr->typeName == String("SizeF"))
+                    doBindMeta<SizeF>(attr, page, parent);
                 else
                     assert(false);
             }

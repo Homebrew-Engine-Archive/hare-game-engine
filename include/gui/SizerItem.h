@@ -5,7 +5,7 @@
 
 namespace hare
 {
-    class SizerItem : public Object
+    class UI_API SizerItem : public Object
     {
         HARE_DECLARE_ABSTRACT_CLASS(SizerItem)
     public:
@@ -55,7 +55,7 @@ namespace hare
         RectF rect;
     };
 
-    class SizerItemWindow : public SizerItem
+    class UI_API SizerItemWindow : public SizerItem
     {
         HARE_DECLARE_DYNAMIC_CLASS(SizerItemWindow)
     public:
@@ -66,13 +66,16 @@ namespace hare
         virtual SizeF calcMinSize();
         virtual bool isShown();
         virtual void setDimension(const PointF& ps, const SizeF& sz);
+        
+        Window* getWindow() { return window; }
+
     protected:
         WindowPtr window;
     private:
         SizerItemWindow();
     };
 
-    class SizerItemSizer : public SizerItem
+    class UI_API SizerItemSizer : public SizerItem
     {
         HARE_DECLARE_DYNAMIC_CLASS(SizerItemSizer)
     public:
@@ -83,13 +86,16 @@ namespace hare
         virtual SizeF calcMinSize();
         virtual bool isShown();
         virtual void setDimension(const PointF& ps, const SizeF& sz);
+
+        Sizer* getSizer() { return sizer; }
+
     protected:
         SizerPtr sizer;
     private:
         SizerItemSizer();
     };
 
-    class SizerItemSpacer : public SizerItem
+    class UI_API SizerItemSpacer : public SizerItem
     {
         HARE_DECLARE_DYNAMIC_CLASS(SizerItemSpacer)
     public:
@@ -106,7 +112,7 @@ namespace hare
         SizerItemSpacer();
     };
 
-    class SizerSpacer : public Object
+    class UI_API SizerSpacer : public Object
     {
         HARE_DECLARE_DYNAMIC_CLASS(SizerSpacer)
     public:

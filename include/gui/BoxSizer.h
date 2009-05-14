@@ -26,8 +26,8 @@ namespace hare
         }
 
     protected:
-        int orient;
-        int stretchable;
+        int32 orient;
+        int32 stretchable;
         float minWidth;
         float minHeight;
         float fixedWidth;

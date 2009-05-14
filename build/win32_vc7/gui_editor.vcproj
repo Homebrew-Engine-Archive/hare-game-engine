@@ -19,8 +19,8 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\ext\wxWidgets\lib\vc_dll\mswud;..\..\ext\wxWidgets\include;..\..\include;..\..\ext\lua\src;..\..\include\editor\wxTreeListCtrl\include;..\..\include\editor\wxHareCanvas\include;..\..\include\editor\wxFlatNotebook\include"
-				PreprocessorDefinitions="WIN32;_USRDLL;DLL_EXPORTS;WXUSINGDLL;__WXDEBUG__;__WXMSW__;_DEBUG;WXUSINGDLL_HARE_CANVAS"
+				AdditionalIncludeDirectories="..\..\ext\wxWidgets\lib\vc_dll\mswud;..\..\ext\wxWidgets\include;..\..\include;..\..\ext\lua\src;..\..\include\editor\wxTreeListCtrl\include;..\..\include\editor\wxHareCanvas\include;..\..\include\editor\wxFlatNotebook\include;..\..\include\editor\wxPropGrid\include"
+				PreprocessorDefinitions="WIN32;WXUSINGDLL;__WXDEBUG__;__WXMSW__;_DEBUG;WXUSINGDLL_HARE_CANVAS"
 				MinimalRebuild="TRUE"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -136,6 +136,12 @@
 			<File
 				RelativePath="..\..\plugins\gui_editor\PluginMain.cpp">
 			</File>
+			<File
+				RelativePath="..\..\plugins\gui_editor\ThemeMIMEHandler.cpp">
+			</File>
+			<File
+				RelativePath="..\..\plugins\gui_editor\ThemeWizard.cpp">
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -150,11 +156,12 @@
 			<File
 				RelativePath="..\..\plugins\gui_editor\PCH.h">
 			</File>
-		</Filter>
-		<Filter
-			Name="Resource Files"
-			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx"
-			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}">
+			<File
+				RelativePath="..\..\plugins\gui_editor\ThemeMIMEHandler.h">
+			</File>
+			<File
+				RelativePath="..\..\plugins\gui_editor\ThemeWizard.h">
+			</File>
 		</Filter>
 	</Files>
 	<Globals>

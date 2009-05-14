@@ -16,37 +16,37 @@ namespace hare
     public:
         SizerItem* add(Window *window, 
                     int proportion = 0,
-                    int flag = 0,
+                    int flag = uiAlign_Default,
                     int border = 0);
 
         SizerItem* add(Sizer *sizer,
                     int proportion = 0,
-                    int flag = 0,
+                    int flag = uiAlign_Default,
                     int border = 0);
 
         SizerItem* add(float width,
                     float height,
                     int proportion = 0,
-                    int flag = 0,
+                    int flag = uiAlign_Default,
                     int border = 0);
 
         SizerItem* insert(size_t index,
                     Window *window, 
                     int proportion = 0,
-                    int flag = 0,
+                    int flag = uiAlign_Default,
                     int border = 0);
 
         SizerItem* insert(size_t index,
                     Sizer *sizer,
                     int proportion = 0,
-                    int flag = 0,
+                    int flag = uiAlign_Default,
                     int border = 0);
 
         SizerItem* insert(size_t index,
                     float width,
                     float height,
                     int proportion = 0,
-                    int flag = 0,
+                    int flag = uiAlign_Default,
                     int border = 0);
 
         virtual SizerItem* insert(size_t index, SizerItem* item);

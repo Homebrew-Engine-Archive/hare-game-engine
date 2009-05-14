@@ -15,10 +15,10 @@
 #include "MtrlMIMEHandler.h"
 #include <wx/wizard.h>
 
-class Mtrl_WizardPage : public wxWizardPageSimple
+class wxMaterialWizardPage : public wxWizardPageSimple
 {
 public:
-    Mtrl_WizardPage(wxWizard* parent) : wxWizardPageSimple(parent)
+    wxMaterialWizardPage(wxWizard* parent) : wxWizardPageSimple(parent)
     {
         wxBoxSizer* boxSizer1 = new wxBoxSizer(wxVERTICAL);
         {
@@ -64,9 +64,9 @@ public:
 
         txtFileExt->SetValue(wxT(".material"));
         txtPath->SetValue(wxT("/"));
-        Connect(wxEVT_WIZARD_PAGE_CHANGING, wxWizardEventHandler(Mtrl_WizardPage::onWizardPageChanging), 0, this);
-        btnBrowse->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(Mtrl_WizardPage::onBrowse), 0, this);
-        chkNoSave->Connect(wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler(Mtrl_WizardPage::onCheckChanged), 0, this);
+        Connect(wxEVT_WIZARD_PAGE_CHANGING, wxWizardEventHandler(wxMaterialWizardPage::onWizardPageChanging), 0, this);
+        btnBrowse->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(wxMaterialWizardPage::onBrowse), 0, this);
+        chkNoSave->Connect(wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler(wxMaterialWizardPage::onCheckChanged), 0, this);
     }
 
     bool getIsChecked()
@@ -120,13 +120,13 @@ private:
     wxCheckBox* chkNoSave;
 };
 
-class Mtrl_Wizard : public wxWizard
+class wxMaterialWizard : public wxWizard
 {
 public:
-    Mtrl_Wizard(wxWindow* parent, const wxString& title, wxBitmap& bitmap)
+    wxMaterialWizard(wxWindow* parent, const wxString& title, wxBitmap& bitmap)
         : wxWizard(parent, wxID_ANY, title, bitmap, wxDefaultPosition, wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER)
     {
-        page = new Mtrl_WizardPage(this);
+        page = new wxMaterialWizardPage(this);
         SetPageSize(wxSize(400, 300));
     }
 
@@ -146,7 +146,7 @@ public:
     }
 
 private:
-    Mtrl_WizardPage* page;
+    wxMaterialWizardPage* page;
 };
 
 const ClassInfo* mtrlClasses[] = {
@@ -191,7 +191,7 @@ int MtrlWizard::getCount() const
 
 Object* MtrlWizard::wizard(int index)
 {
-    Mtrl_Wizard wizard(Manager::getInstancePtr()->getAppWindow(), _("Material Wizard [create material]"),
+    wxMaterialWizard wizard(Manager::getInstancePtr()->getAppWindow(), _("Material Wizard [create material]"),
         wizardBitmap);
 
     if (wizard.RunWizard(wizard.GetFirstPage()))

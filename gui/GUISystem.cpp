@@ -4,6 +4,11 @@
 
 namespace hare
 {
+    HARE_IMPLEMENT_DYNAMIC_CLASS(GUISystem, Object, 0)
+    {
+        HARE_OBJ_F(themes, ThemePackage, propImport)
+    }
+
     struct MouseClickTracker
     {
         MouseClickTracker(void) : click(0), window(0) {}

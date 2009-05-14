@@ -23,6 +23,8 @@ namespace hare
         Theme* getTheme(ClassInfo* classInfo);
         Theme* getTheme(const String& className);
 
+        Theme::Array& getThemes() { return themes; }
+
     protected:
         void postLoaded();
 

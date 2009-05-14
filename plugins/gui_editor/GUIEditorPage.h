@@ -36,7 +36,7 @@ protected:
 private:
     wxHareCanvas* canvas;
     SceneManager* scene;
-    GUISystem* guiSys;
+    GUISystem::Ptr guiSys;
     wxTreeCtrl* treeCtrl;
     wxImageList* imageList;
     int rootImage;

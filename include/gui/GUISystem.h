@@ -8,8 +8,9 @@
 
 namespace hare
 {
-    class UI_API GUISystem
+    class UI_API GUISystem : public Object
     {
+        HARE_DECLARE_DYNAMIC_CLASS(GUISystem)
     public:
         void setRoot(Window* window);
         Window*	getRoot() { return root; }

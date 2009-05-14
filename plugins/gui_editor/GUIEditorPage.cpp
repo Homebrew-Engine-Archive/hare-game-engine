@@ -67,7 +67,6 @@ GUIEditorPage::~GUIEditorPage()
 {
     treeCtrl->SetImageList(NULL);
     SAFE_DELETE(imageList);
-    SAFE_DELETE(guiSys);
 }
 
 void GUIEditorPage::onTreeItemSelected(wxTreeEvent& event)
@@ -90,7 +89,7 @@ void GUIEditorPage::onTreeItemSelected(wxTreeEvent& event)
             object = data->item;
     }
     else
-        object = guiSys->getTheme();
+        object = guiSys;
 
     if (object)
     {

@@ -125,7 +125,7 @@ namespace hare
     // ---------------------------------------------------------------
     HARE_IMPLEMENT_DYNAMIC_CLASS(SizerItemWindow, SizerItem, 0)
     {
-        HARE_OBJ(window, Window)
+        HARE_OBJ_F(window, Window, propAvoidNull)
     }
 
     SizerItemWindow::SizerItemWindow()
@@ -181,7 +181,7 @@ namespace hare
     // ---------------------------------------------------------------
     HARE_IMPLEMENT_DYNAMIC_CLASS(SizerItemSizer, SizerItem, 0)
     {
-        HARE_OBJ(sizer, Sizer)
+        HARE_OBJ_F(sizer, Sizer, propAvoidNull)
     }
 
     SizerItemSizer::SizerItemSizer()
@@ -247,7 +247,7 @@ namespace hare
     // ---------------------------------------------------------------
     HARE_IMPLEMENT_DYNAMIC_CLASS(SizerItemSpacer, SizerItem, 0)
     {
-        HARE_OBJ(spacer, SizerSpacer)
+        HARE_OBJ_F(spacer, SizerSpacer, propAvoidNull)
     }
 
     SizerItemSpacer::SizerItemSpacer()

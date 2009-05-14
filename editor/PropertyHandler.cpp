@@ -727,7 +727,7 @@ namespace hare
 
             reBindObject(attr, objectProp, page);
         }
-        else if (objectProp->currentSelection >= 0)
+        else// if (objectProp->currentSelection >= 0)
         {
             objectProp->SetValue(objectProp->currentSelection);
         }

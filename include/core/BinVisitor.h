@@ -197,7 +197,7 @@ namespace hare
         template <typename T>
         void visitObject(const char* name, Pointer<T> &obj, ClassInfo *cls, uint32 flags)
         {
-            T* tmpObj = 0;
+            T* tmpObj = obj.pointer();
             visitObject(name, tmpObj, cls, flags);
             obj = tmpObj;
         }

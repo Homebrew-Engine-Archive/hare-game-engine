@@ -3,6 +3,10 @@
 
 namespace hare
 {
+    HARE_IMPLEMENT_DYNAMIC_CLASS(Button, Window, 0)
+    {
+    }
+
     HARE_BEGIN_EVENT_TABLE(Button, Window)
         HARE_EVT_MOUSE_EVENTS(onMouseEvent)
     HARE_END_EVENT_TABLE()

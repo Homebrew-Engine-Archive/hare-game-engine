@@ -12,6 +12,8 @@ namespace hare
         HARE_DECLARE_ABSTRACT_CLASS(Window)
     
     public:
+        Window();
+
         void setId(int id) 
         { 
             windowId = id; 
@@ -80,9 +82,12 @@ namespace hare
         Window *findWindow(int id) const;
         Window *findWindow(const String& name) const;
 
-        void setSizer(Sizer* sizer);
+        void setSizer(Sizer* sizer)
+        {
+            windowSizer = sizer;
+        }
 
-        Sizer* getSizer() const
+        Sizer* getSizer()
         {
             return windowSizer;
         }
@@ -92,7 +97,7 @@ namespace hare
             parentSizer = sizer;
         }
 
-        Sizer* getParentSizer() const
+        Sizer* getParentSizer()
         {
             return parentSizer;
         }
@@ -203,8 +208,8 @@ namespace hare
         virtual void render(ThemePackage* themes);
 
     protected:
-        Sizer* windowSizer;         // sizer of this window
-        Sizer* parentSizer;         // which sizer this window belongs to
+        SizerPtr windowSizer;         // sizer of this window
+        SizerPtr parentSizer;         // which sizer this window belongs to
 
         Window::List children;
         Window* parent;

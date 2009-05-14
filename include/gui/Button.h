@@ -10,6 +10,7 @@ namespace hare
 {
     class UI_API Button : public Window
     {
+        HARE_DECLARE_DYNAMIC_CLASS(Button)
     public:
         bool isPushed() const
         {

@@ -65,7 +65,7 @@ namespace hare
     }
 
 
-    int ClassInfo::findSubs(std::vector<ClassInfo*>& list)
+    int ClassInfo::findSubs(ClassInfoList& list)
     {
         int num = 0;
         list.clear();

@@ -6,7 +6,7 @@
 
 namespace hare
 {
-    class BoxSizer : public Sizer
+    class UI_API BoxSizer : public Sizer
     {
         HARE_DECLARE_DYNAMIC_CLASS(BoxSizer)
     public:

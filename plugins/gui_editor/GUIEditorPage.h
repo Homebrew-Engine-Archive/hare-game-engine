@@ -4,6 +4,7 @@
 #include <wx/xrc/xmlres.h>
 #include <wx/harecanvas.h>
 
+class TreeItemData;
 /* 
  * GUIEditorPage
 */
@@ -27,6 +28,10 @@ protected:
 
     void onTreeItemSelected(wxTreeEvent& event);
     void onTreeItemRightClick(wxTreeEvent& event);
+    void onMenuSelected(wxCommandEvent& event);
+
+    void addWindow(Window* window);
+    void addSizer(Sizer* sizer);
 
 private:
     wxHareCanvas* canvas;
@@ -35,8 +40,9 @@ private:
     wxTreeCtrl* treeCtrl;
     wxImageList* imageList;
     int rootImage;
-
-    std::list<ClassInfo*> winClasses;
+    
+    ClassInfoList windowClasses;
+    ClassInfoList sizerClasses;
 
     DECLARE_EVENT_TABLE();
     DECLARE_ABSTRACT_CLASS(GUIEditorPage)

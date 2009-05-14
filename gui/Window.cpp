@@ -28,6 +28,10 @@ namespace hare
         HARE_OBJ_F(windowSizer, Sizer, propHide)
     }
 
+    Window::Window() : parent(0)
+    {
+    }
+
     SizeF Window::getEffectiveMinSize() const
     {
         SizeF min = getMinSize();

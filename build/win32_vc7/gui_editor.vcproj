@@ -33,7 +33,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="core_d.lib graphics_d.lib gui_d.lib editor_d.lib wxexpatd.lib wxjpegd.lib wxmsw28ud.lib wxpngd.lib wxregexud.lib wxtiffd.lib wxzlibd.lib winmm.lib comctl32.lib rpcrt4.lib wsock32.lib odbc32.lib oleacc.lib lua51.lib"
+				AdditionalDependencies="core_d.lib graphics_d.lib gui_d.lib editor_d.lib wxexpatd.lib wxjpegd.lib wxmsw28ud.lib wxpngd.lib wxregexud.lib wxtiffd.lib wxzlibd.lib winmm.lib comctl32.lib rpcrt4.lib wsock32.lib odbc32.lib oleacc.lib"
 				OutputFile="$(OutDir)/$(ProjectName).plugin"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="..\..\lib;..\..\ext\wxWidgets\lib\vc_dll;..\..\ext\lua\src"

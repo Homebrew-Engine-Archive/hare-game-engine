@@ -6,7 +6,7 @@
 
 namespace hare
 {
-    class Sizer : public Object
+    class UI_API Sizer : public Object
     {
         HARE_DECLARE_ABSTRACT_CLASS(Sizer)
     public:

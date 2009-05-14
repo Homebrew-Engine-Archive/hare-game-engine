@@ -35,8 +35,6 @@ AnimationSpritePage::AnimationSpritePage(wxWindow* parent, SpriteMIMEHandler* ha
 
     treeRootID = treeCtrl->AddRoot(wxT("AnimationSprite"));
 
-
-
     animationCanvas = new wxHareCanvas(animationReview);
     animationReview->GetSizer()->Add(animationCanvas, 1, wxEXPAND|wxALL, 0);
     animationScene = getHareApp()->createSceneManager();
@@ -57,14 +55,13 @@ AnimationSpritePage::AnimationSpritePage(wxWindow* parent, SpriteMIMEHandler* ha
     animationCanvas->Connect(wxEVT_LEFT_DOWN, wxMouseEventHandler(AnimationSpritePage::onAnimationLButtonDown), 0, this);
     animationCanvas->Connect(wxEVT_LEFT_UP, wxMouseEventHandler(AnimationSpritePage::onAnimationLButtonUp), 0, this);
     animationCanvas->Connect(wxEVT_MOTION, wxMouseEventHandler(AnimationSpritePage::onAnimationMouseMove), 0, this);
-    animationCanvas->Connect(wxEVT_ERASE_BACKGROUND, wxEraseEventHandler(AnimationSpritePage::onEraseBackground), 0, this);
-
+    animationReview->Connect(wxEVT_ERASE_BACKGROUND, wxEraseEventHandler(AnimationSpritePage::onEraseBackground), 0, this);
 
     frameCanvas->Connect(wxEVT_SIZE, wxSizeEventHandler(AnimationSpritePage::onFrameSize), 0, this);
     frameCanvas->Connect(wxEVT_LEFT_DOWN, wxMouseEventHandler(AnimationSpritePage::onFrameLButtonDown), 0, this);
     frameCanvas->Connect(wxEVT_LEFT_UP, wxMouseEventHandler(AnimationSpritePage::onFrameLButtonUp), 0, this);
     frameCanvas->Connect(wxEVT_MOTION, wxMouseEventHandler(AnimationSpritePage::onFrameMouseMove), 0, this);
-    frameCanvas->Connect(wxEVT_ERASE_BACKGROUND, wxEraseEventHandler(AnimationSpritePage::onEraseBackground), 0, this);
+    frameReview->Connect(wxEVT_ERASE_BACKGROUND, wxEraseEventHandler(AnimationSpritePage::onEraseBackground), 0, this);
 
     Connect(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(AnimationSpritePage::onMenuSelected), 0, this);
 }

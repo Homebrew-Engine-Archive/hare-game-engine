@@ -23,6 +23,9 @@ SpriteMIMEHandler::SpriteMIMEHandler()
 
 bool SpriteMIMEHandler::canHandle(const wxString& filename) const
 {
+    if (!filename.Lower().EndsWith(wxT(".sprite")))
+        return false;
+
     Object::Ptr obj = Object::importObject(filename.ToUTF8().data());
 
     if (obj->getClassInfo()->isDerivedFrom(&ImageSprite::CLASS_INFO))

@@ -13,6 +13,7 @@
 #include "PCH.h"
 #include "AnimationSpritePage.h"
 #include <wx/xrc/xmlres.h>
+#include <wx/splitter.h>
 
 enum TreeMenu
 {
@@ -32,6 +33,8 @@ AnimationSpritePage::AnimationSpritePage(wxWindow* parent, SpriteMIMEHandler* ha
     treeCtrl = XRCCTRL(*this, "idAnimationTree", wxTreeCtrl);
     animationReview = XRCCTRL(*this, "idAnimationReview", wxPanel);
     frameReview = XRCCTRL(*this, "idFrameReview", wxPanel);
+    wxSplitterWindow* splitter = XRCCTRL(*this, "idSplitterH", wxSplitterWindow);
+    splitter->SetSashPosition(parent->GetSize().GetHeight() / 2);
 
     treeRootID = treeCtrl->AddRoot(wxT("AnimationSprite"));
 

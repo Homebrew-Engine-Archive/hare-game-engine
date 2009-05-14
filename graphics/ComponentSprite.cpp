@@ -42,8 +42,8 @@ namespace hare
     {
         Sprite::List::iterator it = components.begin();
         for (;it != components.end(); ++it){
-            int origoX = origoPos.x;
-            int origoY = origoPos.y;
+            float origoX = origoPos.x;
+            float origoY = origoPos.y;
 
             if (!bFaceX){
                 origoX = -origoX;

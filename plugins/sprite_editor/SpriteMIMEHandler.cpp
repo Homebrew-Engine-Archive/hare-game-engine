@@ -13,6 +13,7 @@
 #include "PCH.h"
 #include "SpriteMIMEHandler.h"
 #include "ImageSpritePage.h"
+#include "AnimationSpritePage.h"
 
 SpriteMIMEHandler::SpriteMIMEHandler()
 {
@@ -78,7 +79,26 @@ bool SpriteMIMEHandler::newPageImageSprite(ImageSprite* imageSprite, bool isModi
 
 bool SpriteMIMEHandler::newPageAnimationSprite(AnimationSprite* animation, bool isModified)
 {
-    return false;
+    EditorPageManager* epm = Manager::getInstancePtr()->getEditorPageManager();
+
+    epm->getNotebook()->Freeze();
+    AnimationSpritePage* page = new AnimationSpritePage(epm->getNotebook(), this);
+    epm->addEditorPage(page);
+    epm->getNotebook()->Thaw();
+
+    page->setAnimationSprite(animation);
+
+    if (isModified)
+        page->setModified(isModified);
+
+    int index = epm->getNotebook()->GetPageIndex(page);
+
+    if (index != -1)
+        epm->getNotebook()->SetSelection(index);
+
+    return true;
+    
+
 }
 
 bool SpriteMIMEHandler::newPageComponentSprite(ComponentSprite* component, bool isModified)

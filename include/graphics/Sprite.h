@@ -44,11 +44,16 @@ namespace hare
 
         void setFaceY(bool b);
 
+        void setSpriteName(const String& name);
+
+        const String& getSpriteName();
+
     protected:
         PointF origoPos;
         PointF pos;
         bool   bFaceX;
         bool   bFaceY;
+        String spriteName;
     
     };
 }

@@ -21,7 +21,7 @@ namespace hare
     HARE_IMPLEMENT_DYNAMIC_CLASS(ImageSprite, Sprite, 0)
     {
         HARE_META_F(rectUV, RectF, propHide)
-        HARE_OBJ(mtrl, Material)   
+        HARE_OBJ_F(mtrl, Material, propHide)   
     }
 
     ImageSprite::ImageSprite()

@@ -24,7 +24,7 @@ namespace hare
 	}
 
 	AnimFrame::AnimFrame()
-		:frameTime(0)
+		:frameTime(1)
 	{
 
 	}
@@ -78,11 +78,15 @@ namespace hare
 
 	HARE_IMPLEMENT_DYNAMIC_CLASS(AnimationSprite, Sprite, 0)
 	{
-		HARE_OBJ_LIST(animFrameList, AnimFrame)
+		HARE_OBJ_ARRAY(animFrameList, AnimFrame)
 	}
 
 	AnimationSprite::AnimationSprite()
 		:curAnimFrameID(0)
+        ,bStop(true)
+        ,bPause(false)
+        ,bPlayOnce(false)
+        ,frameStartTime(0)
 	{
 
 	}
@@ -94,10 +98,14 @@ namespace hare
 
 	void AnimationSprite::frameMove()
 	{
-		static float frameStartTime = 0;
-
 		if (!animFrame)
 			return;
+
+        if (bStop)
+            return;
+
+        if (bPause)
+            return;
 
 		frameStartTime += getTimer().getDeltaTime();
 
@@ -105,6 +113,9 @@ namespace hare
 			curAnimFrameID = (curAnimFrameID + 1) % animFrameList.size();
 			animFrame = getFrame(curAnimFrameID);
 			frameStartTime = 0;
+            if (bPlayOnce && curAnimFrameID == 0){
+                stop();
+            }
 		}
 	}
 
@@ -132,7 +143,7 @@ namespace hare
 
 	void AnimationSprite::move(float dx, float dy)
 	{
-        AnimFrame::List::iterator it = animFrameList.begin();
+        AnimFrame::Array::iterator it = animFrameList.begin();
         for (;it != animFrameList.end(); ++it){
             (*it)->move(dx, dy);
         }
@@ -140,7 +151,7 @@ namespace hare
 
 	void AnimationSprite::moveTo(float x, float y)
 	{
-        AnimFrame::List::iterator it = animFrameList.begin();
+        AnimFrame::Array::iterator it = animFrameList.begin();
         for (;it != animFrameList.end(); ++it){
             (*it)->moveTo(x, y);
         }
@@ -149,17 +160,17 @@ namespace hare
     int AnimationSprite::addFrame(AnimFrame* frame)
     {
         animFrameList.push_back(frame);
-        curAnimFrameID = 0;
-        animFrame = getFrame(curAnimFrameID);
+        resetAnimation();
         return animFrameList.size() - 1;
     }
 
     bool AnimationSprite::insertFrame(int frameID, AnimFrame* frame)
     {
-        AnimFrame::List::iterator it = getFrameIT(frameID);
+        AnimFrame::Array::iterator it = getFrameIT(frameID);
         
         if (it != animFrameList.end()){
             animFrameList.insert(it, frame);
+            resetAnimation();
             return true;
         }
 
@@ -168,20 +179,22 @@ namespace hare
 
     AnimFrame* AnimationSprite::getFrame(int frameID)
     {
-        AnimFrame::List::iterator it = getFrameIT(frameID);
-
-        if (it != animFrameList.end())
-            return *it;
-        else 
+        if (frameID < 0)
             return NULL;
+
+        if (frameID >= (int)animFrameList.size())
+            return NULL;
+
+        return animFrameList[frameID];
     }
 
     bool AnimationSprite::removeFrame(int frameID)
     {
-        AnimFrame::List::iterator it = getFrameIT(frameID);
+        AnimFrame::Array::iterator it = getFrameIT(frameID);
 
         if (it != animFrameList.end()){
             animFrameList.erase(it);
+            resetAnimation();
             return true;
         }else{
             return false;
@@ -190,10 +203,11 @@ namespace hare
 
     bool AnimationSprite::removeFrame(AnimFrame* frame)
     {
-        AnimFrame::List::iterator it = std::find(animFrameList.begin(), animFrameList.end(), frame);
+        AnimFrame::Array::iterator it = std::find(animFrameList.begin(), animFrameList.end(), frame);
     
         if (it != animFrameList.end()){
             animFrameList.erase(it);
+            resetAnimation();
             return true;
         }else{
             return false;
@@ -205,23 +219,21 @@ namespace hare
         if (frameID_1 == frameID_2)
             return true;
 
-        AnimFrame::Ptr anim = getFrame(frameID_1);
-        if (!anim)
+        AnimFrame::Ptr anim_1 = getFrame(frameID_1);
+        if (!anim_1)
             return false;
 
-        AnimFrame::List::iterator it = getFrameIT(frameID_2);
-        if (it == animFrameList.end())
+        AnimFrame::Ptr anim_2 = getFrame(frameID_2);
+        if (!anim_2)
             return false;
 
-        if (!removeFrame(frameID_1))
-            return false;
-
-        animFrameList.insert(it, anim);
+        animFrameList[frameID_1] = anim_2;
+        animFrameList[frameID_2] = anim_1;
 
         return false;
     }
 
-    AnimFrame::List::iterator AnimationSprite::getFrameIT(int frameID)
+    AnimFrame::Array::iterator AnimationSprite::getFrameIT(int frameID)
     {
         if (frameID < 0)
             return animFrameList.end();
@@ -229,10 +241,50 @@ namespace hare
         if (frameID >= (int)animFrameList.size())
             return animFrameList.end();
 
-        AnimFrame::List::iterator it = animFrameList.begin();
+        AnimFrame::Array::iterator it = animFrameList.begin();
         for (int i = 0; i < frameID; ++i, ++it);
 
         return it;
+    }
+
+    void AnimationSprite::resetAnimation()
+    {
+        curAnimFrameID = 0;
+        animFrame = getFrame(curAnimFrameID);
+        frameStartTime = 0;
+    }
+
+    void AnimationSprite::play()
+    {
+        bStop = false;
+        bPlayOnce = false;
+        bPause = false;
+        resetAnimation();
+    }
+
+    void AnimationSprite::playAction()
+    {
+        bStop = false;
+        bPlayOnce = true;
+        bPause = false;
+        resetAnimation();
+    }
+
+    void AnimationSprite::pause()
+    {
+        bPause = true;
+    }
+
+    void AnimationSprite::resume()
+    {
+        bPause = false;
+    }
+
+    void AnimationSprite::stop()
+    {
+        bPause = false;
+        bStop = true;
+        resetAnimation();
     }
 
 }

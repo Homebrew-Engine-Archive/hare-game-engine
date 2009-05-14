@@ -88,7 +88,16 @@ Object* SpriteWizard::wizard(int index)
         break;
     case 2:
         {
+            Object::Ptr object = spriteClasses[index]->createObject();
 
+            if (object){
+                EditorPlugin* plugin = PluginManager::getInstancePtr()->findPluginByName(wxT("spriteMIMEHandler"));
+                if (plugin && plugin->getType() == EPT_MIMEHandler){
+                    AnimationSprite* sprite = (AnimationSprite*)object.pointer();
+                    SpriteMIMEHandler* handler = (SpriteMIMEHandler*)plugin;
+                    handler->newPageAnimationSprite(sprite);
+                }
+            }
         }
         break;
     }

@@ -78,14 +78,32 @@ namespace hare
 
         virtual void endScene();
 
-	protected:
-		void frameMove();
-        AnimFrame::List::iterator getFrameIT(int frameID);
+        //循环播放
+        void play();
+
+        //播放一次
+        void playAction();
+
+        void pause();
+
+        void resume();
+
+        void stop();
 
 	protected:
-		AnimFrame::List animFrameList;
+		void frameMove();
+        AnimFrame::Array::iterator getFrameIT(int frameID);
+        void resetAnimation();
+
+	protected:
+        AnimFrame::Array animFrameList;
 		uint32 curAnimFrameID;
         AnimFrame::Ptr animFrame;
+
+        bool bStop;
+        bool bPause;
+        bool bPlayOnce;
+        float frameStartTime;
 
 	};
 

@@ -18,10 +18,12 @@ namespace hare
     HARE_IMPLEMENT_ABSTRACT_CLASS(Sprite, Object, 0)
     {
         HARE_META(origoPos, PointF)
+        HARE_META(spriteName, String)
     }
 
 	Sprite::Sprite()
         :origoPos(0, 0)
+        ,pos(0,0)
         ,bFaceX(true)
         ,bFaceY(true)
 	{
@@ -65,5 +67,15 @@ namespace hare
     void Sprite::setFaceY(bool b)
     {
         bFaceY = b;
+    }
+
+    void Sprite::setSpriteName(const String& name)
+    {
+        spriteName = name;
+    }
+
+    const String& Sprite::getSpriteName()
+    {
+        return spriteName;
     }
 }

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<resource xmlns="http://www.wxwindows.org/wxxrc" version="2.3.0.1">
+	<object class="wxPanel" name="idAnimationPanel">
+		<style>wxTAB_TRAVERSAL</style>
+		<size>500,300</size>
+		<object class="wxBoxSizer">
+			<orient>wxVERTICAL</orient>
+			<object class="sizeritem">
+				<option>1</option>
+				<flag>wxEXPAND</flag>
+				<border>5</border>
+				<object class="wxSplitterWindow" name="m_splitter1">
+					<style>wxSP_3D</style>
+					<sashpos>0</sashpos>
+					<gravity>0</gravity>
+					<minsize>0</minsize>
+					<orientation>vertical</orientation>
+					<object class="wxPanel" name="m_panel3">
+						<style>wxTAB_TRAVERSAL</style>
+						<object class="wxBoxSizer">
+							<orient>wxVERTICAL</orient>
+							<object class="sizeritem">
+								<option>1</option>
+								<flag>wxEXPAND</flag>
+								<border>5</border>
+								<object class="wxTreeCtrl" name="idAnimationTree">
+									<style>wxTR_DEFAULT_STYLE</style>
+								</object>
+							</object>
+						</object>
+					</object>
+					<object class="wxPanel" name="m_panel4">
+						<style>wxTAB_TRAVERSAL</style>
+						<object class="wxBoxSizer">
+							<orient>wxVERTICAL</orient>
+							<object class="sizeritem">
+								<option>1</option>
+								<flag>wxEXPAND</flag>
+								<border>5</border>
+								<object class="wxSplitterWindow" name="m_splitter2">
+									<style>wxSP_3D</style>
+									<sashpos>0</sashpos>
+									<gravity>0</gravity>
+									<minsize>0</minsize>
+									<orientation>horizontal</orientation>
+									<object class="wxPanel" name="idAnimationReview">
+										<style>wxTAB_TRAVERSAL</style>
+									</object>
+									<object class="wxPanel" name="idFrameReview">
+										<style>wxTAB_TRAVERSAL</style>
+									</object>
+								</object>
+							</object>
+						</object>
+					</object>
+				</object>
+			</object>
+		</object>
+	</object>
+</resource>

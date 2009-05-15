@@ -49,7 +49,7 @@
 											<orient>wxVERTICAL</orient>
 											<object class="sizeritem">
 												<option>0</option>
-												<flag>wxEXPAND</flag>
+												<flag></flag>
 												<border>5</border>
 												<object class="wxBoxSizer">
 													<orient>wxHORIZONTAL</orient>
@@ -82,12 +82,6 @@
 															<label>Loop</label>
 															<checked>0</checked>
 														</object>
-													</object>
-													<object class="spacer">
-														<option>1</option>
-														<flag>wxEXPAND</flag>
-														<border>5</border>
-														<size>0,0</size>
 													</object>
 												</object>
 											</object>

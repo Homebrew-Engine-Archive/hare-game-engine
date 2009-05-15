@@ -59,7 +59,7 @@ namespace hare
 
     void ComponentSprite::beginScene()
     {
-
+        moveTo(pos.x, pos.y);
     }
 
     void ComponentSprite::renderScene()

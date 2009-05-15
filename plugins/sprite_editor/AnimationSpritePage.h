@@ -34,14 +34,13 @@ public:
 
     void setAnimationSprite(AnimationSprite* sprite);
     void addAnimationFrame(AnimFrame* frame);
+    void setCurSelFrame(AnimFrame* frame);
     void updateTitle();
 
 protected:
     wxTreeCtrl* treeCtrl;
     wxPanel*    animationReview;
     wxPanel*    frameReview;
-
-    wxTreeItemId treeRootID;
 
     SpriteMIMEHandler* mime;
 
@@ -51,13 +50,23 @@ protected:
     SceneManager* frameScene;
 
     AnimationSprite::Ptr animationSprite;
+    AnimFrame::Ptr curSelFrame;
 
     bool isModified;
+
+    wxPoint animationMousePos;
+    wxPoint frameMousePos;
+
+    wxTreeItemId rightMouseHitItem;
 
 protected:
     void onBeginDrag(wxTreeEvent& event);
     void onEndDrag(wxTreeEvent& event);
+    void onSelChanged(wxTreeEvent& event);
+    void OnItemRClick(wxTreeEvent& event);
     void onRMouseDown(wxMouseEvent& event);
+    
+
 
     void onAnimationSize(wxSizeEvent& event);
     void onAnimationLButtonDown(wxMouseEvent& event);

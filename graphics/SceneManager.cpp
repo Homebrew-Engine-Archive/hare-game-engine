@@ -82,6 +82,11 @@ namespace hare
 
 	}
 
+    void SceneManager::removeAllSprite()
+    {
+        spriteList.clear();
+    }
+
 	void SceneManager::setSceneListener(SceneListenerBase* listener)
 	{
 		sceneListener = listener;

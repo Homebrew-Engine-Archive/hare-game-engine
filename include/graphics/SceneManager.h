@@ -38,6 +38,8 @@ namespace hare
 
 		void removeSprite(Sprite* sprite);
 
+        void removeAllSprite();
+
 		void setSceneListener(SceneListenerBase* listener);
 
 	protected:

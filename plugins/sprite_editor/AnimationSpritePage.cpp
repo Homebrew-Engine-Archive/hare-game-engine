@@ -21,6 +21,12 @@ enum TreeMenu
     TM_Delete,
 };
 
+class AnimFrameTreeItemData : public wxTreeItemData
+{
+public:
+    AnimFrame::Ptr frame;
+};
+
 IMPLEMENT_ABSTRACT_CLASS(AnimationSpritePage, EditorPage)
 
 AnimationSpritePage::AnimationSpritePage(wxWindow* parent, SpriteMIMEHandler* handler)
@@ -36,7 +42,7 @@ AnimationSpritePage::AnimationSpritePage(wxWindow* parent, SpriteMIMEHandler* ha
     wxSplitterWindow* splitter = XRCCTRL(*this, "idSplitterH", wxSplitterWindow);
     splitter->SetSashPosition(parent->GetSize().GetHeight() / 2);
 
-    treeRootID = treeCtrl->AddRoot(wxT("AnimationSprite"));
+    treeCtrl->AddRoot(wxT("AnimationSprite"));
 
     animationCanvas = new wxHareCanvas(animationReview);
     animationReview->GetSizer()->Add(animationCanvas, 1, wxEXPAND|wxALL, 0);
@@ -52,7 +58,11 @@ AnimationSpritePage::AnimationSpritePage(wxWindow* parent, SpriteMIMEHandler* ha
 
     treeCtrl->Connect(wxEVT_COMMAND_TREE_BEGIN_DRAG, wxTreeEventHandler(AnimationSpritePage::onBeginDrag), 0, this);
     treeCtrl->Connect(wxEVT_COMMAND_TREE_END_DRAG, wxTreeEventHandler(AnimationSpritePage::onEndDrag), 0, this);
+    treeCtrl->Connect(wxEVT_COMMAND_TREE_SEL_CHANGED, wxTreeEventHandler(AnimationSpritePage::onSelChanged), 0, this);
+    treeCtrl->Connect(wxEVT_COMMAND_TREE_ITEM_RIGHT_CLICK, wxTreeEventHandler(AnimationSpritePage::OnItemRClick), 0, this);
+
     treeCtrl->Connect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(AnimationSpritePage::onRMouseDown), 0, this);
+
 
     animationCanvas->Connect(wxEVT_SIZE, wxSizeEventHandler(AnimationSpritePage::onAnimationSize), 0, this);
     animationCanvas->Connect(wxEVT_LEFT_DOWN, wxMouseEventHandler(AnimationSpritePage::onAnimationLButtonDown), 0, this);
@@ -91,7 +101,8 @@ bool AnimationSpritePage::saveAs()
 
 void AnimationSpritePage::beginScene()
 {
-
+    if (curSelFrame)
+        curSelFrame->getSprite()->moveTo(0, 0);
 }
 
 void AnimationSpritePage::endScene()
@@ -101,6 +112,9 @@ void AnimationSpritePage::endScene()
 
 void AnimationSpritePage::renderScene()
 {
+    if (curSelFrame)
+        curSelFrame->getSprite()->moveTo(0, 0);
+
     RenderWindow* renderwindow = RenderSystem::getSingletonPtr()->getCurRenderWindow();
     if (!renderwindow)
         return;
@@ -120,6 +134,7 @@ void AnimationSpritePage::setAnimationSprite(AnimationSprite* sprite)
     animationSprite = sprite;
     animationSprite->play();
     animationSprite->moveTo(0,0);
+    animationSprite->setOrigoPos(0,0);
     animationScene->addSprite(animationSprite);
 
 }
@@ -130,6 +145,21 @@ void AnimationSpritePage::addAnimationFrame(AnimFrame* frame)
         return;
 
     animationSprite->addFrame(frame);
+}
+
+void AnimationSpritePage::setCurSelFrame(AnimFrame* frame)
+{
+    if (!animationSprite)
+        return;
+    
+    frameScene->removeAllSprite();
+    Manager::getInstancePtr()->getExplorerManager()->removeAllProperties();       
+
+    curSelFrame = frame;
+    if (frame){
+        frameScene->addSprite(frame->getSprite());
+        Manager::getInstancePtr()->getExplorerManager()->bindProperty(wxT("AnimFrameProperity"), curSelFrame);
+    }
 }
 
 void AnimationSpritePage::updateTitle()
@@ -144,6 +174,20 @@ void AnimationSpritePage::onBeginDrag(wxTreeEvent& event)
 
 void AnimationSpritePage::onEndDrag(wxTreeEvent& event)
 {
+
+}
+
+void AnimationSpritePage::onSelChanged(wxTreeEvent& event)
+{
+    wxTreeItemId itemId = event.GetItem();
+    if (itemId == treeCtrl->GetRootItem()){
+        setCurSelFrame(NULL);
+        Manager::getInstancePtr()->getExplorerManager()->removeAllProperties();
+        Manager::getInstancePtr()->getExplorerManager()->bindProperty(wxT("AnimationSpriteProperity"), animationSprite);
+    }else{
+        AnimFrameTreeItemData* data = (AnimFrameTreeItemData*)treeCtrl->GetItemData(itemId);
+        setCurSelFrame(data->frame);
+    }
 
 }
 
@@ -168,13 +212,31 @@ void AnimationSpritePage::onMenuSelected(wxCommandEvent& event)
                 if (imported && imported->isA(&Sprite::CLASS_INFO)){
                     frame->setSprite(imported);
                     addAnimationFrame(frame);
+                    AnimFrameTreeItemData* data = new AnimFrameTreeItemData;
+                    data->frame = frame;
+                    treeCtrl->AppendItem(treeCtrl->GetRootItem(), wxString::FromUTF8(imported->CLASS_INFO.getClassName()), -1, -1, data);
                 }
             }
         }
         break;
     case TM_Delete:
         {
+            if (!rightMouseHitItem.IsOk())
+                break;
 
+            AnimFrameTreeItemData* data = (AnimFrameTreeItemData*)treeCtrl->GetItemData(rightMouseHitItem);
+            
+            animationSprite->removeFrame(data->frame);       
+            
+            if (data->frame == curSelFrame){
+                setCurSelFrame(NULL);
+                Manager::getInstancePtr()->getExplorerManager()->removeAllProperties();
+                Manager::getInstancePtr()->getExplorerManager()->bindProperty(wxT("AnimationSpriteProperity"), animationSprite);
+                treeCtrl->SelectItem(treeCtrl->GetRootItem());
+               
+            }
+
+            treeCtrl->Delete(rightMouseHitItem);
         }
         break;
     default:
@@ -183,12 +245,28 @@ void AnimationSpritePage::onMenuSelected(wxCommandEvent& event)
     
 }
 
+void AnimationSpritePage::OnItemRClick(wxTreeEvent& event)
+{
+    rightMouseHitItem = event.GetItem();
+
+    wxMenu menu(wxT("menu for AnimationSprite"));
+    menu.Append(TM_Delete, wxT("delete a frame"));
+    PopupMenu(&menu);
+    event.Skip();
+}
+
 void AnimationSpritePage::onRMouseDown(wxMouseEvent& event)
 {
+    wxTreeItemId id = treeCtrl->HitTest(event.GetPosition());
+    if (id){
+        event.Skip();
+        return;
+    }
+        
     wxMenu menu(wxT("menu for AnimationSprite"));
     menu.Append(TM_Add, wxT("add a frame"));
     PopupMenu(&menu);
-    event.Skip();
+
 }
 
 void AnimationSpritePage::onAnimationSize(wxSizeEvent& event)
@@ -203,17 +281,41 @@ void AnimationSpritePage::onAnimationSize(wxSizeEvent& event)
 
 void AnimationSpritePage::onAnimationLButtonDown(wxMouseEvent& event)
 {
+    animationCanvas->CaptureMouse();
+    if (!animationSprite || animationSprite->getFrameCount() == 0)
+        return;
 
+    animationMousePos = event.GetPosition();
+
+    setCurSelFrame(NULL);
+    Manager::getInstancePtr()->getExplorerManager()->removeAllProperties();
+    Manager::getInstancePtr()->getExplorerManager()->bindProperty(wxT("AnimationSpriteProperity"), animationSprite);
+    treeCtrl->SelectItem(treeCtrl->GetRootItem());
 }
 
 void AnimationSpritePage::onAnimationLButtonUp(wxMouseEvent& event)
 {
+    if (animationCanvas->HasCapture())
+        animationCanvas->ReleaseMouse();
 
+    if (!animationSprite || animationSprite->getFrameCount() == 0)
+        return;
+
+    Manager::getInstancePtr()->getExplorerManager()->removeAllProperties();
+    Manager::getInstancePtr()->getExplorerManager()->bindProperty(wxT("AnimationSpriteProperity"), animationSprite);
 }
 
 void AnimationSpritePage::onAnimationMouseMove(wxMouseEvent& event)
 {
+    if (!animationSprite || animationSprite->getFrameCount() == 0)
+        return;
 
+    if (event.Dragging() && event.LeftIsDown()){
+        wxPoint offset = event.GetPosition() - animationMousePos;
+        animationMousePos = event.GetPosition();
+        animationSprite->moveOrigoPos(offset.x, offset.y);
+        setModified(true);
+    }
 }
 
 void AnimationSpritePage::onFrameSize(wxSizeEvent& event)
@@ -228,17 +330,39 @@ void AnimationSpritePage::onFrameSize(wxSizeEvent& event)
 
 void AnimationSpritePage::onFrameLButtonDown(wxMouseEvent& event)
 {
+    frameCanvas->CaptureMouse();
+    if (!curSelFrame)
+        return;
 
+    frameMousePos = event.GetPosition(); 
+
+    Manager::getInstancePtr()->getExplorerManager()->removeAllProperties();
+    Manager::getInstancePtr()->getExplorerManager()->bindProperty(wxT("AnimFrameProperity"), curSelFrame);
 }
 
 void AnimationSpritePage::onFrameLButtonUp(wxMouseEvent& event)
 {
+    if (frameCanvas->HasCapture())
+        frameCanvas->ReleaseMouse();
+    
+    if (!curSelFrame)
+        return;
 
+    Manager::getInstancePtr()->getExplorerManager()->removeAllProperties();
+    Manager::getInstancePtr()->getExplorerManager()->bindProperty(wxT("AnimFrameProperity"), curSelFrame);
 }
 
 void AnimationSpritePage::onFrameMouseMove(wxMouseEvent& event)
 {
+    if (!curSelFrame)
+        return;
 
+    if (event.Dragging() && event.LeftIsDown()){
+        wxPoint offset = event.GetPosition() - frameMousePos;
+        frameMousePos = event.GetPosition();
+        curSelFrame->getSprite()->moveOrigoPos(offset.x, offset.y);
+        setModified(true);
+    }
 }
 
 void AnimationSpritePage::onEraseBackground(wxEraseEvent& event)

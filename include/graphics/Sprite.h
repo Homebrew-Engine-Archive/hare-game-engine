@@ -40,6 +40,8 @@ namespace hare
 
         const PointF& getOrigoPos();
 
+        const PointF& getPosition();
+
         void setFaceX(bool b);
 
         void setFaceY(bool b);

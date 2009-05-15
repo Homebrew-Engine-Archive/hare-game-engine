@@ -59,6 +59,11 @@ namespace hare
         pos.x = x; pos.y = y;
     }
 
+    const PointF& Sprite::getPosition()
+    {
+        return pos;
+    }
+
     void Sprite::setFaceX(bool b)
     {
         bFaceX = b;

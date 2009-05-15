@@ -68,6 +68,8 @@ namespace hare
 
         bool swapFrame(int frameID_1, int frameID_2);
 
+        uint32 getFrameCount();
+
         virtual void move(float dx, float dy);
 
         virtual void moveTo(float x, float y);

@@ -21,6 +21,7 @@ namespace hare
 	HARE_IMPLEMENT_DYNAMIC_CLASS(AnimFrame, Object, 0)
 	{
         HARE_META(frameTime, float)
+        HARE_OBJ(sprite, Sprite)
 	}
 
 	AnimFrame::AnimFrame()
@@ -131,6 +132,7 @@ namespace hare
 
     void AnimationSprite::renderScene()
     {
+        moveTo(pos.x, pos.y);
         if (animFrame)
             animFrame->renderScene();
     }
@@ -153,7 +155,18 @@ namespace hare
 	{
         AnimFrame::Array::iterator it = animFrameList.begin();
         for (;it != animFrameList.end(); ++it){
-            (*it)->moveTo(x, y);
+            float origoX = origoPos.x;
+            float origoY = origoPos.y;
+
+            if (!bFaceX){
+                origoX = -origoX;
+            }
+
+            if (!bFaceY){
+                origoY = -origoY;
+            }
+
+            (*it)->moveTo(x + origoX, y + origoY);
         }
 	}
 
@@ -231,6 +244,11 @@ namespace hare
         animFrameList[frameID_2] = anim_1;
 
         return false;
+    }
+
+    uint32 AnimationSprite::getFrameCount()
+    {
+        return animFrameList.size();
     }
 
     AnimFrame::Array::iterator AnimationSprite::getFrameIT(int frameID)

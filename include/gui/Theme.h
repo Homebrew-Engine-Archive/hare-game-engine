@@ -11,6 +11,12 @@ namespace hare
     public:
         virtual ClassInfo* getWindowClass() = 0;
         virtual void render(Window* window) = 0;
+
+        Material* getMaterial() { return mtrl; }
+        void setMaterial(Material* mat) { mtrl = mat; }
+
+    protected:
+        Material::Ptr mtrl;
     };
 
     typedef HashMap<String, Theme*> ThemeHashMap;

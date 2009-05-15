@@ -27,9 +27,13 @@ namespace hare
     HARE_IMPLEMENT_DYNAMIC_CLASS(ButtonTheme, Theme, 0)
     {
         HARE_GUI_UV(rectNormal)
+        HARE_GUI_UV(rectNormalInner)
         HARE_GUI_UV(rectHover)
+        HARE_GUI_UV(rectHoverInner)
         HARE_GUI_UV(rectPushed)
+        HARE_GUI_UV(rectPushedInner)
         HARE_GUI_UV(rectDisabled)
+        HARE_GUI_UV(rectDisabledInner)
     }
 
     void ButtonTheme::render(Window* window)

@@ -24,7 +24,7 @@
 								<flag>wxEXPAND</flag>
 								<border>5</border>
 								<object class="wxTreeCtrl" name="idTreeView">
-									<style>wxTR_DEFAULT_STYLE|wxSTATIC_BORDER</style>
+									<style>wxTR_DEFAULT_STYLE|wxNO_BORDER</style>
 								</object>
 							</object>
 						</object>
@@ -46,7 +46,7 @@
 										<object class="wxTextCtrl" name="idTextUrl">
 											<style>wxSTATIC_BORDER</style>
 											<enabled>0</enabled>
-											<value></value>
+											<value>[Import UVResource File From File System]</value>
 											<maxlength>0</maxlength>
 										</object>
 									</object>
@@ -73,24 +73,88 @@
 									<minsize>10</minsize>
 									<orientation>horizontal</orientation>
 									<object class="wxPanel" name="idPanelT">
-										<style>wxSTATIC_BORDER|wxTAB_TRAVERSAL</style>
+										<style>wxNO_BORDER|wxTAB_TRAVERSAL</style>
 										<object class="wxBoxSizer">
 											<orient>wxVERTICAL</orient>
 											<object class="sizeritem">
 												<option>1</option>
 												<flag>wxEXPAND</flag>
 												<border>5</border>
-												<object class="wxListBox" name="idListBox">
-													<style>wxSTATIC_BORDER</style>
-													<content />
+												<object class="wxSplitterWindow" name="idSplitterAB">
+													<style>wxSP_3D</style>
+													<sashpos>184</sashpos>
+													<gravity>0</gravity>
+													<minsize>0</minsize>
+													<orientation>vertical</orientation>
+													<object class="wxPanel" name="idPanelA">
+														<style>wxTAB_TRAVERSAL</style>
+														<object class="wxBoxSizer">
+															<orient>wxVERTICAL</orient>
+															<object class="sizeritem">
+																<option>1</option>
+																<flag>wxEXPAND</flag>
+																<border>5</border>
+																<object class="wxListBox" name="idListBox">
+																	<style>wxNO_BORDER</style>
+																	<content />
+																</object>
+															</object>
+														</object>
+													</object>
+													<object class="wxPanel" name="idPanelB">
+														<style>wxTAB_TRAVERSAL</style>
+														<object class="wxBoxSizer">
+															<orient>wxVERTICAL</orient>
+														</object>
+													</object>
 												</object>
 											</object>
 										</object>
 									</object>
-									<object class="wxPanel" name="idPanelB">
-										<style>wxSTATIC_BORDER|wxTAB_TRAVERSAL</style>
+									<object class="wxPanel" name="idPanelC">
+										<style>wxNO_BORDER|wxTAB_TRAVERSAL</style>
 										<object class="wxBoxSizer">
 											<orient>wxVERTICAL</orient>
+											<object class="sizeritem">
+												<option>0</option>
+												<flag>wxEXPAND</flag>
+												<border>5</border>
+												<object class="wxBoxSizer">
+													<orient>wxHORIZONTAL</orient>
+													<object class="sizeritem">
+														<option>1</option>
+														<flag>wxEXPAND</flag>
+														<border>5</border>
+														<object class="wxTextCtrl" name="idTextUrlLayout">
+															<style>wxSTATIC_BORDER</style>
+															<enabled>0</enabled>
+															<value>[Import Layout File From File System]</value>
+															<maxlength>0</maxlength>
+														</object>
+													</object>
+													<object class="sizeritem">
+														<option>0</option>
+														<flag></flag>
+														<border>5</border>
+														<object class="wxButton" name="idBtnBrowseLayout">
+															<size>22,22</size>
+															<label>...</label>
+															<default>0</default>
+														</object>
+													</object>
+												</object>
+											</object>
+											<object class="sizeritem">
+												<option>1</option>
+												<flag>wxEXPAND</flag>
+												<border>5</border>
+												<object class="wxPanel" name="idPanelD">
+													<style>wxTAB_TRAVERSAL</style>
+													<object class="wxBoxSizer">
+														<orient>wxVERTICAL</orient>
+													</object>
+												</object>
+											</object>
 										</object>
 									</object>
 								</object>

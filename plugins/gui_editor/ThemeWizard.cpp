@@ -163,13 +163,12 @@ Object* ThemeWizard::wizard(int index)
 
         if (themes)
         {
-            themes->saveToXml("/editor/default.theme");
-            /*EditorPlugin* plugin = PluginManager::getInstancePtr()->findPluginByName(wxT("ThemeMIMEHandler"));
+            EditorPlugin* plugin = PluginManager::getInstancePtr()->findPluginByName(wxT("ThemeMIMEHandler"));
             if (plugin && plugin->getType() == EPT_MIMEHandler)
             {
                 ThemeMIMEHandler* handler = (ThemeMIMEHandler*)plugin;
-                handler->setThemePackage(themes, true);
-            }*/
+                handler->newPage(themes, true);
+            }
         }
     }
 

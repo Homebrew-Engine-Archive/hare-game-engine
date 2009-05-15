@@ -6,6 +6,7 @@ namespace hare
 {
     HARE_IMPLEMENT_ABSTRACT_CLASS(Theme, Object, 0)
     {
+        HARE_OBJ_F(mtrl, Material, propImport)
     }
 
     HARE_IMPLEMENT_DYNAMIC_CLASS(ThemePackage, Object, 0)

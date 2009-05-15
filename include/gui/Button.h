@@ -42,7 +42,6 @@ namespace hare
         virtual void render(Window* window);
 
     protected:
-        Material::Ptr mtrl;
         RectUV rectNormal;
         RectUV rectNormalInner;
         RectUV rectHover;

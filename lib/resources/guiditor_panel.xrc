@@ -114,7 +114,7 @@
 					<style>wxSP_3D</style>
 					<sashpos>189</sashpos>
 					<gravity>0</gravity>
-					<minsize>0</minsize>
+					<minsize>10</minsize>
 					<orientation>vertical</orientation>
 					<object class="wxPanel" name="idPanelL">
 						<style>wxTAB_TRAVERSAL</style>

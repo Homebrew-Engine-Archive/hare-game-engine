@@ -47,22 +47,10 @@ namespace hare
             sprite->moveTo(x, y);
     }
 
-    void AnimFrame::beginScene()
+    void AnimFrame::render()
     {
         if (sprite)
-            sprite->beginScene();
-    }
-
-    void AnimFrame::renderScene()
-    {
-        if (sprite)
-            sprite->renderScene();
-    }
-
-    void AnimFrame::endScene()
-    {
-        if (sprite)
-            sprite->endScene();
+            sprite->render();
     }
 
     void AnimFrame::setSprite(Sprite* s)
@@ -120,27 +108,16 @@ namespace hare
 		}
 	}
 
-    void AnimationSprite::beginScene()
+    void AnimationSprite::render()
     {
         if (!animFrame)
             return;
 
         frameMove();
 
-        animFrame->beginScene();
-    }
-
-    void AnimationSprite::renderScene()
-    {
         moveTo(pos.x, pos.y);
-        if (animFrame)
-            animFrame->renderScene();
-    }
 
-    void AnimationSprite::endScene()
-    {
-        if (animFrame)
-            animFrame->endScene();
+        animFrame->render();
     }
 
 	void AnimationSprite::move(float dx, float dy)

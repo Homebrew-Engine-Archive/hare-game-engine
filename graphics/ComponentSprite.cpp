@@ -57,22 +57,13 @@ namespace hare
         }
     }
 
-    void ComponentSprite::beginScene()
+    void ComponentSprite::render()
     {
         moveTo(pos.x, pos.y);
-    }
-
-    void ComponentSprite::renderScene()
-    {
         Sprite::List::iterator it = components.begin();
         for (;it != components.end(); ++it){
-            (*it)->renderScene();
+            (*it)->render();
         }
-    }
-
-    void ComponentSprite::endScene()
-    {
-
     }
 
     int ComponentSprite::addPart(Sprite* s)

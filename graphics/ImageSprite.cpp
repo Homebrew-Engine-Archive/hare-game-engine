@@ -34,12 +34,7 @@ namespace hare
 
     }
 
-    void ImageSprite::beginScene()
-    {
-
-    }
-
-    void ImageSprite::renderScene()
+    void ImageSprite::render()
     {
         if (!mtrl)
             return;
@@ -73,11 +68,6 @@ namespace hare
         drawRect.moveTo(pos.x + origoX, pos.y + origoY);
        
         getCanvas()->drawImage(drawRect, mtrl, r);
-    }
-
-    void ImageSprite::endScene()
-    {
-
     }
 
     void ImageSprite::loadFromImage(const String& filename)

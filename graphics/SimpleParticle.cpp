@@ -172,6 +172,19 @@ namespace hare
 			rect.minY = particleUnit->location.y;
 			rect.maxX = rect.minX + width * particleUnit->size;
 			rect.maxY = rect.minY + height* particleUnit->size;
+
+            //Á£×Ó¼Ì³Ð¾«Áé¸Ä 09/05/16 wl
+            float origoX = origoPos.x;
+            float origoY = origoPos.y;
+            if (!bFaceX){
+                origoX = -origoX;
+            }
+            if (!bFaceY){
+                origoY = -origoY;
+            }
+            
+            rect.move(origoX, origoY);
+
 			getCanvas()->drawImage(rect, particleMtrl, particleUnit->spin * particleUnit->age);
 			particleUnit++;
 		}
@@ -298,10 +311,10 @@ namespace hare
 		fire();
 	}
 
-	void SimpleParticle::move(float offsetX, float offsetY)
+	void SimpleParticle::move(float dx, float dy)
 	{
 		PointF pos = getPosition();
-		moveTo(pos.x + offsetX, pos.y + offsetY);
+		moveTo(pos.x + dx, pos.y + dy);
 	}
 
 	void SimpleParticle::moveTo(float x, float y)

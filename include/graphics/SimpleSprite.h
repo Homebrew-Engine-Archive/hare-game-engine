@@ -32,11 +32,7 @@ namespace hare
 		SimpleSprite();
 		virtual ~SimpleSprite();
 
-		virtual void beginScene();
-
-		virtual void renderScene();
-
-		virtual void endScene();
+		virtual void render();
 
 		virtual void move(float dx, float dy);
 

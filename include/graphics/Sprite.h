@@ -28,19 +28,15 @@ namespace hare
 
         virtual void moveTo(float x, float y);
 
-		virtual void beginScene() = 0;
+		virtual void render() = 0;
 
-		virtual void renderScene() = 0;
-
-		virtual void endScene() = 0;
+        virtual const PointF& getPosition();
     
         void setOrigoPos(float x, float y);
 
         void moveOrigoPos(float dx, float dy);
 
         const PointF& getOrigoPos();
-
-        const PointF& getPosition();
 
         void setFaceX(bool b);
 

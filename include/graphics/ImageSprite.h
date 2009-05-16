@@ -26,11 +26,7 @@ namespace hare
         ImageSprite();
         virtual ~ImageSprite();
 
-        virtual void beginScene();
-
-        virtual void renderScene();
-
-        virtual void endScene();
+        virtual void render();
 
         void loadFromImage(const String& filename);
 

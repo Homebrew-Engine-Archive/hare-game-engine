@@ -98,12 +98,7 @@ namespace hare
 
 	}
 
-	void SimpleSprite::beginScene()
-	{
-		
-	}
-
-	void SimpleSprite::renderScene()
+	void SimpleSprite::render()
 	{
 		//simple test
 		RenderTarget* target = RenderSystem::getSingletonPtr()->getRenderTarget();
@@ -122,11 +117,6 @@ namespace hare
 
   //      //getCanvas()->drawImage(300, 300, shader, RectF(0.5,0.5,1.0,1.0));
   //      getCanvas()->drawImage(600, 300, _texMtrl);
-
-	}
-
-	void SimpleSprite::endScene()
-	{
 
 	}
 

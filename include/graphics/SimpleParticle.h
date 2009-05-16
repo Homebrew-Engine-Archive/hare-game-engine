@@ -103,7 +103,7 @@ namespace hare
 		virtual void render();
 		virtual void fire();
 		virtual void fireAt(float x, float y);
-		virtual void move(float offsetX, float offsetY);
+		virtual void move(float dx, float dy);
 		virtual void moveTo(float x, float y);
 		virtual void pause();
 		virtual void stop();

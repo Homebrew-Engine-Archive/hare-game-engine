@@ -15,7 +15,7 @@
 
 namespace hare
 {
-	HARE_IMPLEMENT_ABSTRACT_CLASS(Particle, Object, 0)
+	HARE_IMPLEMENT_ABSTRACT_CLASS(Particle, Sprite, 0)
 	{
         HARE_OBJ_F(particleMtrl, Material, propImport)
     }
@@ -36,14 +36,28 @@ namespace hare
 		particleMtrl = mtrl;
 	}
 
-	PointF Particle::getPosition()
+	const PointF& Particle::getPosition()
 	{
-		return PointF(location.x, location.y);
+        pos.x = location.x;
+        pos.y = location.y;
+		return pos;
 	}
 
 	void Particle::setPosition(float x, float y)
 	{
 		location.x = x;
 		location.y = y;
+        pos.x = x;
+        pos.y = y;
 	}
+
+    void Particle::move(float dx, float dy)
+    {
+        Sprite::move(dx, dy);
+    }
+
+    void Particle::moveTo(float x, float y)
+    {
+        Sprite::moveTo(x, y);
+    }
 }

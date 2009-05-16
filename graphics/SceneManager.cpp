@@ -33,10 +33,6 @@ namespace hare
 
 	void SceneManager::beginScene()
 	{
-		SpriteList::iterator it = spriteList.begin();
-		for (;it != spriteList.end(); ++it){
-			(*it)->beginScene();
-		}
 		if (sceneListener){
 			sceneListener->beginScene();
 		}
@@ -46,7 +42,7 @@ namespace hare
 	{
 		SpriteList::iterator it = spriteList.begin();
 		for (;it != spriteList.end(); ++it){
-			(*it)->renderScene();
+			(*it)->render();
 		}
         RenderSystem::getSingletonPtr()->render();
 
@@ -59,10 +55,6 @@ namespace hare
 
 	void SceneManager::endScene()
 	{
-		SpriteList::iterator it = spriteList.begin();
-		for (;it != spriteList.end(); ++it){
-			(*it)->endScene();
-		}
 		if (sceneListener){
 			sceneListener->endScene();
 		}

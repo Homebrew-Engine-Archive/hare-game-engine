@@ -10,11 +10,7 @@ public:
 	Sprite();
 	virtual ~Sprite();
 
-	virtual void beginScene() = 0;
-
-	virtual void renderScene() = 0;
-
-	virtual void endScene() = 0;
+	virtual void render() = 0;
 };
 
 class SimpleSprite : public Sprite
@@ -23,11 +19,7 @@ public:
 	SimpleSprite();
 	virtual ~SimpleSprite();
 
-	virtual void beginScene();
-
-	virtual void renderScene();
-
-	virtual void endScene();
+	virtual void render();
 	
 	void loadFromImage(const String& filename);
 	

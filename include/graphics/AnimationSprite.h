@@ -31,11 +31,7 @@ namespace hare
 
         void moveTo(float x, float y);
 
-        void beginScene();
-
-        void renderScene();
-
-        void endScene();
+        void render();
 
 		void setSprite(Sprite* s);
 
@@ -76,11 +72,7 @@ namespace hare
 
         virtual void moveTo(float x, float y);
 
-        virtual void beginScene();
-
-        virtual void renderScene();
-
-        virtual void endScene();
+        virtual void render();
 
         //Ñ­»·²¥·Å
         void play();

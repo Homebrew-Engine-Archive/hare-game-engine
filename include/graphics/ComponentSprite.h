@@ -29,11 +29,7 @@ namespace hare
 
         virtual void moveTo(float x, float y);
 
-		virtual void beginScene();
-
-		virtual void renderScene();
-
-		virtual void endScene();
+		virtual void render();
 
         int addPart(Sprite* s);
 

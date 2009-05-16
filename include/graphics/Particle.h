@@ -15,9 +15,11 @@
 
 #include "GraphicsPrerequisites.h"
 #include "Shader.h"
+#include "Sprite.h"
+
 namespace hare
 {
-	class GRAPHICS_API Particle : public Object
+	class GRAPHICS_API Particle : public Sprite
 	{
 		HARE_DECLARE_ABSTRACT_CLASS(Particle)
 	public:
@@ -27,12 +29,12 @@ namespace hare
 		virtual void render() = 0;
 		virtual void fire() = 0;
 		virtual void fireAt(float x, float y) = 0;
-		virtual void move(float offsetX, float offsetY) = 0;
-		virtual void moveTo(float x, float y) = 0;
+		virtual void move(float dx, float dy);
+		virtual void moveTo(float x, float y);
 		virtual void pause() = 0;
 		virtual void stop() = 0;
 
-		virtual PointF getPosition();
+		virtual const PointF& getPosition();
 		virtual void   setPosition(float x, float y);
 		void   setMaterial(Material* mtrl);
 	protected:

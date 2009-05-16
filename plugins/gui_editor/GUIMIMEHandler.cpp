@@ -41,7 +41,7 @@ bool GUIMIMEHandler::newPage(Window* window, bool isModified)
     epm->addEditorPage(page);
     epm->getNotebook()->Thaw();
 
-    //page->setWindow(window);
+    page->setWindow(window);
 
     if (isModified)
         page->setModified(isModified);
@@ -62,9 +62,6 @@ bool GUIMIMEHandler::canHandle(const wxString& filename) const
 bool GUIMIMEHandler::openFile(const wxString& filename)
 {
     Window::Ptr window = (Window*)Object::importObject(filename.ToUTF8().data());
-
-    //if (!window)
-    //    return false;
 
     return newPage(window, false);
 }

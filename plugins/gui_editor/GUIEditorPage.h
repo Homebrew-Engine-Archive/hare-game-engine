@@ -16,6 +16,12 @@ public:
 
     void setWindow(Window* window);
     void setTheme(ThemePackage* themes);
+
+    virtual void setModified(bool modified);
+    virtual bool getIsModified() const { return isModified; }
+    virtual bool save();
+    bool saveAs();
+    void updateTitle();
     
 protected:
     virtual void beginScene()
@@ -29,9 +35,13 @@ protected:
     void onTreeItemSelected(wxTreeEvent& event);
     void onTreeItemRightClick(wxTreeEvent& event);
     void onMenuSelected(wxCommandEvent& event);
+    void onTreeBeginDrag(wxTreeEvent& event);
+    void onTreeEndDrag(wxTreeEvent& event);
 
     void addWindow(Window* window);
     void addSizer(Sizer* sizer);
+
+    virtual bool Show(bool show = true);
 
 private:
     wxHareCanvas* canvas;
@@ -45,6 +55,12 @@ private:
     
     ClassInfoList windowClasses;
     ClassInfoList sizerClasses;
+
+    bool isModified;
+
+    wxTreeItemId draggedItem;
+
+    Object::Ptr clipboardObject;
 
     DECLARE_EVENT_TABLE();
     DECLARE_ABSTRACT_CLASS(GUIEditorPage)

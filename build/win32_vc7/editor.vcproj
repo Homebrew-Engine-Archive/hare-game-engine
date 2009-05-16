@@ -123,6 +123,9 @@
 			Name="Source Files"
 			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx">
 			<File
+				RelativePath="..\..\editor\Command.cpp">
+			</File>
+			<File
 				RelativePath="..\..\editor\ConfigManager.cpp">
 			</File>
 			<File
@@ -204,6 +207,9 @@
 		<Filter
 			Name="Header Files"
 			Filter="h;hpp;hxx;hm;inl;inc;xsd">
+			<File
+				RelativePath="..\..\include\editor\Command.h">
+			</File>
 			<File
 				RelativePath="..\..\include\editor\ConfigManager.h">
 			</File>

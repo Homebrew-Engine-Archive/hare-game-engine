@@ -24,7 +24,7 @@
 								<flag>wxEXPAND</flag>
 								<border>5</border>
 								<object class="wxTreeCtrl" name="idTreeView">
-									<style>wxTR_DEFAULT_STYLE|wxNO_BORDER</style>
+									<style>wxTR_DEFAULT_STYLE|wxSTATIC_BORDER</style>
 								</object>
 							</object>
 						</object>
@@ -73,7 +73,7 @@
 									<minsize>10</minsize>
 									<orientation>horizontal</orientation>
 									<object class="wxPanel" name="idPanelT">
-										<style>wxNO_BORDER|wxTAB_TRAVERSAL</style>
+										<style>wxSTATIC_BORDER|wxTAB_TRAVERSAL</style>
 										<object class="wxBoxSizer">
 											<orient>wxVERTICAL</orient>
 											<object class="sizeritem">
@@ -95,7 +95,7 @@
 																<flag>wxEXPAND</flag>
 																<border>5</border>
 																<object class="wxListBox" name="idListBox">
-																	<style>wxNO_BORDER</style>
+																	<style>wxSTATIC_BORDER</style>
 																	<content />
 																</object>
 															</object>
@@ -112,7 +112,7 @@
 										</object>
 									</object>
 									<object class="wxPanel" name="idPanelC">
-										<style>wxNO_BORDER|wxTAB_TRAVERSAL</style>
+										<style>wxSTATIC_BORDER|wxTAB_TRAVERSAL</style>
 										<object class="wxBoxSizer">
 											<orient>wxVERTICAL</orient>
 											<object class="sizeritem">

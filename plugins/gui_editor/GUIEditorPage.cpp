@@ -22,9 +22,11 @@ IMPLEMENT_ABSTRACT_CLASS(GUIEditorPage, EditorPage)
 BEGIN_EVENT_TABLE(GUIEditorPage, EditorPage)
     EVT_TREE_SEL_CHANGED(XRCID("idTreeView"), GUIEditorPage::onTreeItemSelected)
     EVT_TREE_ITEM_RIGHT_CLICK(XRCID("idTreeView"), GUIEditorPage::onTreeItemRightClick)
+    EVT_TREE_BEGIN_DRAG(XRCID("idTreeView"), GUIEditorPage::onTreeBeginDrag)
+    EVT_TREE_END_DRAG(XRCID("idTreeView"), GUIEditorPage::onTreeEndDrag)
 END_EVENT_TABLE()
 
-GUIEditorPage::GUIEditorPage(wxWindow* parent)
+GUIEditorPage::GUIEditorPage(wxWindow* parent) : isModified(false)
 {
     wxXmlResource::Get()->LoadPanel(this, parent, wxT("idGUIEditorPanel"));
 
@@ -67,6 +69,69 @@ GUIEditorPage::~GUIEditorPage()
 {
     treeCtrl->SetImageList(NULL);
     SAFE_DELETE(imageList);
+}
+
+void GUIEditorPage::onTreeBeginDrag(wxTreeEvent& event)
+{
+    if (event.GetItem() == treeCtrl->GetRootItem())
+    {
+        return;
+    }
+
+    draggedItem = event.GetItem();
+    event.Allow();
+}
+
+void GUIEditorPage::onTreeEndDrag(wxTreeEvent& event)
+{
+    bool copy = ::wxGetKeyState(WXK_CONTROL);
+
+    wxTreeItemId itemSrc = draggedItem, itemDst = event.GetItem();
+
+    // ensure that itemDst is not itemSrc or a child of itemSrc
+    wxTreeItemId item = itemDst;
+    while (item.IsOk())
+    {
+        if (item == itemSrc)
+        {
+            return;
+        }
+        item = treeCtrl->GetItemParent(item);
+    }
+
+    PObjectBase objSrc = GetObjectFromTreeItem( itemSrc );
+    if ( !objSrc )
+    {
+        return;
+    }
+
+    PObjectBase objDst = GetObjectFromTreeItem( itemDst );
+    if ( !objDst )
+    {
+        return;
+    }
+
+    // backup clipboard
+    PObjectBase clipboard = AppData()->GetClipboardObject();
+
+    // set object to clipboard
+    if ( copy )
+    {
+        AppData()->CopyObject( objSrc );
+    }
+    else
+    {
+        AppData()->CutObject( objSrc );
+    }
+
+    if ( !AppData()->PasteObject( objDst ) && !copy )
+    {
+        AppData()->Undo();
+    }
+
+    AppData()->SetClipboardObject( clipboard );
+
+
 }
 
 void GUIEditorPage::onTreeItemSelected(wxTreeEvent& event)
@@ -181,6 +246,7 @@ void GUIEditorPage::renderScene()
 void GUIEditorPage::setWindow(Window* window)
 {
     guiSys->setRoot(window);
+    updateTitle();
 }
 
 void GUIEditorPage::setTheme(ThemePackage* themes)
@@ -220,6 +286,8 @@ void GUIEditorPage::addWindow(Window* window)
 
     wxTreeItemId item = treeCtrl->AppendItem(treeCtrl->GetSelection(), wxString::FromUTF8(window->getClassInfo()->className), 
         ctrlImage, ctrlImage, newItem ? new TreeItemData(newItem) : new TreeItemData(window));
+
+    setModified(true);
 
     treeCtrl->Expand(treeCtrl->GetSelection());
     treeCtrl->SelectItem(item);
@@ -269,6 +337,8 @@ void GUIEditorPage::addSizer(Sizer* sizer)
             wxTreeItemId item = treeCtrl->AppendItem(treeCtrl->GetSelection(), wxString::FromUTF8(sizer->getClassInfo()->className), 
                 sizerImage, sizerImage, sizerItem ? new TreeItemData(sizerItem) : new TreeItemData(sizer));
 
+            setModified(true);
+
             treeCtrl->Expand(treeCtrl->GetSelection());
             treeCtrl->SelectItem(item);
         }
@@ -298,4 +368,82 @@ void GUIEditorPage::onMenuSelected(wxCommandEvent& event)
                 addSizer(sizer);
         }
     }
+}
+
+void GUIEditorPage::updateTitle()
+{
+    String title = "[GUIEditor]";
+    if (guiSys->getRoot()) title += guiSys->getRoot()->getUrl();
+
+    if (isModified)
+        setTitle(wxT("*") + wxString::FromUTF8(title.c_str()));
+    else
+        setTitle(wxString::FromUTF8(title.c_str()));
+}
+
+void GUIEditorPage::setModified(bool modified)
+{
+    if (modified != isModified)
+    {
+        isModified = modified;
+        updateTitle();
+    }
+}
+
+bool GUIEditorPage::saveAs()
+{
+    bool ret = false;
+
+    wxFileDialog* dlg = new wxFileDialog(Manager::getInstancePtr()->getAppWindow(),
+        _T("Save window layout as"),
+        _T(""),
+        _T(""),
+        _T("Window Layout (*.layout)|*.layout|Any file (*)|*"),
+        wxSAVE | wxOVERWRITE_PROMPT);
+
+    if (dlg->ShowModal() == wxID_OK)
+    {
+        static const char* tempFileName = "/editor/~layout.temp";
+        FileSystem::getSingletonPtr()->remove(tempFileName);
+        guiSys->getRoot()->saveToXml(tempFileName);
+        String dir = FileSystem::getSingletonPtr()->getRealDir(tempFileName);
+        dir += tempFileName;
+        wxString tempFile = wxString::FromUTF8(dir.c_str());
+        wxFileName fName(tempFile);
+        if (fName.FileExists())
+        {
+            wxString fileName = dlg->GetPath();
+            ret = wxCopyFile(fName.GetFullPath(), fileName);
+        }
+    }
+
+    dlg->Destroy();
+    return ret;
+}
+
+bool GUIEditorPage::save()
+{
+    if (!guiSys->getRoot())
+        return true;
+
+    bool ret = false;
+
+    if (guiSys->getRoot()->getUrl().empty())
+        ret = saveAs();
+    else
+        ret = guiSys->getRoot()->saveToXml(guiSys->getRoot()->getUrl());
+
+    if (ret)
+        setModified(false);
+
+    return ret;
+}
+
+bool GUIEditorPage::Show(bool show)
+{
+    if (show)
+    {
+        Manager::getInstancePtr()->getExplorerManager()->removeAllProperties();
+    }
+    return EditorPage::Show(show);
 }

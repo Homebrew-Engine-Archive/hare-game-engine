@@ -38,42 +38,41 @@ BEGIN_EVENT_TABLE(ThemeEditorPage, EditorPage)
 END_EVENT_TABLE()
 
 ThemeEditorPage::ThemeEditorPage(wxWindow* parent, ThemeMIMEHandler* handler)
-    : EditorPage(), mime(handler), currItem(0)
+    : EditorPage(), mime(handler), currItem(0), isModified(false)
 {
     wxXmlResource::Get()->LoadPanel(this, parent, wxT("idThemeEditorPanel"));
 
     // Scene for selecting uv
-    {
-        SceneManager* scene = getHareApp()->createSceneManager();
-        wxPanel* panelB = XRCCTRL(*this, "idPanelB", wxPanel);
-        canvasRect = new wxHareCanvas(panelB);
-        panelB->GetSizer()->Add(canvasRect, 1, wxEXPAND, 0);
-        canvasRect->getRenderWindow()->setSceneManager(scene);
-        scene->setSceneListener(this);
-        panelB->Connect(wxEVT_ERASE_BACKGROUND, wxEraseEventHandler(ThemeEditorPage::onEraseBackground), 0, this);
-        canvasRect->Connect(wxEVT_SIZE, wxSizeEventHandler(ThemeEditorPage::onCanvasRectSize), 0, this);
-    }
+    SceneManager* sceneB = getHareApp()->createSceneManager();
+    wxPanel* panelB = XRCCTRL(*this, "idPanelB", wxPanel);
+    canvasRect = new wxHareCanvas(panelB);
+    panelB->GetSizer()->Add(canvasRect, 1, wxEXPAND, 0);
+    canvasRect->getRenderWindow()->setSceneManager(sceneB);
+    sceneB->setSceneListener(this);
+    panelB->Connect(wxEVT_ERASE_BACKGROUND, wxEraseEventHandler(ThemeEditorPage::onEraseBackground), 0, this);
+    canvasRect->Connect(wxEVT_SIZE, wxSizeEventHandler(ThemeEditorPage::onCanvasRectSize), 0, this);
     
     // Scene for gui preview
-    {
-        SceneManager* scene = getHareApp()->createSceneManager();
-        wxPanel* panelD = XRCCTRL(*this, "idPanelD", wxPanel);
-        canvasGUI = new wxHareCanvas(panelD);
-        panelD->GetSizer()->Add(canvasGUI, 1, wxEXPAND, 0);
-        canvasGUI->getRenderWindow()->setSceneManager(scene);
-        scene->setSceneListener(&previewSceneListener);
-        panelD->Connect(wxEVT_ERASE_BACKGROUND, wxEraseEventHandler(ThemeEditorPage::onEraseBackground), 0, this);
-        canvasGUI->Connect(wxEVT_SIZE, wxSizeEventHandler(ThemeEditorPage::onCanvasGUISize), 0, this);
-    }
+    SceneManager* sceneD = getHareApp()->createSceneManager();
+    wxPanel* panelD = XRCCTRL(*this, "idPanelD", wxPanel);
+    canvasGUI = new wxHareCanvas(panelD);
+    panelD->GetSizer()->Add(canvasGUI, 1, wxEXPAND, 0);
+    canvasGUI->getRenderWindow()->setSceneManager(sceneD);
+    sceneD->setSceneListener(&previewSceneListener);
+    panelD->Connect(wxEVT_ERASE_BACKGROUND, wxEraseEventHandler(ThemeEditorPage::onEraseBackground), 0, this);
+    canvasGUI->Connect(wxEVT_SIZE, wxSizeEventHandler(ThemeEditorPage::onCanvasGUISize), 0, this);
 
     treeCtrl = XRCCTRL(*this, "idTreeView", wxTreeCtrl);
     btnBrowse = XRCCTRL(*this, "idBtnBrowse", wxButton);
     txtUVRCUrl = XRCCTRL(*this, "idTextUrl", wxTextCtrl);
     listBox = XRCCTRL(*this, "idListBox", wxListBox);
+    btnBrowseLayout = XRCCTRL(*this, "idBtnBrowseLayout", wxButton);
+    txtUVRCUrlLayout = XRCCTRL(*this, "idTextUrlLayout", wxTextCtrl);
 
     btnBrowse->Enable(false);
 
     btnBrowse->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(ThemeEditorPage::onBrowse), 0, this);
+    btnBrowseLayout->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(ThemeEditorPage::onBrowseLayout), 0, this);
     listBox->Connect(wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler(ThemeEditorPage::onListSelected), 0, this);
 
     wxSplitterWindow* splitterH = XRCCTRL(*this, "idSplitterH", wxSplitterWindow);
@@ -82,7 +81,7 @@ ThemeEditorPage::ThemeEditorPage(wxWindow* parent, ThemeMIMEHandler* handler)
     wxSplitterWindow* splitterAB = XRCCTRL(*this, "idSplitterAB", wxSplitterWindow);
     splitterAB->SetSashPosition(parent->GetSize().GetWidth() / 4);
 
-    setTitle(wxT("[ThemeEditor]"));
+    updateTitle();
 
     Layout();
 }
@@ -141,7 +140,7 @@ void ThemeEditorPage::onBrowse(wxCommandEvent& event)
             ThemeItemData* themeData = (ThemeItemData*)currItem;
             
             wxSize size(400, 400);
-            FileSystemDialog dlg(btnBrowse, true, _("FileSystem"), wxT("/"), 0,
+            FileSystemDialog dlg(btnBrowse, true, _("Select UVResource File"), wxT("/"), wxDEFAULT_DIALOG_STYLE,
                 wxDefaultPosition, size);
 
             if (dlg.ShowModal() == wxID_OK)
@@ -155,6 +154,7 @@ void ThemeEditorPage::onBrowse(wxCommandEvent& event)
                     themeData->uvrc = imported;
                     themeData->theme->setMaterial(imported->mtrl);
                     updateUVRC(themeData->uvrc);
+                    setModified(true);
                 }
             }
         }
@@ -164,6 +164,27 @@ void ThemeEditorPage::onBrowse(wxCommandEvent& event)
         }
     }
 }
+
+void ThemeEditorPage::onBrowseLayout(wxCommandEvent& event)
+{
+    wxSize size(400, 400);
+    FileSystemDialog dlg(btnBrowseLayout, true, _("Select Window Layout File"), wxT("/"), wxDEFAULT_DIALOG_STYLE,
+        wxDefaultPosition, size);
+
+    if (dlg.ShowModal() == wxID_OK)
+    {
+        String objectUrl = dlg.GetPath().ToUTF8().data();
+
+        Window::Ptr imported = (Window*)Object::importObject(objectUrl);
+
+        if (imported && imported->isA(&Window::CLASS_INFO))
+        {
+            previewSceneListener.getGUISystem()->setRoot(imported);
+            txtUVRCUrlLayout->SetValue(wxString::FromUTF8(objectUrl.c_str()));
+        }
+    }
+}
+
 
 void ThemeEditorPage::onListSelected(wxCommandEvent& event)
 {
@@ -178,6 +199,7 @@ void ThemeEditorPage::onListSelected(wxCommandEvent& event)
             RectItemData* rectData = (RectItemData*)currItem;
             RectUV* rect = (RectUV*)listBox->GetClientData(event.GetSelection());
             *rectData->rect = *rect;
+            setModified(true);
         }
     }
 }
@@ -273,6 +295,86 @@ void ThemeEditorPage::setThemePackage(ThemePackage* themePackage)
     }
 
     treeCtrl->ExpandAll();
+    updateTitle();
+}
+
+
+void ThemeEditorPage::updateTitle()
+{
+    String title = "[ThemeEditor]";
+    if (themes) title += themes->getUrl();
+
+    if (isModified)
+        setTitle(wxT("*") + wxString::FromUTF8(title.c_str()));
+    else
+        setTitle(wxString::FromUTF8(title.c_str()));
+}
+
+void ThemeEditorPage::setModified(bool modified)
+{
+    if (modified != isModified)
+    {
+        isModified = modified;
+        updateTitle();
+    }
+}
+
+bool ThemeEditorPage::saveAs()
+{
+    bool ret = false;
+
+    wxFileDialog* dlg = new wxFileDialog(Manager::getInstancePtr()->getAppWindow(),
+        _T("Save theme package as"),
+        _T(""),
+        _T(""),
+        _T("Theme Package (*.theme)|*.theme|Any file (*)|*"),
+        wxSAVE | wxOVERWRITE_PROMPT);
+
+    if (dlg->ShowModal() == wxID_OK)
+    {
+        static const char* tempFileName = "/editor/~theme.temp";
+        FileSystem::getSingletonPtr()->remove(tempFileName);
+        themes->saveToXml(tempFileName);
+        String dir = FileSystem::getSingletonPtr()->getRealDir(tempFileName);
+        dir += tempFileName;
+        wxString tempFile = wxString::FromUTF8(dir.c_str());
+        wxFileName fName(tempFile);
+        if (fName.FileExists())
+        {
+            wxString fileName = dlg->GetPath();
+            ret = wxCopyFile(fName.GetFullPath(), fileName);
+        }
+    }
+
+    dlg->Destroy();
+    return ret;
+}
+
+bool ThemeEditorPage::save()
+{
+    if (!themes)
+        return true;
+
+    bool ret = false;
+
+    if (themes->getUrl().empty())
+        ret = saveAs();
+    else
+        ret = themes->saveToXml(themes->getUrl());
+
+    if (ret)
+        setModified(false);
+
+    return ret;
+}
+
+bool ThemeEditorPage::Show(bool show)
+{
+    if (show)
+    {
+        Manager::getInstancePtr()->getExplorerManager()->removeAllProperties();
+    }
+    return EditorPage::Show(show);
 }
 
 //////////////////////////////////////////////////////////////////////////

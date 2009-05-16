@@ -34,5 +34,6 @@
 #include "TManager.h"
 #include "FindReplaceDialog.h"
 #include "UVRectState.h"
+#include "Command.h"
 
 #endif

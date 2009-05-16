@@ -58,6 +58,12 @@ public:
 
     void setThemePackage(ThemePackage* themePackage);
 
+    virtual void setModified(bool modified);
+    virtual bool getIsModified() const { return isModified; }
+    virtual bool save();
+    bool saveAs();
+    void updateTitle();
+
 protected:
     virtual void beginScene()
     {
@@ -69,10 +75,13 @@ protected:
 
     void onTreeItemSelected(wxTreeEvent& event);
     void onBrowse(wxCommandEvent& event);
+    void onBrowseLayout(wxCommandEvent& event);
     void onListSelected(wxCommandEvent& event);
     void onCanvasRectSize(wxSizeEvent& event);
     void onCanvasGUISize(wxSizeEvent& event);
     void onEraseBackground(wxEraseEvent& event);
+
+    virtual bool Show(bool show = true);
 
     void updateUVRC(UVEditorState* uvrc);
 
@@ -81,6 +90,8 @@ private:
     wxButton* btnBrowse;
     wxTextCtrl* txtUVRCUrl;
     wxListBox* listBox;
+    wxButton* btnBrowseLayout;
+    wxTextCtrl* txtUVRCUrlLayout;
 
     ThemeMIMEHandler* mime;
     wxHareCanvas* canvasRect;
@@ -88,6 +99,8 @@ private:
     ThemePackage::Ptr themes;
     
     TreeItemBase* currItem;
+
+    bool isModified;
 
     PreviewSceneListener previewSceneListener;
 

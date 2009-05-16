@@ -143,6 +143,8 @@ void ThemeEditorPage::onBrowse(wxCommandEvent& event)
             FileSystemDialog dlg(btnBrowse, true, _("Select UVResource File"), wxT("/"), wxDEFAULT_DIALOG_STYLE,
                 wxDefaultPosition, size);
 
+            dlg.SetFilter(wxT(".uvrc"));
+
             if (dlg.ShowModal() == wxID_OK)
             {
                 String objectUrl = dlg.GetPath().ToUTF8().data();
@@ -170,6 +172,8 @@ void ThemeEditorPage::onBrowseLayout(wxCommandEvent& event)
     wxSize size(400, 400);
     FileSystemDialog dlg(btnBrowseLayout, true, _("Select Window Layout File"), wxT("/"), wxDEFAULT_DIALOG_STYLE,
         wxDefaultPosition, size);
+
+    dlg.SetFilter(wxT(".layout"));
 
     if (dlg.ShowModal() == wxID_OK)
     {

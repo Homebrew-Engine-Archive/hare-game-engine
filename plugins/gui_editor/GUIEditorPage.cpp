@@ -99,37 +99,37 @@ void GUIEditorPage::onTreeEndDrag(wxTreeEvent& event)
         item = treeCtrl->GetItemParent(item);
     }
 
-    PObjectBase objSrc = GetObjectFromTreeItem( itemSrc );
-    if ( !objSrc )
-    {
-        return;
-    }
+    //PObjectBase objSrc = GetObjectFromTreeItem( itemSrc );
+    //if ( !objSrc )
+    //{
+    //    return;
+    //}
 
-    PObjectBase objDst = GetObjectFromTreeItem( itemDst );
-    if ( !objDst )
-    {
-        return;
-    }
+    //PObjectBase objDst = GetObjectFromTreeItem( itemDst );
+    //if ( !objDst )
+    //{
+    //    return;
+    //}
 
-    // backup clipboard
-    PObjectBase clipboard = AppData()->GetClipboardObject();
+    //// backup clipboard
+    //PObjectBase clipboard = AppData()->GetClipboardObject();
 
-    // set object to clipboard
-    if ( copy )
-    {
-        AppData()->CopyObject( objSrc );
-    }
-    else
-    {
-        AppData()->CutObject( objSrc );
-    }
+    //// set object to clipboard
+    //if ( copy )
+    //{
+    //    AppData()->CopyObject( objSrc );
+    //}
+    //else
+    //{
+    //    AppData()->CutObject( objSrc );
+    //}
 
-    if ( !AppData()->PasteObject( objDst ) && !copy )
-    {
-        AppData()->Undo();
-    }
+    //if ( !AppData()->PasteObject( objDst ) && !copy )
+    //{
+    //    AppData()->Undo();
+    //}
 
-    AppData()->SetClipboardObject( clipboard );
+    //AppData()->SetClipboardObject( clipboard );
 
 
 }

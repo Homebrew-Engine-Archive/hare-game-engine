@@ -30,7 +30,8 @@ namespace hare
         FileSystemPanel(wxWindow *parent);
        ~FileSystemPanel();
 
-        void update(const wxString& path);
+        void update(const wxString& filePath);
+        void setFilter(const wxString& fileExt);
         void refresh();
 
         wxString getUrl() const
@@ -50,6 +51,7 @@ namespace hare
         wxListCtrl* listCtrl;
         wxStaticText* url;
         wxImageList* smallList;
+        wxString filter;
 
         wxString curUrl;
 
@@ -85,6 +87,7 @@ namespace hare
         wxString GetPath() const;
         wxString GetDir() const;
         void SetPath(const wxString& path);
+        void SetFilter(const wxString& fileExt);
 
     private:
         FileSystemPanel* panel;

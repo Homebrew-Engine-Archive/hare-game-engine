@@ -106,6 +106,12 @@ namespace hare
         refresh();
     }
 
+    void FileSystemPanel::setFilter(const wxString& fileExt)
+    {
+        filter = fileExt;
+        refresh();
+    }
+
     void FileSystemPanel::refresh()
     {
         update(curUrl);
@@ -178,8 +184,17 @@ namespace hare
         for (size_t i = 0; i < files.size(); ++i)
         {
             String fullFileName = pathUTF8 + files[i];
-            int icoIndex = fs->isDir(fullFileName) ? 0 : 1;
-            nextPos = listCtrl->InsertItem(nextPos, wxString::FromUTF8(files[i].c_str()), icoIndex);
+
+            bool isDir = fs->isDir(fullFileName);
+
+            if (!isDir && !filter.IsEmpty())
+            {
+                if (!wxString::FromUTF8(fullFileName.c_str()).Lower().EndsWith(filter))
+                    continue;
+            }
+
+            nextPos = listCtrl->InsertItem(nextPos, wxString::FromUTF8(files[i].c_str()), isDir ? 0 : 1);
+            
             if (listCtrl->GetWindowStyleFlag() & wxLC_REPORT)
             {
                 const char* realDir = fs->getRealDir(fullFileName);
@@ -277,6 +292,11 @@ namespace hare
     void FileSystemDialog::SetPath(const wxString& path)
     {
         panel->update(path);
+    }
+
+    void FileSystemDialog::SetFilter(const wxString& fileExt)
+    {
+        panel->setFilter(fileExt);
     }
 
     void FileSystemDialog::onDoubleClicked(wxListEvent& event)

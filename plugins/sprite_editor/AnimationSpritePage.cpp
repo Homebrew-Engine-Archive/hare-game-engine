@@ -299,8 +299,10 @@ void AnimationSpritePage::onMenuSelected(wxCommandEvent& event)
             AnimFrame::Ptr frame = new AnimFrame;
             wxSize size(400, 400);
 
-            FileSystemDialog dlg(this, true, _("FileSystem"), wxT("/"), 0,
+            FileSystemDialog dlg(this, true, _("Select Sprite File"), wxT("/"), wxDEFAULT_DIALOG_STYLE,
                 wxDefaultPosition, size);
+
+            dlg.SetFilter(wxT(".sprite"));
 
             if (dlg.ShowModal() == wxID_OK){
                 String objectUrl = dlg.GetPath().ToUTF8().data();

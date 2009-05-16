@@ -94,9 +94,11 @@ public:
 
     void onBrowse(wxCommandEvent& event)
     {
-        FileSystemDialog dlg(this, true, _("FileSystem"), getResult(), 
+        FileSystemDialog dlg(this, true, _("Select Save Path"), getResult(), 
             wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER, 
             wxDefaultPosition, wxSize(400, 400));
+
+        dlg.SetFilter(wxT("*"));
 
         if (dlg.ShowModal() == wxID_OK)
         {

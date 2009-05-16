@@ -21,7 +21,7 @@ namespace hare
 	HARE_IMPLEMENT_DYNAMIC_CLASS(AnimFrame, Object, 0)
 	{
         HARE_META(frameTime, float)
-        HARE_OBJ(sprite, Sprite)
+        HARE_OBJ_F(sprite, Sprite, propAvoidNull)
 	}
 
 	AnimFrame::AnimFrame()
@@ -170,8 +170,23 @@ namespace hare
         }
 	}
 
+    int AnimationSprite::getFrameID(AnimFrame* frame)
+    {
+        AnimFrame::Array::iterator it = animFrameList.begin();
+        for (int id = 0; it != animFrameList.end(); ++it, ++id){
+            if (*it == frame){
+                return id;
+            }
+        }
+
+        return -1;
+    }
+
     int AnimationSprite::addFrame(AnimFrame* frame)
     {
+        if (getFrameID(frame) != -1)
+            return -1;
+
         animFrameList.push_back(frame);
         resetAnimation();
         return animFrameList.size() - 1;
@@ -243,6 +258,8 @@ namespace hare
         animFrameList[frameID_1] = anim_2;
         animFrameList[frameID_2] = anim_1;
 
+        resetAnimation();
+
         return false;
     }
 
@@ -303,6 +320,16 @@ namespace hare
         bPause = false;
         bStop = true;
         resetAnimation();
+    }
+
+    bool AnimationSprite::isStop()
+    {
+        return bStop;
+    }
+
+    bool AnimationSprite::isPause()
+    {
+        return bPause;
     }
 
 }

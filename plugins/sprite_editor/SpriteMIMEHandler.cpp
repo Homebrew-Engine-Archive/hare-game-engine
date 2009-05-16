@@ -52,6 +52,7 @@ bool SpriteMIMEHandler::openFile(const wxString& filename)
     }
 
     if (obj->getClassInfo()->isDerivedFrom(&AnimationSprite::CLASS_INFO)){
+        newPageAnimationSprite((AnimationSprite*)obj.pointer(), false);
         return true;
     }
 

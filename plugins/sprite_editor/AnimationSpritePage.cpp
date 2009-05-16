@@ -41,11 +41,20 @@ AnimationSpritePage::AnimationSpritePage(wxWindow* parent, SpriteMIMEHandler* ha
     frameReview = XRCCTRL(*this, "idFrameReview", wxPanel);
     wxSplitterWindow* splitter = XRCCTRL(*this, "idSplitterH", wxSplitterWindow);
     splitter->SetSashPosition(parent->GetSize().GetHeight() / 2);
+    btnPlay = XRCCTRL(*this, "idPlay", wxButton);
+    btnStop = XRCCTRL(*this, "idStop", wxButton);
+    btnLoop = XRCCTRL(*this, "idLoop", wxToggleButton);
+
+
+
+    wxImageList *images = new wxImageList(16, 16, true);
+    treeCtrl->SetImageList(images);
+
 
     treeCtrl->AddRoot(wxT("AnimationSprite"));
 
     animationCanvas = new wxHareCanvas(animationReview);
-    animationReview->GetSizer()->Add(animationCanvas, 1, wxEXPAND|wxALL, 0);
+    animationReview->GetSizer()->Prepend(animationCanvas, 1, wxEXPAND|wxALL, 0);
     animationScene = getHareApp()->createSceneManager();
     animationScene->setSceneListener(this);
     animationCanvas->getRenderWindow()->setSceneManager(animationScene);
@@ -76,27 +85,71 @@ AnimationSpritePage::AnimationSpritePage(wxWindow* parent, SpriteMIMEHandler* ha
     frameCanvas->Connect(wxEVT_MOTION, wxMouseEventHandler(AnimationSpritePage::onFrameMouseMove), 0, this);
     frameReview->Connect(wxEVT_ERASE_BACKGROUND, wxEraseEventHandler(AnimationSpritePage::onEraseBackground), 0, this);
 
+    btnPlay->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(AnimationSpritePage::onClickPlay), 0, this);
+    btnStop->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(AnimationSpritePage::onClickStop), 0, this);
+
     Connect(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(AnimationSpritePage::onMenuSelected), 0, this);
 }
 
 AnimationSpritePage::~AnimationSpritePage()
 {
-
+    wxImageList *images = treeCtrl->GetImageList();
+    treeCtrl->SetImageList(NULL);
+    delete images;
 }
 
 void AnimationSpritePage::setModified(bool modified)
 {
-
+    if (modified != isModified){
+        isModified = modified;
+        updateTitle();
+    }
 }
 
 bool AnimationSpritePage::save()
 {
-    return true;
+    if (!animationSprite)
+        return true;
+
+    bool ret = false;
+    if (animationSprite->getUrl().empty())
+        ret = saveAs();
+    else
+        ret = animationSprite->saveToXml(animationSprite->getUrl());
+
+    if (ret)
+        setModified(false);
+
+    return ret;
 }
 
 bool AnimationSpritePage::saveAs()
 {
-    return true;
+    bool ret = false;
+
+    wxFileDialog* dlg = new wxFileDialog(Manager::getInstancePtr()->getAppWindow(),
+        _T("Save AnimationSprite resource as"),
+        _T(""),
+        _T(""),
+        _T("ImageSprite Resource (*.sprite)|*.sprite|Any file (*)|*"),
+        wxSAVE | wxOVERWRITE_PROMPT);
+
+    if (dlg->ShowModal() == wxID_OK){
+        static const char* tempFileName = "/editor/~AnimationSprite.temp";
+        FileSystem::getSingletonPtr()->remove(tempFileName);
+        animationSprite->saveToXml(tempFileName);
+        String dir = FileSystem::getSingletonPtr()->getRealDir(tempFileName);
+        dir += tempFileName;
+        wxString tempFile = wxString::FromUTF8(dir.c_str());
+        wxFileName fName(tempFile);
+        if (fName.FileExists()){
+            wxString fileName = dlg->GetPath();
+            ret = wxCopyFile(fName.GetFullPath(), fileName);
+        }
+    }
+
+    dlg->Destroy();
+    return ret;
 }
 
 void AnimationSpritePage::beginScene()
@@ -107,7 +160,11 @@ void AnimationSpritePage::beginScene()
 
 void AnimationSpritePage::endScene()
 {
+    if (!animationSprite || !btnPlay)
+        return;
 
+    if (animationSprite->isStop())
+        btnPlay->SetLabel(wxT(">"));
 }
 
 void AnimationSpritePage::renderScene()
@@ -132,11 +189,14 @@ void AnimationSpritePage::renderScene()
 void AnimationSpritePage::setAnimationSprite(AnimationSprite* sprite)
 {
     animationSprite = sprite;
-    animationSprite->play();
+    animationSprite->stop();
     animationSprite->moveTo(0,0);
     animationSprite->setOrigoPos(0,0);
     animationScene->addSprite(animationSprite);
-
+    for (uint32 i = 0; i < animationSprite->getFrameCount(); ++i){
+        addAnimationFrame(animationSprite->getFrame(i));
+    }
+    updateTitle();
 }
 
 void AnimationSpritePage::addAnimationFrame(AnimFrame* frame)
@@ -144,7 +204,10 @@ void AnimationSpritePage::addAnimationFrame(AnimFrame* frame)
     if (!animationSprite)
         return;
 
-    animationSprite->addFrame(frame);
+    AnimFrameTreeItemData* data = new AnimFrameTreeItemData;
+    data->frame = frame;
+    treeCtrl->AppendItem(treeCtrl->GetRootItem(), wxString::FromUTF8(frame->getSprite()->getClassInfo()->className), -1, -1, data);
+    treeCtrl->ExpandAll();
 }
 
 void AnimationSpritePage::setCurSelFrame(AnimFrame* frame)
@@ -164,17 +227,53 @@ void AnimationSpritePage::setCurSelFrame(AnimFrame* frame)
 
 void AnimationSpritePage::updateTitle()
 {
+    String title = "[ImageSpriteEditor]";
+    if (animationSprite) title += animationSprite->getUrl();
 
+    if (isModified)
+        setTitle(wxT("*") + wxString::FromUTF8(title.c_str()));
+    else
+        setTitle(wxString::FromUTF8(title.c_str()));
 }
 
 void AnimationSpritePage::onBeginDrag(wxTreeEvent& event)
 {
+    if (event.GetItem() != treeCtrl->GetRootItem()){
+        dragTreeItem = event.GetItem();
 
+        event.Allow();
+    }
 }
 
 void AnimationSpritePage::onEndDrag(wxTreeEvent& event)
 {
+    wxTreeItemId desItem = event.GetItem();
+    wxTreeItemId srcItem = dragTreeItem;
+    if (desItem.IsOk() && desItem != treeCtrl->GetRootItem() && desItem != srcItem){
+        AnimFrameTreeItemData* desData = (AnimFrameTreeItemData*)treeCtrl->GetItemData(desItem);
+        AnimFrameTreeItemData* srcData = (AnimFrameTreeItemData*)treeCtrl->GetItemData(srcItem);
+       
+        wxString desText = treeCtrl->GetItemText(desItem);
+        wxString srcText = treeCtrl->GetItemText(srcItem);
+        
+        int frameSrcID = animationSprite->getFrameID(srcData->frame);
+        int frameDesID = animationSprite->getFrameID(desData->frame);
 
+        if (frameSrcID == -1 || frameDesID == -1){
+            return;
+        }
+
+        treeCtrl->SetItemData(desItem, srcData);
+        treeCtrl->SetItemData(srcItem, desData);
+
+        treeCtrl->SetItemText(desItem, srcText);
+        treeCtrl->SetItemText(srcItem, desText);
+
+        treeCtrl->SelectItem(desItem);
+
+        animationSprite->swapFrame(frameSrcID, frameDesID);
+
+    }
 }
 
 void AnimationSpritePage::onSelChanged(wxTreeEvent& event)
@@ -211,10 +310,8 @@ void AnimationSpritePage::onMenuSelected(wxCommandEvent& event)
 
                 if (imported && imported->isA(&Sprite::CLASS_INFO)){
                     frame->setSprite(imported);
+                    animationSprite->addFrame(frame);
                     addAnimationFrame(frame);
-                    AnimFrameTreeItemData* data = new AnimFrameTreeItemData;
-                    data->frame = frame;
-                    treeCtrl->AppendItem(treeCtrl->GetRootItem(), wxString::FromUTF8(imported->CLASS_INFO.getClassName()), -1, -1, data);
                 }
             }
         }
@@ -222,6 +319,9 @@ void AnimationSpritePage::onMenuSelected(wxCommandEvent& event)
     case TM_Delete:
         {
             if (!rightMouseHitItem.IsOk())
+                break;
+
+            if (rightMouseHitItem == treeCtrl->GetRootItem())
                 break;
 
             AnimFrameTreeItemData* data = (AnimFrameTreeItemData*)treeCtrl->GetItemData(rightMouseHitItem);
@@ -249,9 +349,15 @@ void AnimationSpritePage::OnItemRClick(wxTreeEvent& event)
 {
     rightMouseHitItem = event.GetItem();
 
-    wxMenu menu(wxT("menu for AnimationSprite"));
-    menu.Append(TM_Delete, wxT("delete a frame"));
-    PopupMenu(&menu);
+    if (rightMouseHitItem == treeCtrl->GetRootItem()){
+        wxMenu menu(wxT("menu for AnimationSprite"));
+        menu.Append(TM_Add, wxT("add a frame"));
+        PopupMenu(&menu);
+    }else{
+        wxMenu menu(wxT("menu for AnimationSprite"));
+        menu.Append(TM_Delete, wxT("delete a frame"));
+        PopupMenu(&menu);
+    }
     event.Skip();
 }
 
@@ -369,5 +475,36 @@ void AnimationSpritePage::onEraseBackground(wxEraseEvent& event)
 {
 }
 
+void AnimationSpritePage::onClickPlay(wxCommandEvent& event)
+{
+    if (!animationSprite)
+        return;
 
+    if (animationSprite->isStop()){
+        if (btnLoop->GetValue()){
+            animationSprite->play();
+        }else{
+            animationSprite->playAction();
+        }
+        btnPlay->SetLabel(wxT("¡¬"));
+    }else{
+        if (animationSprite->isPause()){
+            animationSprite->resume();
+            btnPlay->SetLabel(wxT("¡¬"));
+        }else{
+            animationSprite->pause();
+            btnPlay->SetLabel(wxT(">"));
+        }
+    }
+
+}
+
+void AnimationSpritePage::onClickStop(wxCommandEvent& event)
+{
+    if (!animationSprite)
+        return;
+
+    animationSprite->stop();
+    btnPlay->SetLabel(wxT(">"));
+}
 

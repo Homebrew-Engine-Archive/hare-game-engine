@@ -68,6 +68,8 @@ namespace hare
 
         bool swapFrame(int frameID_1, int frameID_2);
 
+        int getFrameID(AnimFrame* frame);
+
         uint32 getFrameCount();
 
         virtual void move(float dx, float dy);
@@ -91,6 +93,10 @@ namespace hare
         void resume();
 
         void stop();
+
+        bool isStop();
+
+        bool isPause();
 
 	protected:
 		void frameMove();

@@ -13,6 +13,7 @@
 #ifndef _ANIMATIONSPRITEPAGE_H_
 #define _ANIMATIONSPRITEPAGE_H_
 #include <wx/harecanvas.h>
+#include <wx/tglbtn.h>
 
 class SpriteMIMEHandler;
 
@@ -41,6 +42,9 @@ protected:
     wxTreeCtrl* treeCtrl;
     wxPanel*    animationReview;
     wxPanel*    frameReview;
+    wxButton*   btnPlay;
+    wxButton*   btnStop;
+    wxToggleButton* btnLoop;
 
     SpriteMIMEHandler* mime;
 
@@ -58,6 +62,7 @@ protected:
     wxPoint frameMousePos;
 
     wxTreeItemId rightMouseHitItem;
+    wxTreeItemId dragTreeItem;
 
 protected:
     void onBeginDrag(wxTreeEvent& event);
@@ -80,6 +85,10 @@ protected:
 
     void onEraseBackground(wxEraseEvent& event);
     void onMenuSelected(wxCommandEvent& event);
+
+    void onClickPlay(wxCommandEvent& event);
+    void onClickStop(wxCommandEvent& event);
+
 };
 
 #endif

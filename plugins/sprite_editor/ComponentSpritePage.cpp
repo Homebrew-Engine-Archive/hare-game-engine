@@ -45,7 +45,17 @@ ComponentSpritePage::ComponentSpritePage(wxWindow* parent, SpriteMIMEHandler* ha
     wxImageList *images = new wxImageList(16, 16, true);
     treeCtrl->SetImageList(images);
 
-    treeCtrl->AddRoot(wxT("ComponentSprite"));
+    wxString fullPath = Manager::getInstancePtr()->getAppDir() + wxT("/resources/");
+    wxBitmap png;
+    png.LoadFile(fullPath + wxT("file.png"), wxBITMAP_TYPE_PNG);
+
+    if (png.GetWidth() == 16){
+        images->Add(png);
+    }else{
+        images->Add(wxBitmap(png.ConvertToImage().Rescale(16, 16)));
+    }
+
+    treeCtrl->AddRoot(wxT("ComponentSprite"), 0, 0);
 
 
 
@@ -226,7 +236,7 @@ void ComponentSpritePage::addPartSprite(Sprite* sprite)
 
     PartSpriteTreeItemData* data = new PartSpriteTreeItemData;
     data->part = sprite;
-    treeCtrl->AppendItem(treeCtrl->GetRootItem(), wxString::FromUTF8(sprite->getClassInfo()->className), -1, -1, data);
+    treeCtrl->AppendItem(treeCtrl->GetRootItem(), wxString::FromUTF8(sprite->getClassInfo()->className), 0, 0, data);
     treeCtrl->ExpandAll();
 }
 

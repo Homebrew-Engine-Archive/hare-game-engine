@@ -50,8 +50,17 @@ AnimationSpritePage::AnimationSpritePage(wxWindow* parent, SpriteMIMEHandler* ha
     wxImageList *images = new wxImageList(16, 16, true);
     treeCtrl->SetImageList(images);
 
+    wxString fullPath = Manager::getInstancePtr()->getAppDir() + wxT("/resources/");
+    wxBitmap png;
+    png.LoadFile(fullPath + wxT("file.png"), wxBITMAP_TYPE_PNG);
 
-    treeCtrl->AddRoot(wxT("AnimationSprite"));
+    if (png.GetWidth() == 16){
+        images->Add(png);
+    }else{
+        images->Add(wxBitmap(png.ConvertToImage().Rescale(16, 16)));
+    }
+
+    treeCtrl->AddRoot(wxT("AnimationSprite"), 0, 0);
 
     animationCanvas = new wxHareCanvas(animationReview);
     animationReview->GetSizer()->Prepend(animationCanvas, 1, wxEXPAND|wxALL, 0);
@@ -87,6 +96,7 @@ AnimationSpritePage::AnimationSpritePage(wxWindow* parent, SpriteMIMEHandler* ha
 
     btnPlay->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(AnimationSpritePage::onClickPlay), 0, this);
     btnStop->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(AnimationSpritePage::onClickStop), 0, this);
+    btnLoop->Connect(wxEVT_COMMAND_TOGGLEBUTTON_CLICKED, wxCommandEventHandler(AnimationSpritePage::onClickLoop), 0, this);
 
     Connect(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(AnimationSpritePage::onMenuSelected), 0, this);
 }
@@ -210,7 +220,7 @@ void AnimationSpritePage::addAnimationFrame(AnimFrame* frame)
 
     AnimFrameTreeItemData* data = new AnimFrameTreeItemData;
     data->frame = frame;
-    treeCtrl->AppendItem(treeCtrl->GetRootItem(), wxString::FromUTF8(frame->getSprite()->getClassInfo()->className), -1, -1, data);
+    treeCtrl->AppendItem(treeCtrl->GetRootItem(), wxString::FromUTF8(frame->getSprite()->getClassInfo()->className), 0, 0, data);
     treeCtrl->ExpandAll();
 }
 
@@ -514,3 +524,17 @@ void AnimationSpritePage::onClickStop(wxCommandEvent& event)
     btnPlay->SetLabel(wxT(">"));
 }
 
+void AnimationSpritePage::onClickLoop(wxCommandEvent& event)
+{
+    if (!animationSprite)
+        return;
+
+    if (!animationSprite->isStop()){
+        if (btnLoop->GetValue()){
+            animationSprite->play();
+        }else{
+            animationSprite->playAction();
+        }
+        btnPlay->SetLabel(wxT("¡¬"));
+    }  
+}

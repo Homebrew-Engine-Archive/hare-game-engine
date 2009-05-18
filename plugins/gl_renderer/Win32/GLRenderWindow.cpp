@@ -15,6 +15,10 @@
 #include "../GLRenderSystem.h"
 #include "../GLSystemManager.h"
 
+
+static HDC main_hdc = NULL;
+static HGLRC main_hrc = NULL;
+
 #define COLOR_DEPTH 16
 
 static LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
@@ -248,9 +252,6 @@ PIXELFORMATDESCRIPTOR* GLRenderWindow::getPixelFormatDescriptor()
 
 void GLRenderWindow::createGLResource()
 {
-	HDC old_hdc = wglGetCurrentDC();
-	HGLRC old_hrc = wglGetCurrentContext();
-
     GLuint PixelFormat;
 
     if (!(hDC=GetDC(windowParams.hwnd))){	// get DeviceContext
@@ -276,18 +277,22 @@ void GLRenderWindow::createGLResource()
 	if (!wglMakeCurrent(hDC, hRC))
         HARE_EXCEPT(Exception::ERR_INTERNAL_ERROR, "can't wglMakeCurrent context!", "GLRenderWindow::createGLResource"); 
 
-	if (old_hrc && old_hrc != hRC)
-	{
+	if (main_hdc){
 		// Restore old context
-		if (!wglMakeCurrent(old_hdc, old_hrc))
+		if (!wglMakeCurrent(main_hdc, main_hrc))
             HARE_EXCEPT(Exception::ERR_INTERNAL_ERROR, "can't Restore old context!", "GLRenderWindow::createGLResource"); 
 		// Share lists with old context
-		if (!wglShareLists(old_hrc, hRC))
+		if (!wglShareLists(main_hrc, hRC))
 			HARE_EXCEPT(Exception::ERR_INTERNAL_ERROR, "can't Share lists with old context!", "GLRenderWindow::createGLResource"); 
 		
 		if (!wglMakeCurrent(hDC, hRC))
 			HARE_EXCEPT(Exception::ERR_INTERNAL_ERROR, "can't wglMakeCurrent context!", "GLRenderWindow::createGLResource"); 
 	}
+
+    if (!main_hdc){
+        main_hdc = hDC;
+        main_hrc = hRC;
+    }
 
 	if (isMainWnd){
         glewInit();

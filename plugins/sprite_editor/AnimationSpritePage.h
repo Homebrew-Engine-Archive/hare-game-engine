@@ -88,6 +88,7 @@ protected:
 
     void onClickPlay(wxCommandEvent& event);
     void onClickStop(wxCommandEvent& event);
+    void onClickLoop(wxCommandEvent& event);
 
 };
 

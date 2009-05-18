@@ -150,6 +150,10 @@ void GLRenderSystem::endFrame()
 
 void GLRenderSystem::clear(bool z)
 {
+    //change window draw texture bug
+    curRenderTexture = 0;
+    glBindTexture(GL_TEXTURE_2D, curRenderTexture);
+
     GLbitfield flag = GL_COLOR_BUFFER_BIT;
     glClearColor(0, 0, 0, 0);
     if (z){

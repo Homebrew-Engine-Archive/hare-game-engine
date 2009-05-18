@@ -296,6 +296,7 @@ void GLRenderWindow::createGLResource()
 	(static_cast<GLRenderSystem*>(RenderSystem::getSingletonPtr()))->initalizeParam(windowParams.bZbuffer);
 
     //wglSwapIntervalEXT(0);  
+    glEnable(GL_TEXTURE_2D);
 
 }
 

@@ -84,6 +84,7 @@ void GLTexture::upload(const Image& img, uint32 destX, uint32 destY)
 	int desWidth = std::min(img.getWidth(), width - destX);
 	int desHeight= std::min(img.getHeight(), height - destY);
     
+
     glEnable(GL_TEXTURE_2D);
 
 	glBindTexture(GL_TEXTURE_2D, glTexture);
@@ -95,7 +96,14 @@ void GLTexture::upload(const Image& img, uint32 destX, uint32 destY)
 	assert(ret == GL_NO_ERROR);
 #endif
 
-	glBindTexture(GL_TEXTURE_2D, (static_cast<GLRenderSystem*>(GLRenderSystem::getSingletonPtr()))->getCurTexture());
+    if ((static_cast<GLRenderSystem*>(GLRenderSystem::getSingletonPtr()))->getCurTexture()){
+	    glBindTexture(GL_TEXTURE_2D, (static_cast<GLRenderSystem*>(GLRenderSystem::getSingletonPtr()))->getCurTexture());
+    }else{
+        glDisable(GL_TEXTURE_2D);
+    }
+
+
+    
 }
 
 void GLTexture::download(Image& img, const RectN& rc)

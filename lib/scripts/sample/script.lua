@@ -26,7 +26,7 @@ function renderScene()
 	canvas:setZ(0)
 	canvas:setColor(0xffff0000)
 	canvas:setZ(-0.1)
-	canvas:drawRect(0, 0, 100, 100)
+	--canvas:drawRect(0, 0, 100, 100)
 	canvas:setZ(-0.9)
 	canvas:setColor(0xff00ff00)
 	canvas:drawText(80, 80, tostring(hare.getTimer():getFPS()))
@@ -53,13 +53,13 @@ function init()
     listener:setEndSceneListenFunc(endScene)
     s:setSceneListener(listener)
     
-    --p = hare.WindowParams()
-    --p.width = 800
-    --p.height = 600
-    --p.bFullScreen = false
-    --p.bZbuffer = true
-    --w2 = hareApp:createRenderWindow(p)
-    --w2:setSceneManager(s)
+    p = hare.WindowParams()
+    p.width = 800
+    p.height = 600
+    p.bFullScreen = false
+    p.bZbuffer = true
+    w2 = hareApp:createRenderWindow(p)
+    w2:setSceneManager(s)
 
     tm = hare.getTextManager() 
     fnt = tm:createFont("/editor/comic.ttf", 30) 

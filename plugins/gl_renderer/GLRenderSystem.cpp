@@ -91,6 +91,7 @@ void GLRenderSystem::render(RenderUnit* operation)
 				if (curRenderTexture != texture->getGLTexture()){
 					bRenderTextureChange = true;
 					curRenderTexture = texture->getGLTexture();
+                    assert(curRenderTexture);
 				}
 			}else{
 				assert(false);

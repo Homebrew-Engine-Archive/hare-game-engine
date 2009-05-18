@@ -126,6 +126,7 @@ namespace hare
         for (;it != animFrameList.end(); ++it){
             (*it)->move(dx, dy);
         }
+        pos.x += dx; pos.y += dy;
 	}
 
 	void AnimationSprite::moveTo(float x, float y)
@@ -145,6 +146,7 @@ namespace hare
 
             (*it)->moveTo(x + origoX, y + origoY);
         }
+        pos.x = x; pos.y = y;
 	}
 
     int AnimationSprite::getFrameID(AnimFrame* frame)
@@ -307,6 +309,16 @@ namespace hare
     bool AnimationSprite::isPause()
     {
         return bPause;
+    }
+
+    void AnimationSprite::postLoaded()
+    {
+        play();
+    }
+
+    void AnimationSprite::postEdited(Attribute* attr)
+    {
+        postLoaded();
     }
 
 }

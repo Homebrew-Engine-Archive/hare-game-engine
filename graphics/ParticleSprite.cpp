@@ -1,5 +1,5 @@
 //***************************************************************
-//  File:    SimpleParticle.cpp
+//  File:    ParticleSprite.cpp
 //  Date:    5/10/2009
 //  Author:  wanglei (wanglei010407@163.com)
 //-------------------------------------------------------------
@@ -11,7 +11,7 @@
 //
 //***************************************************************
 #include "PCH.h"
-#include "SimpleParticle.h"
+#include "ParticleSprite.h"
 #include "Canvas.h"
 
 namespace hare
@@ -123,12 +123,12 @@ namespace hare
         postLoaded();
     }
 
-	HARE_IMPLEMENT_DYNAMIC_CLASS(SimpleParticle, Particle, 0)
+	HARE_IMPLEMENT_DYNAMIC_CLASS(ParticleSprite, Particle, 0)
 	{
 		HARE_OBJ_F(particleInfo, ParticleInfo, propAvoidNull)
 	}
 
-	SimpleParticle::SimpleParticle()
+	ParticleSprite::ParticleSprite()
 		:age(-2.0f)
         ,emissionResidue(0)
         ,prevLocation(0,0)
@@ -137,12 +137,12 @@ namespace hare
 		particleInfo = new ParticleInfo;
 	}
 
-	SimpleParticle::~SimpleParticle()
+	ParticleSprite::~ParticleSprite()
 	{
 
 	}
 
-	void SimpleParticle::render()
+	void ParticleSprite::render()
 	{
 		frameMove();
 
@@ -192,7 +192,7 @@ namespace hare
 		getCanvas()->setColor(oldColor);
 	}
 
-	void SimpleParticle::frameMove()
+	void ParticleSprite::frameMove()
 	{
 		float ang;
 		ParticleUnit* pPar;
@@ -298,26 +298,26 @@ namespace hare
 
 	}
 
-	void SimpleParticle::fire()
+	void ParticleSprite::fire()
 	{
 		if(particleInfo->lifeTime == -1.0f) age = -1.0f;
 		else age = 0.0f;
 	}
 
-	void SimpleParticle::fireAt(float x, float y)
+	void ParticleSprite::fireAt(float x, float y)
 	{
 		stop();
 		setPosition(x, y);
 		fire();
 	}
 
-	void SimpleParticle::move(float dx, float dy)
+	void ParticleSprite::move(float dx, float dy)
 	{
 		PointF pos = getPosition();
 		moveTo(pos.x + dx, pos.y + dy);
 	}
 
-	void SimpleParticle::moveTo(float x, float y)
+	void ParticleSprite::moveTo(float x, float y)
 	{
         if (age == -2.0f) { prevLocation.x = x; prevLocation.y = y; }
         else { prevLocation.x = location.x; prevLocation.y = location.y; }
@@ -326,18 +326,18 @@ namespace hare
         location.y = y;
 	}
 
-	void SimpleParticle::pause()
+	void ParticleSprite::pause()
 	{
 		age = -2.0f;
 	}
 
-	void SimpleParticle::stop()
+	void ParticleSprite::stop()
 	{
 		pause();
 		particlesAlive = 0;
 	}
 
-	void SimpleParticle::setPosition(float x, float y)
+	void ParticleSprite::setPosition(float x, float y)
 	{
         float dx,dy;
 
@@ -357,13 +357,14 @@ namespace hare
         location.y = y;
 	}
 
-	void SimpleParticle::postLoaded()
-	{
-	}
-
-	void SimpleParticle::postEdited(Attribute* attr)
+	void ParticleSprite::postLoaded()
 	{
         stop();
         fire();
+	}
+
+	void ParticleSprite::postEdited(Attribute* attr)
+	{
+        postLoaded();
 	}
 }

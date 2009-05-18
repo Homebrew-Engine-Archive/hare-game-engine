@@ -17,7 +17,7 @@
 #include "Texture.h"
 #include "RenderSystem.h"
 #include "Canvas.h"
-#include "SimpleParticle.h"
+#include "ParticleSprite.h"
 #include "AnimationSprite.h"
 
 
@@ -92,7 +92,7 @@ namespace hare
 		texMtrl->setTexture(tex);
 		ParticleShader* particleMtrl = new ParticleShader;
 		particleMtrl->setMaterial(texMtrl);
-		particle = new SimpleParticle;
+		particle = new ParticleSprite;
 		particle->setMaterial(particleMtrl);
 		particle->fireAt(200, 200);
 

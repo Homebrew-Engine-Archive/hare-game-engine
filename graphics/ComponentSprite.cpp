@@ -36,6 +36,7 @@ namespace hare
         for (;it != components.end(); ++it){
             (*it)->move(dx, dy);
         }
+        pos.x += dx; pos.y += dy;
     }
 
     void ComponentSprite::moveTo(float x, float y)
@@ -55,6 +56,7 @@ namespace hare
 
             (*it)->moveTo(x + origoX, y + origoY);
         }
+        pos.x = x; pos.y = y;
     }
 
     void ComponentSprite::render()
@@ -135,5 +137,22 @@ namespace hare
         for (int i = 0; i < partID; ++i, ++it);
 
         return it;
+    }
+
+    uint32 ComponentSprite::getPartCount()
+    {
+        return components.size();
+    }
+
+    int ComponentSprite::getPartID(Sprite* s)
+    {
+        Sprite::List::iterator it = components.begin();
+        for (int id = 0; it != components.end(); ++it, ++id){
+            if (*it == s){
+                return id;
+            }
+        }
+
+        return -1;
     }
 }

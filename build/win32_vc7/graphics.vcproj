@@ -377,10 +377,10 @@
 				RelativePath="..\..\include\graphics\Particle.h">
 			</File>
 			<File
-				RelativePath="..\..\graphics\SimpleParticle.cpp">
+				RelativePath="..\..\graphics\ParticleSprite.cpp">
 			</File>
 			<File
-				RelativePath="..\..\include\graphics\SimpleParticle.h">
+				RelativePath="..\..\include\graphics\ParticleSprite.h">
 			</File>
 		</Filter>
 		<File

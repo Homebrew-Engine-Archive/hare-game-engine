@@ -122,10 +122,16 @@
 				RelativePath="..\..\plugins\sprite_editor\AnimationSpritePage.cpp">
 			</File>
 			<File
+				RelativePath="..\..\plugins\sprite_editor\ComponentSpritePage.cpp">
+			</File>
+			<File
 				RelativePath="..\..\plugins\sprite_editor\ImageSpritePage.cpp">
 			</File>
 			<File
 				RelativePath="..\..\plugins\sprite_editor\ImageSpriteWizard.cpp">
+			</File>
+			<File
+				RelativePath="..\..\plugins\sprite_editor\ParticleSpritePage.cpp">
 			</File>
 			<File
 				RelativePath="..\..\plugins\sprite_editor\PCH.cpp">
@@ -154,10 +160,16 @@
 				RelativePath="..\..\plugins\sprite_editor\AnimationSpritePage.h">
 			</File>
 			<File
+				RelativePath="..\..\plugins\sprite_editor\ComponentSpritePage.h">
+			</File>
+			<File
 				RelativePath="..\..\plugins\sprite_editor\ImageSpritePage.h">
 			</File>
 			<File
 				RelativePath="..\..\plugins\sprite_editor\ImageSpriteWizard.h">
+			</File>
+			<File
+				RelativePath="..\..\plugins\sprite_editor\ParticleSpritePage.h">
 			</File>
 			<File
 				RelativePath="..\..\plugins\sprite_editor\PCH.h">

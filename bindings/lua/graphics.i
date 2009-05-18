@@ -13,19 +13,6 @@ public:
 	virtual void render() = 0;
 };
 
-class SimpleSprite : public Sprite
-{
-public:
-	SimpleSprite();
-	virtual ~SimpleSprite();
-
-	virtual void render();
-	
-	void loadFromImage(const String& filename);
-	
-	void move(float x, float y);
-};
-
 class SceneListenerBase
 {
 public:

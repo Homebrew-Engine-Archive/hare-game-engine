@@ -136,11 +136,15 @@ namespace hare
     SizerItemWindow::SizerItemWindow(Window* win, int prop, int flg, int bdr)
         : SizerItem(prop, flg, bdr), window(win)
     {
+        minSize = window->getSize();
+
+        if (flag & uiFixed_Minsize)
+            window->setMinSize(minSize);
     }
 
     SizerItemWindow::~SizerItemWindow()
     {
-        window->setParentSizer(0);
+        window->setContainingSizer(0);
     }
 
     SizeF SizerItemWindow::getSize() const

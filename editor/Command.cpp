@@ -16,8 +16,6 @@
 namespace hare
 {
     //////////////////////////////////////////////////////////////////////////
-    HARE_IMPLEMENT_ABSTRACT_CLASS(Command, Object, 0) {}
-
     Command::Command() : executed(false)
     {
     }
@@ -26,7 +24,7 @@ namespace hare
     {
         if (!executed)
         {
-            doExecute();
+            _doExecute();
             executed = true;
         }
     }
@@ -35,7 +33,7 @@ namespace hare
     {
         if (executed)
         {
-            doRestore();
+            _doRestore();
             executed = false;
         }
     }

@@ -345,7 +345,7 @@ void D3DRenderSystem::clear(bool z)
 		fZ = 1;
 	}
 
-	pD3DDevice->Clear(0, 0, flags, 0, fZ, 0);
+	pD3DDevice->Clear(0, 0, flags, -1, fZ, 0);
 
 }
 

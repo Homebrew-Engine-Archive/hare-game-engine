@@ -26,10 +26,86 @@ namespace hare
     HARE_IMPLEMENT_ABSTRACT_CLASS(Window, EventHandler, 0)
     {
         HARE_OBJ_F(windowSizer, Sizer, propHide)
+        HARE_META(minSize, SizeF)
+        HARE_META(maxSize, SizeF)
+        HARE_META(shown, bool)
+        HARE_META(enabled, bool)
     }
 
-    Window::Window() : parent(0)
+    Window::Window() : parent(0), shown(true), enabled(true), windowId(uiID_Any),
+        minSize(0, 0), maxSize(100, 100), clippedByParent(false), area(0, 0, 0, 0),
+        pixelRect(0, 0, 0, 0), pixelRectValid(false), unclippedRect(0, 0, 0, 0),
+        unclippedRectValid(false), unclippedInnerRect(0, 0, 0, 0),
+        unclippedInnerRectValid(false), innerRect(0, 0, 0, 0), 
+        innerRectValid(false), pixelSize(10, 10)
     {
+    }
+
+    Window::Window(Window* parent) 
+        : parent(0), shown(true), enabled(true), windowId(uiID_Any),
+        minSize(0, 0), maxSize(100, 100), clippedByParent(false), area(0, 0, 0, 0),
+        pixelRect(0, 0, 0, 0), pixelRectValid(false), unclippedRect(0, 0, 0, 0),
+        unclippedRectValid(false), unclippedInnerRect(0, 0, 0, 0),
+        unclippedInnerRectValid(false), innerRect(0, 0, 0, 0), 
+        innerRectValid(false), pixelSize(10, 10)
+    {
+        setParent(parent);
+        parent->addChild(this);
+    }
+
+    void Window::postLoaded()
+    {
+        if (windowSizer)
+        {
+
+        }
+    }
+
+    void Window::postEdited(Attribute* attr)
+    {
+        layout();
+        setArea(area);
+    }
+
+    void Window::reparent(Window* window)
+    {
+        if (parent)
+        {
+            parent->removeChild(this);
+        }
+        
+        parent = window;
+        
+        if (parent)
+        {
+            parent->addChild(this);
+        }
+    }
+
+    void Window::addChild(Window* window)
+    {
+        children.push_back(window);
+    }
+
+    void Window::removeChild(Window* window)
+    {
+        children.remove(window);
+    }
+
+    void Window::setContainingSizer(Sizer* sizer)
+    {
+        assert(!sizer || containingSizer != sizer);
+        containingSizer = sizer;
+    }
+
+    bool Window::layout()
+    {
+        if (windowSizer)
+        {
+            windowSizer->setDimension(getPixelRect());
+        }
+
+        return true;
     }
 
     SizeF Window::getEffectiveMinSize() const
@@ -56,6 +132,43 @@ namespace hare
 
     void Window::setArea_impl(const PointF& pos, const SizeF& size, bool topLeftSizing, bool fireEvents)
     {
+        unclippedRectValid = false;
+        unclippedInnerRectValid = false;
+        pixelRectValid = false;
+        innerRectValid = false;
+
+        SizeF oldSize(pixelSize);
+        pixelSize = size;
+
+        // limit new pixel size to: minSize <= newSize <= maxSize
+        MathUtil::clampMinMax(pixelSize.cx, minSize.cx, maxSize.cx);
+        MathUtil::clampMinMax(pixelSize.cy, minSize.cy, maxSize.cy);
+
+        area.set(area.minX, area.minY, area.minX + size.cx, area.minY + size.cy);
+
+        bool moved = false;
+        bool sized = (pixelSize != oldSize);
+
+        if (!topLeftSizing || sized)
+        {
+            if (pos != PointF(area.minX, area.minY))
+            {
+                area.moveTo(pos);
+                moved = true;
+            }
+        }
+
+        // fire events as required
+        if (fireEvents)
+        {
+            if (moved)
+            {
+            }
+
+            if (sized)
+            {
+            }
+        }
     }
 
     RectF Window::getPixelRect() const
@@ -130,6 +243,9 @@ namespace hare
 
     void Window::render(ThemePackage* themes)
     {
+        if (!shown)
+            return;
+
         if (themes)
         {
             Theme* theme = themes->getTheme(this);

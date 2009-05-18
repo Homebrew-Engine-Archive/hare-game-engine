@@ -15,15 +15,20 @@
 
 namespace hare
 {
-    class EDITOR_API Command : public Object
+    class EDITOR_API Command : public ReferenceCounted
     {
-        HARE_DECLARE_ABSTRACT_CLASS(Command)
+        HARE_DECLARE_PTR(Command)
     private:
         bool executed;
 
     protected:
-        virtual void doExecute() = 0;
-        virtual void doRestore() = 0;
+        virtual void _doExecute() = 0;
+        virtual void _doRestore() = 0;
+
+        virtual void _doRelease()
+        {
+            delete this;
+        }
 
     public:
         Command();

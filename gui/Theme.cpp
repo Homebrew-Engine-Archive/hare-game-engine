@@ -42,6 +42,84 @@ namespace hare
             return it->second;
         return NULL;
     }
+
+    void drawThemeInternal(Material* mtrl, const RectUV& windowRect, const RectUV& rect, const RectUV& rectInner)
+    {
+        RectF uvRect(0, 0, 0, 0);
+
+        float w = (float)mtrl->getTextureMtrl()->getTexture()->getWidth();
+        float h = (float)mtrl->getTextureMtrl()->getTexture()->getHeight();
+
+        // Lefttop Corner
+        uvRect.set(rect.minX, rect.minY, rectInner.minX, rectInner.minY);
+        RectF ltRect = uvRect;
+        ltRect.scale(w, h);
+        ltRect.moveTo(windowRect.minX, windowRect.minY);
+        getCanvas()->drawImage(ltRect, mtrl, uvRect);
+
+        // Righttop Corner
+        uvRect.set(rectInner.maxX, rect.minY, rect.maxX, rectInner.minY);
+        RectF rtRect = uvRect;
+        rtRect.scale(w, h);
+        rtRect.moveTo(windowRect.maxX - rtRect.width(), windowRect.minY);
+        getCanvas()->drawImage(rtRect, mtrl, uvRect);
+
+        // Top edge
+        uvRect.set(rectInner.minX, rect.minY, rectInner.maxX, rectInner.minY);
+        RectF tRect = uvRect;
+        tRect.scale(w, h);
+        tRect.moveTo(windowRect.minX + ltRect.width(), windowRect.minY);
+        tRect.maxX = windowRect.maxX - rtRect.width();
+        getCanvas()->drawImage(tRect, mtrl, uvRect);
+
+        // Leftbottom Corner
+        uvRect.set(rect.minX, rectInner.minY, rectInner.minX, rect.maxY);
+        RectF lbRect = uvRect;
+        lbRect.scale(w, h);
+        lbRect.moveTo(windowRect.minX, windowRect.maxY - lbRect.height());
+        getCanvas()->drawImage(lbRect, mtrl, uvRect);
+
+        // Left edge
+        uvRect.set(rect.minX, rectInner.minY, rectInner.minX, rectInner.maxY);
+        RectF lRect = uvRect;
+        lRect.scale(w, h);
+        lRect.moveTo(windowRect.minX, windowRect.minY + ltRect.height());
+        lRect.maxY = windowRect.maxY - lbRect.height();
+        getCanvas()->drawImage(lRect, mtrl, uvRect);
+
+        // Rightbottom Corner
+        uvRect.set(rectInner.maxX, rectInner.maxY, rect.maxX, rect.maxY);
+        RectF rbRect = uvRect;
+        rbRect.scale(w, h);
+        rbRect.moveTo(windowRect.maxX - rbRect.width(), windowRect.maxY - rbRect.height());
+        getCanvas()->drawImage(rbRect, mtrl, uvRect);
+
+        // Bottom edge
+        uvRect.set(rectInner.minX, rectInner.maxY, rectInner.maxX, rect.maxY);
+        RectF bRect = uvRect;
+        bRect.scale(w, h);
+        bRect.moveTo(windowRect.minX + lbRect.width(), windowRect.maxY - bRect.height());
+        bRect.maxX = windowRect.maxX - rbRect.width();
+        getCanvas()->drawImage(bRect, mtrl, uvRect);
+
+        // Right edge
+        uvRect.set(rectInner.maxX, rectInner.minY, rect.maxX, rectInner.maxY);
+        RectF rRect = uvRect;
+        rRect.scale(w, h);
+        rRect.moveTo(windowRect.maxX - rtRect.width(), windowRect.minY + rtRect.height());
+        rRect.maxY = windowRect.maxY - rbRect.height();
+        getCanvas()->drawImage(rRect, mtrl, uvRect);
+
+        // Center
+        uvRect = rectInner;
+        RectF cRect;
+        cRect.minX = windowRect.minX + ltRect.width();
+        cRect.minY = windowRect.minY + ltRect.height();
+        cRect.maxX = windowRect.maxX - rbRect.width();
+        cRect.maxY = windowRect.maxY - rbRect.height();
+        getCanvas()->drawImage(cRect, mtrl, uvRect);
+    }
+
 }
 
 

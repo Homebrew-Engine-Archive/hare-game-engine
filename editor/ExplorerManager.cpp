@@ -83,9 +83,9 @@ namespace hare
         notebook->Destroy();
     }
 
-    void ExplorerManager::bindProperty(const wxString& name, Object* object)
+    void ExplorerManager::bindProperty(const wxString& name, Object* object, EditorPage* associatedPage)
     {
-        PropertyGridPage* page = new PropertyGridPage();
+        PropertyGridPage* page = new PropertyGridPage(associatedPage);
 
         propGridManager->AddPage(name, wxPG_NULL_BITMAP, page);
 

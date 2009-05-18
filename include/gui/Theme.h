@@ -38,6 +38,8 @@ namespace hare
         ThemeHashMap themeMap;
         Theme::Array themes;
     };
+
+    void drawThemeInternal(Material* mtrl, const RectUV& windowRect, const RectUV& rect, const RectUV& rectInner);
 }
 
 #endif

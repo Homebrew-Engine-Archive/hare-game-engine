@@ -1,10 +1,21 @@
+//***************************************************************
+//  File:    Button.h
+//  Data:    04/22/2009
+//  Author:  littlesome (littlesome@live.cn)
+//-------------------------------------------------------------
+//  
+//-------------------------------------------------------------
+//  This file is part of Hare2D Game Engine.
+//  Copyright (C) All Rights Reserved
+//***************************************************************
+// 
+//***************************************************************
 #ifndef _BUTTON_H_
 #define _BUTTON_H_
 
 #include "UIPrerequisites.h"
 #include "Window.h"
 #include "Theme.h"
-#include "GUISystem.h"
 
 namespace hare
 {
@@ -12,6 +23,9 @@ namespace hare
     {
         HARE_DECLARE_DYNAMIC_CLASS(Button)
     public:
+        Button() : pushed(false), hovering(false) {};
+        Button(Window* parent) : Window(parent), pushed(false), hovering(false) {}
+
         bool isPushed() const
         {
             return pushed;

@@ -17,45 +17,45 @@ namespace hare
         SizerItem* add(Window *window, 
                     int proportion = 0,
                     int flag = uiAlign_Default,
-                    int border = 0);
+                    int border = 5);
 
         SizerItem* add(Sizer *sizer,
                     int proportion = 0,
                     int flag = uiAlign_Default,
-                    int border = 0);
+                    int border = 5);
 
         SizerItem* add(float width,
                     float height,
                     int proportion = 0,
                     int flag = uiAlign_Default,
-                    int border = 0);
+                    int border = 5);
 
         SizerItem* insert(size_t index,
                     Window *window, 
                     int proportion = 0,
                     int flag = uiAlign_Default,
-                    int border = 0);
+                    int border = 5);
 
         SizerItem* insert(size_t index,
                     Sizer *sizer,
                     int proportion = 0,
                     int flag = uiAlign_Default,
-                    int border = 0);
+                    int border = 5);
 
         SizerItem* insert(size_t index,
                     float width,
                     float height,
                     int proportion = 0,
                     int flag = uiAlign_Default,
-                    int border = 0);
+                    int border = 5);
 
         virtual SizerItem* insert(size_t index, SizerItem* item);
 
-        void setContainerWindow(Window *window);
+        void setContainingWindow(Window *window);
         
-        Window* getContainerWindow() const 
+        Window* getContainingWindow() const 
         { 
-            return containerWindow;
+            return containingWindow;
         }
 
         SizerItem::List& getChildren()
@@ -70,11 +70,13 @@ namespace hare
             return size; 
         }
 
-        SizeF getMinSize() const
-        {
-            return minSize;
+        PointF getPosition() const
+        { 
+            return position; 
         }
 
+        SizeF getMinSize();
+       
         void setDimension(const PointF& ps, const SizeF& sz)
         {
             position = ps;
@@ -95,7 +97,7 @@ namespace hare
         virtual SizeF calcMinSize() = 0;
         
     protected:
-        Window* containerWindow;
+        Window* containingWindow;
 
         SizerItem::List items;
         SizeF size;

@@ -194,6 +194,12 @@
 			<File
 				RelativePath="..\..\include\gui\Button.h">
 			</File>
+			<File
+				RelativePath="..\..\gui\FrameWindow.cpp">
+			</File>
+			<File
+				RelativePath="..\..\include\gui\FrameWindow.h">
+			</File>
 		</Filter>
 	</Files>
 	<Globals>

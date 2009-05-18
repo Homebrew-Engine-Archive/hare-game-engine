@@ -28,14 +28,19 @@ namespace hare
     class PropertyGridPage : public wxPropertyGridPage
     {
     public:
+        PropertyGridPage(EditorPage* page) : editorPage(page) {};
         Object::Ptr object;
         Attribute::List attributes;
+
+        EditorPage* editorPage;
 
     protected:
         void onPropertySelect(wxPropertyGridEvent& event);
         void onPropertyChanging(wxPropertyGridEvent& event);
         void onPropertyChange(wxPropertyGridEvent& event);
         void onPageChange(wxPropertyGridEvent& event);
+
+        void notifyObjectEdited(Object* object, Attribute* attr);
 
     private:
         DECLARE_EVENT_TABLE()

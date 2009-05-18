@@ -23,13 +23,8 @@ public:
     UVRCEditorPage(wxWindow* parent, UVRCMIMEHandler* handler);
     virtual ~UVRCEditorPage(); 
 
-    virtual void setModified(bool modified);
-    virtual bool getIsModified() const { return isModified; }
     virtual bool save();
     bool saveAs();
-    void updateTitle();
-
-    void setUVState(UVEditorState* state);
 
 private:
     void onRightClick(wxMouseEvent& event);
@@ -39,7 +34,6 @@ private:
     virtual bool Show(bool show = true);
 
     UVRCMIMEHandler* mime;
-    bool isModified;
 
     DECLARE_ABSTRACT_CLASS(UVRCEditorPage)
     DECLARE_EVENT_TABLE()

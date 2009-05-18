@@ -70,7 +70,7 @@ BEGIN_EVENT_TABLE(UVRCEditorPage, UVEditorPage)
 END_EVENT_TABLE()
 
 UVRCEditorPage::UVRCEditorPage(wxWindow* parent, UVRCMIMEHandler* handler)
- : UVEditorPage(parent), mime(handler), isModified(false)
+ : UVEditorPage(parent), mime(handler)
 {
     list->Connect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(UVRCEditorPage::onRightClick), 0, this);
 
@@ -80,26 +80,6 @@ UVRCEditorPage::UVRCEditorPage(wxWindow* parent, UVRCMIMEHandler* handler)
 UVRCEditorPage::~UVRCEditorPage()
 {
     Manager::getInstancePtr()->getExplorerManager()->removeAllProperties();
-}
-
-void UVRCEditorPage::updateTitle()
-{
-    String title = "[UVRCEditor]";
-    if (state) title += state->getUrl();
-
-    if (isModified)
-        setTitle(wxT("*") + wxString::FromUTF8(title.c_str()));
-    else
-        setTitle(wxString::FromUTF8(title.c_str()));
-}
-
-void UVRCEditorPage::setModified(bool modified)
-{
-    if (modified != isModified)
-    {
-        isModified = modified;
-        updateTitle();
-    }
 }
 
 bool UVRCEditorPage::saveAs()
@@ -149,12 +129,6 @@ bool UVRCEditorPage::save()
         setModified(false);
 
     return ret;
-}
-
-void UVRCEditorPage::setUVState(UVEditorState* state)
-{
-    UVEditorPage::setUVState(state);
-    updateTitle();
 }
 
 bool UVRCEditorPage::Show(bool show)

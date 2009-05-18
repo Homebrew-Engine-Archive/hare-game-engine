@@ -1,3 +1,15 @@
+//***************************************************************
+//  File:    Button.cpp
+//  Data:    04/22/2009
+//  Author:  littlesome (littlesome@live.cn)
+//-------------------------------------------------------------
+//  
+//-------------------------------------------------------------
+//  This file is part of Hare2D Game Engine.
+//  Copyright (C) All Rights Reserved
+//***************************************************************
+// 
+//***************************************************************
 #include "PCH.h"
 #include "Button.h"
 
@@ -48,21 +60,25 @@ namespace hare
         if (!button->isEnabled())
         {
             rect = &rectDisabled;
+            rectInner = &rectDisabledInner;
         }
         else if (button->isPushed())
         {
             rect = &rectPushed;
+            rectInner = &rectPushedInner;
         }
         else if (button->isHovering())
         {
             rect = &rectHover;
+            rectInner = &rectHoverInner;
         }
         else
         {
             rect = &rectNormal;
+            rectInner = &rectNormalInner;
         }
 
-        getCanvas()->drawImage(button->getPixelRect(), mtrl, *rect);
+        drawThemeInternal(mtrl, window->getPixelRect(), *rect, *rectInner);
     }
 }
 

@@ -63,12 +63,22 @@ GUIEditorPage::GUIEditorPage(wxWindow* parent) : isModified(false)
     Sizer::CLASS_INFO.findSubs(sizerClasses);
     
     Connect(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(GUIEditorPage::onMenuSelected), 0, this);
+    canvas->Connect(wxEVT_SIZE, wxSizeEventHandler(GUIEditorPage::onSize), 0, this);
 }
 
 GUIEditorPage::~GUIEditorPage()
 {
     treeCtrl->SetImageList(NULL);
     SAFE_DELETE(imageList);
+}
+
+void GUIEditorPage::onSize(wxSizeEvent& event)
+{
+    wxSize size = canvas->GetClientSize();
+    if (size.GetWidth() > 0 && size.GetHeight() > 0){
+        canvas->getRenderWindow()->resize(size.GetWidth(), size.GetHeight());
+    }
+    event.Skip();
 }
 
 void GUIEditorPage::onTreeBeginDrag(wxTreeEvent& event)
@@ -98,40 +108,6 @@ void GUIEditorPage::onTreeEndDrag(wxTreeEvent& event)
         }
         item = treeCtrl->GetItemParent(item);
     }
-
-    //PObjectBase objSrc = GetObjectFromTreeItem( itemSrc );
-    //if ( !objSrc )
-    //{
-    //    return;
-    //}
-
-    //PObjectBase objDst = GetObjectFromTreeItem( itemDst );
-    //if ( !objDst )
-    //{
-    //    return;
-    //}
-
-    //// backup clipboard
-    //PObjectBase clipboard = AppData()->GetClipboardObject();
-
-    //// set object to clipboard
-    //if ( copy )
-    //{
-    //    AppData()->CopyObject( objSrc );
-    //}
-    //else
-    //{
-    //    AppData()->CutObject( objSrc );
-    //}
-
-    //if ( !AppData()->PasteObject( objDst ) && !copy )
-    //{
-    //    AppData()->Undo();
-    //}
-
-    //AppData()->SetClipboardObject( clipboard );
-
-
 }
 
 void GUIEditorPage::onTreeItemSelected(wxTreeEvent& event)
@@ -161,6 +137,8 @@ void GUIEditorPage::onTreeItemSelected(wxTreeEvent& event)
         Manager::getInstancePtr()->getExplorerManager()->removeAllProperties();
         Manager::getInstancePtr()->getExplorerManager()->bindProperty(wxT("Properity"), object);
     }
+
+    event.Skip();
 }
 
 void GUIEditorPage::onTreeItemRightClick(wxTreeEvent& event)
@@ -182,14 +160,13 @@ void GUIEditorPage::onTreeItemRightClick(wxTreeEvent& event)
         }
         else if (data->isSizerItem())
         {
-            if (data->item->isA(&SizerItemWindow::CLASS_INFO))
+            if (data->item->getWindow())
             {
-                SizerItemWindow* siw = (SizerItemWindow*)data->item;
-                Window* win = siw->getWindow();
-                if (!win->getSizer())
+                Window* window = data->item->getWindow();
+                if (!window->getSizer())
                     add_sizer_menu = true;
             }
-            else if (data->item->isA(&SizerItemSizer::CLASS_INFO))
+            else if (data->item->getSizer())
             {
                 add_sizer_menu = true;
                 add_window_menu = true;
@@ -236,11 +213,49 @@ void GUIEditorPage::onTreeItemRightClick(wxTreeEvent& event)
     PopupMenu(contexMenu);
 
     delete contexMenu;
+
+    event.Skip();
+}
+
+void GUIEditorPage::drawHelperRect(TreeItemData* data, uint32 color)
+{
+    if (data)
+    {
+        PointF pos(0, 0);
+        SizeF size(0, 0);
+
+        if (data->isSizer())
+        {
+            pos = data->sizer->getPosition();
+            size = data->sizer->getSize();
+        }
+        else if (data->isSizerItem())
+        {
+            pos = data->item->getPosition();
+            size = data->item->getSize();
+        }
+        else
+            return;
+
+        getCanvas()->setColor(color);
+        getCanvas()->drawRect(pos.x, pos.y, pos.x + size.cx, pos.y + size.cy);
+        getCanvas()->setColor(0xFFFFFFFF);
+    }
 }
 
 void GUIEditorPage::renderScene()
 {
     guiSys->render();
+
+    wxTreeItemId parentId = treeCtrl->GetItemParent(treeCtrl->GetSelection());
+    if (parentId.IsOk())
+    {
+        TreeItemData* parentData = (TreeItemData*)treeCtrl->GetItemData(parentId);
+        drawHelperRect(parentData, 0xFF0000FF);
+    }
+
+    TreeItemData* data = (TreeItemData*)treeCtrl->GetItemData(treeCtrl->GetSelection());
+    drawHelperRect(data, 0xFFFF0000);
 }
 
 void GUIEditorPage::setWindow(Window* window)
@@ -264,23 +279,28 @@ void GUIEditorPage::addWindow(Window* window)
     if (data)
     {
         if (data->isSizer())
-        {
             sizer = data->sizer;
-        }
         else if (data->isSizerItem())
-        {
-            if (data->item->isA(&SizerItemSizer::CLASS_INFO))
-            {
-                SizerItemSizer* sis = (SizerItemSizer*)data->item;
-                sizer = sis->getSizer();
-            }
-        }
+            sizer = data->item->getSizer();
     }
 
     if (sizer)
+    {   
         newItem = sizer->add(window);
+
+        Window* parent = sizer->getContainingWindow();
+
+        if (parent)
+        {
+            window->reparent(parent);
+        }
+        else
+            assert(false);
+    }
     else if (!guiSys->getRoot())
+    {
         guiSys->setRoot(window);
+    }
     else
         return;
 
@@ -288,6 +308,7 @@ void GUIEditorPage::addWindow(Window* window)
         ctrlImage, ctrlImage, newItem ? new TreeItemData(newItem) : new TreeItemData(window));
 
     setModified(true);
+    guiSys->getRoot()->layout();
 
     treeCtrl->Expand(treeCtrl->GetSelection());
     treeCtrl->SelectItem(item);
@@ -308,26 +329,22 @@ void GUIEditorPage::addSizer(Sizer* sizer)
         }
         else if (data->isSizer())
         {
-            sizerItem = data->sizer->add(sizer);
+            sizerItem = data->sizer->add(sizer, 1, uiExpand, 5);
             sizer_accepted = true;
         }
         else if (data->isSizerItem())
         {
-            if (data->item->isA(&SizerItemWindow::CLASS_INFO))
+            Window* itemWindow = data->item->getWindow();
+            Sizer* itemSizer = data->item->getSizer();
+
+            if (itemWindow && !itemWindow->getSizer())
             {
-                SizerItemWindow* siw = (SizerItemWindow*)data->item;
-                Window* win = siw->getWindow();
-                if (!win->getSizer())
-                {
-                    win->setSizer(sizer);
-                    sizer_accepted = true;
-                }
+                itemWindow->setSizer(sizer);
+                sizer_accepted = true;
             }
-            else if (data->item->isA(&SizerItemSizer::CLASS_INFO))
+            else if (itemSizer)
             {
-                SizerItemSizer* sis = (SizerItemSizer*)data->item;
-                Sizer* sz = sis->getSizer();
-                sizerItem = sz->add(sizer);
+                sizerItem = itemSizer->add(sizer, 1, uiExpand, 5);
                 sizer_accepted = true;
             }
         }
@@ -338,6 +355,8 @@ void GUIEditorPage::addSizer(Sizer* sizer)
                 sizerImage, sizerImage, sizerItem ? new TreeItemData(sizerItem) : new TreeItemData(sizer));
 
             setModified(true);
+
+            guiSys->getRoot()->layout();
 
             treeCtrl->Expand(treeCtrl->GetSelection());
             treeCtrl->SelectItem(item);

@@ -13,6 +13,7 @@
 #include "PCH.h"
 #include "PropertyHandler.h"
 #include "FileSystemExplorer.h"
+#include "EditorPage.h"
 #include <wx/propgrid/propdev.h>
 #include <wx/propgrid/manager.h>
 #include <wx/propgrid/propgrid.h>
@@ -740,6 +741,12 @@ namespace hare
         EVT_PG_PAGE_CHANGED(wxID_ANY, PropertyGridPage::onPageChange)
     END_EVENT_TABLE()
 
+    void PropertyGridPage::notifyObjectEdited(Object* object, Attribute* attr)
+    {
+        if (editorPage)
+            editorPage->onAssociatedObjectEdited(object, attr);
+    }
+
     void PropertyGridPage::onPropertySelect(wxPropertyGridEvent& event)
     {
 
@@ -793,6 +800,7 @@ namespace hare
 
                 p->SetValue(value);
                 RefreshProperty(p);
+                notifyObjectEdited(attr->owner, attr);
             }
             break;
         case Attribute::attrMetaArray:
@@ -825,6 +833,7 @@ namespace hare
                 Attribute* at = (Attribute*)node->GetClientData();
                 owner = at->owner;
                 owner->postEdited(at);
+                notifyObjectEdited(owner, at);
             }
 
             parent = parent->GetParent();

@@ -89,9 +89,9 @@ namespace hare
                     else if (item->getFlag() & uiAlign_Center_Vertical)
                         child_pos.y += (size.cy - sz.cy) / 2;
 
-                    if (containerWindow)
+                    if (containingWindow)
                     {
-                        child_pos.x = containerWindow->adjustForLayoutDirection(child_pos.x, width, size.cx);
+                        child_pos.x = containingWindow->adjustForLayoutDirection(child_pos.x, width, size.cx);
                     }
 
                     item->setDimension(child_pos, child_size);
@@ -105,7 +105,7 @@ namespace hare
     SizeF BoxSizer::calcMinSize()
     {
         if (items.size() == 0)
-            return SizeF();
+            return SizeF(0, 0);
 
         stretchable = 0;
         minWidth = 0;

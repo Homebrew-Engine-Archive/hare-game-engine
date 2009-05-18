@@ -40,6 +40,14 @@ namespace hare
             return border; 
         }
 
+        PointF getPosition() const
+        {
+            return pos;
+        }
+
+        virtual Window* getWindow() { return NULL; }
+        virtual Sizer* getSizer() { return NULL; }
+
         virtual SizeF getSize() const = 0;
         virtual SizeF calcMinSize() = 0;
         virtual bool isShown() = 0;
@@ -67,7 +75,7 @@ namespace hare
         virtual bool isShown();
         virtual void setDimension(const PointF& ps, const SizeF& sz);
         
-        Window* getWindow() { return window; }
+        virtual Window* getWindow() { return window; }
 
     protected:
         WindowPtr window;
@@ -87,7 +95,7 @@ namespace hare
         virtual bool isShown();
         virtual void setDimension(const PointF& ps, const SizeF& sz);
 
-        Sizer* getSizer() { return sizer; }
+        virtual Sizer* getSizer() { return sizer; }
 
     protected:
         SizerPtr sizer;

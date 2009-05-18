@@ -95,7 +95,7 @@
 								<flag>wxEXPAND</flag>
 								<border>5</border>
 								<object class="wxListBox" name="idListItems">
-									<style>wxLB_MULTIPLE|wxNO_BORDER</style>
+									<style>wxLB_EXTENDED|wxSTATIC_BORDER</style>
 									<content />
 								</object>
 							</object>

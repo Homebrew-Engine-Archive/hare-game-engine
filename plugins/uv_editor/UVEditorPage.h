@@ -15,70 +15,53 @@ public:
     UVEditorPage(wxWindow* parent);
     virtual ~UVEditorPage(); 
 
-    UVEditorState* getEditorState()
-    {
-        return state;
-    }
+public:
+    virtual void    setModified(bool modified);
+    virtual bool    getIsModified() const { return isModified; }
 
-    RectState* getFocusedRect();
+    virtual void    undo();
+    virtual void    redo();
 
-    void setUVState(UVEditorState* state);
+    virtual bool    canUndo() const;
+    virtual bool    canRedo() const;
 
-    void addRectUV(const String& name, const RectUV& rect, RectState::EditState state);
+    void            updateTitle();
 
-    Material* getMaterial()
-    {
-        return state ? state->mtrl : NULL;
-    }
+public:
+    UVEditorState*  getEditorState() { return state; }
+    RectState*      getFocusedRect();
 
-    void setMaterial(Material* material)
-    {
-        if (state)
-            state->mtrl = material;
-    }
+    void            setUVState(UVEditorState* state);
+    void            addRectUV(const String& name, const RectUV& rect, RectState::EditState state);
+    
+    Material*       getMaterial() { return state ? state->mtrl : NULL; }
+    void            setMaterial(Material* material) { if (state)state->mtrl = material; }
+    
+    RectUV          makePixelAlign(const RectUV& rect);
+
 protected:
-
-    virtual void beginScene()
-    {
-    }
-    virtual void endScene()
-    {
-    }
-    virtual void renderScene()
-    {
-        drawImpl();
-    }
-    virtual void drawImpl();
+    virtual void    beginScene() {}
+    virtual void    endScene() {}
+    virtual void    renderScene() { drawImpl(); }
+    virtual void    drawImpl();
 
 private:
-    void onSize(wxSizeEvent& event);
-    void onEraseBackground(wxEraseEvent& event);
-    void onMouseLeftDown(wxMouseEvent& event);
-    void onMouseLeftUp(wxMouseEvent& event);
-    void onMouseMove(wxMouseEvent& event);
-    void onMouseWheel(wxMouseEvent& event);
-    void onScaleSlider(wxScrollEvent& event);
-    void onScaleEntered(wxCommandEvent& event);
-    void onListItemSelected(wxCommandEvent& event);
-    void onToolBarUpdateUI(wxUpdateUIEvent& event);
-    void onToolCommand(wxCommandEvent& event);
+    void            onSize(wxSizeEvent& event);
+    void            onEraseBackground(wxEraseEvent& event);
+    void            onMouseLeftDown(wxMouseEvent& event);
+    void            onMouseLeftUp(wxMouseEvent& event);
+    void            onMouseMove(wxMouseEvent& event);
+    void            onMouseWheel(wxMouseEvent& event);
+    void            onScaleSlider(wxScrollEvent& event);
+    void            onScaleEntered(wxCommandEvent& event);
+    void            onListItemSelected(wxCommandEvent& event);
+    void            onToolBarUpdateUI(wxUpdateUIEvent& event);
+    void            onToolCommand(wxCommandEvent& event);
 
-    void updateMouseState();
+    void            updateMouseState();
+    void            updateListState();
 
 protected:
-    wxHareCanvas* canvas;
-    SceneManager* scene;
-    UVEditorState::Ptr state;
-
-    static Material::Ptr gridMtrl;
-    
-    wxSlider* slider;
-    wxTextCtrl* text;
-    wxListBox* list;
-
-    wxPoint mouseDownPos;
-    wxCursor* dragCursor;
-
     enum DragAction
     {
         DA_SizingLeftTop,
@@ -89,14 +72,23 @@ protected:
         DA_SizingRightTop,
         DA_SizingRight,
         DA_SizingRightBottom,
-
         DA_Moving,
         DA_DraggingCanvas,
-
         DA_None,
     };
 
-    DragAction dragAction;
+    DragAction                  dragAction;
+    wxHareCanvas*               canvas;
+    SceneManager*               scene;
+    UVEditorState::Ptr          state;
+    Material::Ptr               gridMtrl;
+    wxSlider*                   slider;
+    wxTextCtrl*                 text;
+    wxListBox*                  list;
+    wxPoint                     mouseDownPos;
+    wxCursor*                   dragCursor;
+    bool                        isModified;
+    mutable CommandProcessor    cmdProcessor;
 
     DECLARE_EVENT_TABLE();
 };

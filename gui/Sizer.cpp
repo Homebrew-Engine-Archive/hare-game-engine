@@ -13,7 +13,7 @@ namespace hare
         HARE_META(minSize, SizeF)
     }
 
-    Sizer::Sizer() : containerWindow(0), size(20, 20), minSize(20, 20), position(0, 0)
+    Sizer::Sizer() : containingWindow(0), size(0, 0), minSize(0, 0), position(0, 0)
     {
     }
 
@@ -64,7 +64,42 @@ namespace hare
             items.insert(it, item);
         }
 
+        if (item->getWindow())
+            item->getWindow()->setContainingSizer(this);
+
+        if (item->getSizer())
+            item->getSizer()->setContainingWindow(containingWindow);
+
         return item;
+    }
+
+    void Sizer::setContainingWindow(Window *window)
+    {
+        if (window == containingWindow)
+            return;
+
+        containingWindow = window;
+
+        // set the same window for all nested sizers as well, they also are in the
+        // same window
+        SizerItem::List::iterator it = items.begin();
+        for (; it != items.end(); ++it)
+        {
+            SizerItem* item = *it;
+            Sizer* sizer = item->getSizer();
+            if (sizer)
+            {
+                sizer->setContainingWindow(window);
+            }
+        }
+    }
+
+    SizeF Sizer::getMinSize()
+    {
+        SizeF ret(calcMinSize());
+        if (ret.cx < minSize.cx) ret.cx = minSize.cx;
+        if (ret.cy < minSize.cy) ret.cy = minSize.cy;
+        return ret;
     }
 
     void Sizer::layout()

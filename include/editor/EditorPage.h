@@ -45,6 +45,8 @@ namespace hare
         virtual bool hasSelection() const { return false; }
         virtual bool isReadOnly() const { return true; }
 
+        virtual void onAssociatedObjectEdited(Object* object, Attribute* attr) {}
+
     protected:
         wxString title;
 

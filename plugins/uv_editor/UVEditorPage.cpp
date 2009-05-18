@@ -2,43 +2,57 @@
 #include "UVEditorPage.h"
 #include "drag_hand.xpm"
 
+//////////////////////////////////////////////////////////////////////////
+class MoveRectCommand : public Command
+{
+public:
+    MoveRectCommand() {}
+
+protected:
+    virtual void _doExecute()
+    {
+
+    }
+    virtual void _doRestore()
+    {
+
+    }
+};
+
+//////////////////////////////////////////////////////////////////////////
 int idScaleSlider = XRCID("idScaleSlider");
-int idScaleTxt = XRCID("idScaleTxt");
-int idPanelR = XRCID("idPanelR");
-int idListItems = XRCID("idListItems");
-int idAlignLeft = XRCID("idAlignLeft");
-int idAlignRight = XRCID("idAlignRight");
-int idAlignTop = XRCID("idAlignTop");
+int idScaleTxt =    XRCID("idScaleTxt");
+int idPanelR =      XRCID("idPanelR");
+int idListItems =   XRCID("idListItems");
+int idAlignLeft =   XRCID("idAlignLeft");
+int idAlignRight =  XRCID("idAlignRight");
+int idAlignTop =    XRCID("idAlignTop");
 int idAlignBottom = XRCID("idAlignBottom");
-int idSameWidth = XRCID("idSameWidth");
-int idSameHeight = XRCID("idSameHeight");
-int idSameSize = XRCID("idSameSize");
+int idSameWidth =   XRCID("idSameWidth");
+int idSameHeight =  XRCID("idSameHeight");
+int idSameSize =    XRCID("idSameSize");
 
 BEGIN_EVENT_TABLE(UVEditorPage, EditorPage)
     EVT_COMMAND_SCROLL(idScaleSlider, UVEditorPage::onScaleSlider)
-    EVT_TEXT_ENTER(idScaleTxt, UVEditorPage::onScaleEntered)
-    EVT_LISTBOX(idListItems, UVEditorPage::onListItemSelected)
-
-    EVT_UPDATE_UI(idAlignLeft, UVEditorPage::onToolBarUpdateUI)
-    EVT_UPDATE_UI(idAlignRight, UVEditorPage::onToolBarUpdateUI)
-    EVT_UPDATE_UI(idAlignTop, UVEditorPage::onToolBarUpdateUI)
-    EVT_UPDATE_UI(idAlignBottom, UVEditorPage::onToolBarUpdateUI)
-    EVT_UPDATE_UI(idSameWidth, UVEditorPage::onToolBarUpdateUI)
-    EVT_UPDATE_UI(idSameHeight, UVEditorPage::onToolBarUpdateUI)
-    EVT_UPDATE_UI(idSameSize, UVEditorPage::onToolBarUpdateUI)
-
-    EVT_MENU(idAlignLeft, UVEditorPage::onToolCommand)
-    EVT_MENU(idAlignRight, UVEditorPage::onToolCommand)
-    EVT_MENU(idAlignTop, UVEditorPage::onToolCommand)
-    EVT_MENU(idAlignBottom, UVEditorPage::onToolCommand)
-    EVT_MENU(idSameWidth, UVEditorPage::onToolCommand)
-    EVT_MENU(idSameHeight, UVEditorPage::onToolCommand)
-    EVT_MENU(idSameSize, UVEditorPage::onToolCommand)
+    EVT_TEXT_ENTER(idScaleTxt,        UVEditorPage::onScaleEntered)
+    EVT_LISTBOX(idListItems,          UVEditorPage::onListItemSelected)
+    EVT_UPDATE_UI(idAlignLeft,        UVEditorPage::onToolBarUpdateUI)
+    EVT_UPDATE_UI(idAlignRight,       UVEditorPage::onToolBarUpdateUI)
+    EVT_UPDATE_UI(idAlignTop,         UVEditorPage::onToolBarUpdateUI)
+    EVT_UPDATE_UI(idAlignBottom,      UVEditorPage::onToolBarUpdateUI)
+    EVT_UPDATE_UI(idSameWidth,        UVEditorPage::onToolBarUpdateUI)
+    EVT_UPDATE_UI(idSameHeight,       UVEditorPage::onToolBarUpdateUI)
+    EVT_UPDATE_UI(idSameSize,         UVEditorPage::onToolBarUpdateUI)
+    EVT_MENU(idAlignLeft,             UVEditorPage::onToolCommand)
+    EVT_MENU(idAlignRight,            UVEditorPage::onToolCommand)
+    EVT_MENU(idAlignTop,              UVEditorPage::onToolCommand)
+    EVT_MENU(idAlignBottom,           UVEditorPage::onToolCommand)
+    EVT_MENU(idSameWidth,             UVEditorPage::onToolCommand)
+    EVT_MENU(idSameHeight,            UVEditorPage::onToolCommand)
+    EVT_MENU(idSameSize,              UVEditorPage::onToolCommand)
 END_EVENT_TABLE()
 
-Material::Ptr UVEditorPage::gridMtrl;
-
-UVEditorPage::UVEditorPage(wxWindow* parent)
+UVEditorPage::UVEditorPage(wxWindow* parent) : isModified(false)
 {
     wxXmlResource::Get()->LoadPanel(this, parent, wxT("idUVEditorPanel"));
 
@@ -63,11 +77,7 @@ UVEditorPage::UVEditorPage(wxWindow* parent)
     list = XRCCTRL(*this, "idListItems", wxListBox);
 
     dragCursor = new wxCursor((const char**)drag_hand_xpm);
-
-    if (!gridMtrl)
-    {
-        gridMtrl = (Material*)Object::importObject("/editor/grid.material");
-    }
+    gridMtrl = (Material*)Object::importObject("/editor/grid.material");
 
     Layout();
 }
@@ -76,6 +86,73 @@ UVEditorPage::~UVEditorPage()
 {
     delete dragCursor;
     dragCursor = NULL;
+}
+
+void UVEditorPage::updateTitle()
+{
+    String title = "[UVEditor]";
+    if (state) title += state->getUrl();
+
+    if (isModified)
+        setTitle(wxT("*") + wxString::FromUTF8(title.c_str()));
+    else
+        setTitle(wxString::FromUTF8(title.c_str()));
+}
+
+void UVEditorPage::undo()
+{
+    cmdProcessor.undo();
+    setModified(!cmdProcessor.isAtSavePoint());
+}
+
+void UVEditorPage::redo()
+{
+    cmdProcessor.redo();
+    setModified(!cmdProcessor.isAtSavePoint());
+}
+
+bool UVEditorPage::canUndo() const
+{
+    return cmdProcessor.canUndo();
+}
+
+bool UVEditorPage::canRedo() const
+{
+    return cmdProcessor.canRedo();
+}
+
+void UVEditorPage::setModified(bool modified)
+{
+    if (modified != isModified)
+    {
+        isModified = modified;
+        updateTitle();
+    }
+}
+
+inline int getSign(float v)
+{
+    return v == 0 ? 0 : (v > 0 ? 1 : -1);
+}
+
+RectUV UVEditorPage::makePixelAlign(const RectUV& rect)
+{
+    RectUV ret = rect;
+
+    if (getMaterial() && getMaterial()->getTextureMtrl() &&
+        getMaterial()->getTextureMtrl()->getTexture())
+    {
+        int32 mtrlW = getMaterial()->getTextureMtrl()->getTexture()->getWidth();
+        int32 mtrlH = getMaterial()->getTextureMtrl()->getTexture()->getHeight();
+
+        ret.scale((float)mtrlW, (float)mtrlH);
+
+        ret.minX = (int32)(ret.minX + getSign(ret.minX) * 0.5f) / float(mtrlW);
+        ret.minY = (int32)(ret.minY + getSign(ret.minY) * 0.5f) / float(mtrlH);
+        ret.maxX = (int32)(ret.maxX + getSign(ret.maxX) * 0.5f) / float(mtrlW);
+        ret.maxY = (int32)(ret.maxY + getSign(ret.maxY) * 0.5f) / float(mtrlH);
+    }
+    return ret;
 }
 
 void UVEditorPage::drawImpl()
@@ -186,6 +263,8 @@ void UVEditorPage::setUVState(UVEditorState* state)
             list->Append(wxString::FromUTF8(st->name.c_str()), st);
         }
     }
+
+    updateTitle();
 }
 
 void UVEditorPage::addRectUV(const String& name, const RectUV& rect, RectState::EditState state)
@@ -264,29 +343,31 @@ void UVEditorPage::onListItemSelected(wxCommandEvent& event)
     if (!state)
         return;
 
-    wxArrayInt sels;
-    list->GetSelections(sels);
-
-    bool focused = false;
     RectState::List::iterator it = state->rects.begin();
     for (; it != state->rects.end(); ++it) 
     {
         RectState* st = *it;
+        st->state = RectState::State_None;
+    }
 
-        bool selected = false;
-        for (size_t i = 0; i < sels.Count(); ++i)
+    wxArrayInt sels;
+    list->GetSelections(sels);
+    for (size_t i = 0; i < sels.Count(); ++i)
+    {
+        RectState* st = (RectState*)list->GetClientData(sels[i]);
+        st->state = RectState::State_Selected;
+    }
+
+    RectState* newSelected = (RectState*)list->GetClientData(event.GetSelection());
+    if (newSelected)
+    {
+        RectState::List::iterator it = std::find(state->rects.begin(), state->rects.end(), newSelected);
+        if (it != state->rects.end())
         {
-            if (st == (RectState*)list->GetClientData(sels[i]))
-            {
-                selected = true;
-                break;
-            }
+            newSelected->state = RectState::State_Focused;
+            state->rects.push_front(newSelected);
+            state->rects.erase(it);
         }
-        
-        if (selected)
-            st->state = RectState::State_Selected;
-        else
-            st->state = RectState::State_None;
     }
 }
 
@@ -370,6 +451,13 @@ void UVEditorPage::onMouseLeftUp(wxMouseEvent& event)
     onMouseMove(event);
     updateMouseState();
     event.Skip();
+
+    RectState::List::iterator it = state->rects.begin();
+    for (; it != state->rects.end(); ++it) 
+    {
+        RectState* st = *it;
+        st->rect = makePixelAlign(st->rect);
+    }
 }
 
 void UVEditorPage::onMouseLeftDown(wxMouseEvent& event)
@@ -437,6 +525,7 @@ void UVEditorPage::onMouseLeftDown(wxMouseEvent& event)
         {
             RectState* st = *it;
             st->state = RectState::State_None;
+            list->SetSelection(-1);
         }
     }
 
@@ -447,6 +536,7 @@ void UVEditorPage::onMouseLeftDown(wxMouseEvent& event)
     onMouseMove(fakeMove);
     
     updateMouseState();
+    updateListState();
 
     event.Skip();
 }
@@ -581,6 +671,20 @@ void UVEditorPage::onMouseMove(wxMouseEvent& event)
     }
     updateMouseState();
     event.Skip();
+}
+
+void UVEditorPage::updateListState()
+{
+    int count = list->GetCount();
+
+    for (int i = 0; i < count; ++i)
+    {
+        RectState* st = (RectState*)list->GetClientData(i);
+        if (st->hasFlag(RectState::State_Selected))
+            list->SetSelection(i, true);
+        else
+            list->SetSelection(i, false);
+    }
 }
 
 void UVEditorPage::updateMouseState()

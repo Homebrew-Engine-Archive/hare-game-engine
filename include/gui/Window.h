@@ -10,9 +10,9 @@ namespace hare
     class UI_API Window : public EventHandler
     {
         HARE_DECLARE_ABSTRACT_CLASS(Window)
-    
     public:
         Window();
+        Window(Window* parent);
 
         void setId(int id) 
         { 
@@ -34,6 +34,7 @@ namespace hare
 
         virtual bool show(bool show = true)
         {
+            shown = show;
             return false;
         }
         bool hide() 
@@ -69,6 +70,16 @@ namespace hare
             return parent;
         }
 
+        void setParent(Window* window)
+        {
+            parent = window;
+        }
+
+        void reparent(Window* window);
+
+        void addChild(Window* window);
+        void removeChild(Window* window);
+
         const Window::List& getChildren() const 
         { 
             return children; 
@@ -84,7 +95,19 @@ namespace hare
 
         void setSizer(Sizer* sizer)
         {
+            if (sizer == windowSizer)
+                return;
+
+            if (windowSizer)
+            {
+                windowSizer->setContainingWindow(NULL);
+            }
+
             windowSizer = sizer;
+            if (windowSizer)
+            {
+                windowSizer->setContainingWindow(this);
+            }
         }
 
         Sizer* getSizer()
@@ -92,26 +115,11 @@ namespace hare
             return windowSizer;
         }
 
-        void setParentSizer(Sizer* sizer)
-        {
-            parentSizer = sizer;
-        }
+        void setContainingSizer(Sizer* sizer);
 
-        Sizer* getParentSizer()
+        Sizer* getContainingSizer()
         {
-            return parentSizer;
-        }
-
-        void setSize(const SizeF& size)
-        {
-        }
-
-        void setPositon(const PointF& pos)
-        { 
-        }
-
-        void setDimension(const PointF& ps, const SizeF& sz)
-        {
+            return containingSizer;
         }
 
         void captureMouse();
@@ -148,6 +156,11 @@ namespace hare
         }
 
         virtual float adjustForLayoutDirection(float x, float width, float widthTotal) const;
+
+        virtual bool layout(); 
+
+        virtual void postLoaded();
+        virtual void postEdited(Attribute* attr);
 
     public:
         void setArea(float x, float y, float width, float height)
@@ -208,8 +221,8 @@ namespace hare
         virtual void render(ThemePackage* themes);
 
     protected:
-        SizerPtr windowSizer;         // sizer of this window
-        SizerPtr parentSizer;         // which sizer this window belongs to
+        SizerPtr windowSizer;         // Sizer of this window, use Ptr to hold the ref
+        Sizer* containingSizer;       // Who contains 'this' window, do NOT hold the ref
 
         Window::List children;
         Window* parent;

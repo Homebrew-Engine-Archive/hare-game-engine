@@ -10,7 +10,7 @@ i = 1
 lastTime = 0
 
 function beginScene()
-    w:moveCameraTo(x, y)
+    --[[w:moveCameraTo(x, y)
     x = x + 50 * i * hare.getTimer():getDeltaTime()
     y = y + 50 * i * hare.getTimer():getDeltaTime()
     if x > 100 then
@@ -18,7 +18,7 @@ function beginScene()
     end
     if x < -100 then
         i = 1
-    end
+    end]]
 end
 
 function renderScene()
@@ -26,7 +26,7 @@ function renderScene()
 	canvas:setZ(0)
 	canvas:setColor(0xffff0000)
 	canvas:setZ(-0.1)
-	canvas:drawRect(50, 50, 100, 100)
+	canvas:drawRect(0, 0, 100, 100)
 	canvas:setZ(-0.9)
 	canvas:setColor(0xff00ff00)
 	canvas:drawText(80, 80, tostring(hare.getTimer():getFPS()))

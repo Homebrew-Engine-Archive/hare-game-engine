@@ -27,7 +27,7 @@ namespace hare
         wxFlatNotebook* getNotebook() { return notebook; }
         ProjectExplorer* getProjectExplorer() { return projectExplorer; }
 
-        void bindProperty(const wxString& name, Object* object);
+        void bindProperty(const wxString& name, Object* object, EditorPage* associatedPage = NULL);
         void removeAllProperties();
 
     private:

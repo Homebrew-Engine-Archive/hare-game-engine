@@ -24,6 +24,7 @@ public:
     bool newPageImageSprite(ImageSprite* imageSprite, bool isModified = true);
     bool newPageAnimationSprite(AnimationSprite* animation, bool isModified = true);
     bool newPageComponentSprite(ComponentSprite* component, bool isModified = true);
+    bool newPageParticleSprite(ParticleSprite* particle, bool isModified = true);
 
 private:
 

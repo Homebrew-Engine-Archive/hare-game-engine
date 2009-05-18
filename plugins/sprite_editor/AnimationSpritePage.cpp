@@ -68,7 +68,7 @@ AnimationSpritePage::AnimationSpritePage(wxWindow* parent, SpriteMIMEHandler* ha
     treeCtrl->Connect(wxEVT_COMMAND_TREE_BEGIN_DRAG, wxTreeEventHandler(AnimationSpritePage::onBeginDrag), 0, this);
     treeCtrl->Connect(wxEVT_COMMAND_TREE_END_DRAG, wxTreeEventHandler(AnimationSpritePage::onEndDrag), 0, this);
     treeCtrl->Connect(wxEVT_COMMAND_TREE_SEL_CHANGED, wxTreeEventHandler(AnimationSpritePage::onSelChanged), 0, this);
-    treeCtrl->Connect(wxEVT_COMMAND_TREE_ITEM_RIGHT_CLICK, wxTreeEventHandler(AnimationSpritePage::OnItemRClick), 0, this);
+    treeCtrl->Connect(wxEVT_COMMAND_TREE_ITEM_RIGHT_CLICK, wxTreeEventHandler(AnimationSpritePage::onItemRClick), 0, this);
 
     treeCtrl->Connect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(AnimationSpritePage::onRMouseDown), 0, this);
 
@@ -96,6 +96,10 @@ AnimationSpritePage::~AnimationSpritePage()
     wxImageList *images = treeCtrl->GetImageList();
     treeCtrl->SetImageList(NULL);
     delete images;
+
+    if (!Manager::isAppShuttingDown()){
+        Manager::getInstancePtr()->getExplorerManager()->removeAllProperties();
+    }
 }
 
 void AnimationSpritePage::setModified(bool modified)
@@ -131,7 +135,7 @@ bool AnimationSpritePage::saveAs()
         _T("Save AnimationSprite resource as"),
         _T(""),
         _T(""),
-        _T("ImageSprite Resource (*.sprite)|*.sprite|Any file (*)|*"),
+        _T("AnimationSprite Resource (*.sprite)|*.sprite|Any file (*)|*"),
         wxSAVE | wxOVERWRITE_PROMPT);
 
     if (dlg->ShowModal() == wxID_OK){
@@ -227,7 +231,7 @@ void AnimationSpritePage::setCurSelFrame(AnimFrame* frame)
 
 void AnimationSpritePage::updateTitle()
 {
-    String title = "[ImageSpriteEditor]";
+    String title = "[AnimationSpriteEditor]";
     if (animationSprite) title += animationSprite->getUrl();
 
     if (isModified)
@@ -347,7 +351,7 @@ void AnimationSpritePage::onMenuSelected(wxCommandEvent& event)
     
 }
 
-void AnimationSpritePage::OnItemRClick(wxTreeEvent& event)
+void AnimationSpritePage::onItemRClick(wxTreeEvent& event)
 {
     rightMouseHitItem = event.GetItem();
 

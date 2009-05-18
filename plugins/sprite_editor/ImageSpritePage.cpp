@@ -40,7 +40,9 @@ ImageSpritePage::ImageSpritePage(wxWindow* parent, SpriteMIMEHandler* handler)
 
 ImageSpritePage::~ImageSpritePage()
 {
-
+    if (!Manager::isAppShuttingDown()){
+        Manager::getInstancePtr()->getExplorerManager()->removeAllProperties();
+    }
 }
 
 void ImageSpritePage::updateTitle()

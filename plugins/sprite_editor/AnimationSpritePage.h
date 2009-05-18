@@ -68,7 +68,7 @@ protected:
     void onBeginDrag(wxTreeEvent& event);
     void onEndDrag(wxTreeEvent& event);
     void onSelChanged(wxTreeEvent& event);
-    void OnItemRClick(wxTreeEvent& event);
+    void onItemRClick(wxTreeEvent& event);
     void onRMouseDown(wxMouseEvent& event);
     
 

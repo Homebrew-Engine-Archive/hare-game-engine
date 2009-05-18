@@ -20,6 +20,7 @@ const ClassInfo* spriteClasses[] = {
     &ImageSprite::CLASS_INFO,
     &ComponentSprite::CLASS_INFO,
     &AnimationSprite::CLASS_INFO,
+    &ParticleSprite::CLASS_INFO,
 };
 
 SpriteWizard::SpriteWizard()
@@ -83,7 +84,16 @@ Object* SpriteWizard::wizard(int index)
         break;
     case 1:
         {
+            Object::Ptr object = spriteClasses[index]->createObject();
 
+            if (object){
+                EditorPlugin* plugin = PluginManager::getInstancePtr()->findPluginByName(wxT("spriteMIMEHandler"));
+                if (plugin && plugin->getType() == EPT_MIMEHandler){
+                    ComponentSprite* sprite = (ComponentSprite*)object.pointer();
+                    SpriteMIMEHandler* handler = (SpriteMIMEHandler*)plugin;
+                    handler->newPageComponentSprite(sprite);
+                }
+            } 
         }
         break;
     case 2:
@@ -98,6 +108,20 @@ Object* SpriteWizard::wizard(int index)
                     handler->newPageAnimationSprite(sprite);
                 }
             }
+        }
+        break;
+    case 3:
+        {
+            Object::Ptr object = spriteClasses[index]->createObject();
+
+            if (object){
+                EditorPlugin* plugin = PluginManager::getInstancePtr()->findPluginByName(wxT("spriteMIMEHandler"));
+                if (plugin && plugin->getType() == EPT_MIMEHandler){
+                    ParticleSprite* sprite = (ParticleSprite*)object.pointer();
+                    SpriteMIMEHandler* handler = (SpriteMIMEHandler*)plugin;
+                    handler->newPageParticleSprite(sprite);
+                }
+            } 
         }
         break;
     }

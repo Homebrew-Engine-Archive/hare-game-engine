@@ -33,6 +33,8 @@ namespace hare
 
         int addPart(Sprite* s);
 
+        int getPartID(Sprite* s);
+
         bool removePart(int partID);
 
         bool removePart(Sprite* s);
@@ -41,6 +43,8 @@ namespace hare
         bool swapPart(int partID_1, int partID_2);
 
         Sprite* getPart(int partID);
+
+        uint32 getPartCount();
     
     protected:
         Sprite::List::iterator getPartIT(int partID);

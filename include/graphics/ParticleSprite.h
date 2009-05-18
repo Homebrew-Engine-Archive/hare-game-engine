@@ -1,5 +1,5 @@
 //***************************************************************
-//  File:    SimpleParticle.h
+//  File:    ParticleSprite.h
 //  Date:    5/10/2009
 //  Author:  wanglei (wanglei010407@163.com)
 //-------------------------------------------------------------
@@ -70,9 +70,9 @@ namespace hare
 	};
 
 
-	class GRAPHICS_API SimpleParticle : public Particle
+	class GRAPHICS_API ParticleSprite : public Particle
 	{
-		HARE_DECLARE_DYNAMIC_CLASS(SimpleParticle)
+		HARE_DECLARE_DYNAMIC_CLASS(ParticleSprite)
 	public:
 		struct ParticleUnit
 		{
@@ -97,8 +97,8 @@ namespace hare
 		};
 
 	public:
-		SimpleParticle();
-		virtual ~SimpleParticle();
+		ParticleSprite();
+		virtual ~ParticleSprite();
 
 		virtual void render();
 		virtual void fire();

@@ -90,6 +90,10 @@ namespace hare
 
         bool isPause();
 
+        virtual void postLoaded();
+
+        virtual void postEdited(Attribute* attr);
+
 	protected:
 		void frameMove();
         AnimFrame::Array::iterator getFrameIT(int frameID);

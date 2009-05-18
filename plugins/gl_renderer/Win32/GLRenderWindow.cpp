@@ -183,6 +183,11 @@ void GLRenderWindow::resize(uint32 w, uint32 h)
 
 void GLRenderWindow::swapBuffer()
 {
+    if (isMainWnd){
+        wglSwapIntervalEXT(1); 
+    }else{
+        wglSwapIntervalEXT(0); 
+    }
     SwapBuffers(hDC);
 
     GLRenderSystem::getSingletonPtr()->clear(windowParams.bZbuffer);
@@ -290,7 +295,7 @@ void GLRenderWindow::createGLResource()
 
 	(static_cast<GLRenderSystem*>(RenderSystem::getSingletonPtr()))->initalizeParam(windowParams.bZbuffer);
 
-    wglSwapIntervalEXT(0);  
+    //wglSwapIntervalEXT(0);  
 
 }
 

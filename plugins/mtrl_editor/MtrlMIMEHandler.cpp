@@ -129,7 +129,7 @@ bool MtrlEditorPage::Show(bool show)
     {
         Manager::getInstancePtr()->getExplorerManager()->removeAllProperties();
         if (selectedMtrl)
-            Manager::getInstancePtr()->getExplorerManager()->bindProperty(wxT("MaterialProperity"), selectedMtrl);
+            Manager::getInstancePtr()->getExplorerManager()->bindProperty(wxT("MaterialProperity"), selectedMtrl, this);
     }
 
     return EditorPage::Show(show);
@@ -251,7 +251,7 @@ void MtrlEditorPage::selectMaterial(Material* mtrl, bool bindObject)
     Manager::getInstancePtr()->getExplorerManager()->removeAllProperties();
     if (bindObject && selectedMtrl)
         Manager::getInstancePtr()->getExplorerManager()->bindProperty(wxT("MaterialProperity"), 
-            selectedMtrl);
+            selectedMtrl, this);
 }
 
 void MtrlEditorPage::onSize(wxSizeEvent& event)

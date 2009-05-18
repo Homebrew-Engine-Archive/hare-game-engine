@@ -118,25 +118,31 @@ void GUIEditorPage::onTreeItemSelected(wxTreeEvent& event)
         treeCtrl->SetItemBold(event.GetOldItem(), false);
 
     TreeItemData* data = (TreeItemData*)treeCtrl->GetItemData(event.GetItem());
-    Object* object = NULL;
-
+    
     if (data)
     {
+        Object* object = NULL;
+
         if (data->isWindow())
             object = data->window;
         else if (data->isSizer())
             object = data->sizer;
         else if (data->isSizerItem())
             object = data->item;
+
+        if (object)
+        {
+            Manager::getInstancePtr()->getExplorerManager()->removeAllProperties();
+            Manager::getInstancePtr()->getExplorerManager()->bindProperty(wxT("Properity"), object, this);
+        }
     }
     else
-        object = guiSys;
-
-    if (object)
     {
         Manager::getInstancePtr()->getExplorerManager()->removeAllProperties();
-        Manager::getInstancePtr()->getExplorerManager()->bindProperty(wxT("Properity"), object);
+        Manager::getInstancePtr()->getExplorerManager()->bindProperty(wxT("Properity"), guiSys);
     }
+
+    
 
     event.Skip();
 }

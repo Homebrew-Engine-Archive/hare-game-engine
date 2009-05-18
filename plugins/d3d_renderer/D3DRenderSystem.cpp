@@ -345,7 +345,7 @@ void D3DRenderSystem::clear(bool z)
 		fZ = 1;
 	}
 
-	pD3DDevice->Clear(0, 0, flags, -1, fZ, 0);
+	pD3DDevice->Clear(0, 0, flags, 0, fZ, 0);
 
 }
 
@@ -442,7 +442,7 @@ void D3DRenderSystem::setProjection(float l, float r, float b, float t)
     D3DXMATRIX matTEMP;
 
 	D3DXMatrixScaling(&MatProj, 1.0f, -1.0f, 1.0f);
-	D3DXMatrixTranslation(&matTEMP, -0.5f, t - b + 0.5f, 0.0f);
+	D3DXMatrixTranslation(&matTEMP, 0.5f, t - b - 0.5f, 0.0f);
 	D3DXMatrixMultiply(&MatProj, &MatProj, &matTEMP);
 
 	D3DXMatrixOrthoOffCenterRH(&matTEMP, l, r, b, t, 0.0f, 1.0f);//正交投影

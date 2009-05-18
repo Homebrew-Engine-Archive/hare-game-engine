@@ -91,7 +91,7 @@ bool FontEditorPage::Show(bool show)
     {
         Manager::getInstancePtr()->getExplorerManager()->removeAllProperties();
         if (fontPtr)
-            Manager::getInstancePtr()->getExplorerManager()->bindProperty(wxT("FontProperity"), fontPtr);
+            Manager::getInstancePtr()->getExplorerManager()->bindProperty(wxT("FontProperity"), fontPtr, this);
     }
     return EditorPage::Show(show);
 }
@@ -137,7 +137,7 @@ bool FontEditorPage::changeFont(Font* font)
     }
     
     Manager::getInstancePtr()->getExplorerManager()->removeAllProperties();
-    Manager::getInstancePtr()->getExplorerManager()->bindProperty(wxT("FontProperity"), fontPtr);
+    Manager::getInstancePtr()->getExplorerManager()->bindProperty(wxT("FontProperity"), fontPtr, this);
 
     setTitle(wxT("[FontEditor]") + wxString::FromUTF8(fontPtr->getUrl().c_str()));
 

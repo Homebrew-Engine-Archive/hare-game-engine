@@ -46,6 +46,14 @@ protected:
 
     virtual bool Show(bool show = true);
 
+    virtual void onAssociatedObjectEdited(Object* object, Attribute* attr)
+    {
+        if (guiSys && guiSys->getRoot())
+            guiSys->getRoot()->layout();
+
+        setModified(true);
+    }
+
 private:
     wxHareCanvas* canvas;
     SceneManager* scene;

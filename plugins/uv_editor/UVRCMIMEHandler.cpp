@@ -137,7 +137,7 @@ bool UVRCEditorPage::Show(bool show)
     {
         Manager::getInstancePtr()->getExplorerManager()->removeAllProperties();
         if (state)
-            Manager::getInstancePtr()->getExplorerManager()->bindProperty(wxT("UVRCEditorProperity"), state);
+            Manager::getInstancePtr()->getExplorerManager()->bindProperty(wxT("UVRCEditorProperity"), state, this);
     }
     return EditorPage::Show(show);
 }

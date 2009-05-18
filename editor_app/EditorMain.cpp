@@ -135,6 +135,7 @@ EditorFrame::EditorFrame(wxFrame *frame, const wxString& title, const wxString& 
 #if HARE_PLATFORM == HARE_PLATFORM_WIN32
     // create canvas and hide it, we mush have a window to init graphics moudle
     wxHareCanvas* canvas = new wxHareCanvas(this);
+    //canvas->SetSize(1, 1);
     canvas->Hide();
 #endif
     layoutManager.SetManagedWindow(this);

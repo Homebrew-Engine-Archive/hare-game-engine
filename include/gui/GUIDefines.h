@@ -38,6 +38,8 @@ namespace hare
         uiAlign_Center_Vertical     = 0x2000,
         uiAlign_Center              = (uiAlign_Center_Horizontal | uiAlign_Center_Vertical),
         
+        uiAlign_HorizontalMask      = (uiAlign_Left | uiAlign_Center_Horizontal | uiAlign_Right),
+        uiAlign_VerticalMask        = (uiAlign_Top | uiAlign_Center_Vertical | uiAlign_Bottom),
         uiAlign_Mask                = 0xFF00,
 
         // Direction

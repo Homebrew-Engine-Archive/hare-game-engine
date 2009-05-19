@@ -15,27 +15,27 @@ namespace hare
         SizeF getMinSize() const;
         SizeF getMinSizeWithBorder() const;
 
-        void setProportion(int value)
+        void setProportion(uint32 value)
         { 
             proportion = value; 
         }
-        int getProportion() const
+        uint32 getProportion() const
         { 
             return proportion; 
         }
-        void setFlag(int value)
+        void setFlag(uint32 value)
         { 
             flag = value; 
         }
-        int getFlag() const
+        uint32 getFlag() const
         { 
             return flag; 
         }
-        void setBorder(int value)
+        void setBorder(uint32 value)
         { 
             border = value; 
         }
-        int getBorder() const
+        uint32 getBorder() const
         { 
             return border; 
         }

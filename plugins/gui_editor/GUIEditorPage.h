@@ -33,6 +33,7 @@ protected:
     virtual void renderScene();
 
     void drawHelperRect(TreeItemData* data, uint32 color = 0xFFFF0000);
+    void rebindProperty();
 
     void onSize(wxSizeEvent& event);
     void onTreeItemSelected(wxTreeEvent& event);
@@ -40,6 +41,8 @@ protected:
     void onMenuSelected(wxCommandEvent& event);
     void onTreeBeginDrag(wxTreeEvent& event);
     void onTreeEndDrag(wxTreeEvent& event);
+    void onToolEvent(wxCommandEvent& event);
+    void onToolUpdateUI(wxUpdateUIEvent& event);
 
     void addWindow(Window* window);
     void addSizer(Sizer* sizer);

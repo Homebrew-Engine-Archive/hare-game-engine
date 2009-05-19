@@ -19,11 +19,49 @@ public:
 
 IMPLEMENT_ABSTRACT_CLASS(GUIEditorPage, EditorPage)
 
+static int idAlignLeft = XRCID("idAlignLeft");
+static int idAlignCenterHorizontally = XRCID("idAlignCenterHorizontally");
+static int idAlignRight = XRCID("idAlignRight");
+static int idAlignTop = XRCID("idAlignTop");
+static int idAlignCenterVertically = XRCID("idAlignCenterVertically");
+static int idAlignBottom = XRCID("idAlignBottom");
+static int idExpand = XRCID("idExpand");
+static int idStretch = XRCID("idStretch");
+static int idLeftBorder = XRCID("idLeftBorder");
+static int idRightBorder = XRCID("idRightBorder");
+static int idTopBorder = XRCID("idTopBorder");
+static int idBottomBorder = XRCID("idBottomBorder");
+static int idTreeView = XRCID("idTreeView");
+
 BEGIN_EVENT_TABLE(GUIEditorPage, EditorPage)
-    EVT_TREE_SEL_CHANGED(XRCID("idTreeView"), GUIEditorPage::onTreeItemSelected)
-    EVT_TREE_ITEM_RIGHT_CLICK(XRCID("idTreeView"), GUIEditorPage::onTreeItemRightClick)
-    EVT_TREE_BEGIN_DRAG(XRCID("idTreeView"), GUIEditorPage::onTreeBeginDrag)
-    EVT_TREE_END_DRAG(XRCID("idTreeView"), GUIEditorPage::onTreeEndDrag)
+    EVT_TOOL(idAlignLeft, GUIEditorPage::onToolEvent)
+    EVT_TOOL(idAlignCenterHorizontally, GUIEditorPage::onToolEvent)
+    EVT_TOOL(idAlignRight, GUIEditorPage::onToolEvent)
+    EVT_TOOL(idAlignTop, GUIEditorPage::onToolEvent)
+    EVT_TOOL(idAlignCenterVertically, GUIEditorPage::onToolEvent)
+    EVT_TOOL(idAlignBottom, GUIEditorPage::onToolEvent)
+    EVT_TOOL(idExpand, GUIEditorPage::onToolEvent)
+    EVT_TOOL(idStretch, GUIEditorPage::onToolEvent)
+    EVT_TOOL(idLeftBorder, GUIEditorPage::onToolEvent)
+    EVT_TOOL(idRightBorder, GUIEditorPage::onToolEvent)
+    EVT_TOOL(idTopBorder, GUIEditorPage::onToolEvent)
+    EVT_TOOL(idBottomBorder, GUIEditorPage::onToolEvent)
+    EVT_TREE_SEL_CHANGED(idTreeView, GUIEditorPage::onTreeItemSelected)
+    EVT_TREE_ITEM_RIGHT_CLICK(idTreeView, GUIEditorPage::onTreeItemRightClick)
+    EVT_TREE_BEGIN_DRAG(idTreeView, GUIEditorPage::onTreeBeginDrag)
+    EVT_TREE_END_DRAG(idTreeView, GUIEditorPage::onTreeEndDrag)
+    EVT_UPDATE_UI(idAlignLeft, GUIEditorPage::onToolUpdateUI)
+    EVT_UPDATE_UI(idAlignCenterHorizontally, GUIEditorPage::onToolUpdateUI)
+    EVT_UPDATE_UI(idAlignRight, GUIEditorPage::onToolUpdateUI)
+    EVT_UPDATE_UI(idAlignTop, GUIEditorPage::onToolUpdateUI)
+    EVT_UPDATE_UI(idAlignCenterVertically, GUIEditorPage::onToolUpdateUI)
+    EVT_UPDATE_UI(idAlignBottom, GUIEditorPage::onToolUpdateUI)
+    EVT_UPDATE_UI(idExpand, GUIEditorPage::onToolUpdateUI)
+    EVT_UPDATE_UI(idStretch, GUIEditorPage::onToolUpdateUI)
+    EVT_UPDATE_UI(idLeftBorder, GUIEditorPage::onToolUpdateUI)
+    EVT_UPDATE_UI(idRightBorder, GUIEditorPage::onToolUpdateUI)
+    EVT_UPDATE_UI(idTopBorder, GUIEditorPage::onToolUpdateUI)
+    EVT_UPDATE_UI(idBottomBorder, GUIEditorPage::onToolUpdateUI)
 END_EVENT_TABLE()
 
 GUIEditorPage::GUIEditorPage(wxWindow* parent) : isModified(false)
@@ -64,12 +102,141 @@ GUIEditorPage::GUIEditorPage(wxWindow* parent) : isModified(false)
     
     Connect(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(GUIEditorPage::onMenuSelected), 0, this);
     canvas->Connect(wxEVT_SIZE, wxSizeEventHandler(GUIEditorPage::onSize), 0, this);
+
+    rebindProperty();
 }
 
 GUIEditorPage::~GUIEditorPage()
 {
     treeCtrl->SetImageList(NULL);
     SAFE_DELETE(imageList);
+}
+
+uint32 modifyFlag(uint32 flag, bool add, uint32 val)
+{
+    if (add)
+        return flag | val;
+    else
+        return flag & ~val;
+}
+
+bool hasFlag(uint32 flag, uint32 val)
+{
+    return (flag & val) == val;
+}
+
+void GUIEditorPage::onToolEvent(wxCommandEvent& event)
+{
+    TreeItemData* data = (TreeItemData*)treeCtrl->GetItemData(treeCtrl->GetSelection());
+
+    if (data && data->isSizerItem())
+    {
+        int id = event.GetId();
+
+        uint32 flag = data->item->getFlag();
+
+        if (id == idAlignLeft)
+        {
+            flag = modifyFlag(flag, false, uiAlign_HorizontalMask);
+            flag = modifyFlag(flag, event.IsChecked(), uiAlign_Left);
+        }
+        else if (id == idAlignCenterHorizontally)
+        {
+            flag = modifyFlag(flag, false, uiAlign_HorizontalMask);
+            flag = modifyFlag(flag, event.IsChecked(), uiAlign_Center_Horizontal);
+        }
+        else if (id == idAlignRight)
+        {
+            flag = modifyFlag(flag, false, uiAlign_HorizontalMask);
+            flag = modifyFlag(flag, event.IsChecked(), uiAlign_Right);
+        }
+        else if (id == idAlignTop)
+        {
+            flag = modifyFlag(flag, false, uiAlign_VerticalMask);
+            flag = modifyFlag(flag, event.IsChecked(), uiAlign_Top);
+        }
+        else if (id == idAlignCenterVertically)
+        {
+            flag = modifyFlag(flag, false, uiAlign_VerticalMask);
+            flag = modifyFlag(flag, event.IsChecked(), uiAlign_Center_Vertical);
+        }
+        else if (id == idAlignBottom)
+        {
+            flag = modifyFlag(flag, false, uiAlign_VerticalMask);
+            flag = modifyFlag(flag, event.IsChecked(), uiAlign_Bottom);
+        }
+        else if (id == idExpand)
+        {
+            flag = modifyFlag(flag, event.IsChecked(), uiExpand);
+        }
+        else if (id == idLeftBorder)
+        {
+            flag = modifyFlag(flag, event.IsChecked(), uiWest);
+        }
+        else if (id == idRightBorder)
+        {
+            flag = modifyFlag(flag, event.IsChecked(), uiEast);
+        }
+        else if (id == idTopBorder)
+        {
+            flag = modifyFlag(flag, event.IsChecked(), uiNorth);
+        }
+        else if (id == idBottomBorder)
+        {
+            flag = modifyFlag(flag, event.IsChecked(), uiSouth);
+        }
+        else
+        {
+            event.Skip();
+            return;
+        }
+        
+        data->item->setFlag(flag);
+        if (guiSys && guiSys->getRoot())
+            guiSys->getRoot()->layout();
+        rebindProperty();
+    }
+}
+
+void GUIEditorPage::onToolUpdateUI(wxUpdateUIEvent& event)
+{
+    TreeItemData* data = (TreeItemData*)treeCtrl->GetItemData(treeCtrl->GetSelection());
+
+    if (!data || !data->isSizerItem())
+        event.Enable(false);
+    else
+    {
+        event.Enable(true);
+
+        int id = event.GetId();
+
+        uint32 flag = data->item->getFlag();
+
+        if (id == idAlignLeft)
+            event.Check(hasFlag(flag, uiAlign_Left));
+        else if (id == idAlignCenterHorizontally)
+            event.Check(hasFlag(flag, uiAlign_Center_Horizontal));
+        else if (id == idAlignRight)
+            event.Check(hasFlag(flag, uiAlign_Right));
+        else if (id == idAlignTop)
+            event.Check(hasFlag(flag, uiAlign_Top));
+        else if (id == idAlignCenterVertically)
+            event.Check(hasFlag(flag, uiAlign_Center_Vertical));
+        else if (id == idAlignBottom)
+            event.Check(hasFlag(flag, uiAlign_Bottom));
+        else if (id == idExpand)
+            event.Check(hasFlag(flag, uiExpand));
+        else if (id == idLeftBorder)
+            event.Check(hasFlag(flag, uiWest));
+        else if (id == idRightBorder)
+            event.Check(hasFlag(flag, uiEast));
+        else if (id == idTopBorder)
+            event.Check(hasFlag(flag, uiNorth));
+        else if (id == idBottomBorder)
+            event.Check(hasFlag(flag, uiSouth));
+        else
+            event.Skip();
+    }
 }
 
 void GUIEditorPage::onSize(wxSizeEvent& event)
@@ -110,6 +277,36 @@ void GUIEditorPage::onTreeEndDrag(wxTreeEvent& event)
     }
 }
 
+void GUIEditorPage::rebindProperty()
+{
+    if (treeCtrl->GetSelection().IsOk())
+    {
+        TreeItemData* itemData = (TreeItemData*)treeCtrl->GetItemData(treeCtrl->GetSelection());
+
+        if (itemData)
+        {
+            Object* object = NULL;
+
+            if (itemData->isWindow())
+                object = itemData->window;
+            else if (itemData->isSizer())
+                object = itemData->sizer;
+            else if (itemData->isSizerItem())
+                object = itemData->item;
+
+            if (object)
+            {
+                Manager::getInstancePtr()->getExplorerManager()->removeAllProperties();
+                Manager::getInstancePtr()->getExplorerManager()->bindProperty(wxT("Properity"), object, this);
+                return;
+            }
+        }
+    }
+
+    Manager::getInstancePtr()->getExplorerManager()->removeAllProperties();
+    Manager::getInstancePtr()->getExplorerManager()->bindProperty(wxT("Properity"), guiSys);
+}
+
 void GUIEditorPage::onTreeItemSelected(wxTreeEvent& event)
 {
     if (event.GetItem().IsOk())
@@ -117,32 +314,7 @@ void GUIEditorPage::onTreeItemSelected(wxTreeEvent& event)
     if (event.GetOldItem().IsOk())
         treeCtrl->SetItemBold(event.GetOldItem(), false);
 
-    TreeItemData* data = (TreeItemData*)treeCtrl->GetItemData(event.GetItem());
-    
-    if (data)
-    {
-        Object* object = NULL;
-
-        if (data->isWindow())
-            object = data->window;
-        else if (data->isSizer())
-            object = data->sizer;
-        else if (data->isSizerItem())
-            object = data->item;
-
-        if (object)
-        {
-            Manager::getInstancePtr()->getExplorerManager()->removeAllProperties();
-            Manager::getInstancePtr()->getExplorerManager()->bindProperty(wxT("Properity"), object, this);
-        }
-    }
-    else
-    {
-        Manager::getInstancePtr()->getExplorerManager()->removeAllProperties();
-        Manager::getInstancePtr()->getExplorerManager()->bindProperty(wxT("Properity"), guiSys);
-    }
-
-    
+    rebindProperty();
 
     event.Skip();
 }
@@ -392,6 +564,8 @@ void GUIEditorPage::onMenuSelected(wxCommandEvent& event)
             if (sizer)
                 addSizer(sizer);
         }
+        else
+            event.Skip();
     }
 }
 

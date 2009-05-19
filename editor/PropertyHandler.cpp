@@ -27,6 +27,7 @@
 
 WX_PG_IMPLEMENT_VARIANT_DATA(wxPGVariantDataPointF, PointF)
 WX_PG_IMPLEMENT_VARIANT_DATA(wxPGVariantDataSizeF, SizeF)
+WX_PG_IMPLEMENT_VARIANT_DATA(wxPGVariantDataRectF, RectF)
 
 namespace hare
 {
@@ -117,6 +118,97 @@ namespace hare
     }
 
     //////////////////////////////////////////////////////////////////////////
+    WX_PG_IMPLEMENT_PROPERTY_CLASS(RectFProperty, wxPGProperty, RectF, const RectF&, TextCtrl)
+
+    RectFProperty::RectFProperty(const wxString& label, const wxString& name,
+        const RectF& value) : wxPGProperty(label, name)
+    {
+        SetValueI(value);
+        AddChild(new wxFloatProperty(wxT("minX"), wxPG_LABEL, value.minX));
+        AddChild(new wxFloatProperty(wxT("minY"), wxPG_LABEL, value.minY));
+        AddChild(new wxFloatProperty(wxT("maxX"), wxPG_LABEL, value.maxX));
+        AddChild(new wxFloatProperty(wxT("maxY"), wxPG_LABEL, value.maxY));
+    }
+
+    RectFProperty::~RectFProperty() {}
+
+    wxString RectFProperty::GetValueAsString(int arg_flags) const
+    {
+        const RectF& rect = RectFFromVariant(m_value);
+
+        wxString minX, minY, maxX, maxY;
+        wxString template_str;
+
+        wxPropertyGrid::DoubleToString(minX, rect.minX, -1, true, &template_str);
+        wxPropertyGrid::DoubleToString(minY, rect.minY, -1, true, &template_str);
+        wxPropertyGrid::DoubleToString(maxX, rect.maxX, -1, true, &template_str);
+        wxPropertyGrid::DoubleToString(maxY, rect.maxY, -1, true, &template_str);
+
+        return minX + wxT(" ") + minY + wxT(" ") + maxX + wxT(" ") + maxY;
+    }
+
+    bool RectFProperty::StringToValue(wxVariant& variant, const wxString& text, int) const
+    {
+        RectF rect(0, 0, 0, 0);
+        int count = 0;
+
+        WX_PG_TOKENIZER1_BEGIN(text, wxT(" "))
+            if (token.length())
+            {
+                double tval = 0;
+                if (token.ToDouble(&tval))
+                {
+                    if (count == 0) 
+                        rect.minX = (float)tval;
+                    else if (count == 1) 
+                        rect.minY = (float)tval;
+                    else if (count == 2) 
+                        rect.maxX = (float)tval;
+                    else if (count == 3) 
+                        rect.maxY = (float)tval;
+
+                    count++;
+
+                    if (count >= 4)
+                        break;
+                }
+            }
+        WX_PG_TOKENIZER1_END()
+
+        if (count >= 4)
+        {
+            variant = RectFToVariant(rect);
+            return true;
+        }
+
+        return false;
+    }
+
+    void RectFProperty::RefreshChildren()
+    {
+        if (!GetCount()) return;
+        const RectF& rect = RectFFromVariant(m_value);
+        Item(0)->SetValue(rect.minX);
+        Item(1)->SetValue(rect.minY);
+        Item(2)->SetValue(rect.maxX);
+        Item(3)->SetValue(rect.maxY);
+    }
+
+    void RectFProperty::ChildChanged(wxVariant& thisValue, int childIndex, wxVariant& childValue) const
+    {
+        RectF& rect = RectFFromVariant(thisValue);
+        double val;
+        wxPGVariantToDouble(childValue, &val);
+        switch (childIndex)
+        {
+        case 0: rect.minX = val; break;
+        case 1: rect.minY = val; break;
+        case 2: rect.maxX = val; break;
+        case 3: rect.maxY = val; break;
+        }
+    }
+
+    //////////////////////////////////////////////////////////////////////////
     WX_PG_IMPLEMENT_PROPERTY_CLASS(SizeFProperty, wxPGProperty, SizeF, const SizeF&, TextCtrl)
 
     SizeFProperty::SizeFProperty(const wxString& label, const wxString& name,
@@ -164,15 +256,15 @@ namespace hare
                         break;
                 }
             }
-            WX_PG_TOKENIZER1_END()
+        WX_PG_TOKENIZER1_END()
 
-                if (count >= 2)
-                {
-                    variant = SizeFToVariant(size);
-                    return true;
-                }
+        if (count >= 2)
+        {
+            variant = SizeFToVariant(size);
+            return true;
+        }
 
-                return false;
+        return false;
     }
 
     void SizeFProperty::RefreshChildren()
@@ -374,6 +466,16 @@ namespace hare
         attr->owner->postEdited(attr);
         val = SizeFToVariant(*oldData);
     }
+
+    template <>
+    void doModifyMeta<RectF>(Attribute* attr, wxVariant& val)
+    {
+        RectF& value = RectFFromVariant(val);
+        RectF* oldData = (RectF*)attr->data;
+        *oldData = value;
+        attr->owner->postEdited(attr);
+        val = RectFToVariant(*oldData);
+    }
     /*template <typename T>
     void doModifyMetaArray(Attribute* attr, wxVariant& val)
     {
@@ -543,7 +645,7 @@ namespace hare
         wxPGProperty* prop = page->AppendIn(parent, new PointFProperty(wxString::FromUTF8(attr->name), wxPG_LABEL,
             *value));
         prop->SetClientData(attr);
-        prop->SetHelpString(wxT("[Point]"));
+        prop->SetHelpString(wxT("[Point Float]"));
         if (attr->hasFlag(Object::propReadOnly))
             prop->SetFlag(wxPG_PROP_READONLY | wxPG_PROP_DISABLED);
     }
@@ -555,11 +657,22 @@ namespace hare
         wxPGProperty* prop = page->AppendIn(parent, new SizeFProperty(wxString::FromUTF8(attr->name), wxPG_LABEL,
             *value));
         prop->SetClientData(attr);
-        prop->SetHelpString(wxT("[Size]"));
+        prop->SetHelpString(wxT("[Size Float]"));
         if (attr->hasFlag(Object::propReadOnly))
             prop->SetFlag(wxPG_PROP_READONLY | wxPG_PROP_DISABLED);
     }
 
+    template <>
+    void doBindMeta<RectF>(Attribute* attr, PropertyGridPage* page, wxPGProperty* parent)
+    {
+        RectF* value = (RectF*)attr->data;
+        wxPGProperty* prop = page->AppendIn(parent, new RectFProperty(wxString::FromUTF8(attr->name), wxPG_LABEL,
+            *value));
+        prop->SetClientData(attr);
+        prop->SetHelpString(wxT("[Rect Float]"));
+        if (attr->hasFlag(Object::propReadOnly))
+            prop->SetFlag(wxPG_PROP_READONLY | wxPG_PROP_DISABLED);
+    }
     /*template <typename T>
     void doBindMetaArray(Attribute* attr, PropertyGridPage* page, wxPGProperty* parent)
     {
@@ -795,6 +908,8 @@ namespace hare
                     doModifyMeta<PointF>(attr, value);
                 else if (attr->typeName == String("SizeF"))
                     doModifyMeta<SizeF>(attr, value);
+                else if (attr->typeName == String("RectF"))
+                    doModifyMeta<RectF>(attr, value);
                 else
                     assert(false);
 
@@ -880,6 +995,8 @@ namespace hare
                     doBindMeta<PointF>(attr, page, parent);
                 else if (attr->typeName == String("SizeF"))
                     doBindMeta<SizeF>(attr, page, parent);
+                else if (attr->typeName == String("RectF"))
+                    doBindMeta<RectF>(attr, page, parent);
                 else
                     assert(false);
             }

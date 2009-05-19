@@ -95,6 +95,9 @@ namespace hare
         virtual void recalcSizes() = 0;
 
         virtual SizeF calcMinSize() = 0;
+
+    private:
+        virtual void postLoaded();
         
     protected:
         Window* containingWindow;

@@ -148,7 +148,10 @@ namespace hare
         virtual SizeF getMinSize() const { return minSize; }
         virtual SizeF getMaxSize() const { return maxSize; }
 
-        SizeF getEffectiveMinSize() const;
+
+        SizeF getBestSize();
+        virtual SizeF getBestSize_impl();
+        SizeF getEffectiveMinSize();
 
         virtual uiLayoutDirection getLayoutDirection() const
         { 
@@ -188,20 +191,23 @@ namespace hare
             setArea(getPosition(), SizeF(cx, cy));
         }
 
-        virtual void setArea_impl(const PointF& pos, const SizeF& size, bool topLeftSizing = false, bool fireEvents = true);
+        virtual void setArea_impl(const PointF& pos, const SizeF& sz);
         
         SizeF getSize() const
         {
-            return SizeF(area.width(), area.height());
+            return size;
         }
 
         PointF getPosition() const
         {
-            return PointF(area.minX, area.minY);
+            return position;
         }
 
-        RectF getArea() const { return area; }
-        SizeF getPixelSize() const { return pixelSize; }
+        RectF getArea() const 
+        { 
+            return RectF(position.x, position.y, position.x + size.cx, position.y + size.cy);
+        }
+
         RectF getPixelRect() const;
         RectF getPixelRect_impl() const;
         RectF getUnclippedPixelRect() const;
@@ -221,8 +227,8 @@ namespace hare
         virtual void render(ThemePackage* themes);
 
     protected:
-        SizerPtr windowSizer;         // Sizer of this window, use Ptr to hold the ref
-        Sizer* containingSizer;       // Who contains 'this' window, do NOT hold the ref
+        mutable SizerPtr windowSizer;   // Sizer of this window, use Ptr to hold the ref
+        Sizer* containingSizer;         // Who contains 'this' window, do NOT hold the ref
 
         Window::List children;
         Window* parent;
@@ -240,8 +246,11 @@ namespace hare
 
         bool clippedByParent;
 
-        RectF area;
+        PointF position;
+        SizeF size;
 
+        mutable SizeF bestSize;
+        mutable bool  bestSizeValid;
         mutable RectF pixelRect;
         mutable bool  pixelRectValid;
         mutable RectF unclippedRect;
@@ -250,13 +259,11 @@ namespace hare
         mutable bool  unclippedInnerRectValid;
         mutable RectF innerRect;
         mutable bool  innerRectValid;
-
-        SizeF pixelSize;
     };
 
 
-    PointF windowToScreen(const Window& window, const PointF& pos);
-    RectF windowToScreen(const Window& window, const RectF& rect);
+    PointF UI_API windowToScreen(const Window& window, const PointF& pos);
+    RectF  UI_API windowToScreen(const Window& window, const RectF& rect);
 }
 
 #endif

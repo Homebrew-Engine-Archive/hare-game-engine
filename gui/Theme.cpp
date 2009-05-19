@@ -73,7 +73,7 @@ namespace hare
         getCanvas()->drawImage(tRect, mtrl, uvRect);
 
         // Leftbottom Corner
-        uvRect.set(rect.minX, rectInner.minY, rectInner.minX, rect.maxY);
+        uvRect.set(rect.minX, rectInner.maxY, rectInner.minX, rect.maxY);
         RectF lbRect = uvRect;
         lbRect.scale(w, h);
         lbRect.moveTo(windowRect.minX, windowRect.maxY - lbRect.height());

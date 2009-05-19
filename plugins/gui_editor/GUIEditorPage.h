@@ -35,6 +35,7 @@ protected:
     void drawHelperRect(TreeItemData* data, uint32 color = 0xFFFF0000);
     void rebindProperty();
 
+    void onTextEntered(wxCommandEvent& event);
     void onSize(wxSizeEvent& event);
     void onTreeItemSelected(wxTreeEvent& event);
     void onTreeItemRightClick(wxTreeEvent& event);
@@ -63,6 +64,7 @@ private:
     GUISystem::Ptr guiSys;
     wxTreeCtrl* treeCtrl;
     wxImageList* imageList;
+    wxTextCtrl* textXYWH[4];
     int rootImage;
     int ctrlImage;
     int sizerImage;
@@ -73,8 +75,6 @@ private:
     bool isModified;
 
     wxTreeItemId draggedItem;
-
-    Object::Ptr clipboardObject;
 
     DECLARE_EVENT_TABLE();
     DECLARE_ABSTRACT_CLASS(GUIEditorPage)

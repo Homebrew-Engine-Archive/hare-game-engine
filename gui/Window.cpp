@@ -20,12 +20,33 @@ namespace hare
         return temp;
     }
 
+    void reparentAllBySizer(Window* parent, Sizer* sizer)
+    {
+        if (!sizer)
+            return;
+
+        SizerItem::List& items = sizer->getChildren();
+        SizerItem::List::iterator it = items.begin();
+        for (; it != items.end(); ++it)
+        {
+            SizerItem* item = *it;
+
+            if (item->getSizer())
+                reparentAllBySizer(parent, item->getSizer());
+
+            if (item->getWindow())
+                item->getWindow()->reparent(parent);
+        }
+    }
+
     //////////////////////////////////////////////////////////////////////////
     Window* Window::capturedWindow = 0;
 
     HARE_IMPLEMENT_ABSTRACT_CLASS(Window, EventHandler, 0)
     {
         HARE_OBJ_F(windowSizer, Sizer, propHide)
+        HARE_META_F(position, PointF, propHide)
+        HARE_META_F(size, PointF, propHide)
         HARE_META(minSize, SizeF)
         HARE_META(maxSize, SizeF)
         HARE_META(shown, bool)
@@ -33,21 +54,21 @@ namespace hare
     }
 
     Window::Window() : parent(0), shown(true), enabled(true), windowId(uiID_Any),
-        minSize(0, 0), maxSize(100, 100), clippedByParent(false), area(0, 0, 0, 0),
-        pixelRect(0, 0, 0, 0), pixelRectValid(false), unclippedRect(0, 0, 0, 0),
+        minSize(-1, -1), maxSize(-1, -1), clippedByParent(false), position(0, 0),
+        size(20, 20), pixelRect(0, 0, 0, 0), pixelRectValid(false), unclippedRect(0, 0, 0, 0),
         unclippedRectValid(false), unclippedInnerRect(0, 0, 0, 0),
         unclippedInnerRectValid(false), innerRect(0, 0, 0, 0), 
-        innerRectValid(false), pixelSize(10, 10)
+        innerRectValid(false), bestSize(-1, -1), bestSizeValid(false)
     {
     }
 
     Window::Window(Window* parent) 
         : parent(0), shown(true), enabled(true), windowId(uiID_Any),
-        minSize(0, 0), maxSize(100, 100), clippedByParent(false), area(0, 0, 0, 0),
-        pixelRect(0, 0, 0, 0), pixelRectValid(false), unclippedRect(0, 0, 0, 0),
+        minSize(-1, -1), maxSize(-1, -1), clippedByParent(false), position(0, 0),
+        size(20, 20), pixelRect(0, 0, 0, 0), pixelRectValid(false), unclippedRect(0, 0, 0, 0),
         unclippedRectValid(false), unclippedInnerRect(0, 0, 0, 0),
         unclippedInnerRectValid(false), innerRect(0, 0, 0, 0), 
-        innerRectValid(false), pixelSize(10, 10)
+        innerRectValid(false), bestSize(-1, -1), bestSizeValid(false)
     {
         setParent(parent);
         parent->addChild(this);
@@ -55,16 +76,20 @@ namespace hare
 
     void Window::postLoaded()
     {
+        // After window loaded, if we have a sizer that means we may have child
+        // windows, we need to set its parent and add the child to the list.
         if (windowSizer)
         {
+            windowSizer->setContainingWindow(this);
 
+            reparentAllBySizer(this, windowSizer);
         }
     }
 
     void Window::postEdited(Attribute* attr)
     {
         layout();
-        setArea(area);
+        setArea(position, size);
     }
 
     void Window::reparent(Window* window)
@@ -102,20 +127,20 @@ namespace hare
     {
         if (windowSizer)
         {
-            windowSizer->setDimension(getPixelRect());
+            windowSizer->setDimension(PointF(0, 0), size);
         }
 
         return true;
     }
 
-    SizeF Window::getEffectiveMinSize() const
+    SizeF Window::getEffectiveMinSize()
     {
         SizeF min = getMinSize();
-        if (min.cx <= 0 || min.cy <= 0)
+        if (min.cx < 0 || min.cy < 0)
         {
-            //SizeF best = getBestSize();
-            //if (min.x <= 0) min.x =  best.x;
-            //if (min.y <= 0) min.y =  best.y;
+            SizeF best = getBestSize();
+            if (min.cx < 0) min.cx =  best.cx;
+            if (min.cy < 0) min.cy =  best.cy;
         }
         return min;
     }
@@ -130,45 +155,49 @@ namespace hare
         return x;
     }
 
-    void Window::setArea_impl(const PointF& pos, const SizeF& size, bool topLeftSizing, bool fireEvents)
+    void Window::setArea_impl(const PointF& pos, const SizeF& sz)
     {
         unclippedRectValid = false;
         unclippedInnerRectValid = false;
         pixelRectValid = false;
         innerRectValid = false;
+        bestSizeValid = false;
 
-        SizeF oldSize(pixelSize);
-        pixelSize = size;
+        position = pos;
+        size = sz;
+    }
 
-        // limit new pixel size to: minSize <= newSize <= maxSize
-        MathUtil::clampMinMax(pixelSize.cx, minSize.cx, maxSize.cx);
-        MathUtil::clampMinMax(pixelSize.cy, minSize.cy, maxSize.cy);
-
-        area.set(area.minX, area.minY, area.minX + size.cx, area.minY + size.cy);
-
-        bool moved = false;
-        bool sized = (pixelSize != oldSize);
-
-        if (!topLeftSizing || sized)
+    SizeF Window::getBestSize()
+    {
+        if (!bestSizeValid)
         {
-            if (pos != PointF(area.minX, area.minY))
+            bestSize = getBestSize_impl();
+            bestSizeValid = true;
+        }
+
+        return bestSize;
+    }
+
+    SizeF Window::getBestSize_impl()
+    {
+        SizeF best(-1, -1);
+
+        if (windowSizer)
+        {
+            best = windowSizer->getMinSize();
+        }
+        else if (children.size() == 0)
+        {
+            best = getMinSize();
+            if (best.cx < 0 || best.cy < 0)
             {
-                area.moveTo(pos);
-                moved = true;
+                if (best.cx < 0) best.cx = getSize().cx;
+                if (best.cy < 0) best.cy = getSize().cy;
+                setMinSize(best);
             }
         }
 
-        // fire events as required
-        if (fireEvents)
-        {
-            if (moved)
-            {
-            }
-
-            if (sized)
-            {
-            }
-        }
+        return best;
     }
 
     RectF Window::getPixelRect() const
@@ -197,7 +226,7 @@ namespace hare
     {
         if (!unclippedRectValid)
         {
-            RectF localArea(0, 0, pixelSize.cx, pixelSize.cy);
+            RectF localArea(0, 0, size.cx, size.cy);
             unclippedRect = windowToScreen(*this, localArea);
             unclippedRectValid = true;
         }

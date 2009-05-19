@@ -19,6 +19,7 @@
 
 WX_PG_DECLARE_VARIANT_DATA(wxPGVariantDataPointF, PointF, WXDLLIMPEXP_PG)
 WX_PG_DECLARE_VARIANT_DATA(wxPGVariantDataSizeF, SizeF, WXDLLIMPEXP_PG)
+WX_PG_DECLARE_VARIANT_DATA(wxPGVariantDataRectF, RectF, WXDLLIMPEXP_PG)
 
 namespace hare
 {
@@ -127,6 +128,23 @@ namespace hare
         void SetValueI(const SizeF& value)
         {
             m_value = SizeFToVariant(value);
+        }
+    };
+
+    class RectFProperty : public wxPGProperty
+    {
+        WX_PG_DECLARE_PROPERTY_CLASS(RectFProperty)
+    public:
+        RectFProperty(const wxString& label = wxPG_LABEL, const wxString& name = wxPG_LABEL,
+            const RectF& value = RectF(0, 0, 0, 0));
+        virtual ~RectFProperty();
+
+        WX_PG_DECLARE_PARENTAL_METHODS()
+        WX_PG_DECLARE_BASIC_TYPE_METHODS()
+    protected:
+        void SetValueI(const RectF& value)
+        {
+            m_value = RectFToVariant(value);
         }
     };
 

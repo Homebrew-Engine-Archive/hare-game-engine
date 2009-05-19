@@ -2,7 +2,7 @@
 <resource xmlns="http://www.wxwindows.org/wxxrc" version="2.3.0.1">
 	<object class="wxPanel" name="idGUIEditorPanel">
 		<style>wxTAB_TRAVERSAL</style>
-		<size>578,521</size>
+		<size>653,563</size>
 		<object class="wxBoxSizer">
 			<orient>wxVERTICAL</orient>
 			<object class="sizeritem">
@@ -11,7 +11,7 @@
 				<border>5</border>
 				<object class="wxToolBar" name="idToolBar">
 					<style>wxTB_FLAT|wxTB_HORIZONTAL</style>
-					<bitmapsize>22,22</bitmapsize>
+					<bitmapsize>20,20</bitmapsize>
 					<margins></margins>
 					<packing>1</packing>
 					<separation>5</separation>
@@ -67,11 +67,18 @@
 						<bitmap>expand.png</bitmap>
 						<toggle>1</toggle>
 					</object>
-					<object class="tool" name="idStretch">
+					<object class="tool" name="idFixedMinsize">
 						<label>tool</label>
 						<tooltip></tooltip>
 						<longhelp></longhelp>
-						<bitmap>stretch.png</bitmap>
+						<bitmap>fixed_minsize.png</bitmap>
+						<toggle>1</toggle>
+					</object>
+					<object class="tool" name="idShaped">
+						<label>tool</label>
+						<tooltip></tooltip>
+						<longhelp></longhelp>
+						<bitmap>shaped.png</bitmap>
 						<toggle>1</toggle>
 					</object>
 					<object class="separator" />
@@ -104,6 +111,42 @@
 						<toggle>1</toggle>
 					</object>
 					<object class="separator" />
+					<object class="wxStaticText" name="sttX">
+						<label>X: </label>
+					</object>
+					<object class="wxTextCtrl" name="idX">
+						<style>wxTE_PROCESS_ENTER</style>
+						<size>40,-1</size>
+						<value></value>
+						<maxlength>0</maxlength>
+					</object>
+					<object class="wxStaticText" name="sttY">
+						<label> Y: </label>
+					</object>
+					<object class="wxTextCtrl" name="idY">
+						<style>wxTE_PROCESS_ENTER</style>
+						<size>40,-1</size>
+						<value></value>
+						<maxlength>0</maxlength>
+					</object>
+					<object class="wxStaticText" name="sttW">
+						<label> W: </label>
+					</object>
+					<object class="wxTextCtrl" name="idW">
+						<style>wxTE_PROCESS_ENTER</style>
+						<size>40,-1</size>
+						<value></value>
+						<maxlength>0</maxlength>
+					</object>
+					<object class="wxStaticText" name="sttH">
+						<label> H: </label>
+					</object>
+					<object class="wxTextCtrl" name="idH">
+						<style>wxTE_PROCESS_ENTER</style>
+						<size>40,-1</size>
+						<value></value>
+						<maxlength>0</maxlength>
+					</object>
 				</object>
 			</object>
 			<object class="sizeritem">
@@ -117,7 +160,7 @@
 					<minsize>10</minsize>
 					<orientation>vertical</orientation>
 					<object class="wxPanel" name="idPanelL">
-						<style>wxTAB_TRAVERSAL</style>
+						<style>wxSTATIC_BORDER|wxTAB_TRAVERSAL</style>
 						<object class="wxBoxSizer">
 							<orient>wxVERTICAL</orient>
 							<object class="sizeritem">
@@ -131,7 +174,7 @@
 						</object>
 					</object>
 					<object class="wxPanel" name="idPanelR">
-						<style>wxTAB_TRAVERSAL</style>
+						<style>wxSTATIC_BORDER|wxTAB_TRAVERSAL</style>
 						<object class="wxBoxSizer">
 							<orient>wxVERTICAL</orient>
 						</object>

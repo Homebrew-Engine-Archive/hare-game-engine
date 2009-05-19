@@ -1,5 +1,7 @@
 #include "PCH.h"
 #include "GUIEditorPage.h"
+#include <wx/utils.h>
+#include <wx/propgrid/propgrid.h>
 
 class TreeItemData : public wxTreeItemData
 {
@@ -17,6 +19,14 @@ public:
     SizerItem* item;
 };
 
+wxString floatToString(float val)
+{
+    wxString ret;
+    wxString template_str;
+    wxPropertyGrid::DoubleToString(ret, (double)val, -1, true, &template_str);
+    return ret;
+}
+
 IMPLEMENT_ABSTRACT_CLASS(GUIEditorPage, EditorPage)
 
 static int idAlignLeft = XRCID("idAlignLeft");
@@ -26,14 +36,23 @@ static int idAlignTop = XRCID("idAlignTop");
 static int idAlignCenterVertically = XRCID("idAlignCenterVertically");
 static int idAlignBottom = XRCID("idAlignBottom");
 static int idExpand = XRCID("idExpand");
-static int idStretch = XRCID("idStretch");
+static int idFixedMinsize = XRCID("idFixedMinsize");
+static int idShaped = XRCID("idShaped");
 static int idLeftBorder = XRCID("idLeftBorder");
 static int idRightBorder = XRCID("idRightBorder");
 static int idTopBorder = XRCID("idTopBorder");
 static int idBottomBorder = XRCID("idBottomBorder");
 static int idTreeView = XRCID("idTreeView");
+static int idX = XRCID("idX");
+static int idY = XRCID("idY");
+static int idW = XRCID("idW");
+static int idH = XRCID("idH");
 
 BEGIN_EVENT_TABLE(GUIEditorPage, EditorPage)
+    EVT_TEXT_ENTER(idX, GUIEditorPage::onTextEntered)
+    EVT_TEXT_ENTER(idY, GUIEditorPage::onTextEntered)
+    EVT_TEXT_ENTER(idW, GUIEditorPage::onTextEntered)
+    EVT_TEXT_ENTER(idH, GUIEditorPage::onTextEntered)
     EVT_TOOL(idAlignLeft, GUIEditorPage::onToolEvent)
     EVT_TOOL(idAlignCenterHorizontally, GUIEditorPage::onToolEvent)
     EVT_TOOL(idAlignRight, GUIEditorPage::onToolEvent)
@@ -41,7 +60,8 @@ BEGIN_EVENT_TABLE(GUIEditorPage, EditorPage)
     EVT_TOOL(idAlignCenterVertically, GUIEditorPage::onToolEvent)
     EVT_TOOL(idAlignBottom, GUIEditorPage::onToolEvent)
     EVT_TOOL(idExpand, GUIEditorPage::onToolEvent)
-    EVT_TOOL(idStretch, GUIEditorPage::onToolEvent)
+    EVT_TOOL(idFixedMinsize, GUIEditorPage::onToolEvent)
+    EVT_TOOL(idShaped, GUIEditorPage::onToolEvent)
     EVT_TOOL(idLeftBorder, GUIEditorPage::onToolEvent)
     EVT_TOOL(idRightBorder, GUIEditorPage::onToolEvent)
     EVT_TOOL(idTopBorder, GUIEditorPage::onToolEvent)
@@ -57,7 +77,8 @@ BEGIN_EVENT_TABLE(GUIEditorPage, EditorPage)
     EVT_UPDATE_UI(idAlignCenterVertically, GUIEditorPage::onToolUpdateUI)
     EVT_UPDATE_UI(idAlignBottom, GUIEditorPage::onToolUpdateUI)
     EVT_UPDATE_UI(idExpand, GUIEditorPage::onToolUpdateUI)
-    EVT_UPDATE_UI(idStretch, GUIEditorPage::onToolUpdateUI)
+    EVT_UPDATE_UI(idFixedMinsize, GUIEditorPage::onToolUpdateUI)
+    EVT_UPDATE_UI(idShaped, GUIEditorPage::onToolUpdateUI)
     EVT_UPDATE_UI(idLeftBorder, GUIEditorPage::onToolUpdateUI)
     EVT_UPDATE_UI(idRightBorder, GUIEditorPage::onToolUpdateUI)
     EVT_UPDATE_UI(idTopBorder, GUIEditorPage::onToolUpdateUI)
@@ -93,6 +114,11 @@ GUIEditorPage::GUIEditorPage(wxWindow* parent) : isModified(false)
     treeCtrl->SetImageList(imageList);
     treeCtrl->AddRoot(wxT("Root"), rootImage, rootImage);
 
+    textXYWH[0] = XRCCTRL(*this, "idX", wxTextCtrl);
+    textXYWH[1] = XRCCTRL(*this, "idY", wxTextCtrl);
+    textXYWH[2] = XRCCTRL(*this, "idW", wxTextCtrl);
+    textXYWH[3] = XRCCTRL(*this, "idH", wxTextCtrl);
+
     setTitle(wxT("[GUIEditor]"));
 
     Layout();
@@ -123,6 +149,47 @@ uint32 modifyFlag(uint32 flag, bool add, uint32 val)
 bool hasFlag(uint32 flag, uint32 val)
 {
     return (flag & val) == val;
+}
+
+void GUIEditorPage::onTextEntered(wxCommandEvent& event)
+{
+    Window* window = guiSys->getRoot();
+
+    if (!window)
+        return;
+
+    TreeItemData* data = (TreeItemData*)treeCtrl->GetItemData(treeCtrl->GetSelection());
+    if (data)
+    {
+        if (data->isSizerItem())
+            window = data->item->getWindow();
+    }
+
+    int id = event.GetId();
+
+    wxString valStr = event.GetString();
+    int value = wxAtoi(valStr);
+
+    if (id == idX)
+    {
+        window->setPosition(value, window->getPosition().y);
+    }
+    if (id == idY)
+    {
+        window->setPosition(window->getPosition().x, value);
+    }
+    if (id == idW)
+    {
+        window->setSize(value, window->getSize().cy);
+    }
+    if (id == idH)
+    {
+        window->setSize(window->getSize().cx, value);
+    }
+
+    guiSys->getRoot()->layout();
+
+    event.Skip();
 }
 
 void GUIEditorPage::onToolEvent(wxCommandEvent& event)
@@ -168,6 +235,14 @@ void GUIEditorPage::onToolEvent(wxCommandEvent& event)
         else if (id == idExpand)
         {
             flag = modifyFlag(flag, event.IsChecked(), uiExpand);
+        }
+        else if (id == idFixedMinsize)
+        {
+            flag = modifyFlag(flag, event.IsChecked(), uiFixed_Minsize);
+        }
+        else if (id == idShaped)
+        {
+            flag = modifyFlag(flag, event.IsChecked(), uiShaped);
         }
         else if (id == idLeftBorder)
         {
@@ -226,6 +301,10 @@ void GUIEditorPage::onToolUpdateUI(wxUpdateUIEvent& event)
             event.Check(hasFlag(flag, uiAlign_Bottom));
         else if (id == idExpand)
             event.Check(hasFlag(flag, uiExpand));
+        else if (id == idFixedMinsize)
+            event.Check(hasFlag(flag, uiFixed_Minsize));
+        else if (id == idShaped)
+            event.Check(hasFlag(flag, uiShaped));
         else if (id == idLeftBorder)
             event.Check(hasFlag(flag, uiWest));
         else if (id == idRightBorder)
@@ -316,6 +395,42 @@ void GUIEditorPage::onTreeItemSelected(wxTreeEvent& event)
 
     rebindProperty();
 
+    TreeItemData* itemData = (TreeItemData*)treeCtrl->GetItemData(treeCtrl->GetSelection());
+
+    if (itemData)
+    {
+        Window* window = NULL;
+
+        if (itemData->isWindow())
+            window = itemData->window;
+        else if (itemData->isSizerItem())
+            window = itemData->item->getWindow();
+
+        if (window)
+        {
+            wxString x, y;
+            wxString template_str;
+
+            textXYWH[0]->SetValue(floatToString(window->getPosition().x));
+            textXYWH[1]->SetValue(floatToString(window->getPosition().y));
+            textXYWH[2]->SetValue(floatToString(window->getSize().cx));
+            textXYWH[3]->SetValue(floatToString(window->getSize().cy));
+
+            textXYWH[0]->Enable(true);
+            textXYWH[1]->Enable(true);
+            textXYWH[2]->Enable(true);
+            textXYWH[3]->Enable(true);
+        }
+        else
+        {
+            for (int i = 0; i < 4; ++i)
+            {
+                textXYWH[i]->SetValue(wxEmptyString);
+                textXYWH[i]->Enable(false);
+            }
+        }
+    }
+
     event.Skip();
 }
 
@@ -405,19 +520,50 @@ void GUIEditorPage::drawHelperRect(TreeItemData* data, uint32 color)
         if (data->isSizer())
         {
             pos = data->sizer->getPosition();
+            pos = windowToScreen(*data->sizer->getContainingWindow(), pos);
             size = data->sizer->getSize();
+
+            getCanvas()->setColor(color);
+            getCanvas()->drawRect(pos.x, pos.y, pos.x + size.cx, pos.y + size.cy);
+            getCanvas()->setColor(0xFFFFFFFF);
         }
         else if (data->isSizerItem())
         {
             pos = data->item->getPosition();
             size = data->item->getSize();
-        }
-        else
-            return;
 
-        getCanvas()->setColor(color);
-        getCanvas()->drawRect(pos.x, pos.y, pos.x + size.cx, pos.y + size.cy);
-        getCanvas()->setColor(0xFFFFFFFF);
+            Window* window = data->item->getWindow();
+
+            if (window)
+            {
+                window = window->getParent();
+                if (window)
+                {
+                    pos = windowToScreen(*window, pos);
+
+                    getCanvas()->setColor(color);
+                    getCanvas()->drawRect(pos.x, pos.y, pos.x + size.cx, pos.y + size.cy);
+                    getCanvas()->setColor(0xFFFFFFFF);
+                }
+            }
+            else
+            {
+                Sizer* sizer = data->item->getSizer();
+
+                if (sizer)
+                {
+                    window = sizer->getContainingWindow();
+                    if (window)
+                    {
+                        pos = windowToScreen(*window, pos);
+
+                        getCanvas()->setColor(color);
+                        getCanvas()->drawRect(pos.x, pos.y, pos.x + size.cx, pos.y + size.cy);
+                        getCanvas()->setColor(0xFFFFFFFF);
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -478,6 +624,7 @@ void GUIEditorPage::addWindow(Window* window)
     else if (!guiSys->getRoot())
     {
         guiSys->setRoot(window);
+        window->setSize(640, 480);
     }
     else
         return;

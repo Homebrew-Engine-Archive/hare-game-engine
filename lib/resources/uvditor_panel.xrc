@@ -11,7 +11,7 @@
 				<border>5</border>
 				<object class="wxToolBar" name="idToolBar">
 					<style>wxTB_FLAT|wxTB_HORIZONTAL</style>
-					<bitmapsize>22,22</bitmapsize>
+					<bitmapsize>20,20</bitmapsize>
 					<margins></margins>
 					<packing>1</packing>
 					<separation>5</separation>

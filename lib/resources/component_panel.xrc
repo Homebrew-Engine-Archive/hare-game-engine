@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<resource xmlns="http://www.wxwindows.org/wxxrc" version="2.3.0.1">
+	<object class="wxPanel" name="idComponentPanel">
+		<style>wxTAB_TRAVERSAL</style>
+		<size>500,300</size>
+		<object class="wxBoxSizer">
+			<orient>wxVERTICAL</orient>
+			<object class="sizeritem">
+				<option>1</option>
+				<flag>wxEXPAND</flag>
+				<border>5</border>
+				<object class="wxSplitterWindow" name="idSplitterV">
+					<style>wxSP_3D</style>
+					<sashpos>250</sashpos>
+					<gravity>0</gravity>
+					<minsize>10</minsize>
+					<orientation>vertical</orientation>
+					<object class="wxPanel" name="idPanelL">
+						<style>wxTAB_TRAVERSAL</style>
+						<object class="wxBoxSizer">
+							<orient>wxVERTICAL</orient>
+							<object class="sizeritem">
+								<option>1</option>
+								<flag>wxEXPAND</flag>
+								<border>5</border>
+								<object class="wxTreeCtrl" name="idComponentTree">
+									<style>wxTR_DEFAULT_STYLE</style>
+								</object>
+							</object>
+						</object>
+					</object>
+					<object class="wxPanel" name="idPanelR">
+						<style>wxTAB_TRAVERSAL</style>
+						<object class="wxBoxSizer">
+							<orient>wxHORIZONTAL</orient>
+							<object class="sizeritem">
+								<option>1</option>
+								<flag>wxEXPAND</flag>
+								<border>5</border>
+								<object class="wxSplitterWindow" name="idSplitterH">
+									<style>wxSP_3D</style>
+									<sashpos>160</sashpos>
+									<gravity>0</gravity>
+									<minsize>10</minsize>
+									<orientation>horizontal</orientation>
+									<object class="wxPanel" name="idPanelComponent">
+										<style>wxTAB_TRAVERSAL</style>
+										<object class="wxBoxSizer">
+											<orient>wxVERTICAL</orient>
+											<object class="sizeritem">
+												<option>1</option>
+												<flag>wxEXPAND</flag>
+												<border>5</border>
+												<object class="wxPanel" name="idComponentReview">
+													<style>wxTAB_TRAVERSAL</style>
+													<object class="wxBoxSizer">
+														<orient>wxVERTICAL</orient>
+													</object>
+												</object>
+											</object>
+										</object>
+									</object>
+									<object class="wxPanel" name="idPartSpriteReview">
+										<style>wxTAB_TRAVERSAL</style>
+										<object class="wxBoxSizer">
+											<orient>wxVERTICAL</orient>
+										</object>
+									</object>
+								</object>
+							</object>
+						</object>
+					</object>
+				</object>
+			</object>
+		</object>
+	</object>
+</resource>

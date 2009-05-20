@@ -21,7 +21,7 @@
 					<orient>wxVERTICAL</orient>
 					<object class="sizeritem">
 						<option>3</option>
-						<flag>wxEXPAND | wxALL</flag>
+						<flag>wxEXPAND|wxTOP|wxRIGHT</flag>
 						<border>5</border>
 						<object class="wxPanel" name="idScenePanel">
 							<style>wxTAB_TRAVERSAL</style>
@@ -37,7 +37,7 @@
 								<orient>wxHORIZONTAL</orient>
 								<object class="sizeritem">
 									<option>1</option>
-									<flag>wxALL|wxEXPAND</flag>
+									<flag>wxEXPAND|wxBOTTOM|wxRIGHT</flag>
 									<border>5</border>
 									<object class="wxListBox" name="idSpriteList">
 										<content />
@@ -51,21 +51,11 @@
 										<orient>wxVERTICAL</orient>
 										<object class="sizeritem">
 											<option>0</option>
-											<flag>wxEXPAND</flag>
+											<flag></flag>
 											<border>5</border>
-											<object class="wxToolBar" name="idToolbar">
-												<style>wxTB_HORZ_TEXT|wxTB_NOICONS</style>
-												<bitmapsize></bitmapsize>
-												<margins></margins>
-												<packing>1</packing>
-												<separation>5</separation>
-												<object class="tool" name="idAddSprite">
-													<label>Add Sprite</label>
-													<tooltip></tooltip>
-													<longhelp></longhelp>
-													<bitmap />
-													<toggle>1</toggle>
-												</object>
+											<object class="wxToggleButton" name="idAddSprite">
+												<label>Add Sprite</label>
+												<checked>1</checked>
 											</object>
 										</object>
 										<object class="sizeritem">

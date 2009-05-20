@@ -25,6 +25,9 @@
 						<border>5</border>
 						<object class="wxPanel" name="idScenePanel">
 							<style>wxTAB_TRAVERSAL</style>
+							<object class="wxBoxSizer">
+								<orient>wxVERTICAL</orient>
+							</object>
 						</object>
 					</object>
 					<object class="sizeritem">
@@ -60,10 +63,13 @@
 										</object>
 										<object class="sizeritem">
 											<option>1</option>
-											<flag>wxEXPAND | wxALL</flag>
+											<flag>wxEXPAND|wxTOP|wxBOTTOM|wxRIGHT</flag>
 											<border>5</border>
 											<object class="wxPanel" name="idSpriteView">
 												<style>wxTAB_TRAVERSAL</style>
+												<object class="wxBoxSizer">
+													<orient>wxVERTICAL</orient>
+												</object>
 											</object>
 										</object>
 									</object>

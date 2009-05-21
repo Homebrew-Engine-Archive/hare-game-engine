@@ -70,7 +70,7 @@ Object* SpriteWizard::wizard(int index)
                 Object::Ptr object = spriteClasses[index]->createObject();
 
                 if (object){
-                    EditorPlugin* plugin = PluginManager::getInstancePtr()->findPluginByName(wxT("spriteMIMEHandler"));
+                    EditorPlugin* plugin = PluginManager::getInstancePtr()->findPluginByName(wxT("SpriteMIMEHandler"));
                     if (plugin && plugin->getType() == EPT_MIMEHandler){
                         ImageSprite* sprite = (ImageSprite*)object.pointer();
                         sprite->loadFromMaterial(wizard.getMaterial());
@@ -87,7 +87,7 @@ Object* SpriteWizard::wizard(int index)
             Object::Ptr object = spriteClasses[index]->createObject();
 
             if (object){
-                EditorPlugin* plugin = PluginManager::getInstancePtr()->findPluginByName(wxT("spriteMIMEHandler"));
+                EditorPlugin* plugin = PluginManager::getInstancePtr()->findPluginByName(wxT("SpriteMIMEHandler"));
                 if (plugin && plugin->getType() == EPT_MIMEHandler){
                     ComponentSprite* sprite = (ComponentSprite*)object.pointer();
                     SpriteMIMEHandler* handler = (SpriteMIMEHandler*)plugin;
@@ -101,7 +101,7 @@ Object* SpriteWizard::wizard(int index)
             Object::Ptr object = spriteClasses[index]->createObject();
 
             if (object){
-                EditorPlugin* plugin = PluginManager::getInstancePtr()->findPluginByName(wxT("spriteMIMEHandler"));
+                EditorPlugin* plugin = PluginManager::getInstancePtr()->findPluginByName(wxT("SpriteMIMEHandler"));
                 if (plugin && plugin->getType() == EPT_MIMEHandler){
                     AnimationSprite* sprite = (AnimationSprite*)object.pointer();
                     SpriteMIMEHandler* handler = (SpriteMIMEHandler*)plugin;
@@ -115,7 +115,7 @@ Object* SpriteWizard::wizard(int index)
             Object::Ptr object = spriteClasses[index]->createObject();
 
             if (object){
-                EditorPlugin* plugin = PluginManager::getInstancePtr()->findPluginByName(wxT("spriteMIMEHandler"));
+                EditorPlugin* plugin = PluginManager::getInstancePtr()->findPluginByName(wxT("SpriteMIMEHandler"));
                 if (plugin && plugin->getType() == EPT_MIMEHandler){
                     ParticleSprite* sprite = (ParticleSprite*)object.pointer();
                     SpriteMIMEHandler* handler = (SpriteMIMEHandler*)plugin;

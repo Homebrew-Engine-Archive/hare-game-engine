@@ -1,3 +1,4 @@
+#include "PCH.h"
 #include "LuaDebugData.h"
 #include "LuaDebugDefines.h"
 
@@ -124,7 +125,7 @@ void LuaDebugData::enumerateTable(lua_State* L, int stackRef, const String& tabl
     int valueType = LUA_TNONE;
     String value;
     String key;
-    String exprExec = "return " + table;
+    String exprExec = "return getfenv(2)." + table;
 
     coverGlobals(L, stackRef);
 
@@ -164,7 +165,7 @@ void LuaDebugData::enumerateTable(lua_State* L, int stackRef, const String& tabl
 
 void LuaDebugData::evaluateExpr(lua_State* L, int stackRef, const String& expr)
 {
-    String exprExec = "return " + expr;
+    String exprExec = "return getfenv(2)." + expr;
     String value;
     int valueType = LUA_TNONE;
 

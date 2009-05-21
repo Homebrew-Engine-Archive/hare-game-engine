@@ -104,6 +104,8 @@ bool EditorApp::OnInit()
     String writeDir = resource.getSetting("WriteDir");
     fs->addSearchPath(writeDir);
     fs->setWriteDir(writeDir);
+    // Also add scriptDir to search path.
+    fs->addSearchPath(scriptDir);
 
     Log::getSingleton().logInfo("Filesystem write dir '%s' is used for search path in editor mode.",
         writeDir.c_str());
@@ -121,8 +123,14 @@ bool EditorApp::OnInit()
     for (size_t i = 0; i < plugins.size(); ++i)
     {
         String fileName = pluginDir + plugins[i];
-        getHareApp()->loadPlugin(fileName);
-        Log::getSingleton().logInfo("Load plugin : '%s'", fileName.c_str());
+        if (getHareApp()->loadPlugin(fileName))
+        {
+            Log::getSingleton().logInfo("Load plugin : '%s'", fileName.c_str());
+        }
+        else
+        {
+            Log::getSingleton().logError("HareApp::loadPlugin failed to load '%s'", fileName.c_str());
+        }
     }
 
     getHareApp()->startUp();

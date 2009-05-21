@@ -954,6 +954,7 @@ namespace hare
             parent = parent->GetParent();
         }
 
+        event.Skip();
 
     }
 

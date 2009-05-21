@@ -34,6 +34,12 @@ namespace hare
         PHYSFS_deinit();
     }
 
+    void FileSystem::reset(const char* argv0)
+    {
+        PHYSFS_deinit();
+        PHYSFS_init(argv0);
+    }
+
     bool FileSystem::addSearchPath(const String& dir)
     {
         return PHYSFS_addToSearchPath(dir.c_str(), 1) ? true : false;

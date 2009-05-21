@@ -47,6 +47,7 @@ namespace hare
 
         virtual Window* getWindow() { return NULL; }
         virtual Sizer* getSizer() { return NULL; }
+        virtual SizerSpacer* getSpacer() { return NULL; }
 
         virtual SizeF getSize() const = 0;
         virtual SizeF calcMinSize() = 0;
@@ -114,6 +115,9 @@ namespace hare
         virtual SizeF calcMinSize();
         virtual bool isShown();
         virtual void setDimension(const PointF& ps, const SizeF& sz);
+
+        virtual SizerSpacer* getSpacer() { return spacer; }
+
     protected:
         SizerSpacerPtr spacer;
     private:

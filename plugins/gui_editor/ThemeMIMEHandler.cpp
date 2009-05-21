@@ -88,6 +88,10 @@ ThemeEditorPage::ThemeEditorPage(wxWindow* parent, ThemeMIMEHandler* handler)
 
 ThemeEditorPage::~ThemeEditorPage()
 {
+    if (!Manager::isAppShuttingDown())
+    {
+        Manager::getInstancePtr()->getExplorerManager()->removeAllProperties();
+    }
 }
 
 void ThemeEditorPage::renderScene()

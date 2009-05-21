@@ -13,19 +13,20 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="..\..\lib"
+			OutputDirectory="..\..\lib\plugins"
 			IntermediateDirectory="$(ConfigurationName)\hare_lua"
-			ConfigurationType="1"
+			ConfigurationType="2"
 			CharacterSet="1">
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\..\include;..\..\ext\lua\src"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;STATIC_LINKED"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS"
 				MinimalRebuild="TRUE"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
-				UsePrecompiledHeader="0"
+				UsePrecompiledHeader="3"
+				PrecompiledHeaderThrough="PCH.h"
 				WarningLevel="3"
 				DebugInformationFormat="4"/>
 			<Tool
@@ -33,6 +34,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="core_d.lib lua51.lib graphics_d.lib"
+				OutputFile="$(OutDir)/$(ProjectName)_d.dll"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="..\..\lib;..\..\ext\lua\src"
 				GenerateDebugInformation="TRUE"
@@ -118,6 +120,12 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}">
 			<File
 				RelativePath="..\..\bindings\lua\hare_wrap.cxx">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\..\bindings\lua\LuaDebugData.cpp">
@@ -126,7 +134,22 @@
 				RelativePath="..\..\bindings\lua\LuaDebuggee.cpp">
 			</File>
 			<File
+				RelativePath="..\..\bindings\lua\LuaGameApp.cpp">
+			</File>
+			<File
+				RelativePath="..\..\bindings\lua\LuaScriptRunner.cpp">
+			</File>
+			<File
 				RelativePath="..\..\bindings\lua\main.cpp">
+			</File>
+			<File
+				RelativePath="..\..\bindings\lua\PCH.cpp">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="1"/>
+				</FileConfiguration>
 			</File>
 		</Filter>
 		<Filter
@@ -143,7 +166,16 @@
 				RelativePath="..\..\bindings\lua\LuaDebuggee.h">
 			</File>
 			<File
+				RelativePath="..\..\bindings\lua\LuaGameApp.h">
+			</File>
+			<File
 				RelativePath="..\..\bindings\lua\LuaSceneListener.h">
+			</File>
+			<File
+				RelativePath="..\..\bindings\lua\LuaScriptRunner.h">
+			</File>
+			<File
+				RelativePath="..\..\bindings\lua\PCH.h">
 			</File>
 			<File
 				RelativePath="..\..\bindings\lua\SocketHelper.h">

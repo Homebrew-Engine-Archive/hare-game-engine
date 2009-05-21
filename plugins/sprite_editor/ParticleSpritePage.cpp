@@ -97,6 +97,8 @@ void ParticleEditorPage::onMouseMove(wxMouseEvent& event)
             parPtr->moveTo((float)x, (float)y);
         }
     }
+
+    event.Skip();
 }
 
 void ParticleEditorPage::onEraseBackground(wxEraseEvent& event)
@@ -167,7 +169,7 @@ bool ParticleEditorPage::saveAs()
         wxSAVE | wxOVERWRITE_PROMPT);
 
     if (dlg->ShowModal() == wxID_OK){
-        static const char* tempFileName = "/editor/~ParticleSprite.temp";
+        static const char* tempFileName = "/editor/~sprite.temp";
         FileSystem::getSingletonPtr()->remove(tempFileName);
         parPtr->saveToXml(tempFileName);
         String dir = FileSystem::getSingletonPtr()->getRealDir(tempFileName);

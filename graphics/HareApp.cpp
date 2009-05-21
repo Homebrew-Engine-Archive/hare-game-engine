@@ -77,8 +77,6 @@ namespace hare
             }
             else
             {
-                Log::getSingleton().logError("HareApp::loadPlugin failed to load '%s'",
-                    moduleName.c_str());
                 delete plugin;
                 plugin = NULL;
             }

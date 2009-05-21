@@ -22,6 +22,8 @@
 
 namespace hare
 {
+    class NFDListItemData;
+
     class EDITOR_API NewFileDialog : public wxDialog
     {
     public:
@@ -38,6 +40,8 @@ namespace hare
         void rebuildList(WizardPlugin* plugin);
         bool createTreeItem(const String& folder, WizardPlugin* plugin);
 
+        void onOK(wxCommandEvent& event);
+
     private:
         wxListCtrl* listCtrlItems;
         wxTreeCtrl* treeCtrlFilter;
@@ -45,6 +49,8 @@ namespace hare
 
         wxImageList* treeImageList;
         wxImageList* listImageList;
+
+        NFDListItemData* currItemData;
 
         wxTreeItemId rootId;
 

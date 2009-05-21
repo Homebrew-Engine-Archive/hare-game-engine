@@ -154,6 +154,8 @@ namespace hare
         **/
         int size(FileHandle file);
 
+        void reset(const char* argv0);
+
     public:
         FileSystem(const char* argv0);
 

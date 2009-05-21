@@ -16,16 +16,16 @@
 
 //////////////////////////////////////////////////////////////////////////
 static const PluginInfo spriteMIMEHandler = {
-    wxT("spriteMIMEHandler"), 
-    wxT("spriteMIMEHandler"),
+    wxT("SpriteMIMEHandler"), 
+    wxT("SpriteMIMEHandler"),
     wxT("This is a plugin for sprite editing.") };
 
 PluginRegistrant<SpriteMIMEHandler> regSpriteMIMEHandler(spriteMIMEHandler);
 //////////////////////////////////////////////////////////////////////////
 
 static const PluginInfo spriteWizard = {
-    wxT("spriteWizard"), 
-    wxT("spriteWizard"),
+    wxT("SpriteWizard"), 
+    wxT("SpriteWizard"),
     wxT("This is a plugin for sprite creating.") };
 
 PluginRegistrant<SpriteWizard> regSpriteWizard(spriteWizard);

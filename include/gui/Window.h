@@ -259,6 +259,8 @@ namespace hare
         mutable bool  unclippedInnerRectValid;
         mutable RectF innerRect;
         mutable bool  innerRectValid;
+
+        ScriptRunner::Ptr scriptRunner;
     };
 
 

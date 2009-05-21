@@ -6,17 +6,27 @@
 class TreeItemData : public wxTreeItemData
 {
 public:
-    TreeItemData(Window* w) : window(w), sizer(0), item(0) {}
-    TreeItemData(Sizer* s) : window(0), sizer(s), item(0) {}
-    TreeItemData(SizerItem* i) : window(0), sizer(0), item(i) {}
+    TreeItemData(Window* w)       : window(w)  { type = Type_Window;    }
+    TreeItemData(Sizer* s)        : sizer(s)   { type = Type_Sizer;     }
+    TreeItemData(SizerSpacer* sp) : spacer(sp) { type = Type_Spacer;    }
+    TreeItemData(SizerItem* it)   : item(it)   { type = Type_SizerItem; }
     
-    bool isWindow() const { return window != NULL; }
-    bool isSizer() const { return sizer != NULL; }
-    bool isSizerItem() const { return item != NULL; }
+    bool isWindow()    const { return type == Type_Window;    }
+    bool isSizer()     const { return type == Type_Sizer;     }
+    bool isSizerItem() const { return type == Type_SizerItem; }
+    bool isSpacer()    const { return type == Type_Spacer;    }
 
-    Window* window;
-    Sizer* sizer;
-    SizerItem* item;
+    enum ItemDataType { Type_Window, Type_Sizer, Type_SizerItem, Type_Spacer };
+
+    union 
+    {
+        Window* window;
+        Sizer* sizer;
+        SizerItem* item;
+        SizerSpacer* spacer;
+    };
+
+    ItemDataType type;
 };
 
 wxString floatToString(float val)
@@ -104,20 +114,26 @@ GUIEditorPage::GUIEditorPage(wxWindow* parent) : isModified(false)
     wxBitmap bmp;
     wxString fullPath = Manager::getInstancePtr()->getAppDir() + wxT("/resources/");
     bmp.LoadFile(fullPath + wxT("root.png"), wxBITMAP_TYPE_PNG);
-    rootImage = imageList->Add(bmp);
+    Image_ROOT = imageList->Add(bmp);
     bmp.LoadFile(fullPath + wxT("sizer.png"), wxBITMAP_TYPE_PNG);
-    sizerImage = imageList->Add(bmp);
+    Image_SIZER = imageList->Add(bmp);
     bmp.LoadFile(fullPath + wxT("ctrl.png"), wxBITMAP_TYPE_PNG);
-    ctrlImage = imageList->Add(bmp);
+    Image_CTRL = imageList->Add(bmp);
 
     treeCtrl = XRCCTRL(*this, "idTreeView", wxTreeCtrl);
     treeCtrl->SetImageList(imageList);
-    treeCtrl->AddRoot(wxT("Root"), rootImage, rootImage);
+    treeCtrl->AddRoot(wxT("Root"), Image_ROOT, Image_ROOT);
 
     textXYWH[0] = XRCCTRL(*this, "idX", wxTextCtrl);
     textXYWH[1] = XRCCTRL(*this, "idY", wxTextCtrl);
     textXYWH[2] = XRCCTRL(*this, "idW", wxTextCtrl);
     textXYWH[3] = XRCCTRL(*this, "idH", wxTextCtrl);
+
+    for (int i = 0; i < 4; ++i)
+    {
+        textXYWH[i]->Connect(wxEVT_KILL_FOCUS, 
+            wxFocusEventHandler(GUIEditorPage::onTextFocusKillEvent), 0, this);
+    }
 
     setTitle(wxT("[GUIEditor]"));
 
@@ -136,6 +152,11 @@ GUIEditorPage::~GUIEditorPage()
 {
     treeCtrl->SetImageList(NULL);
     SAFE_DELETE(imageList);
+
+    if (!Manager::isAppShuttingDown())
+    {
+        Manager::getInstancePtr()->getExplorerManager()->removeAllProperties();
+    }
 }
 
 uint32 modifyFlag(uint32 flag, bool add, uint32 val)
@@ -149,6 +170,29 @@ uint32 modifyFlag(uint32 flag, bool add, uint32 val)
 bool hasFlag(uint32 flag, uint32 val)
 {
     return (flag & val) == val;
+}
+
+void GUIEditorPage::onTextFocusKillEvent(wxFocusEvent& event)
+{
+    wxCommandEvent cmdEvent;
+    cmdEvent.SetId(event.GetId());
+
+    wxString valStr;
+    
+    if (event.GetId() == idX)
+        valStr = textXYWH[0]->GetLabel();
+    else if (event.GetId() == idY)
+        valStr = textXYWH[1]->GetLabel();
+    else if (event.GetId() == idW)
+        valStr = textXYWH[2]->GetLabel();
+    else if (event.GetId() == idH)
+        valStr = textXYWH[3]->GetLabel();
+
+    if (!valStr.IsEmpty())
+    {
+        cmdEvent.SetString(valStr);
+        onTextEntered(cmdEvent);
+    }
 }
 
 void GUIEditorPage::onTextEntered(wxCommandEvent& event)
@@ -168,7 +212,7 @@ void GUIEditorPage::onTextEntered(wxCommandEvent& event)
     int id = event.GetId();
 
     wxString valStr = event.GetString();
-    int value = wxAtoi(valStr);
+    float value = wxAtof(valStr);
 
     if (id == idX)
     {
@@ -275,6 +319,12 @@ void GUIEditorPage::onToolEvent(wxCommandEvent& event)
 
 void GUIEditorPage::onToolUpdateUI(wxUpdateUIEvent& event)
 {
+    if (!treeCtrl->GetSelection().IsOk())
+    {
+        event.Skip();
+        return;
+    }
+
     TreeItemData* data = (TreeItemData*)treeCtrl->GetItemData(treeCtrl->GetSelection());
 
     if (!data || !data->isSizerItem())
@@ -372,6 +422,8 @@ void GUIEditorPage::rebindProperty()
                 object = itemData->sizer;
             else if (itemData->isSizerItem())
                 object = itemData->item;
+            else if (itemData->isSpacer())
+                object = itemData->spacer;
 
             if (object)
             {
@@ -384,6 +436,78 @@ void GUIEditorPage::rebindProperty()
 
     Manager::getInstancePtr()->getExplorerManager()->removeAllProperties();
     Manager::getInstancePtr()->getExplorerManager()->bindProperty(wxT("Properity"), guiSys);
+}
+
+wxTreeItemId GUIEditorPage::bindTreeItem(const wxTreeItemId& parentId, Window* window, TreeItemData* data)
+{
+    assert(window);
+
+    wxTreeItemId itemId = treeCtrl->AppendItem(parentId, wxString::FromUTF8(window->getClassInfo()->className), 
+        Image_CTRL, Image_CTRL, data ? data : new TreeItemData(window));
+
+    if (window->getSizer())
+    {
+        return bindTreeItem(itemId, window->getSizer());
+    }
+
+    return itemId;
+}
+
+wxTreeItemId GUIEditorPage::bindTreeItem(const wxTreeItemId& parentId, Sizer* sizer, TreeItemData* data)
+{
+    assert(sizer);
+
+    wxTreeItemId itemId = treeCtrl->AppendItem(parentId, wxString::FromUTF8(sizer->getClassInfo()->className), 
+        Image_SIZER, Image_SIZER, data ? data : new TreeItemData(sizer));
+
+    SizerItem::List& items = sizer->getChildren();
+    SizerItem::List::iterator it = items.begin();
+    for (; it != items.end(); ++it)
+    {
+        SizerItem* item = *it;
+        bindTreeItem(itemId, item);
+    }
+
+    return itemId;
+}
+
+wxTreeItemId GUIEditorPage::bindTreeItem(const wxTreeItemId& parentId, SizerItem* item, TreeItemData* data)
+{
+    assert(item);
+
+    if (item->getWindow())
+    {
+        return bindTreeItem(parentId, item->getWindow(), new TreeItemData(item));
+    }
+    else if (item->getSizer())
+    {
+        return bindTreeItem(parentId, item->getSizer(), new TreeItemData(item));
+    }
+    else if (item->getSpacer())
+    {
+        return treeCtrl->AppendItem(parentId, wxString::FromUTF8(item->getSpacer()->getClassInfo()->className), 
+            Image_SPACER, Image_SPACER, new TreeItemData(item->getSpacer()));
+    }
+
+    assert(false);
+
+    return wxTreeItemId();
+}
+
+void GUIEditorPage::rebindTreeView()
+{
+    treeCtrl->DeleteAllItems();
+
+    wxTreeItemId parentId = treeCtrl->AddRoot(wxT("Root"), Image_ROOT, Image_ROOT);
+
+    if (guiSys->getRoot())
+    {
+        Window* window = guiSys->getRoot();
+        bindTreeItem(parentId, window);
+        window->layout();
+    }
+
+    treeCtrl->ExpandAll();
 }
 
 void GUIEditorPage::onTreeItemSelected(wxTreeEvent& event)
@@ -571,21 +695,25 @@ void GUIEditorPage::renderScene()
 {
     guiSys->render();
 
-    wxTreeItemId parentId = treeCtrl->GetItemParent(treeCtrl->GetSelection());
-    if (parentId.IsOk())
+    if (treeCtrl->GetSelection().IsOk())
     {
-        TreeItemData* parentData = (TreeItemData*)treeCtrl->GetItemData(parentId);
-        drawHelperRect(parentData, 0xFF0000FF);
-    }
+        wxTreeItemId parentId = treeCtrl->GetItemParent(treeCtrl->GetSelection());
+        if (parentId.IsOk())
+        {
+            TreeItemData* parentData = (TreeItemData*)treeCtrl->GetItemData(parentId);
+            drawHelperRect(parentData, 0xFF0000FF);
+        }
 
-    TreeItemData* data = (TreeItemData*)treeCtrl->GetItemData(treeCtrl->GetSelection());
-    drawHelperRect(data, 0xFFFF0000);
+        TreeItemData* data = (TreeItemData*)treeCtrl->GetItemData(treeCtrl->GetSelection());
+        drawHelperRect(data, 0xFFFF0000);
+    }
 }
 
 void GUIEditorPage::setWindow(Window* window)
 {
     guiSys->setRoot(window);
     updateTitle();
+    rebindTreeView();
 }
 
 void GUIEditorPage::setTheme(ThemePackage* themes)
@@ -593,9 +721,9 @@ void GUIEditorPage::setTheme(ThemePackage* themes)
     guiSys->setTheme(themes);
 }
 
-void GUIEditorPage::addWindow(Window* window)
+void GUIEditorPage::addWindow(const wxTreeItemId& parentId, Window* window)
 {
-    TreeItemData* data = (TreeItemData*)treeCtrl->GetItemData(treeCtrl->GetSelection());
+    TreeItemData* data = (TreeItemData*)treeCtrl->GetItemData(parentId);
 
     Sizer* sizer = NULL;
     SizerItem* newItem = NULL;
@@ -629,19 +757,20 @@ void GUIEditorPage::addWindow(Window* window)
     else
         return;
 
-    wxTreeItemId item = treeCtrl->AppendItem(treeCtrl->GetSelection(), wxString::FromUTF8(window->getClassInfo()->className), 
-        ctrlImage, ctrlImage, newItem ? new TreeItemData(newItem) : new TreeItemData(window));
+    wxTreeItemId item = treeCtrl->AppendItem(parentId, wxString::FromUTF8(window->getClassInfo()->className), 
+        Image_CTRL, Image_CTRL, newItem ? new TreeItemData(newItem) : new TreeItemData(window));
 
     setModified(true);
     guiSys->getRoot()->layout();
 
-    treeCtrl->Expand(treeCtrl->GetSelection());
+    treeCtrl->Expand(parentId);
     treeCtrl->SelectItem(item);
 }
 
-void GUIEditorPage::addSizer(Sizer* sizer)
+void GUIEditorPage::addSizer(const wxTreeItemId& parentId, Sizer* sizer)
 {
-    TreeItemData* data = (TreeItemData*)treeCtrl->GetItemData(treeCtrl->GetSelection());
+    TreeItemData* data = (TreeItemData*)treeCtrl->GetItemData(parentId);
+
     if (data)
     {
         SizerItem* sizerItem = NULL;
@@ -676,14 +805,14 @@ void GUIEditorPage::addSizer(Sizer* sizer)
 
         if (sizer_accepted)
         {
-            wxTreeItemId item = treeCtrl->AppendItem(treeCtrl->GetSelection(), wxString::FromUTF8(sizer->getClassInfo()->className), 
-                sizerImage, sizerImage, sizerItem ? new TreeItemData(sizerItem) : new TreeItemData(sizer));
+            wxTreeItemId item = treeCtrl->AppendItem(parentId, wxString::FromUTF8(sizer->getClassInfo()->className), 
+                Image_SIZER, Image_SIZER, sizerItem ? new TreeItemData(sizerItem) : new TreeItemData(sizer));
 
             setModified(true);
 
             guiSys->getRoot()->layout();
 
-            treeCtrl->Expand(treeCtrl->GetSelection());
+            treeCtrl->Expand(parentId);
             treeCtrl->SelectItem(item);
         }
     }
@@ -693,6 +822,12 @@ void GUIEditorPage::onMenuSelected(wxCommandEvent& event)
 {
     int id = event.GetId();
 
+    if (!treeCtrl->GetSelection().IsOk())
+    {
+        event.Skip();
+        return;
+    }
+
     if (id >= 0)
     {
         if (id < (int)windowClasses.size())
@@ -701,7 +836,7 @@ void GUIEditorPage::onMenuSelected(wxCommandEvent& event)
             Window::Ptr window = (Window*)clsInfo->createObject();
 
             if (window)
-                addWindow(window);
+                addWindow(treeCtrl->GetSelection(), window);
         }
         else if (id < (int)(windowClasses.size() + sizerClasses.size()))
         {
@@ -709,7 +844,7 @@ void GUIEditorPage::onMenuSelected(wxCommandEvent& event)
             Sizer::Ptr sizer = (Sizer*)clsInfo->createObject();
 
             if (sizer)
-                addSizer(sizer);
+                addSizer(treeCtrl->GetSelection(), sizer);
         }
         else
             event.Skip();

@@ -28,12 +28,9 @@ public:
 	virtual void renderScene();
 	virtual void endScene();
 
-	void setBeginSceneListenFunc(SWIGLUA_REF fn);
-	
-	void setRenderSceneListenFunc(SWIGLUA_REF fn);
-	
-	void setEndSceneListenFunc(SWIGLUA_REF fn);
-
+	void setBeginSceneCallback(SWIGLUA_REF func);
+	void setRenderSceneCallback(SWIGLUA_REF func);
+	void setEndSceneCallback(SWIGLUA_REF func);
 };
 
 class SceneManager

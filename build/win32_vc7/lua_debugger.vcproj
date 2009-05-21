@@ -178,15 +178,6 @@
 			Name="Common"
 			Filter="">
 			<File
-				RelativePath="..\..\bindings\lua\LuaDebugData.cpp">
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="0"/>
-				</FileConfiguration>
-			</File>
-			<File
 				RelativePath="..\..\bindings\lua\LuaDebugData.h">
 			</File>
 			<File

@@ -179,6 +179,7 @@ namespace hare
     {
         SizerItem::setDimension(ps, sz);
         window->setArea(rect);
+        window->layout();
     }
     // ---------------------------------------------------------------
     // SizerItemSizer

@@ -76,7 +76,7 @@ bool ImageSpritePage::saveAs()
         wxSAVE | wxOVERWRITE_PROMPT);
 
     if (dlg->ShowModal() == wxID_OK){
-        static const char* tempFileName = "/editor/~ImageSprite.temp";
+        static const char* tempFileName = "/editor/~sprite.temp";
         FileSystem::getSingletonPtr()->remove(tempFileName);
         imageSprite->saveToXml(tempFileName);
         String dir = FileSystem::getSingletonPtr()->getRealDir(tempFileName);

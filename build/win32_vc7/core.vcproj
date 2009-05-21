@@ -178,6 +178,9 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\..\core\ScriptRunner.cpp">
+			</File>
+			<File
 				RelativePath="..\..\core\Socket.cpp">
 			</File>
 			<File
@@ -323,6 +326,9 @@
 			</File>
 			<File
 				RelativePath="..\..\include\core\ReferenceCounted.h">
+			</File>
+			<File
+				RelativePath="..\..\include\core\ScriptRunner.h">
 			</File>
 			<File
 				RelativePath="..\..\include\core\Singleton.h">

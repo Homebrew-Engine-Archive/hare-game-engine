@@ -41,7 +41,7 @@ end
 function endScene()
 end
 
-function init()
+function game_init()
     hareApp = hare.getHareApp()
     p = hare.WindowParams()
     p.width = 800
@@ -51,10 +51,11 @@ function init()
     w = hareApp:createRenderWindow(p)
     s = hareApp:createSceneManager()
     w:setSceneManager(s)   
+
     listener = hare.LuaSceneListener()
-    listener:setBeginSceneListenFunc(beginScene)
-    listener:setRenderSceneListenFunc(renderScene)
-    listener:setEndSceneListenFunc(endScene)
+    listener:setBeginSceneCallback(beginScene)
+    listener:setRenderSceneCallback(renderScene)
+    listener:setEndSceneCallback(endScene)
     s:setSceneListener(listener)
     
     p = hare.WindowParams()
@@ -81,7 +82,7 @@ function init()
 		mtrl = hare.importObject('/pig/pig0.material')
 end
 
-function quit()
+function game_quit()
     sprite1 = nil
     sprite2 = nil
     sceneListen = nil

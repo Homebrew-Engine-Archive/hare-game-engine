@@ -24,57 +24,49 @@ public:
 
     virtual void beginScene()
     {
-		if (begin.L == 0)
-			return ;
-
-		swiglua_ref_get(&begin);
-
-        if (lua_pcall(begin.L, 0, LUA_MULTRET, 0))
-            notify_error(begin.L);
+        call(begin);
     }
 
     virtual void renderScene()
     {
-		if (render.L == 0)
-			return ;
-
-		swiglua_ref_get(&render);
-
-        if (lua_pcall(render.L, 0, LUA_MULTRET, 0))
-            notify_error(render.L);
+        call(render);
     }
 
     virtual void endScene()
     {
-		if (end.L == 0)
-			return ;
-
-		swiglua_ref_get(&end);
-
-        if (lua_pcall(end.L, 0, LUA_MULTRET, 0))
-            notify_error(end.L);
+        call(end);
     }
 
-	void setBeginSceneListenFunc(SWIGLUA_REF fn)
+    void call(SWIGLUA_REF& func)
+    {
+        if (func.L == 0)
+            return;
+
+        swiglua_ref_get(&func);
+
+        if (lua_pcall(func.L, 0, LUA_MULTRET, 0))
+            notify_error(func.L);
+    }
+
+	void setBeginSceneCallback(SWIGLUA_REF func)
 	{
-		begin = fn;
+		begin = func;
 	}
 
-	void setRenderSceneListenFunc(SWIGLUA_REF fn)
+	void setRenderSceneCallback(SWIGLUA_REF func)
 	{
-		render = fn;
+		render = func;
 	}
 
-	void setEndSceneListenFunc(SWIGLUA_REF fn)
+	void setEndSceneCallback(SWIGLUA_REF func)
 	{
-		end = fn;
+		end = func;
 	}
 
 protected:
 	SWIGLUA_REF begin;
 	SWIGLUA_REF render;
 	SWIGLUA_REF end;
-
 };
 
 #endif

@@ -33,9 +33,15 @@ protected:
     virtual void renderScene();
 
     void drawHelperRect(TreeItemData* data, uint32 color = 0xFFFF0000);
-    void rebindProperty();
 
-    void onTextEntered(wxCommandEvent& event);
+    void rebindProperty();
+    void rebindTreeView();
+
+    wxTreeItemId bindTreeItem(const wxTreeItemId& parentId, Window* window, TreeItemData* data = 0);
+    wxTreeItemId bindTreeItem(const wxTreeItemId& parentId, Sizer* sizer, TreeItemData* data = 0);
+    wxTreeItemId bindTreeItem(const wxTreeItemId& parentId, SizerItem* item, TreeItemData* data = 0);
+
+
     void onSize(wxSizeEvent& event);
     void onTreeItemSelected(wxTreeEvent& event);
     void onTreeItemRightClick(wxTreeEvent& event);
@@ -44,9 +50,11 @@ protected:
     void onTreeEndDrag(wxTreeEvent& event);
     void onToolEvent(wxCommandEvent& event);
     void onToolUpdateUI(wxUpdateUIEvent& event);
+    void onTextEntered(wxCommandEvent& event);
+    void onTextFocusKillEvent(wxFocusEvent& event);
 
-    void addWindow(Window* window);
-    void addSizer(Sizer* sizer);
+    void addWindow(const wxTreeItemId& parentId, Window* window);
+    void addSizer(const wxTreeItemId& parentId, Sizer* sizer);
 
     virtual bool Show(bool show = true);
 
@@ -65,9 +73,11 @@ private:
     wxTreeCtrl* treeCtrl;
     wxImageList* imageList;
     wxTextCtrl* textXYWH[4];
-    int rootImage;
-    int ctrlImage;
-    int sizerImage;
+    
+    int Image_ROOT;
+    int Image_CTRL;
+    int Image_SIZER;
+    int Image_SPACER;
     
     ClassInfoList windowClasses;
     ClassInfoList sizerClasses;

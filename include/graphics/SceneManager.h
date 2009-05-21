@@ -15,15 +15,15 @@
 
 
 #include "GraphicsPrerequisites.h"
+#include "Sprite.h"
 
 namespace hare
 {
-
-	class Sprite;
 	class SceneListenerBase;
 
-	class GRAPHICS_API SceneManager
+    class GRAPHICS_API SceneManager : public Object
 	{
+        HARE_DECLARE_DYNAMIC_CLASS(SceneManager)
 	public:
 		SceneManager();
 	    ~SceneManager();
@@ -43,8 +43,7 @@ namespace hare
 		void setSceneListener(SceneListenerBase* listener);
 
 	protected:
-		typedef std::list<Sprite*> SpriteList;
-		SpriteList spriteList;
+        Sprite::List spriteList;
 
 		SceneListenerBase* sceneListener;
 

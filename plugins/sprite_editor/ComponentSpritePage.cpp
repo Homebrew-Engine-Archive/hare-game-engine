@@ -95,6 +95,7 @@ ComponentSpritePage::ComponentSpritePage(wxWindow* parent, SpriteMIMEHandler* ha
 
 
     Connect(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(ComponentSpritePage::onMenuSelected), 0, this);
+    Layout();
 }
 
 ComponentSpritePage::~ComponentSpritePage()

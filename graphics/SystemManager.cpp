@@ -46,12 +46,6 @@ namespace hare
 
 	void SystemManager::shutDown()
 	{
-		SceneManagerList::iterator it = sceneManagerList.begin();
-		for (;it != sceneManagerList.end(); ++it){
-			delete *it;
-		}
-		sceneManagerList.clear();
-
         delete textManager;
 		delete canvas;
 	}
@@ -59,7 +53,6 @@ namespace hare
 	SceneManager* SystemManager::createSceneManager()
 	{
 		SceneManager* scene = new SceneManager;
-		sceneManagerList.push_back(scene);
 		return scene;
 	}
 

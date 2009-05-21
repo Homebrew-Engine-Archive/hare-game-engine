@@ -44,6 +44,8 @@ namespace hare
 
         Sprite* getPart(int partID);
 
+        Sprite* getPart(const String& name);
+
         uint32 getPartCount();
     
     protected:

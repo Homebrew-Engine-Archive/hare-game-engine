@@ -125,6 +125,17 @@ namespace hare
             return NULL;
     }
 
+    Sprite* ComponentSprite::getPart(const String& name)
+    {
+        Sprite::List::iterator it = components.begin();
+        for (;it != components.end(); ++it){
+            if ((*it)->getSpriteName() == name){
+                return *it;
+            }
+        }
+        return NULL;
+    }
+
     Sprite::List::iterator ComponentSprite::getPartIT(int partID)
     {
         if (partID < 0)

@@ -66,10 +66,6 @@ namespace hare
 		RenderWindow* getPrimaryWindow();
 
 	protected:
-
-		typedef std::list<SceneManager*> SceneManagerList;
-		SceneManagerList sceneManagerList;
-
 		RenderWindow* pPrimaryWindow;
 
 		typedef std::vector<RenderWindow*> SecondaryWindowList;

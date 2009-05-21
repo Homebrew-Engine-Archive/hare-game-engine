@@ -16,6 +16,7 @@
 
 #include "GraphicsPrerequisites.h"
 #include "RenderTarget.h"
+#include "SceneManager.h"
 
 #if HARE_PLATFORM == HARE_PLATFORM_WIN32
 typedef HWND WindowHandle;
@@ -104,13 +105,15 @@ namespace hare
 
         void moveCameraTo(float x, float y);
 
+        const PointF& getCameraPos();
+
 	protected:
 		bool isMainWnd;
         bool isExternal;
 
 		WindowParams windowParams;
 
-		SceneManager* sceneManager;
+        SceneManager::Ptr sceneManager;
 
 		PointF cameraPos;
 	};

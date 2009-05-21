@@ -38,4 +38,9 @@ namespace hare
 		cameraPos.x = x; cameraPos.y = y;
 	}
 
+    const PointF& RenderWindow::getCameraPos()
+    {
+        return cameraPos;
+    }
+
 }

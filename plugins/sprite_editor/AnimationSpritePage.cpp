@@ -99,6 +99,7 @@ AnimationSpritePage::AnimationSpritePage(wxWindow* parent, SpriteMIMEHandler* ha
     btnLoop->Connect(wxEVT_COMMAND_TOGGLEBUTTON_CLICKED, wxCommandEventHandler(AnimationSpritePage::onClickLoop), 0, this);
 
     Connect(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(AnimationSpritePage::onMenuSelected), 0, this);
+    Layout();
 }
 
 AnimationSpritePage::~AnimationSpritePage()

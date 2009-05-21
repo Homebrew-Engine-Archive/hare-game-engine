@@ -12,7 +12,6 @@
 //***************************************************************
 #include "PCH.h"
 #include "SceneManager.h"
-#include "Sprite.h"
 #include "SceneListener.h"
 #include "RenderSystem.h"
 #include "RenderWindow.h"
@@ -20,6 +19,10 @@
 
 namespace hare
 {
+    HARE_IMPLEMENT_DYNAMIC_CLASS(SceneManager, Object, 0)
+    {
+    }
+
 	SceneManager::SceneManager()
 		:sceneListener(NULL)
 	{
@@ -40,7 +43,7 @@ namespace hare
 
 	void SceneManager::renderScene()
 	{
-		SpriteList::iterator it = spriteList.begin();
+		Sprite::List::iterator it = spriteList.begin();
 		for (;it != spriteList.end(); ++it){
 			(*it)->render();
 		}
@@ -68,7 +71,7 @@ namespace hare
 
 	void SceneManager::removeSprite(Sprite* sprite)
 	{
-		SpriteList::iterator it = std::find(spriteList.begin(), spriteList.end(), sprite);
+		Sprite::List::iterator it = std::find(spriteList.begin(), spriteList.end(), sprite);
 		if (spriteList.end() != it)
 			spriteList.erase(it);
 

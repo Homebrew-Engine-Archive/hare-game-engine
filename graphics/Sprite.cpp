@@ -18,6 +18,7 @@ namespace hare
     HARE_IMPLEMENT_ABSTRACT_CLASS(Sprite, Object, 0)
     {
         HARE_META(origoPos, PointF)
+        HARE_META(pos, PointF)
         HARE_META(spriteName, String)
     }
 

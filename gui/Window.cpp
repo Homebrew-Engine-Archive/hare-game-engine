@@ -86,9 +86,10 @@ namespace hare
             reparentAllBySizer(this, windowSizer);
         }
 
-        if (scriptRunner)
+        if (scriptRunner && scriptRunner->isLoaded())
         {
             scriptRunner->setOwner(this);
+            scriptRunner->notifyOwnerCreated();
         }
     }
 

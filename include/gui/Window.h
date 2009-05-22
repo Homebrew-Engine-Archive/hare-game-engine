@@ -165,6 +165,18 @@ namespace hare
         virtual void postLoaded();
         virtual void postEdited(Attribute* attr);
 
+        virtual void _doRelease()
+        {
+            if (scriptRunner && scriptRunner->isLoaded())
+            {
+                scriptRunner->notifyOwnerDestroyed();
+                scriptRunner->setOwner(NULL);
+                scriptRunner = NULL;
+            }
+
+            delete this;
+        }
+
     public:
         void setArea(float x, float y, float width, float height)
         {

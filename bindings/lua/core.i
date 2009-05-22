@@ -29,6 +29,9 @@ public:
 
 class ScriptRunner : public Object
 {
+public:
+    virtual bool notifyOwnerCreated() = 0;
+    virtual bool notifyOwnerDestroyed() = 0;
 };
 
 %{

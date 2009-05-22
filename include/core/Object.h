@@ -124,6 +124,9 @@ namespace hare
         virtual ~Object();
 
     protected:
+        virtual void _doRelease();
+
+    protected:
         String objUrl;
     };
 

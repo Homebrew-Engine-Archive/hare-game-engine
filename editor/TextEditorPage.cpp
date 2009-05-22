@@ -236,9 +236,9 @@ namespace hare
                     {
                         DebuggerPlugin* debugger = (DebuggerPlugin*)plugin;
                         if (exist)
-                            debugger->removeBreakPoint(prj->projectName + "/" + projectFile->fileName, line);
+                            debugger->removeBreakPoint("/" + prj->projectName + "/" + projectFile->fileName, line);
                         else
-                            debugger->addBreakPoint(prj->projectName + "/" + projectFile->fileName, line);
+                            debugger->addBreakPoint("/" + prj->projectName + "/" + projectFile->fileName, line);
                     }
                 }
             }

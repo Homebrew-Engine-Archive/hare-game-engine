@@ -1097,7 +1097,7 @@ void LuaDebugger::onLuaDebugDebuggeeConnected(LuaDebuggerEvent& event)
         for (; it != project->files.end(); ++it)
         {
             for (size_t i = 0; i < (*it)->breakPoints.size(); ++i)
-                addBreakPoint(project->projectName + "/" + (*it)->fileName, (*it)->breakPoints[i]);
+                addBreakPoint("/" + project->projectName + "/" + (*it)->fileName, (*it)->breakPoints[i]);
         }
     }
 

@@ -41,9 +41,18 @@ namespace hare
             owner = object;
         }
 
+        bool isLoaded() const
+        {
+            return loaded;
+        }
+
+        virtual bool notifyOwnerCreated() = 0;
+        virtual bool notifyOwnerDestroyed() = 0;
+
     protected:
         String scriptFile;
         Object* owner;
+        bool loaded;
     };
 }
 

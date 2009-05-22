@@ -40,7 +40,13 @@ public:
 
     bool callFunction(const String& name);
 
-private:
+    virtual bool notifyOwnerCreated();
+    virtual bool notifyOwnerDestroyed();
+
+    virtual void postLoaded();
+
+protected:
+
     // make the 'global variables' stored in a new envrionment table instead of _G
     void scopeScript();
 

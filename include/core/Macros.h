@@ -56,7 +56,6 @@ public:                                                                   \
 #define HARE_DECLARE_DYNAMIC_CLASS(name)                                  \
     HARE_DECLARE_ABSTRACT_CLASS(name)                                     \
     static Object* createObject();                                        \
-    virtual void _doRelease();                                             \
 /*-----------------------------------------------------------------------*/
 #define HARE_IMPLEMENT_CLASS_COMMON(name, base, func, ver)                \
     ClassInfo name::CLASS_INFO(#name, ver, (int)sizeof(name),             \
@@ -90,9 +89,6 @@ public:                                                                   \
     HARE_IMPLEMENT_CLASS_COMMON(name, base, 0, ver)
 /*-----------------------------------------------------------------------*/
 #define HARE_IMPLEMENT_DYNAMIC_CLASS(name, base, ver)                     \
-    void name::_doRelease() {                                             \
-        delete this;                                                      \
-    }                                                                     \
     Object* name::createObject() {                                        \
         return new name;                                                  \
     }                                                                     \

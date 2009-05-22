@@ -24,7 +24,7 @@ namespace hare
         HARE_META_F(scriptFile, String, propFSUrl)
     }
 
-    ScriptRunner::ScriptRunner() : owner(0)
+    ScriptRunner::ScriptRunner() : owner(0), loaded(false)
     {
     }
 

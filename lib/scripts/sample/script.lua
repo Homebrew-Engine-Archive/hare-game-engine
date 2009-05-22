@@ -12,11 +12,11 @@ end
 function endScene()
 end
 
-function game_init()
+function onCreate(this)
     local hareApp = hare.getHareApp()
     local params = hare.WindowParams()
-    params.width = 800
-    params.height = 600
+    params.width = 640
+    params.height = 480
     params.bFullScreen = false
     params.bZbuffer = false
     window = hareApp:createRenderWindow(params)
@@ -29,13 +29,16 @@ function game_init()
     listener:setEndSceneCallback(endScene)
     scene:setSceneListener(listener)
 
-    guiSys = hare.GUISystem()
     local layout = hare.importObject('/sample/layouts/test.layout')
+    print("layout : ", swig_type(layout))
     local theme = hare.importObject('/sample/themes/vista_style.theme')
+    print("theme : ", swig_type(theme))
+    guiSys = hare.GUISystem()
     guiSys:setRoot(layout)
     guiSys:setTheme(theme)
-
 end
 
-function game_quit()
+function onDestroy(this)
+    guiSys:setRoot(nil)
+    guiSys:setTheme(nil)
 end

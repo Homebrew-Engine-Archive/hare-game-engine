@@ -46,6 +46,12 @@ bool LuaScriptRunner::loadScript(const String& fileName)
         scriptFile = fileName;
     }
 
+    if (!StringUtil::startsWith(scriptFile, "/"))
+    {
+        error = "LuaScriptRunner::loadScript() fileName MUST start with '/'";
+        return false;
+    }
+
     if (!luaState)
     {
         error = "LuaScriptRunner::loadScript() luaState is empty.";
@@ -91,7 +97,9 @@ bool LuaScriptRunner::loadScript(const String& fileName)
 
     delete [] buffer;
 
-    return status == 0;
+    loaded = (status == 0);
+
+    return loaded;
 }
 
 void LuaScriptRunner::scopeScript()
@@ -116,6 +124,12 @@ void LuaScriptRunner::scopeScript()
 
 bool LuaScriptRunner::callFunction(const String& name)
 {
+    if (!loaded)
+    {
+        error = "LuaScriptRunner::callFunction() script is not loaded.";
+        return false;
+    }
+
     lua_rawgeti(luaState, LUA_REGISTRYINDEX, envRef);
     lua_getfield(luaState, -1, name.c_str());
 
@@ -131,4 +145,23 @@ bool LuaScriptRunner::callFunction(const String& name)
 
     return status == 0;
 }
+
+bool LuaScriptRunner::notifyOwnerCreated()
+{
+    return callFunction("onCreate");
+}
+
+bool LuaScriptRunner::notifyOwnerDestroyed()
+{
+    return callFunction("onDestroy");
+}
+
+void LuaScriptRunner::postLoaded()
+{
+    if (!scriptFile.empty())
+    {
+        loadScript();
+    }
+}
+
 

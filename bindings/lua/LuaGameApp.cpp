@@ -57,7 +57,15 @@ bool LuaGameApp::go()
 
     mainScript = new LuaScriptRunner();
 
-    if (!mainScript->loadScript(game + "/script.lua"))
+    String gameScript;
+
+    // Script url MUST start with '/' for debugging.
+    if (game.empty()) 
+        gameScript = "/script.lua";
+    else
+        gameScript = "/" + game + "/script.lua";
+
+    if (!mainScript->loadScript(gameScript))
     {
         notify_error(L);
         LuaScriptRunner::setState(NULL);
@@ -65,13 +73,16 @@ bool LuaGameApp::go()
         return false;
     }
 
-    if (!mainScript->callFunction("game_init"))
+    if (!mainScript->notifyOwnerCreated())
         notify_error(L);
     
     HareApp::getSingletonPtr()->hareRun();
 
-    if (!mainScript->callFunction("game_quit"))
+    if (!mainScript->notifyOwnerDestroyed())
         notify_error(L);
+
+    // Destroy all lua objects first.
+    lua_close(L);
 
     if (debuggee)
     {
@@ -80,10 +91,8 @@ bool LuaGameApp::go()
         debuggee = 0;
     }
 
-    LuaScriptRunner::setState(NULL);
     mainScript = 0;
-
-    lua_close(L);
+    LuaScriptRunner::setState(NULL);
 
     return true;
 }

@@ -35,6 +35,9 @@ namespace hare
         static String toUTF8(const WString& str);
         static WString fromUTF8(const String& str);
 
+        static bool startsWith(const String& str, const String& pattern, bool lowerCase = true);
+        static bool endsWith(const String& str, const String& pattern, bool lowerCase = true);
+
         static const String EMPTY;
     };
 }

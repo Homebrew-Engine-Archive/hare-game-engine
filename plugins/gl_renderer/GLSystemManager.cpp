@@ -1,15 +1,3 @@
-//***************************************************************
-//  File:    GLSystemManager.cpp
-//  Date:    5/10/2009
-//  Author:  wanglei (wanglei010407@163.com)
-//-------------------------------------------------------------
-//
-//-------------------------------------------------------------
-//  This file is part of Hare2D Game Engine.
-//  Copyright (C) All Rights Reserved
-//***************************************************************
-//
-//***************************************************************
 #include "PCH.h"
 #include "GLSystemManager.h"
 
@@ -25,9 +13,7 @@
 #include "GLTexture.h"
 #include "GLVertexBufferManager.h"
 
-HARE_IMPLEMENT_DYNAMIC_CLASS(GLSystemManager, SystemManager, 0)
-{
-}
+
 
 GLVertexBufferManager* vertexBufferManager;
 
@@ -42,7 +28,7 @@ GLSystemManager::~GLSystemManager()
 {
 	if (pPrimaryWindow){
 		delete pPrimaryWindow;
-		pPrimaryWindow = NULL;	
+		pPrimaryWindow = NULL;
 	}
 
 	if (vertexBufferManager){
@@ -133,19 +119,19 @@ void GLSystemManager::hareRun()
 
     while(1){
         Display* dpy = ((GLRenderWindow*)pPrimaryWindow)->getDisplay();
-        while(XPending(dpy) > 0)
+        if (XPending(dpy) > 0)
 		{
             XEvent event;
             XNextEvent(dpy, &event);
-			GLXProc(event, pPrimaryWindow);
-            break;
+			GLXProc(event, (GLRenderWindow*)pPrimaryWindow);
+            //break;
         }
 
 		SecondaryWindowList::iterator it = secondaryWindowList.begin();
 		for (;it != secondaryWindowList.end(); ++it){
             GLRenderWindow* glwindow = (GLRenderWindow*)(*it);
 			dpy = glwindow->getDisplay();
-			while(XPending(dpy) > 0)
+			if (XPending(dpy) > 0)
 			{
 				XEvent event;
 				XNextEvent(dpy, &event);

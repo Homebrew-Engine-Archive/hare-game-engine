@@ -1,17 +1,56 @@
-#include "PCH.h"
-#include "LuaGameApp.h"
-#include "LuaDebuggee.h"
+#include "core/Core.h"
+#include "graphics/Graphics.h"
+using namespace hare;
 
-bool notify_error(lua_State *L)
+bool loadPlugins()
 {
-    String err = luaL_checkstring(L, -1);
+    ConfigFile plugin;
+    plugin.load("plugin.cfg");
 
-    Log::getSingleton().logError("Lua error : %s", err.c_str());
+    String pluginDir = plugin.getSetting("PluginDir");
 
-    if (LuaDebuggee::getSingletonPtr())
-        return LuaDebuggee::getSingletonPtr()->notifyError(err + "\n");
+    StringVector plugins = plugin.getMultiSetting("Plugin");
+    for (size_t i = 0; i < plugins.size(); ++i)
+    {
+        String fileName = pluginDir + plugins[i];
 
-    return false;
+        if (getHareApp()->loadPlugin(fileName))
+        {
+            Log::getSingleton().logInfo("Load plugin : '%s'", fileName.c_str());
+        }
+        else
+        {
+            Log::getSingleton().logError("HareApp::loadPlugin failed to load '%s'", fileName.c_str());
+        }
+    }
+
+    return true;
+}
+
+bool loadResources()
+{
+    ConfigFile resource;
+    resource.load("resource.cfg");
+
+    String writeDir = resource.getSetting("WriteDir");
+    String scriptDir = resource.getSetting("ScriptDir");
+    StringVector searchPaths = resource.getMultiSetting("SearchPath");
+
+    FileSystem* fs = FileSystem::getSingletonPtr();
+
+    fs->setWriteDir(writeDir);
+    Log::getSingleton().logInfo("Filesystem write dir : '%s'", writeDir.c_str());
+
+    fs->addSearchPath(scriptDir);
+    Log::getSingleton().logInfo("Filesystem add search path : '%s'", scriptDir.c_str());
+
+    for (size_t i = 0; i < searchPaths.size(); ++i)
+    {
+        fs->addSearchPath(searchPaths[i]);
+        Log::getSingleton().logInfo("Filesystem add search path : '%s'", searchPaths[i].c_str());
+    }
+
+    return true;
 }
 
 #if HARE_PLATFORM == HARE_PLATFORM_WIN32
@@ -24,17 +63,43 @@ bool notify_error(lua_State *L)
 INT WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR cmd, INT)
 {
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
-    LuaGameApp app(cmd);
-
+    
+    core_init(NULL);
+    CmdLineParser cmdLine(cmd);
 #else
 
 int main(int argc, char *argv[])
 {
-    LuaGameApp app(argc, argv);
-
+    core_init(argv0);
+    CmdLineParser cmdLine(argc, argv);
 #endif
 
-    app.go();
+    loadPlugins();
+    loadResources();
+
+    graphics_init();
+
+    GameApp::Ptr app = NULL;
+
+    ClassInfo* appClass = ClassInfo::findClass("LuaGameApp");
+
+    if (appClass)
+    {
+        app = (GameApp*)appClass->createObject();
+    }
+
+    if (app)
+    {
+        app->go();
+    }
+
+    app = 0;
+
+    graphics_quit();
+
+    HareApp::getSingletonPtr()->freeAllPlugins();
+
+    core_quit();
 
     return EXIT_SUCCESS;
 }

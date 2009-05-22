@@ -1,5 +1,5 @@
 //***************************************************************
-//  File:    LuaGameApp.h
+//  File:    GameApp.h
 //  Data:    05/21/2009
 //  Author:  littlesome (littlesome@live.cn)
 //-------------------------------------------------------------
@@ -10,20 +10,26 @@
 //***************************************************************
 // 
 //***************************************************************
-#ifndef LUA_GAME_APP_H
-#define LUA_GAME_APP_H
+#ifndef GAMEAPP_H
+#define GAMEAPP_H
 
-#include "LuaScriptRunner.h"
+#include "CorePrerequisites.h"
+#include "Object.h"
+#include "ClassInfo.h"
 
-class LuaGameApp : public GameApp
+namespace hare
 {
-    HARE_DECLARE_DYNAMIC_CLASS(LuaGameApp)
+    class CORE_API GameApp : public Object
+    {
+        HARE_DECLARE_ABSTRACT_CLASS(GameApp)
+    public:
+        GameApp();
+        virtual ~GameApp();
 
-public:
-    virtual bool go();
+        virtual bool go() = 0;
+    };
+}
 
-protected:
-    LuaScriptRunner::Ptr mainScript;
-};
+
 
 #endif

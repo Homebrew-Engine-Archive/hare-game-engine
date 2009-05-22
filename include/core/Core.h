@@ -45,5 +45,6 @@
 #include "Vector2.h"
 #include "Log.h"
 #include "ScriptRunner.h"
+#include "GameApp.h"
 
 #endif

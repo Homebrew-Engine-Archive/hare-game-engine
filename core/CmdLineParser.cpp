@@ -19,6 +19,8 @@
 
 namespace hare
 {
+    HARE_IMPLEMENT_SINGLETON(CmdLineParser);
+
     CmdLineParser::CmdLineParser()
     {
     }

@@ -1,21 +1,12 @@
 
-#ifndef LUA_DEBUGGER_H
-#define LUA_DEBUGGER_H
+#ifndef LUA_DEBUGGEE_H
+#define LUA_DEBUGGEE_H
 
-#include "core/Core.h"
-using namespace hare;
-
-extern "C"
-{
-#include <lua.h>
-#include <lauxlib.h>
-#include <lualib.h>
-}
-
+#include "LuaPrerequisites.h"
 #include "LuaDebugDefines.h"
 #include "LuaDebugData.h"
 
-class LuaDebuggee : public Singleton<LuaDebuggee>
+class LUA_BINDING_API LuaDebuggee : public Singleton<LuaDebuggee>
 {
 public:
     LuaDebuggee(lua_State* L, const String& server, int port);

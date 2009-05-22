@@ -35,13 +35,13 @@ public:
         index(0), flag(LUA_DEBUGITEM_NONE) {}
 
 public:
-    String   itemKey;
-    uint8       itemKeyType;
-    String   itemValue;
-    uint8       itemValueType;
-    String   itemSource;
-    int32      index;
-    int32      flag;
+    String  itemKey;
+    uint8   itemKeyType;
+    String  itemValue;
+    uint8   itemValueType;
+    String  itemSource;
+    int32   index;
+    int32   flag;
 };
 
 class LuaDebugData : public Object

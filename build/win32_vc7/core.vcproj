@@ -151,6 +151,9 @@
 				RelativePath="..\..\core\FileSystem.cpp">
 			</File>
 			<File
+				RelativePath="..\..\core\GameApp.cpp">
+			</File>
+			<File
 				RelativePath="..\..\core\Log.cpp">
 			</File>
 			<File
@@ -296,6 +299,9 @@
 			</File>
 			<File
 				RelativePath="..\..\include\core\FileSystem.h">
+			</File>
+			<File
+				RelativePath="..\..\include\core\GameApp.h">
 			</File>
 			<File
 				RelativePath="..\..\include\core\Log.h">

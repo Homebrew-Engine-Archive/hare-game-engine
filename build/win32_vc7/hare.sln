@@ -9,11 +9,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "editor", "editor.vcproj", "
 		{B7DA67A0-0F8C-479A-A7BB-7EC5DCDCA017} = {B7DA67A0-0F8C-479A-A7BB-7EC5DCDCA017}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "hare_lua", "hare_lua.vcproj", "{13AEF6EC-409F-44C1-8390-27E6E83E7A84}"
-	ProjectSection(ProjectDependencies) = postProject
-		{B7DA67A0-0F8C-479A-A7BB-7EC5DCDCA017} = {B7DA67A0-0F8C-479A-A7BB-7EC5DCDCA017}
-	EndProjectSection
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "graphics", "graphics.vcproj", "{FB59907C-A100-4146-A240-9FEA023F6BB6}"
 	ProjectSection(ProjectDependencies) = postProject
 		{B7DA67A0-0F8C-479A-A7BB-7EC5DCDCA017} = {B7DA67A0-0F8C-479A-A7BB-7EC5DCDCA017}
@@ -70,6 +65,14 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "scene_editor", "scene_edito
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "lua_launcher", "launcher.vcproj", "{CA562D90-4592-4DEA-BE8B-F3B9B89D11D3}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "lua_binding", "lua_binding.vcproj", "{13AEF6EC-409F-44C1-8390-27E6E83E7A84}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfiguration) = preSolution
 		Debug = Debug
@@ -84,10 +87,6 @@ Global
 		{BC97E7F3-E37E-47A8-B4D1-705FD7FD61D0}.Debug.Build.0 = Debug|Win32
 		{BC97E7F3-E37E-47A8-B4D1-705FD7FD61D0}.Release.ActiveCfg = Release|Win32
 		{BC97E7F3-E37E-47A8-B4D1-705FD7FD61D0}.Release.Build.0 = Release|Win32
-		{13AEF6EC-409F-44C1-8390-27E6E83E7A84}.Debug.ActiveCfg = Debug|Win32
-		{13AEF6EC-409F-44C1-8390-27E6E83E7A84}.Debug.Build.0 = Debug|Win32
-		{13AEF6EC-409F-44C1-8390-27E6E83E7A84}.Release.ActiveCfg = Release|Win32
-		{13AEF6EC-409F-44C1-8390-27E6E83E7A84}.Release.Build.0 = Release|Win32
 		{FB59907C-A100-4146-A240-9FEA023F6BB6}.Debug.ActiveCfg = Debug|Win32
 		{FB59907C-A100-4146-A240-9FEA023F6BB6}.Debug.Build.0 = Debug|Win32
 		{FB59907C-A100-4146-A240-9FEA023F6BB6}.Release.ActiveCfg = Release|Win32
@@ -136,6 +135,14 @@ Global
 		{0681EFC0-AAAB-4D4F-A7C8-3133B1C8F47B}.Debug.Build.0 = Debug|Win32
 		{0681EFC0-AAAB-4D4F-A7C8-3133B1C8F47B}.Release.ActiveCfg = Release|Win32
 		{0681EFC0-AAAB-4D4F-A7C8-3133B1C8F47B}.Release.Build.0 = Release|Win32
+		{CA562D90-4592-4DEA-BE8B-F3B9B89D11D3}.Debug.ActiveCfg = Debug|Win32
+		{CA562D90-4592-4DEA-BE8B-F3B9B89D11D3}.Debug.Build.0 = Debug|Win32
+		{CA562D90-4592-4DEA-BE8B-F3B9B89D11D3}.Release.ActiveCfg = Release|Win32
+		{CA562D90-4592-4DEA-BE8B-F3B9B89D11D3}.Release.Build.0 = Release|Win32
+		{13AEF6EC-409F-44C1-8390-27E6E83E7A84}.Debug.ActiveCfg = Debug|Win32
+		{13AEF6EC-409F-44C1-8390-27E6E83E7A84}.Debug.Build.0 = Debug|Win32
+		{13AEF6EC-409F-44C1-8390-27E6E83E7A84}.Release.ActiveCfg = Release|Win32
+		{13AEF6EC-409F-44C1-8390-27E6E83E7A84}.Release.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 	EndGlobalSection

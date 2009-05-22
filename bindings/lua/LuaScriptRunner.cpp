@@ -12,8 +12,21 @@
 //***************************************************************
 #include "PCH.h"
 #include "LuaScriptRunner.h"
+#include "LuaDebuggee.h"
 
 void dynamicCastObject(lua_State* L, Object* object, int owner);
+
+bool notify_error(lua_State *L)
+{
+    String err = luaL_checkstring(L, -1);
+
+    Log::getSingleton().logError("Lua error : %s", err.c_str());
+
+    if (LuaDebuggee::getSingletonPtr())
+        return LuaDebuggee::getSingletonPtr()->notifyError(err + "\n");
+
+    return false;
+}
 
 lua_State* LuaScriptRunner::luaState = 0;
 

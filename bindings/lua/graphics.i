@@ -33,7 +33,7 @@ public:
 	void setEndSceneCallback(SWIGLUA_REF func);
 };
 
-class SceneManager
+class SceneManager : public Object
 {
 public:
 	void addSprite(Sprite* sprite);

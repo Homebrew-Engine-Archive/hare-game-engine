@@ -14,11 +14,14 @@
 #define CMDLINEPARSER_H
 
 #include "CorePrerequisites.h"
+#include "Singleton.h"
 
 namespace hare
 {
-    class CORE_API CmdLineParser
+    class CORE_API CmdLineParser : public Singleton<CmdLineParser>
     {
+        HARE_DECLARE_SINGLETON(CmdLineParser)
+
     public:
         CmdLineParser();
         CmdLineParser(int argc, char* argv[]);

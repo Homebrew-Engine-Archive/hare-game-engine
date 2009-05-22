@@ -226,6 +226,8 @@ namespace hare
 
         virtual void render(ThemePackage* themes);
 
+        ScriptRunner* getScriptRunner() { return scriptRunner; }
+
     protected:
         mutable SizerPtr windowSizer;   // Sizer of this window, use Ptr to hold the ref
         Sizer* containingSizer;         // Who contains 'this' window, do NOT hold the ref

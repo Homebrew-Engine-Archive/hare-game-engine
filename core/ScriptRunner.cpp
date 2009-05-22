@@ -22,10 +22,9 @@ namespace hare
     HARE_IMPLEMENT_ABSTRACT_CLASS(ScriptRunner, Object, 0)
     {
         HARE_META_F(scriptFile, String, propFSUrl)
-        HARE_META(startAfterLoaded, bool)
     }
 
-    ScriptRunner::ScriptRunner() : owner(0), startAfterLoaded(false)
+    ScriptRunner::ScriptRunner() : owner(0)
     {
     }
 

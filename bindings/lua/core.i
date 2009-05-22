@@ -9,11 +9,8 @@ typedef signed int		int32;
 typedef std::string     String;
 typedef std::vector<String> StringVector;
 
-%typemap(out) Object* {
-	if ($1 && $owner) ($1)->addRef(); 
-	dynamicCastObject(L, $1, $owner); 
-	SWIG_arg++; 
-}
+%typemap(out) Object* { if ($1 && $owner) ($1)->addRef(); dynamicCastObject(L, $1, $owner); SWIG_arg++; }
+%typemap(out) ScriptRunner* { if ($1 && $owner) ($1)->addRef(); dynamicCastObject(L, $1, $owner); SWIG_arg++; }
 
 %newobject importObject;
 Object* importObject(const String &url, bool share = true);
@@ -30,6 +27,9 @@ public:
     bool saveToBin(const String &path);
 };
 
+class ScriptRunner : public Object
+{
+};
 
 %{
     Object* importObject(const String &url, bool share = true)
@@ -211,7 +211,4 @@ public:
 
 Timer& getTimer();
 float getTime();
-
-void core_init(char* argv0);
-void core_quit();
 

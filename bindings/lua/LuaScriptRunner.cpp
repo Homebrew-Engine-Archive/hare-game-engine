@@ -132,11 +132,3 @@ bool LuaScriptRunner::callFunction(const String& name)
     return status == 0;
 }
 
-void LuaScriptRunner::postLoaded()
-{
-    if (startAfterLoaded && !scriptFile.empty())
-    {
-        loadScript();
-    }
-}
-

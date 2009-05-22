@@ -44,8 +44,6 @@ private:
     // make the 'global variables' stored in a new envrionment table instead of _G
     void scopeScript();
 
-    virtual void postLoaded();
-
 private:
 
     static lua_State* luaState;

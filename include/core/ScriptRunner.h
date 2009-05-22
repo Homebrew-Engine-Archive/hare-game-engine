@@ -43,7 +43,6 @@ namespace hare
 
     protected:
         String scriptFile;
-        bool startAfterLoaded;
         Object* owner;
     };
 }

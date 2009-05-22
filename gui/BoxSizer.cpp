@@ -2,6 +2,13 @@
 #include "BoxSizer.h"
 #include "Window.h"
 
+#ifdef min
+#undef min
+#endif
+#ifdef max
+#undef max
+#endif
+
 namespace hare
 {
     HARE_ENUM_BEGIN(uiOrientation)

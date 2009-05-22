@@ -21,6 +21,7 @@ namespace hare
 {
     HARE_IMPLEMENT_DYNAMIC_CLASS(SceneManager, Object, 0)
     {
+        HARE_OBJ_LIST(spriteList, Sprite)
     }
 
 	SceneManager::SceneManager()
@@ -63,10 +64,13 @@ namespace hare
 		}
 	}
 
-	void SceneManager::addSprite(Sprite* sprite)
+	int  SceneManager::addSprite(Sprite* sprite)
 	{
-		if (std::find(spriteList.begin(), spriteList.end(), sprite) == spriteList.end())
+        if (std::find(spriteList.begin(), spriteList.end(), sprite) == spriteList.end()){
 			spriteList.push_back(sprite);
+            return spriteList.size() - 1;
+        }
+        return -1;       
 	}
 
 	void SceneManager::removeSprite(Sprite* sprite)
@@ -86,4 +90,35 @@ namespace hare
 	{
 		sceneListener = listener;
 	}
+
+    Sprite* SceneManager::getSpriteByName(const String& name)
+    {
+        Sprite::List::iterator it = spriteList.begin();
+        for (; it != spriteList.end(); ++it){
+            if ((*it)->getSpriteName() == name){
+                return *it;
+            }
+        }
+        return NULL;
+    }
+
+    Sprite* SceneManager::getSpriteByID(int id)
+    {
+        if (id < 0 || id >= (int)spriteList.size())
+            return NULL;
+
+        Sprite::List::iterator it = spriteList.begin();
+        for (int i = 0;it != spriteList.end(); ++it, ++i){
+            if (i == id)
+                return *it;
+        }
+
+        return NULL;
+    }
+
+    int SceneManager::getSpriteCount()
+    {
+        return spriteList.size();
+    }
+
 }

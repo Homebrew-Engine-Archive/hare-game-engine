@@ -20,6 +20,8 @@ namespace hare
         HARE_META(origoPos, PointF)
         HARE_META(pos, PointF)
         HARE_META(spriteName, String)
+        HARE_META_F(color, uint32, propColor)
+        HARE_META(zDepth, float)
     }
 
 	Sprite::Sprite()
@@ -27,6 +29,8 @@ namespace hare
         ,pos(0,0)
         ,bFaceX(true)
         ,bFaceY(true)
+        ,color(0xffffffff)
+        ,zDepth(0)
 	{
 
 	}
@@ -84,4 +88,25 @@ namespace hare
     {
         return spriteName;
     }
+
+    void Sprite::setColor(uint32 c)
+    {
+        color = c;
+    }
+
+    uint32 Sprite::getColor()
+    {
+        return color;
+    }
+
+    void Sprite::setZ(float z)
+    {
+        zDepth = z;
+    }
+
+    float Sprite::getZ()
+    {
+        return zDepth;
+    }
+
 }

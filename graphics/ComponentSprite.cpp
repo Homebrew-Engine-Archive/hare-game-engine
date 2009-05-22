@@ -64,6 +64,8 @@ namespace hare
         moveTo(pos.x, pos.y);
         Sprite::List::iterator it = components.begin();
         for (;it != components.end(); ++it){
+            (*it)->setColor(color);
+            (*it)->setZ(zDepth);
             (*it)->render();
         }
     }

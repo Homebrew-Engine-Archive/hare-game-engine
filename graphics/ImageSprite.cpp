@@ -67,7 +67,13 @@ namespace hare
 
         drawRect.moveTo(pos.x + origoX, pos.y + origoY);
        
+        uint32 c = getCanvas()->getColor();
+        float  z = getCanvas()->getZ();
+        getCanvas()->setColor(color);
+        getCanvas()->setZ(zDepth);
         getCanvas()->drawImage(drawRect, mtrl, r);
+        getCanvas()->setColor(c);
+        getCanvas()->setZ(z); 
     }
 
     void ImageSprite::loadFromImage(const String& filename)

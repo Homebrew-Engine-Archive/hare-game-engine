@@ -117,6 +117,8 @@ namespace hare
 
         moveTo(pos.x, pos.y);
 
+        animFrame->getSprite()->setZ(zDepth);
+        animFrame->getSprite()->setColor(color);
         animFrame->render();
     }
 

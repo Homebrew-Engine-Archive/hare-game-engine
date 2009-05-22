@@ -27,6 +27,10 @@ public:
         return (Display*)windowParams.hwnd.dpy;
     }
 
+    ::Atom getAtomDeleteWindow()
+    {
+        return atomDeleteWindow;
+    }
 
 private:
     void initalizeGLConfigParam();
@@ -39,6 +43,7 @@ private:
     GLXContext glContext;
 
     int oldMode;
+    ::Atom atomDeleteWindow;
 };
 
 void GLXProc(const XEvent &event, GLRenderWindow* win);

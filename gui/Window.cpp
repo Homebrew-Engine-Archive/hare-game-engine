@@ -85,6 +85,11 @@ namespace hare
 
             reparentAllBySizer(this, windowSizer);
         }
+
+        if (scriptRunner)
+        {
+            scriptRunner->setOwner(this);
+        }
     }
 
     void Window::postEdited(Attribute* attr)

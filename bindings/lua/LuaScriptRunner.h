@@ -13,9 +13,7 @@
 #ifndef LUASCRIPTRUNNER_H
 #define LUASCRIPTRUNNER_H
 
-#include "LuaPrerequisites.h"
-
-class LUA_BINDING_API LuaScriptRunner : public ScriptRunner
+class LuaScriptRunner : public ScriptRunner
 {
     HARE_DECLARE_DYNAMIC_CLASS(LuaScriptRunner)
 public:

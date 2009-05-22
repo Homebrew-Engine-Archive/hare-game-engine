@@ -2,11 +2,10 @@
 #ifndef LUA_DEBUGGEE_H
 #define LUA_DEBUGGEE_H
 
-#include "LuaPrerequisites.h"
 #include "LuaDebugDefines.h"
 #include "LuaDebugData.h"
 
-class LUA_BINDING_API LuaDebuggee : public Singleton<LuaDebuggee>
+class LuaDebuggee : public Singleton<LuaDebuggee>
 {
 public:
     LuaDebuggee(lua_State* L, const String& server, int port);

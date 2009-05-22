@@ -17,9 +17,10 @@
 #include "Window.h"
 #include "Sizer.h"
 #include "SizerItem.h"
+#include "BoxSizer.h"
 #include "Event.h"
 #include "Theme.h"
 #include "Button.h"
-#include "BoxSizer.h"
+#include "FrameWindow.h"
 
 #endif

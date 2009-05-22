@@ -19,6 +19,8 @@ extern "C"
     int luaopen_hare(lua_State *L);
 }
 
+bool notify_error(lua_State *L);
+
 HARE_IMPLEMENT_DYNAMIC_CLASS(LuaGameApp, Object, 0)
 {
 }
@@ -57,16 +59,19 @@ bool LuaGameApp::go()
 
     if (!mainScript->loadScript(game + "/script.lua"))
     {
+        notify_error(L);
         LuaScriptRunner::setState(NULL);
         lua_close(L);
         return false;
     }
 
-    mainScript->callFunction("game_init");
+    if (!mainScript->callFunction("game_init"))
+        notify_error(L);
     
     HareApp::getSingletonPtr()->hareRun();
 
-    mainScript->callFunction("game_quit");
+    if (!mainScript->callFunction("game_quit"))
+        notify_error(L);
 
     if (debuggee)
     {

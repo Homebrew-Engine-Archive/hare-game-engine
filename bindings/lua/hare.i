@@ -7,6 +7,7 @@
 
 #include "core/Core.h"
 #include "graphics/Graphics.h"
+#include "gui/GUI.h"
 using namespace hare;
 
 %}
@@ -16,3 +17,4 @@ using namespace hare;
 
 %include core.i
 %include graphics.i
+%include gui.i

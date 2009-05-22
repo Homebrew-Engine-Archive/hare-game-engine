@@ -1,44 +1,81 @@
-scene = nil
-window = nil
-guiSys = nil
+sprite1 = nil
+sprite2 = nil
+sceneListen = nil
+par = nil
+fnt = nil
+w   = nil
+x = 0
+y = 0
+i = 1
+lastTime = 0
 
 function beginScene()
+    w:moveCameraTo(x, y)
+    x = x + 50 * i * hare.getTimer():getDeltaTime()
+    y = y + 50 * i * hare.getTimer():getDeltaTime()
+    if x > 100 then
+        i = -1
+    end
+    if x < -100 then
+        i = 1
+    end
 end
 
 function renderScene()
-    guiSys:render()
+	canvas = hare.getCanvas()
+	canvas:setZ(0)
+	canvas:setColor(0xffff0000)
+	canvas:setZ(-0.1)
+	canvas:drawRect(50, 50, 100, 100)
+	canvas:setZ(-0.9)
+	canvas:setColor(0xff00ff00)
+	canvas:drawText(80, 80, tostring(hare.getTimer():getFPS()))
+	canvas:setColor(0xffffffff)
+	canvas:setZ(0)
 end
 
 function endScene()
 end
 
-function onCreate(this)
-    local hareApp = hare.getHareApp()
-    local params = hare.WindowParams()
-    params.width = 640
-    params.height = 480
-    params.bFullScreen = false
-    params.bZbuffer = false
-    window = hareApp:createRenderWindow(params)
-    scene = hareApp:createSceneManager()
-    window:setSceneManager(scene)   
+function init()
+    hareApp = hare.getHareApp()
+    p = hare.WindowParams()
+    p.width = 800
+    p.height = 600
+    p.bFullScreen = false
+    p.bZbuffer = false
+    w = hareApp:createRenderWindow(p)
+    s = hareApp:createSceneManager()
+    w:setSceneManager(s)
+    sprite2 = hare.SimpleSprite()
+    sprite2:loadFromImage("/editor/grid.png")
+    s:addSprite(sprite2)    
+    listener = hare.LuaSceneListener()
+    listener:setBeginSceneListenFunc(beginScene)
+    listener:setRenderSceneListenFunc(renderScene)
+    listener:setEndSceneListenFunc(endScene)
+    s:setSceneListener(listener)
+    
+    --p = hare.WindowParams()
+    --p.width = 800
+    --p.height = 600
+    --p.bFullScreen = false
+    --p.bZbuffer = true
+    --w2 = hareApp:createRenderWindow(p)
+    --w2:setSceneManager(s)
 
-    local listener = hare.LuaSceneListener()
-    listener:setBeginSceneCallback(beginScene)
-    listener:setRenderSceneCallback(renderScene)
-    listener:setEndSceneCallback(endScene)
-    scene:setSceneListener(listener)
+    tm = hare.getTextManager() 
+    fnt = tm:createFont("/editor/comic.ttf", 30) 
+    canvas = hare.getCanvas()
+    canvas:setFont(fnt)
 
-    local layout = hare.importObject('/sample/layouts/test.layout')
-    print("layout : ", swig_type(layout))
-    local theme = hare.importObject('/sample/themes/vista_style.theme')
-    print("theme : ", swig_type(theme))
-    guiSys = hare.GUISystem()
-    guiSys:setRoot(layout)
-    guiSys:setTheme(theme)
 end
 
-function onDestroy(this)
-    guiSys:setRoot(nil)
-    guiSys:setTheme(nil)
+function quit()
+    sprite1 = nil
+    sprite2 = nil
+    sceneListen = nil
+    par = nil
+    fnt = nil
+    w = nil
 end

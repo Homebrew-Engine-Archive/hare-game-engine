@@ -36,7 +36,6 @@
 			<Add library="core" />
 			<Add library="editor" />
 		</Linker>
-		<Unit filename="../../bindings/lua/LuaDebugData.cpp" />
 		<Unit filename="../../bindings/lua/LuaDebugData.h" />
 		<Unit filename="../../bindings/lua/LuaDebugDefines.h" />
 		<Unit filename="../../bindings/lua/SocketHelper.h" />

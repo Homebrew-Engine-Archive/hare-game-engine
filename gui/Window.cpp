@@ -58,17 +58,17 @@ namespace hare
         minSize(-1, -1), maxSize(-1, -1), clippedByParent(false), position(0, 0),
         size(20, 20), pixelRect(0, 0, 0, 0), pixelRectValid(false), unclippedRect(0, 0, 0, 0),
         unclippedRectValid(false), unclippedInnerRect(0, 0, 0, 0),
-        unclippedInnerRectValid(false), innerRect(0, 0, 0, 0), 
+        unclippedInnerRectValid(false), innerRect(0, 0, 0, 0),
         innerRectValid(false), bestSize(-1, -1), bestSizeValid(false)
     {
     }
 
-    Window::Window(Window* parent) 
+    Window::Window(Window* parent)
         : parent(0), shown(true), enabled(true), windowId(uiID_Any),
         minSize(-1, -1), maxSize(-1, -1), clippedByParent(false), position(0, 0),
         size(20, 20), pixelRect(0, 0, 0, 0), pixelRectValid(false), unclippedRect(0, 0, 0, 0),
         unclippedRectValid(false), unclippedInnerRect(0, 0, 0, 0),
-        unclippedInnerRectValid(false), innerRect(0, 0, 0, 0), 
+        unclippedInnerRectValid(false), innerRect(0, 0, 0, 0),
         innerRectValid(false), bestSize(-1, -1), bestSizeValid(false)
     {
         setParent(parent);
@@ -105,9 +105,9 @@ namespace hare
         {
             parent->removeChild(this);
         }
-        
+
         parent = window;
-        
+
         if (parent)
         {
             parent->addChild(this);
@@ -220,7 +220,7 @@ namespace hare
 
     RectF Window::getPixelRect_impl() const
     {
-        RectF& rect = getUnclippedPixelRect();
+        RectF rect = getUnclippedPixelRect();
 
         if (parent && isClippedByParent())
         {
@@ -259,7 +259,7 @@ namespace hare
 
     RectF Window::getInnerRect() const
     {
-        RectF& rect = getUnclippedPixelRect();
+        RectF rect = getUnclippedPixelRect();
 
         if (!innerRectValid)
         {

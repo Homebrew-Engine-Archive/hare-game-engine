@@ -27,21 +27,7 @@ namespace hare
 			return FPS;
 		}
 
-		void update()
-		{
-			float cur = getTime();
-			deltaTime = cur - curTime;
-			curTime = cur;
-
-			frameCount++;
-
-			if (curTime - oldFPSTime > 1)
-			{
-				FPS = frameCount / (curTime - oldFPSTime);
-				oldFPSTime = curTime;
-				frameCount = 0;
-			}
-		}
+		void update();
 
 	private:
 		float deltaTime;

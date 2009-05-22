@@ -111,12 +111,15 @@ namespace hare
 
 	void HareApp::hareRun()
 	{
-		graphicsSystemManager->hareRun();
+	    if (graphicsSystemManager)
+            graphicsSystemManager->hareRun();
 	}
 
 	int  HareApp::hareRunFrame()
 	{
-		return graphicsSystemManager->hareRunFrame();
+	    if (graphicsSystemManager)
+            return graphicsSystemManager->hareRunFrame();
+		return 1;
 	}
 
 	void HareApp::pause()

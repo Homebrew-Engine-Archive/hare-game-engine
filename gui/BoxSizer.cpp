@@ -166,24 +166,24 @@ namespace hare
                     if (orient == uiVertical)
                     {
                         fixedHeight += sz.cy;
-                        fixedWidth = max(fixedWidth, sz.cx);
+                        fixedWidth = std::max(fixedWidth, sz.cx);
                     }
                     else
                     {
                         fixedWidth += sz.cx;
-                        fixedHeight = max(fixedHeight, sz.cy);
+                        fixedHeight = std::max(fixedHeight, sz.cy);
                     }
                 }
 
                 if (orient == uiHorizontal)
                 {
                     minWidth += sz.cx;
-                    minHeight = max(minHeight, sz.cy);
+                    minHeight = std::max(minHeight, sz.cy);
                 }
                 else
                 {
                     minHeight += sz.cy;
-                    minWidth = max(minWidth, sz.cx);
+                    minWidth = std::max(minWidth, sz.cx);
                 }
             }
         }

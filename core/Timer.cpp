@@ -7,13 +7,15 @@
 #	include <windows.h>
 #	include <windowsx.h>
 #	include <mmsystem.h>
+#else
+#   include <sys/time.h>
 #endif
 
 namespace hare
 {
 	float getTime()
 	{
-		float cur;
+		float cur = 0.0f;
 
 	#if HARE_PLATFORM == HARE_PLATFORM_WIN32
 		static bool sInitialized = false;
@@ -49,11 +51,23 @@ namespace hare
 
 	#else // #if OO_PLATFORM == OO_PLATFORM_WIN32
 
-		cur = (float)clock() / CLOCKS_PER_SEC;
+        // clock() returns cpu time, can NOT use this
+		// cur = (float)clock() / CLOCKS_PER_SEC;
+
+        static bool time_inited = false;
+        static struct timeval start;
+        if (!time_inited)
+        {
+            gettimeofday(&start, NULL);
+            time_inited = true;
+        }
+
+        struct timeval now;
+        gettimeofday(&now, NULL);
+        cur = now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0f;
 
 	#endif
 
-		// avoid the case of Utility::GetTime() returning the time which may smaller the last one, really weired.
 		static float last = 0.f;
 
 		if (last >= cur)
@@ -69,5 +83,21 @@ namespace hare
 		static Timer timer;
 		return timer;
 	}
+
+	void Timer::update()
+    {
+        float cur = getTime();
+        deltaTime = cur - curTime;
+        curTime = cur;
+
+        frameCount++;
+
+        if (curTime - oldFPSTime > 1)
+        {
+            FPS = frameCount / (curTime - oldFPSTime);
+            oldFPSTime = curTime;
+            frameCount = 0;
+        }
+    }
 }
 

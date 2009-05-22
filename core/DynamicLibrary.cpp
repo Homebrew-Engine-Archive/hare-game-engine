@@ -20,6 +20,8 @@
         void DynamicLibrary::load(const String& path)
         {
             handle = dlopen(path.c_str(), RTLD_NOW);
+            if (!handle)
+                printf("%s\n", dlerror());
         }
 
         void* DynamicLibrary::getSymbol(const String& name)

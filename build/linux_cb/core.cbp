@@ -32,10 +32,13 @@
 		<Unit filename="../../core/DynamicLibrary.cpp" />
 		<Unit filename="../../core/Exception.cpp" />
 		<Unit filename="../../core/FileSystem.cpp" />
+		<Unit filename="../../core/GameApp.cpp" />
+		<Unit filename="../../core/Log.cpp" />
 		<Unit filename="../../core/MathUtil.cpp" />
 		<Unit filename="../../core/Matrix4.cpp" />
 		<Unit filename="../../core/Object.cpp" />
 		<Unit filename="../../core/PCH.cpp" />
+		<Unit filename="../../core/ScriptRunner.cpp" />
 		<Unit filename="../../core/Socket.cpp" />
 		<Unit filename="../../core/StringConverter.cpp" />
 		<Unit filename="../../core/StringUtil.cpp" />
@@ -46,6 +49,7 @@
 		<Unit filename="../../core/tinyxml/tinyxml.cpp" />
 		<Unit filename="../../core/tinyxml/tinyxmlerror.cpp" />
 		<Unit filename="../../core/tinyxml/tinyxmlparser.cpp" />
+		<Unit filename="../../core/tinyxml/xmltest.cpp" />
 		<Unit filename="../../include/core/AttVisitor.h" />
 		<Unit filename="../../include/core/BinVisitor.h" />
 		<Unit filename="../../include/core/ClassInfo.h" />
@@ -57,6 +61,8 @@
 		<Unit filename="../../include/core/DynamicLibrary.h" />
 		<Unit filename="../../include/core/Exception.h" />
 		<Unit filename="../../include/core/FileSystem.h" />
+		<Unit filename="../../include/core/GameApp.h" />
+		<Unit filename="../../include/core/Log.h" />
 		<Unit filename="../../include/core/Macros.h" />
 		<Unit filename="../../include/core/MathCommon.h" />
 		<Unit filename="../../include/core/MathUtil.h" />
@@ -66,6 +72,7 @@
 		<Unit filename="../../include/core/Platforms.h" />
 		<Unit filename="../../include/core/Pointer.h" />
 		<Unit filename="../../include/core/ReferenceCounted.h" />
+		<Unit filename="../../include/core/ScriptRunner.h" />
 		<Unit filename="../../include/core/Singleton.h" />
 		<Unit filename="../../include/core/Socket.h" />
 		<Unit filename="../../include/core/StdHeaders.h" />

@@ -3,12 +3,12 @@
 //  Data:    05/02/2009
 //  Author:  littlesome (littlesome@live.cn)
 //-------------------------------------------------------------
-//  
+//
 //-------------------------------------------------------------
 //  This file is part of Hare2D Game Engine.
 //  Copyright (C) All Rights Reserved
 //***************************************************************
-// 
+//
 //***************************************************************
 #ifndef _LOG_H_
 #define _LOG_H_
@@ -27,7 +27,7 @@ namespace hare
 
         LogMessage() {}
 
-        LogMessage(String &text, int level, float time)
+        LogMessage(const String &text, int level, float time)
             : text(text), level(level), time(time) {}
     };
 
@@ -46,13 +46,13 @@ namespace hare
         const char *getMessage(int *level, float *time);
 
         uint32 getMaxNumMessages() const
-        { 
-            return maxNumMessages; 
+        {
+            return maxNumMessages;
         }
-        
-        void setMaxNumMessages(uint32 maxNum) 
-        { 
-            maxNumMessages = maxNum; 
+
+        void setMaxNumMessages(uint32 maxNum)
+        {
+            maxNumMessages = maxNum;
         }
 
         uint32 getMaxLogLevel() const

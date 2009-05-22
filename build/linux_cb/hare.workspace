@@ -2,10 +2,9 @@
 <CodeBlocks_workspace_file>
 	<Workspace title="Workspace">
 		<Project filename="core.cbp" />
-		<Project filename="editor.cbp">
+		<Project filename="editor.cbp" active="1">
 			<Depends filename="core.cbp" />
 		</Project>
-		<Project filename="hare_lua.cbp" active="1" />
 		<Project filename="graphics.cbp">
 			<Depends filename="core.cbp" />
 		</Project>
@@ -13,5 +12,7 @@
 			<Depends filename="editor.cbp" />
 		</Project>
 		<Project filename="gl_renderer.cbp" />
+		<Project filename="lua_binding.cbp" />
+		<Project filename="gui.cbp" />
 	</Workspace>
 </CodeBlocks_workspace_file>

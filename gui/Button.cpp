@@ -3,12 +3,12 @@
 //  Data:    04/22/2009
 //  Author:  littlesome (littlesome@live.cn)
 //-------------------------------------------------------------
-//  
+//
 //-------------------------------------------------------------
 //  This file is part of Hare2D Game Engine.
 //  Copyright (C) All Rights Reserved
 //***************************************************************
-// 
+//
 //***************************************************************
 #include "PCH.h"
 #include "Button.h"
@@ -20,7 +20,7 @@ namespace hare
     }
 
     HARE_BEGIN_EVENT_TABLE(Button, Window)
-        HARE_EVT_MOUSE_EVENTS(onMouseEvent)
+        HARE_EVT_MOUSE_EVENTS(Button::onMouseEvent)
     HARE_END_EVENT_TABLE()
 
     void Button::onMouseEvent(MouseEvent& event)
@@ -52,7 +52,7 @@ namespace hare
     {
         if (!window)
             return;
-        
+
         RectF* rect = NULL;
         RectF* rectInner = NULL;
         Button* button = (Button*)window;

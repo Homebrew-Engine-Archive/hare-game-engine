@@ -16,6 +16,8 @@
 #include <wx/splitter.h>
 #include "drag_hand.xpm"
 
+#define SEL_COLOR 0xff00ff00
+
 class SceneTreeClinetData : public wxTreeItemData
 {
 public:
@@ -74,6 +76,9 @@ ScenePage::ScenePage(wxWindow* parent, SceneMIMEHandler* handler, SceneManager* 
     sceneCanvas = new wxHareCanvas(scenePanel);
     scenePanel->GetSizer()->Add(sceneCanvas, 1, wxEXPAND|wxALL, 0);
     sceneManager = s;
+    for (int count = 0; count < sceneManager->getSpriteCount(); ++count){
+        addSpriteToScene(sceneManager->getSpriteByID(count));
+    }
     sceneManager->setSceneListener(this);
     sceneCanvas->getRenderWindow()->setSceneManager(sceneManager);
 
@@ -177,7 +182,7 @@ void ScenePage::endScene()
 
 void ScenePage::renderScene()
 {
-    if (curAddSprite)
+    if (curAddSprite && btnAddSprite->GetValue())
         curAddSprite->render();
 
     Font::Ptr f = getCanvas()->getFont();
@@ -204,7 +209,6 @@ void ScenePage::onTreeItemSelected(wxTreeEvent& event)
     if (event.GetItem() == sceneTree->GetRootItem()){
         Manager::getInstancePtr()->getExplorerManager()->removeAllProperties();
         sceneCanvas->getRenderWindow()->moveCameraTo(0, 0);
-        curEditSprite = NULL;
     }else{
         Manager::getInstancePtr()->getExplorerManager()->removeAllProperties();
         SceneTreeClinetData* data = (SceneTreeClinetData*)sceneTree->GetItemData(event.GetItem());
@@ -213,7 +217,6 @@ void ScenePage::onTreeItemSelected(wxTreeEvent& event)
         int w = sceneCanvas->getRenderWindow()->getWidth();
         int h = sceneCanvas->getRenderWindow()->getHeight();
         sceneCanvas->getRenderWindow()->moveCameraTo(curEditSprite->getPosition().x - w / 2, curEditSprite->getPosition().y - h / 2);
-
     }
     curAddSprite = NULL;
     btnAddSprite->SetValue(false);
@@ -224,7 +227,6 @@ void ScenePage::onSceneSize(wxSizeEvent& event)
     wxSize size = sceneCanvas->GetClientSize();
     if (size.GetWidth() > 0 && size.GetHeight() > 0){
         sceneCanvas->getRenderWindow()->resize(size.GetWidth(), size.GetHeight());
-        sceneCanvas->getRenderWindow()->moveCameraTo(-size.GetWidth()/2, -size.GetHeight()/2);
     }
     event.Skip();
 }
@@ -232,14 +234,23 @@ void ScenePage::onSceneSize(wxSizeEvent& event)
 void ScenePage::onSceneLButtonDown(wxMouseEvent& event)
 {
     if (btnAddSprite->GetValue()){
+        if (!curAddSprite){
+            int selectId = spriteListCtrl->GetSelection();
+            if (selectId == -1)
+                return;
+
+            SpriteClientData* data = (SpriteClientData*)spriteListCtrl->GetClientObject(selectId);
+            curAddSprite = (Sprite*)Object::cloneObject(data->sprite); 
+        }
         Sprite::Ptr sprite = (Sprite*)Object::cloneObject(curAddSprite);
+        sprite->setColor(0xffffffff);
         wxPoint pos = event.GetPosition();
         PointF  cameraPos = sceneCanvas->getRenderWindow()->getCameraPos();
         sprite->moveTo(pos.x + cameraPos.x, pos.y + cameraPos.y);
         sceneManager->addSprite(sprite);
         addSpriteToScene(sprite);
     }else{
-
+        mouseDownPos = event.GetPosition();
     }
 }
 
@@ -254,18 +265,6 @@ void ScenePage::onSceneLButtonUp(wxMouseEvent& event)
 
 void ScenePage::onSceneMouseMove(wxMouseEvent& event)
 {
-    if (event.Dragging()){
-        if (event.LeftIsDown()){
-
-        }else if (event.RightIsDown()){
-            wxPoint offset = event.GetPosition() - rightDownPos;
-            rightDownPos = event.GetPosition();
-
-            sceneCanvas->getRenderWindow()->moveCamera(-offset.x, -offset.y);
-            wxSetCursor(*dragCursor);
-        }
-    }
-
     if (btnAddSprite->GetValue()){
         if (curAddSprite){
             wxPoint pos = event.GetPosition();
@@ -274,11 +273,26 @@ void ScenePage::onSceneMouseMove(wxMouseEvent& event)
     }else{
 
     }
+
+    if (event.Dragging()){
+        wxPoint offset = event.GetPosition() - mouseDownPos;
+        mouseDownPos = event.GetPosition();
+
+        if (event.LeftIsDown()){
+            if (curEditSprite && !btnAddSprite->GetValue()){
+                curEditSprite->move(offset.x, offset.y);
+            }
+        }else if (event.RightIsDown()){
+            sceneCanvas->getRenderWindow()->moveCamera(-offset.x, -offset.y);
+            wxSetCursor(*dragCursor);
+        }
+    }
+
 }
 
 void ScenePage::onSceneRButtonDown(wxMouseEvent& event)
 {
-    rightDownPos = event.GetPosition();
+    mouseDownPos = event.GetPosition();
     wxSetCursor(*dragCursor);
 }
 
@@ -305,6 +319,11 @@ void ScenePage::onListBoxItemSelected(wxCommandEvent& event)
     spriteScene->addSprite(data->sprite);
     curAddSprite = (Sprite*)Object::cloneObject(data->sprite);
     curAddSprite->moveTo(0,0);
+    curAddSprite->setColor(SEL_COLOR);
+
+    Manager::getInstancePtr()->getExplorerManager()->removeAllProperties();
+    curEditSprite = NULL;
+    
 }
 
 void ScenePage::addSpriteToScene(Sprite* sprite)

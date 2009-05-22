@@ -55,7 +55,7 @@ protected:
 
     Font::Ptr font;
 
-    wxPoint rightDownPos;
+    wxPoint mouseDownPos;
     wxCursor *dragCursor;
 
 protected:

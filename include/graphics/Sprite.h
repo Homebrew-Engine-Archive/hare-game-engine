@@ -46,12 +46,22 @@ namespace hare
 
         const String& getSpriteName();
 
+        void setColor(uint32 c);
+
+        uint32 getColor();
+
+        void setZ(float z);
+
+        float getZ();
+
     protected:
         PointF origoPos;
         PointF pos;
         bool   bFaceX;
         bool   bFaceY;
         String spriteName;
+        uint32 color;
+        float  zDepth;
     
     };
 }

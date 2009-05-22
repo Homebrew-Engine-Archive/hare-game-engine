@@ -34,13 +34,19 @@ namespace hare
 
 		void endScene();
 
-		void addSprite(Sprite* sprite);
+		int  addSprite(Sprite* sprite);
 
 		void removeSprite(Sprite* sprite);
 
         void removeAllSprite();
 
 		void setSceneListener(SceneListenerBase* listener);
+
+        Sprite* getSpriteByName(const String& name);
+
+        Sprite* getSpriteByID(int id);
+
+        int getSpriteCount();
 
 	protected:
         Sprite::List spriteList;

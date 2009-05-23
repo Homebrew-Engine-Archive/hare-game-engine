@@ -1,18 +1,23 @@
-scene = nil
-window = nil
 guiSys = nil
+mouse = nil
 
-function beginScene()
+function onBeginScene()
+    mouse:capture()
     collectgarbage()
 end
 
-function renderScene()
+function onRenderScene()
     guiSys:render()
     hare.getCanvas():drawText(100, 100, tostring(hare.getTimer():getFPS()))
 end
 
-function endScene()
+function onEndScene()
 end
+
+function onMousePressed(event, button)
+    print("mouse pressed, button : ", button)
+end
+
 
 function onCreate(this)
     local hareApp = hare.getHareApp()
@@ -21,14 +26,21 @@ function onCreate(this)
     params.height = 480
     params.bFullScreen = false
     params.bZbuffer = false
-    window = hareApp:createRenderWindow(params)
-    scene = hareApp:createSceneManager()
-    window:setSceneManager(scene)   
+    local window = hareApp:createRenderWindow(params)
+    local scene = hareApp:createSceneManager()
+    window:setSceneManager(scene)
+
+    local inputManager = hare.createLuaInputManager(window)
+    print(swig_type(inputManager))
+    mouse = inputManager:createMouse(true)
+    local mouseListener = hare.LuaMouseListener()
+    mouseListener:setMousePressedCallback(onMousePressed)
+    mouse:setListener(mouseListener)
 
     local listener = hare.LuaSceneListener()
-    listener:setBeginSceneCallback(beginScene)
-    listener:setRenderSceneCallback(renderScene)
-    listener:setEndSceneCallback(endScene)
+    listener:setBeginSceneCallback(onBeginScene)
+    listener:setRenderSceneCallback(onRenderScene)
+    listener:setEndSceneCallback(onEndScene)
     scene:setSceneListener(listener)
 
     local layout = hare.importObject('/sample/layouts/test.layout')
@@ -47,4 +59,6 @@ end
 function onDestroy(this)
     guiSys:setRoot(nil)
     guiSys:setTheme(nil)
+    guiSys = nil
+    mouse = nil
 end

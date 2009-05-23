@@ -58,7 +58,7 @@ Object* SceneWizard::wizard(int index)
             Object::Ptr obj = sceneClasses[index]->createObject();
 
             if (obj){
-                EditorPlugin* plugin = PluginManager::getInstancePtr()->findPluginByName(wxT("sceneMIMEHandler"));
+                EditorPlugin* plugin = PluginManager::getInstancePtr()->findPluginByName(wxT("SceneMIMEHandler"));
                 if (plugin && plugin->getType() == EPT_MIMEHandler){
                     SceneManager* scene = (SceneManager*)obj.pointer();
                     SceneMIMEHandler* handler = (SceneMIMEHandler*)plugin;

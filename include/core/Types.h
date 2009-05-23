@@ -17,25 +17,25 @@
 
 namespace hare
 {
-    typedef unsigned char	uint8;
-    typedef signed char		int8;
-    typedef unsigned short	uint16;
-    typedef signed short	int16;
-    typedef unsigned int	uint32;
-    typedef signed int		int32;
+    typedef unsigned char	            uint8;
+    typedef signed char		            int8;
+    typedef unsigned short	            uint16;
+    typedef signed short	            int16;
+    typedef unsigned int	            uint32;
+    typedef signed int		            int32;
 
-    typedef std::string     String;
-    typedef std::basic_string<wchar_t> WString;
-    typedef std::vector<String> StringVector;
+    typedef std::string                 String;
+    typedef std::basic_string<wchar_t>  WString;
+    typedef std::vector<String>         StringVector;
 
-    typedef TPoint<float>     PointF;
-    typedef TPoint<int32>     PointN;
+    typedef TPoint<float>               PointF;
+    typedef TPoint<int32>               PointN;
 
-    typedef TSize<float>      SizeF;
-    typedef TSize<int32>      SizeN;
+    typedef TSize<float>                SizeF;
+    typedef TSize<int32>                SizeN;
 
-    typedef TRect<float>      RectF;
-    typedef TRect<int32>      RectN;
+    typedef TRect<float>                RectF;
+    typedef TRect<int32>                RectN;
 }
 
 #if HARE_COMPILER == HARE_COMPILER_GNUC && HARE_COMP_VER >= 310 && !defined(STLPORT)

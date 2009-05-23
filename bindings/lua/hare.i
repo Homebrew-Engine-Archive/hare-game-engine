@@ -18,3 +18,4 @@ using namespace hare;
 %include core.i
 %include graphics.i
 %include gui.i
+%include input.i

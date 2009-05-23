@@ -16,16 +16,16 @@
 
 //////////////////////////////////////////////////////////////////////////
 static const PluginInfo sceneMIMEHandler = {
-    wxT("sceneMIMEHandler"), 
-    wxT("sceneMIMEHandler"),
+    wxT("SceneMIMEHandler"), 
+    wxT("SceneMIMEHandler"),
     wxT("This is a plugin for scene editing.") };
 
 PluginRegistrant<SceneMIMEHandler> regSceneMIMEHandler(sceneMIMEHandler);
 //////////////////////////////////////////////////////////////////////////
 
 static const PluginInfo sceneWizard = {
-    wxT("sceneWizard"), 
-    wxT("sceneWizard"),
+    wxT("SceneWizard"), 
+    wxT("SceneWizard"),
     wxT("This is a plugin for scene creating.") };
 
 PluginRegistrant<SceneWizard> regSceneWizard(sceneWizard);

@@ -20,7 +20,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\include;..\..\ext\lua\src"
+				AdditionalIncludeDirectories="..\..\include;..\..\ext\ois\includes;..\..\ext\lua\src"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;LUA_BINDING_EXPORTS"
 				MinimalRebuild="TRUE"
 				BasicRuntimeChecks="3"
@@ -33,14 +33,13 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="lua51.lib core_d.lib graphics_d.lib gui_d.lib"
+				AdditionalDependencies="lua51.lib OIS_static_d.lib core_d.lib graphics_d.lib gui_d.lib"
 				OutputFile="$(OutDir)/$(ProjectName)_d.dll"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="..\..\lib;..\..\ext\lua\src"
+				AdditionalLibraryDirectories="..\..\lib;..\..\ext\lua\src;..\..\ext\ois\lib"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="$(OutDir)/hare_lua.pdb"
 				SubSystem="0"
-				ImportLibrary="../../lib/$(TargetName).lib"
 				TargetMachine="1"/>
 			<Tool
 				Name="VCMIDLTool"/>
@@ -166,6 +165,9 @@
 				RelativePath="..\..\bindings\lua\LuaGameApp.h">
 			</File>
 			<File
+				RelativePath="..\..\bindings\lua\LuaInputListener.h">
+			</File>
+			<File
 				RelativePath="..\..\bindings\lua\LuaSceneListener.h">
 			</File>
 			<File
@@ -204,6 +206,9 @@
 "
 					Outputs="$(InputName)_wrap.cxx"/>
 			</FileConfiguration>
+		</File>
+		<File
+			RelativePath="..\..\bindings\lua\input.i">
 		</File>
 	</Files>
 	<Globals>

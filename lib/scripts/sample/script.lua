@@ -1,9 +1,11 @@
 guiSys = nil
 mouse = nil
 
+--*******************************************
+--  Scene listener callbacks
+--*******************************************
 function onBeginScene()
     mouse:capture()
-    collectgarbage()
 end
 
 function onRenderScene()
@@ -14,11 +16,16 @@ end
 function onEndScene()
 end
 
+--*******************************************
+--  Mouse listener callbacks
+--*******************************************
 function onMousePressed(event, button)
     print("mouse pressed, button : ", button)
 end
 
-
+--*******************************************
+--  Script entry callbacks
+--*******************************************
 function onCreate(this)
     local hareApp = hare.getHareApp()
     local params = hare.WindowParams()
@@ -54,11 +61,11 @@ function onCreate(this)
     local font = hare.importObject('/editor/default.font')
     hare.getCanvas():setFont(font)
 
+    -- Collect garbage right now, very useful for debugging
+    collectgarbage()
 end
 
 function onDestroy(this)
     guiSys:setRoot(nil)
     guiSys:setTheme(nil)
-    guiSys = nil
-    mouse = nil
 end

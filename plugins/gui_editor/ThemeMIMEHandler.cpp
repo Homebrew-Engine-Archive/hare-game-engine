@@ -48,7 +48,7 @@ ThemeEditorPage::ThemeEditorPage(wxWindow* parent, ThemeMIMEHandler* handler)
     canvasRect = new wxHareCanvas(panelB);
     panelB->GetSizer()->Add(canvasRect, 1, wxEXPAND, 0);
     canvasRect->getRenderWindow()->setSceneManager(sceneB);
-    sceneB->setSceneListener(this);
+    sceneB->setSceneListener(new SceneListenerEditorWrapper<ThemeEditorPage>(this));
     panelB->Connect(wxEVT_ERASE_BACKGROUND, wxEraseEventHandler(ThemeEditorPage::onEraseBackground), 0, this);
     canvasRect->Connect(wxEVT_SIZE, wxSizeEventHandler(ThemeEditorPage::onCanvasRectSize), 0, this);
     
@@ -58,7 +58,8 @@ ThemeEditorPage::ThemeEditorPage(wxWindow* parent, ThemeMIMEHandler* handler)
     canvasGUI = new wxHareCanvas(panelD);
     panelD->GetSizer()->Add(canvasGUI, 1, wxEXPAND, 0);
     canvasGUI->getRenderWindow()->setSceneManager(sceneD);
-    sceneD->setSceneListener(&previewSceneListener);
+    previewSceneListener = new PreviewSceneListener();
+    sceneD->setSceneListener(previewSceneListener);
     panelD->Connect(wxEVT_ERASE_BACKGROUND, wxEraseEventHandler(ThemeEditorPage::onEraseBackground), 0, this);
     canvasGUI->Connect(wxEVT_SIZE, wxSizeEventHandler(ThemeEditorPage::onCanvasGUISize), 0, this);
 
@@ -187,7 +188,7 @@ void ThemeEditorPage::onBrowseLayout(wxCommandEvent& event)
 
         if (imported && imported->isA(&Window::CLASS_INFO))
         {
-            previewSceneListener.getGUISystem()->setRoot(imported);
+            previewSceneListener->getGUISystem()->setRoot(imported);
             txtUVRCUrlLayout->SetValue(wxString::FromUTF8(objectUrl.c_str()));
         }
     }
@@ -268,7 +269,7 @@ void ThemeEditorPage::setThemePackage(ThemePackage* themePackage)
     treeCtrl->DeleteAllItems();
     currItem = 0;
 
-    previewSceneListener.getGUISystem()->setTheme(themes);
+    previewSceneListener->getGUISystem()->setTheme(themes);
 
     wxTreeItemId rootId = treeCtrl->AddRoot(wxT("ThemePackage"));
     Theme::Array& arrayThemes = themes->getThemes();

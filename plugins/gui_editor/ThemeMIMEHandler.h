@@ -27,6 +27,7 @@ public:
 
 class PreviewSceneListener : public SceneListener
 {
+    HARE_DECLARE_PTR(PreviewSceneListener)
 public:
     PreviewSceneListener()
     {
@@ -50,7 +51,7 @@ private:
     GUISystem::Ptr guiSys;
 };
 
-class ThemeEditorPage : public EditorPage, public SceneListener
+class ThemeEditorPage : public EditorPage
 {
 public:
     ThemeEditorPage(wxWindow* parent, ThemeMIMEHandler* handler);
@@ -65,13 +66,9 @@ public:
     void updateTitle();
 
 protected:
-    virtual void beginScene()
-    {
-    }
-    virtual void endScene()
-    {
-    }
-    virtual void renderScene();
+
+    friend class SceneListenerEditorWrapper<ThemeEditorPage>;
+    void renderScene();
 
     void onTreeItemSelected(wxTreeEvent& event);
     void onBrowse(wxCommandEvent& event);
@@ -102,7 +99,7 @@ private:
 
     bool isModified;
 
-    PreviewSceneListener previewSceneListener;
+    PreviewSceneListener::Ptr previewSceneListener;
 
 private:
     DECLARE_ABSTRACT_CLASS(ThemeEditorPage)

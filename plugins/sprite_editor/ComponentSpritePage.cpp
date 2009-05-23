@@ -57,18 +57,18 @@ ComponentSpritePage::ComponentSpritePage(wxWindow* parent, SpriteMIMEHandler* ha
 
     treeCtrl->AddRoot(wxT("ComponentSprite"), 0, 0);
 
-
+    SceneListenerEditorWrapper<ComponentSpritePage>* listener = new SceneListenerEditorWrapper<ComponentSpritePage>(this);
 
     componentCanvas = new wxHareCanvas(componentReview);
     componentReview->GetSizer()->Prepend(componentCanvas, 1, wxEXPAND|wxALL, 0);
     componentScene = getHareApp()->createSceneManager();
-    componentScene->setSceneListener(this);
+    componentScene->setSceneListener(listener);
     componentCanvas->getRenderWindow()->setSceneManager(componentScene);
 
     partSpriteCanvas = new wxHareCanvas(partSpriteReview);
     partSpriteReview->GetSizer()->Prepend(partSpriteCanvas, 1, wxEXPAND|wxALL, 0);
     partSpriteScene = getHareApp()->createSceneManager();
-    partSpriteScene->setSceneListener(this);
+    partSpriteScene->setSceneListener(listener);
     partSpriteCanvas->getRenderWindow()->setSceneManager(partSpriteScene);
 
 
@@ -174,17 +174,6 @@ void ComponentSpritePage::updateTitle()
         setTitle(wxString::FromUTF8(title.c_str()));
 }
 
-void ComponentSpritePage::beginScene()
-{
-
-}
-
-void ComponentSpritePage::endScene()
-{
-    if (curPartSprite)
-        curPartSprite->moveTo(0, 0);  
-}
-
 void ComponentSpritePage::renderScene()
 {
     if (curPartSprite)
@@ -202,6 +191,9 @@ void ComponentSpritePage::renderScene()
     getCanvas()->drawLine(-1000, height/2, 1000, height/2);
     getCanvas()->drawLine(width/2, -1000, width/2, 1000);
     getCanvas()->setColor(oldColor);
+
+    if (curPartSprite)
+        curPartSprite->moveTo(0, 0);
 }
 
 void ComponentSpritePage::setComponentSprite(ComponentSprite* sprite)

@@ -17,7 +17,7 @@
 
 class SpriteMIMEHandler;
 
-class ParticleEditorPage : public EditorPage, public SceneListenerBase
+class ParticleEditorPage : public EditorPage
 {
 public:
     ParticleEditorPage(wxWindow* parent, SpriteMIMEHandler* handler, ParticleSprite* par);
@@ -30,11 +30,8 @@ public:
         return parPtr.pointer() != NULL;
     }
 
-    virtual void beginScene() {}
-
-    virtual void endScene() {}
-    
-    virtual void renderScene();
+    friend class SceneListenerEditorWrapper<ParticleEditorPage>;
+    void renderScene();
 
     virtual void setModified(bool modified);
     virtual bool getIsModified() const { return isModified; }

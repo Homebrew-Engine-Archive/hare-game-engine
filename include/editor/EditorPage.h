@@ -55,6 +55,21 @@ namespace hare
 
         DECLARE_ABSTRACT_CLASS(EditorPage)
     };
+
+    template <typename T>
+    class SceneListenerEditorWrapper : public SceneListener
+    {
+    public:
+        SceneListenerEditorWrapper(T* page) : page(page) 
+        {
+        }
+        virtual void renderScene()
+        {
+            if (page) page->renderScene();
+        }
+    private:
+        T* page;
+    };
 }
 
 #endif

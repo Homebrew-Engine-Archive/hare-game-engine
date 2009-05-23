@@ -1195,7 +1195,16 @@ void LuaDebugger::switchToDebugLayout()
 
 void LuaDebugger::restoreLayout()
 {
-    EditorEvent switchEvent(editorEVT_LAYOUT_SWITCH);
-    switchEvent.strData = previousLayout;
-    Manager::getInstancePtr()->processEvent(switchEvent);
+    if (!previousLayout.IsEmpty())
+    {
+        EditorEvent queryEvent(editorEVT_LAYOUT_QUERY);
+        Manager::getInstancePtr()->processEvent(queryEvent);
+        config->setLayout(queryEvent.strData);
+
+        EditorEvent switchEvent(editorEVT_LAYOUT_SWITCH);
+        switchEvent.strData = previousLayout;
+        Manager::getInstancePtr()->processEvent(switchEvent);
+
+        previousLayout = wxEmptyString;
+    }
 }

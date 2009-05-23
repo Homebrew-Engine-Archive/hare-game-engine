@@ -8,7 +8,7 @@ class TreeItemData;
 /* 
  * GUIEditorPage
 */
-class GUIEditorPage : public EditorPage, public SceneListenerBase
+class GUIEditorPage : public EditorPage
 {
 public:
     GUIEditorPage(wxWindow* parent);
@@ -24,13 +24,8 @@ public:
     void updateTitle();
     
 protected:
-    virtual void beginScene()
-    {
-    }
-    virtual void endScene()
-    {
-    }
-    virtual void renderScene();
+    friend class SceneListenerEditorWrapper<GUIEditorPage>;
+    void renderScene();
 
     void drawHelperRect(TreeItemData* data, uint32 color = 0xFFFF0000);
 

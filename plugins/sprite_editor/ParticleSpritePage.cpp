@@ -33,7 +33,7 @@ ParticleEditorPage::ParticleEditorPage(wxWindow* parent, SpriteMIMEHandler* hand
     Layout();
 
     sceneParticle = getHareApp()->createSceneManager();
-    sceneParticle->setSceneListener(this);
+    sceneParticle->setSceneListener(new SceneListenerEditorWrapper<ParticleEditorPage>(this));
     canvasParticle->getRenderWindow()->setSceneManager(sceneParticle);
 
     Connect(wxEVT_ERASE_BACKGROUND, wxEraseEventHandler(ParticleEditorPage::onEraseBackground), NULL, this);

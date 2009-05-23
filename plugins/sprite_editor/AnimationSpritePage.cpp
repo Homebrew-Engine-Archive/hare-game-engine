@@ -45,8 +45,6 @@ AnimationSpritePage::AnimationSpritePage(wxWindow* parent, SpriteMIMEHandler* ha
     btnStop = XRCCTRL(*this, "idStop", wxButton);
     btnLoop = XRCCTRL(*this, "idLoop", wxToggleButton);
 
-
-
     wxImageList *images = new wxImageList(16, 16, true);
     treeCtrl->SetImageList(images);
 
@@ -62,16 +60,18 @@ AnimationSpritePage::AnimationSpritePage(wxWindow* parent, SpriteMIMEHandler* ha
 
     treeCtrl->AddRoot(wxT("AnimationSprite"), 0, 0);
 
+    SceneListenerEditorWrapper<AnimationSpritePage>* listener = new SceneListenerEditorWrapper<AnimationSpritePage>(this);
+
     animationCanvas = new wxHareCanvas(animationReview);
     animationReview->GetSizer()->Prepend(animationCanvas, 1, wxEXPAND|wxALL, 0);
     animationScene = getHareApp()->createSceneManager();
-    animationScene->setSceneListener(this);
+    animationScene->setSceneListener(listener);
     animationCanvas->getRenderWindow()->setSceneManager(animationScene);
 
     frameCanvas = new wxHareCanvas(frameReview);
     frameReview->GetSizer()->Add(frameCanvas, 1, wxEXPAND|wxALL, 0);
     frameScene = getHareApp()->createSceneManager();
-    frameScene->setSceneListener(this);
+    frameScene->setSceneListener(listener);
     frameCanvas->getRenderWindow()->setSceneManager(frameScene);
 
     treeCtrl->Connect(wxEVT_COMMAND_TREE_BEGIN_DRAG, wxTreeEventHandler(AnimationSpritePage::onBeginDrag), 0, this);
@@ -167,21 +167,6 @@ bool AnimationSpritePage::saveAs()
     return ret;
 }
 
-void AnimationSpritePage::beginScene()
-{
-    if (curSelFrame)
-        curSelFrame->getSprite()->moveTo(0, 0);
-}
-
-void AnimationSpritePage::endScene()
-{
-    if (!animationSprite || !btnPlay)
-        return;
-
-    if (animationSprite->isStop())
-        btnPlay->SetLabel(wxT(">"));
-}
-
 void AnimationSpritePage::renderScene()
 {
     if (curSelFrame)
@@ -199,6 +184,12 @@ void AnimationSpritePage::renderScene()
     getCanvas()->drawLine(-1000, height/2, 1000, height/2);
     getCanvas()->drawLine(width/2, -1000, width/2, 1000);
     getCanvas()->setColor(oldColor);
+
+    if (!animationSprite || !btnPlay)
+        return;
+
+    if (animationSprite->isStop())
+        btnPlay->SetLabel(wxT(">"));
 }
 
 void AnimationSpritePage::setAnimationSprite(AnimationSprite* sprite)

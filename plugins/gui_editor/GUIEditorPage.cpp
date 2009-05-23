@@ -100,7 +100,7 @@ GUIEditorPage::GUIEditorPage(wxWindow* parent) : isModified(false)
     wxXmlResource::Get()->LoadPanel(this, parent, wxT("idGUIEditorPanel"));
 
     scene = getHareApp()->createSceneManager();
-    scene->setSceneListener(this);
+    scene->setSceneListener(new SceneListenerEditorWrapper<GUIEditorPage>(this));
 
     wxPanel* panel = XRCCTRL(*this, "idPanelR", wxPanel);
     canvas = new wxHareCanvas(panel);

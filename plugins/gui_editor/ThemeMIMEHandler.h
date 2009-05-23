@@ -25,7 +25,7 @@ public:
     virtual TreeItemType getType() = 0;
 };
 
-class PreviewSceneListener : public SceneListenerBase
+class PreviewSceneListener : public SceneListener
 {
 public:
     PreviewSceneListener()
@@ -50,7 +50,7 @@ private:
     GUISystem::Ptr guiSys;
 };
 
-class ThemeEditorPage : public EditorPage, public SceneListenerBase
+class ThemeEditorPage : public EditorPage, public SceneListener
 {
 public:
     ThemeEditorPage(wxWindow* parent, ThemeMIMEHandler* handler);

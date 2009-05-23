@@ -13,13 +13,13 @@
 #ifndef _SCENEMANAGER_H_
 #define _SCENEMANAGER_H_
 
-
 #include "GraphicsPrerequisites.h"
+#include "SceneListener.h"
 #include "Sprite.h"
 
 namespace hare
 {
-	class SceneListenerBase;
+	class SceneListener;
 
     class GRAPHICS_API SceneManager : public Object
 	{
@@ -40,7 +40,7 @@ namespace hare
 
         void removeAllSprite();
 
-		void setSceneListener(SceneListenerBase* listener);
+		void setSceneListener(SceneListener* listener);
 
         Sprite* getSpriteByName(const String& name);
 
@@ -50,8 +50,7 @@ namespace hare
 
 	protected:
         Sprite::List spriteList;
-
-		SceneListenerBase* sceneListener;
+        SceneListener::Ptr sceneListener;
 
 	};
 }

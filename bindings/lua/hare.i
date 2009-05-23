@@ -12,8 +12,8 @@ using namespace hare;
 
 %}
 
-%feature("ref")     Object  "$this->addRef();"
-%feature("unref")   Object  "$this->decRef();"
+%feature("ref")     ReferenceCounted  "$this->addRef();"
+%feature("unref")   ReferenceCounted  "$this->decRef();"
 
 %include core.i
 %include graphics.i

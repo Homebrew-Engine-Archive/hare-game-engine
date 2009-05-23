@@ -60,8 +60,11 @@ FontEditorPage::FontEditorPage(wxWindow* parent, FontMIMEHandler* handler, Font*
     sceneText = getHareApp()->createSceneManager();
     sceneCache = getHareApp()->createSceneManager();
 
-    sceneText->setSceneListener(&txtListener);
-    sceneCache->setSceneListener(&cacheListener);
+    txtListener = new FontSceneListenerText();
+    cacheListener = new FontSceneListenerCache();
+
+    sceneText->setSceneListener(txtListener);
+    sceneCache->setSceneListener(cacheListener);
 
     canvasText->getRenderWindow()->setSceneManager(sceneText);
     canvasCache->getRenderWindow()->setSceneManager(sceneCache);
@@ -98,7 +101,7 @@ bool FontEditorPage::Show(bool show)
 
 void FontEditorPage::onTextUpdate(wxCommandEvent& event)
 {
-    txtListener.text = txtSample->GetValue().ToUTF8().data();
+    txtListener->text = txtSample->GetValue().ToUTF8().data();
 }
 
 void FontEditorPage::onSize(wxSizeEvent& event)
@@ -132,8 +135,8 @@ bool FontEditorPage::changeFont(Font* font)
 
     if (fontPtr)
     {
-        txtListener.font = fontPtr;
-        cacheListener.font = fontPtr;
+        txtListener->font = fontPtr;
+        cacheListener->font = fontPtr;
     }
     
     Manager::getInstancePtr()->getExplorerManager()->removeAllProperties();

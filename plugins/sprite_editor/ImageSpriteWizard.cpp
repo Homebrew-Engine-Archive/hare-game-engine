@@ -48,9 +48,12 @@ void searchUVRC(const String& basePath, wxListBox* listBox)
 }
 
 
-class ImageSpriteWizardPage : public wxWizardPageSimple, public SceneListenerBase
+class ImageSpriteWizardPage : public wxWizardPageSimple
 {
 public:
+
+    friend class SceneListenerEditorWrapper<ImageSpriteWizardPage>;
+
     ImageSpriteWizardPage(wxWizard* parent)
         :wxWizardPageSimple(parent)
     {
@@ -99,7 +102,7 @@ public:
         }
 
         SceneManager* scene = getHareApp()->createSceneManager();
-        scene->setSceneListener(this);
+        scene->setSceneListener(new SceneListenerEditorWrapper<ImageSpriteWizardPage>(this));
         canvas->getRenderWindow()->setSceneManager(scene);
 
         uvrcFilesCtrl->Connect(wxEVT_COMMAND_LISTBOX_SELECTED, wxMouseEventHandler(ImageSpriteWizardPage::onUVRCListLDown), NULL, this);
@@ -151,16 +154,6 @@ public:
         return retRect;
     }
 
-    virtual void beginScene()
-    {
-
-    }
-
-    virtual void endScene()
-    {
-
-    }
-    
     virtual void renderScene()
     {
         drawReview();

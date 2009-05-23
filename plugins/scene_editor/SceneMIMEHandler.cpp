@@ -79,7 +79,7 @@ ScenePage::ScenePage(wxWindow* parent, SceneMIMEHandler* handler, SceneManager* 
     for (int count = 0; count < sceneManager->getSpriteCount(); ++count){
         addSpriteToScene(sceneManager->getSpriteByID(count));
     }
-    sceneManager->setSceneListener(this);
+    sceneManager->setSceneListener(new SceneListenerEditorWrapper<ScenePage>(this));
     sceneCanvas->getRenderWindow()->setSceneManager(sceneManager);
 
     spriteCanvas = new wxHareCanvas(spritePanel);
@@ -168,16 +168,6 @@ bool ScenePage::saveAs()
 
     dlg->Destroy();
     return ret;
-}
-
-void ScenePage::beginScene()
-{
-
-}
-
-void ScenePage::endScene()
-{
-
 }
 
 void ScenePage::renderScene()

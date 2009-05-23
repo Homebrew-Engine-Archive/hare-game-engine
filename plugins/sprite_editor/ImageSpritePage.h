@@ -17,7 +17,7 @@
 
 class SpriteMIMEHandler;
 
-class ImageSpritePage : public EditorPage, public SceneListenerBase
+class ImageSpritePage : public EditorPage
 {
     DECLARE_ABSTRACT_CLASS(ImageSpritePage)
 public:
@@ -29,9 +29,8 @@ public:
     virtual bool save();
     bool saveAs();
 
-    virtual void beginScene();
-    virtual void endScene();
-    virtual void renderScene();
+    friend class SceneListenerEditorWrapper<ImageSpritePage>;
+    void renderScene();
 
     void setImageSprite(ImageSprite* sprite);
     void updateTitle();

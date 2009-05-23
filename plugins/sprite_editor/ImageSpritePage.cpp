@@ -23,7 +23,7 @@ ImageSpritePage::ImageSpritePage(wxWindow* parent, SpriteMIMEHandler* handler)
 {
     canvas = new wxHareCanvas(this);
     scene = getHareApp()->createSceneManager();
-    scene->setSceneListener(this);
+    scene->setSceneListener(new SceneListenerEditorWrapper<ImageSpritePage>(this));
     canvas->getRenderWindow()->setSceneManager(scene);
 
 
@@ -108,16 +108,6 @@ bool ImageSpritePage::save()
         setModified(false);
         
     return ret;
-}
-
-void ImageSpritePage::beginScene()
-{
-
-}
-
-void ImageSpritePage::endScene()
-{
-
 }
 
 void ImageSpritePage::renderScene()

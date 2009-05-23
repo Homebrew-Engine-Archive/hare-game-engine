@@ -18,7 +18,7 @@
 
 class SpriteMIMEHandler;
 
-class ComponentSpritePage : public EditorPage, public SceneListenerBase
+class ComponentSpritePage : public EditorPage
 {
     DECLARE_ABSTRACT_CLASS(ComponentSpritePage)
 public:
@@ -31,9 +31,8 @@ public:
     bool saveAs();
     void updateTitle();
 
-    virtual void beginScene();
-    virtual void endScene();
-    virtual void renderScene();
+    friend class SceneListenerEditorWrapper<ComponentSpritePage>;
+    void renderScene();
 
     void setComponentSprite(ComponentSprite* sprite);
     void setCurPartSprite(Sprite* sprite);

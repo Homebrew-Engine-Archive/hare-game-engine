@@ -17,7 +17,7 @@
 
 class SpriteMIMEHandler;
 
-class AnimationSpritePage : public EditorPage, public SceneListenerBase
+class AnimationSpritePage : public EditorPage
 {
     DECLARE_ABSTRACT_CLASS(AnimationSpritePage)
 public:
@@ -29,9 +29,8 @@ public:
     virtual bool save();
     bool saveAs();
 
-    virtual void beginScene();
-    virtual void endScene();
-    virtual void renderScene();
+    friend class SceneListenerEditorWrapper<AnimationSpritePage>;
+    void renderScene();
 
     void setAnimationSprite(AnimationSprite* sprite);
     void addAnimationFrame(AnimFrame* frame);

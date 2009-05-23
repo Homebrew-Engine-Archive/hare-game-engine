@@ -4,7 +4,7 @@
 #include "LuaSceneListener.h"
 %}
 
-class Sprite
+class Sprite : public Object
 {
 public:
 	Sprite();
@@ -13,15 +13,19 @@ public:
 	virtual void render() = 0;
 };
 
-class SceneListenerBase
+class SceneListener : public ReferenceCounted
 {
 public:
 	virtual void beginScene() = 0;
 	virtual void renderScene() = 0;
 	virtual void endScene() = 0;
+	
+private:
+    virtual void _doRelease();
+
 };
 
-class LuaSceneListener : public SceneListenerBase
+class LuaSceneListener : public SceneListener
 {
 public:
 	virtual void beginScene();
@@ -40,7 +44,7 @@ public:
 
 	void removeSprite(Sprite* sprite);
 	
-	void setSceneListener(SceneListenerBase* listener);
+	void setSceneListener(SceneListener* listener);
 };
 
 struct WindowParams

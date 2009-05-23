@@ -25,14 +25,13 @@ namespace hare
     }
 
 	SceneManager::SceneManager()
-		:sceneListener(NULL)
 	{
 
 	}
 
 	SceneManager::~SceneManager()
 	{
-
+        sceneListener = 0;
 	}
 
 	void SceneManager::beginScene()
@@ -86,7 +85,7 @@ namespace hare
         spriteList.clear();
     }
 
-	void SceneManager::setSceneListener(SceneListenerBase* listener)
+	void SceneManager::setSceneListener(SceneListener* listener)
 	{
 		sceneListener = listener;
 	}

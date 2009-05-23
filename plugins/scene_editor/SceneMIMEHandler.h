@@ -18,7 +18,7 @@
 
 class SceneMIMEHandler;
 
-class ScenePage : public EditorPage, public SceneListenerBase
+class ScenePage : public EditorPage, public SceneListener
 {
     DECLARE_ABSTRACT_CLASS(ImageSpritePage)
 public:
@@ -30,9 +30,9 @@ public:
     virtual bool save();
     bool saveAs();
 
-    virtual void beginScene();
-    virtual void endScene();
-    virtual void renderScene();
+    friend class SceneListenerEditorWrapper<ScenePage>;
+    void renderScene();
+
     void updateTitle();
 
 protected:

@@ -17,13 +17,12 @@
 
 class FontMIMEHandler;
 
-class FontSceneListenerText : public SceneListenerBase
+class FontSceneListenerText : public SceneListener
 {
+    HARE_DECLARE_PTR(FontSceneListenerText)
 public:
     FontSceneListenerText() : font(0) {}
 
-    virtual void beginScene(){}
-    virtual void endScene(){}
     virtual void renderScene()
     {
         if (!font)
@@ -38,28 +37,30 @@ public:
     String text;
 };
 
-class FontSceneListenerCache : public SceneListenerBase
+class FontSceneListenerCache : public SceneListener
 {
+    HARE_DECLARE_PTR(FontSceneListenerCache)
 public:
-    FontSceneListenerCache() : font(0) {}
+    FontSceneListenerCache() : font(0) 
+    {
+        shader = new SimpleShader();
+        mtrl = new TextureMtrl();
+        shader->setMaterial(mtrl);
+    }
 
-    virtual void beginScene(){}
-    virtual void endScene(){}
     virtual void renderScene()
     {
         if (!font)
             return;
 
-        SimpleShader::Ptr shader = new SimpleShader();
-        TextureMtrl* texMtrl = new TextureMtrl();
-        texMtrl->setTexture(font->getFontTexture());
+        mtrl->setTexture(font->getFontTexture());
         shader->setShaderParams(font->getFontExtParams());
-        shader->setMaterial(texMtrl);
-
         getCanvas()->drawImage(0, 0, shader);
     }
 public:
     Font* font;
+    SimpleShader::Ptr shader;
+    TextureMtrl::Ptr mtrl;
 };
 
 class FontEditorPage : public EditorPage 
@@ -84,8 +85,9 @@ private:
 
     SceneManager* sceneText;
     SceneManager* sceneCache;
-    FontSceneListenerText txtListener;
-    FontSceneListenerCache cacheListener;
+
+    FontSceneListenerText::Ptr txtListener;
+    FontSceneListenerCache::Ptr cacheListener;
 
     Font::Ptr fontPtr;
 

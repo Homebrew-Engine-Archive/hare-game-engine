@@ -9,7 +9,7 @@ class UVEditorPage;
 /* 
  * UVEditorPage
 */
-class UVEditorPage : public EditorPage, public SceneListenerBase
+class UVEditorPage : public EditorPage, public SceneListener
 {
 public:
     UVEditorPage(wxWindow* parent);
@@ -40,9 +40,9 @@ public:
     RectUV          makePixelAlign(const RectUV& rect);
 
 protected:
-    virtual void    beginScene() {}
-    virtual void    endScene() {}
-    virtual void    renderScene() { drawImpl(); }
+    friend class SceneListenerEditorWrapper<UVEditorPage>;
+
+    void            renderScene() { drawImpl(); }
     virtual void    drawImpl();
 
 private:

@@ -3,11 +3,12 @@ window = nil
 guiSys = nil
 
 function beginScene()
+    collectgarbage()
 end
 
 function renderScene()
     guiSys:render()
-    --hare.getCanvas():drawText(100, 100, tostring(hare.getTimer():getFPS()))
+    hare.getCanvas():drawText(100, 100, tostring(hare.getTimer():getFPS()))
 end
 
 function endScene()

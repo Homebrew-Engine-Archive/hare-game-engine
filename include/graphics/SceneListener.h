@@ -17,16 +17,21 @@
 
 namespace hare
 {
-	class GRAPHICS_API SceneListenerBase
+    class GRAPHICS_API SceneListener : public ReferenceCounted
 	{
+        HARE_DECLARE_PTR(SceneListener)
 	public:
-		SceneListenerBase();
-		virtual ~SceneListenerBase();
+		SceneListener();
+		virtual ~SceneListener();
 
-		virtual void beginScene() = 0;
-		virtual void renderScene() = 0;
-		virtual void endScene() = 0;
+        virtual void beginScene() {};
+        virtual void renderScene() {};
+        virtual void endScene() {};
 
+        virtual void _doRelease()
+        {
+            delete this;
+        }
 	};
 }
 

@@ -9,7 +9,7 @@ typedef signed int		int32;
 typedef std::string     String;
 typedef std::vector<String> StringVector;
 
-%typemap(out) Object* { if ($1 && $owner) ($1)->addRef(); dynamicCastObject(L, $1, $owner); SWIG_arg++; }
+%typemap(out) Object*       { if ($1 && $owner) ($1)->addRef(); dynamicCastObject(L, $1, $owner); SWIG_arg++; }
 %typemap(out) ScriptRunner* { if ($1 && $owner) ($1)->addRef(); dynamicCastObject(L, $1, $owner); SWIG_arg++; }
 
 %newobject importObject;
@@ -20,11 +20,19 @@ Object* cloneObject(Object* object);
 
 %typemap(out) Object*;
 
-class Object
+class ReferenceCounted
+{
+private:
+    virtual void _doRelease() = 0;
+};
+
+class Object : public ReferenceCounted
 {
 public:
     bool saveToXml(const String &path);
     bool saveToBin(const String &path);
+private:
+    virtual void _doRelease();
 };
 
 class ScriptRunner : public Object

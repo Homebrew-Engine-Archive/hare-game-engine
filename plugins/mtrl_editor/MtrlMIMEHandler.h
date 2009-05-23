@@ -25,7 +25,7 @@ public:
     PointF pos;
 };
 
-class MtrlEditorPage : public EditorPage, public SceneListenerBase
+class MtrlEditorPage : public EditorPage
 {
 public:
     MtrlEditorPage(wxWindow* parent, MtrlMIMEHandler* handler);
@@ -43,9 +43,8 @@ public:
     virtual bool save();
     bool saveAs(Material* mtrl);
 
-    virtual void beginScene();
-    virtual void endScene();
-    virtual void renderScene();
+    friend class SceneListenerEditorWrapper<MtrlEditorPage>;
+    void renderScene();
 
 private:
     MaterialEditState::List mtrlStates;

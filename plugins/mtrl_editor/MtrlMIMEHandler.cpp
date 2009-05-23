@@ -30,7 +30,7 @@ MtrlEditorPage::MtrlEditorPage(wxWindow* parent, MtrlMIMEHandler* handler)
 
     canvas = new wxHareCanvas(this);
     scene = getHareApp()->createSceneManager();
-    scene->setSceneListener(this);
+    scene->setSceneListener(new SceneListenerEditorWrapper<MtrlEditorPage>(this));
     canvas->getRenderWindow()->setSceneManager(scene);
     
     canvas->Connect(wxEVT_SIZE, wxSizeEventHandler(MtrlEditorPage::onSize), 0, this);
@@ -164,15 +164,6 @@ void MtrlEditorPage::setModified(bool modified)
         isModified = modified;
         updateTitle();
     }
-}
-
-
-void MtrlEditorPage::beginScene()
-{
-}
-
-void MtrlEditorPage::endScene()
-{
 }
 
 void MtrlEditorPage::renderScene()

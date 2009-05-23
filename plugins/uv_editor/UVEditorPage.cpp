@@ -57,7 +57,7 @@ UVEditorPage::UVEditorPage(wxWindow* parent) : isModified(false)
     wxXmlResource::Get()->LoadPanel(this, parent, wxT("idUVEditorPanel"));
 
     scene = getHareApp()->createSceneManager();
-    scene->setSceneListener(this);
+    scene->setSceneListener(new SceneListenerEditorWrapper<UVEditorPage>(this));
 
     wxPanel* panel = XRCCTRL(*this, "idPanelR", wxPanel);
     canvas = new wxHareCanvas(panel);

@@ -15,13 +15,11 @@
 
 namespace hare
 {
-	SceneListenerBase::SceneListenerBase()
+	SceneListener::SceneListener()
 	{
-
 	}
 
-	SceneListenerBase::~SceneListenerBase()
+	SceneListener::~SceneListener()
 	{
-
 	}
 }

@@ -5,7 +5,7 @@
 
 bool notify_error(lua_State *L);
 
-class LuaSceneListener : public SceneListenerBase
+class LuaSceneListener : public SceneListener
 {
 public:
     LuaSceneListener()

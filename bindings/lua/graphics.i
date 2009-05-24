@@ -49,7 +49,6 @@ public:
 
 struct WindowParams
 {
-	//WindowHandle hwnd;
 	bool bFullScreen;
 	uint32 width;
 	uint32 height;
@@ -60,6 +59,9 @@ struct WindowParams
 class RenderWindow
 {
 public:
+    uint32 getWidth();
+    uint32 getHeight();
+		
 	void setSceneManager(SceneManager* scene);
 
 	SceneManager* getSceneManager();

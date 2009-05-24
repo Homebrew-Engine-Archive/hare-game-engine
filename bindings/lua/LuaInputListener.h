@@ -213,6 +213,11 @@ public:
         return mouseListener;
     }
 
+    const OIS::MouseState& getMouseState() const
+    {
+        return mouse->getMouseState();
+    }
+
     void capture()
     {
         mouse->capture();

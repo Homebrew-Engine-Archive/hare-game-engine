@@ -46,5 +46,6 @@
 #include "Log.h"
 #include "ScriptRunner.h"
 #include "GameApp.h"
+#include "DataHolder.h"
 
 #endif

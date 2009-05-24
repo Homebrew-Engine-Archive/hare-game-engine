@@ -47,6 +47,7 @@ namespace hare
     {
         releaseMouse();
         pushed = false;
+        updateState(event.getPosition());
     }
 
     void Button::onMouseLeaves(MouseEvent& event)

@@ -36,7 +36,11 @@ namespace hare
         }
 
     protected:
-        void onMouseEvent(MouseEvent& event);
+        void updateState(const PointF& pos);
+        void onMouseMove(MouseEvent& event);
+        void onMouseLButtonDown(MouseEvent& event);
+        void onMouseLButtonUp(MouseEvent& event);
+        void onMouseLeaves(MouseEvent& event);
 
     protected:
         bool pushed;

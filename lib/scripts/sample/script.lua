@@ -16,6 +16,7 @@ end
 
 function onRenderScene()
     guiSys:render()
+    hare.getCanvas():drawText(mouseX, mouseY, "_")
     hare.getCanvas():drawText(10, 20, "FPS : "..hare.getTimer():getFPS())
     hare.getCanvas():drawText(10, 35, "X : "..mouseX.." Y : "..mouseY)
 end
@@ -23,34 +24,45 @@ end
 function onEndScene()
 end
 
+--[[
+    bool notifyMouseMove(float deltaX, float deltaY);
+    bool notifyMouseWheel(float delta);
+    bool notifyMousePosition(float posX, float posY);
+    bool notifyMouseButtonUp(uint32 button);
+    bool notifyMouseButtonDown(uint32 button);
+
+    bool notifyKeyDown(uint32 key);
+    bool notifyKeyUp(uint32 key);
+    bool notifyChar(uint32 cp);
+]]
 --*******************************************
 --  Mouse listener callbacks
 --*******************************************
 function onMouseMoved(event)
-    --print("mouse moved", event.state.buttons)
-    --print(event.state.X.abs, event.state.X.rel)
-    --print(event.state.Y.abs, event.state.Y.rel)
     mouseX = event.state.X.abs
     mouseY = event.state.Y.abs
+    guiSys:notifyMousePosition(mouseX, mouseY)
 end
 
 function onMousePressed(event, button)
-    print("mouse pressed, button : ", button)
+    guiSys:notifyMouseButtonDown(button)
+    --print("mouse pressed, button : ", button)
 end
 
 function onMouseReleased(event, button)
-    print("mouse released, button : ", button)
+    guiSys:notifyMouseButtonUp(button)
+    --print("mouse released, button : ", button)
 end
 
 --*******************************************
 --  Key listener callbacks
 --*******************************************
 function onKeyPressed(event)
-    print("key pressed, keycode : ", event.key, event.text)
+    --print("key pressed, keycode : ", event.key, event.text)
 end
 
 function onKeyReleased(event)
-    print("key pressed, keycode : ", event.key, event.text)
+    --print("key pressed, keycode : ", event.key, event.text)
 end
 
 --*******************************************
@@ -60,10 +72,10 @@ function onCreate(this)
    -- Create Window
     local hareApp = hare.getHareApp()
     local params = hare.WindowParams()
-    params.width = 640
-    params.height = 480
+    params.width = 800
+    params.height = 600
     params.bFullScreen = false
-    params.bZbuffer = false
+    params.bZbuffer = true
     window = hareApp:createRenderWindow(params)
     
     -- Create Scene

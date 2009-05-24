@@ -12,7 +12,7 @@ namespace hare
         HARE_DECLARE_ABSTRACT_CLASS(Window)
     public:
         Window();
-        Window(Window* parent);
+        Window(Window* parent, int32 id = uiID_Any);
 
         void setId(int id) 
         { 
@@ -32,6 +32,18 @@ namespace hare
             return windowName; 
         }
 
+        EventHandler* getEventHandler() const 
+        {
+            return eventHandler;
+        }
+
+        void setEventHandler(EventHandler* handler)
+        {
+            eventHandler = handler;
+        }
+
+        virtual bool tryParent(Event& event);
+
         virtual bool show(bool show = true)
         {
             shown = show;
@@ -44,7 +56,8 @@ namespace hare
 
         virtual bool enable(bool enable = true)
         {
-            return false;
+            enabled = enable;
+            return true;
         }
         bool disable()
         { 
@@ -93,6 +106,18 @@ namespace hare
         Window *findWindow(int id) const;
         Window *findWindow(const String& name) const;
 
+        Window* getTargetChildAtPosition(const PointF& pt);
+
+        bool distributesCapturedInputs() const;
+        bool wantsMultiClickEvents() const;
+        bool isMousePassThroughEnabled() const;
+
+        bool isActive() const;
+
+        bool isAncestor(const Window* window) const;
+
+        Window* getActiveChild();
+
         void setSizer(Sizer* sizer)
         {
             if (sizer == windowSizer)
@@ -139,7 +164,15 @@ namespace hare
 
         virtual bool hitTest(const PointF& pt) const
         {
-            return false;
+            if (!isEnabled())
+                return false;
+
+            RectF clippedArea(getPixelRect());
+
+            if (clippedArea.width() == 0)
+                return false;
+
+            return clippedArea.isPointIn(pt);
         }
 
         virtual void setMinSize(const SizeF& size) { minSize = size; }
@@ -249,16 +282,23 @@ namespace hare
 
         static Window* capturedWindow;
 
+        EventHandler* eventHandler;
+
         bool shown;
         bool enabled;
+        bool active;
 
-        int windowId;
+        int32 windowId;
         String windowName;
 
         SizeF minSize;
         SizeF maxSize;
 
         bool clippedByParent;
+
+        bool distCapturedInputs;
+        bool wantsMultiClicks;
+        bool mousePassThroughEnabled;
 
         PointF position;
         SizeF size;

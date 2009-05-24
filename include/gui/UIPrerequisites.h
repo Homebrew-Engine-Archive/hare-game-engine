@@ -35,6 +35,7 @@ namespace hare
     class SizerItemSizer;
     class SizerItemSpacer;
     class SizerSpacer;
+    class PropagateOnce;
     class Event;
     class MouseEvent;
     class EventHandler;

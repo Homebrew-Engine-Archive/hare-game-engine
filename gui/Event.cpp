@@ -6,8 +6,31 @@ namespace hare
 {
     EventType newEventType()
     {
-        static int lastUsedEventType = uiEVT_FIRST;
-        return lastUsedEventType++;
+        static EventType currId = uiEVT_FIRST;
+        return currId++;
+    }
+
+    int32 newId()
+    {
+        static int32 currId = 100;
+        return currId++;
+    }
+
+    int32 newId(const String& name)
+    {
+        static HashMap<String, int32> hashMap;
+        
+        HashMap<String, int32>::iterator it = hashMap.find(name);
+        
+        if (it != hashMap.end())
+        {
+            return it->second;
+        }
+
+        int32 id = newId();
+        hashMap[name] = id;
+
+        return id;
     }
 
     const EventType uiEVT_NULL = 0;
@@ -16,17 +39,30 @@ namespace hare
 
     const EventType uiEVT_LEFT_DOWN = newEventType();
     const EventType uiEVT_LEFT_UP = newEventType();
-    const EventType uiEVT_MIDDLE_DOWN = newEventType();
-    const EventType uiEVT_MIDDLE_UP = newEventType();
+    const EventType uiEVT_LEFT_CLICK = newEventType();
+    const EventType uiEVT_LEFT_DCLICK = newEventType();
+    const EventType uiEVT_LEFT_TCLICK = newEventType();
+
     const EventType uiEVT_RIGHT_DOWN = newEventType();
     const EventType uiEVT_RIGHT_UP = newEventType();
-    const EventType uiEVT_MOTION = newEventType();
-    const EventType uiEVT_LEFT_DCLICK = newEventType();
-    const EventType uiEVT_MIDDLE_DCLICK = newEventType();
+    const EventType uiEVT_RIGHT_CLICK = newEventType();
     const EventType uiEVT_RIGHT_DCLICK = newEventType();
+    const EventType uiEVT_RIGHT_TCLICK = newEventType();
+
+    const EventType uiEVT_MIDDLE_DOWN = newEventType();
+    const EventType uiEVT_MIDDLE_UP = newEventType();
+    const EventType uiEVT_MIDDLE_CLICK = newEventType();
+    const EventType uiEVT_MIDDLE_DCLICK = newEventType();
+    const EventType uiEVT_MIDDLE_TCLICK = newEventType();
+
+    const EventType uiEVT_MOTION = newEventType();
     const EventType uiEVT_LEAVE_WINDOW = newEventType();
     const EventType uiEVT_ENTER_WINDOW = newEventType();
     const EventType uiEVT_MOUSEWHEEL = newEventType();
+
+    const EventType uiEVT_CHAR = newEventType();
+    const EventType uiEVT_KEY_DOWN = newEventType();
+    const EventType uiEVT_KEY_UP = newEventType();
     
     // --------------------------------------------------------
     // Event
@@ -59,10 +95,6 @@ namespace hare
     MouseEvent::MouseEvent(EventType commandType)
     {
         eventType = commandType;
-        metaDown = false;
-        altDown = false;
-        controlDown = false;
-        shiftDown = false;
         leftDown = false;
         rightDown = false;
         middleDown = false;
@@ -72,15 +104,25 @@ namespace hare
     void MouseEvent::assign(const MouseEvent& rhs)
     {
         eventType = rhs.eventType;
-        metaDown = rhs.metaDown;
-        altDown = rhs.altDown;
-        controlDown = rhs.controlDown;
-        shiftDown = rhs.shiftDown;
         leftDown = rhs.leftDown;
         rightDown = rhs.rightDown;
         middleDown = rhs.middleDown;
         wheelDelta = rhs.wheelDelta;
         position = rhs.position;
+    }
+
+    KeyEvent::KeyEvent(EventType keyType)
+    {
+        eventType = keyType;
+        keyCode = 0;
+        text = 0;
+    }
+
+    KeyEvent::KeyEvent(const KeyEvent& rhs)
+    {
+        eventType = rhs.eventType;
+        keyCode = rhs.keyCode;
+        text = rhs.text;
     }
 
     // --------------------------------------------------------
@@ -174,6 +216,10 @@ namespace hare
         {
             // we hit the cache :-)
             const EventTableEntryBase* entry = cache->entry;
+
+            if (!entry)
+                return false;
+
             if (processEventIfMatches(*entry, this, event))
                 return true;
         }
@@ -185,13 +231,16 @@ namespace hare
             {
                 assert(tablePtr != tablePtr->baseTable);
                 
-                const EventTableEntryBase* entry = tablePtr->entries;
+                const EventTableEntry* entry = (EventTableEntry*)tablePtr->entries;
 
                 while (entry->func)
                 {
-                    cache->entry = entry;
-                    if (processEventIfMatches(*entry, this, event))
-                        return true;
+                    if (entry->eventType == event.getEventType())
+                    {
+                        cache->entry = entry;
+                        if (processEventIfMatches(*entry, this, event))
+                            return true;
+                    }
                     entry++;
                 }
             }
@@ -259,6 +308,11 @@ namespace hare
                 return true;
         }
 
+        return tryParent(event);
+    }
+
+    bool EventHandler::tryParent(Event& event)
+    {
         return false;
     }
 

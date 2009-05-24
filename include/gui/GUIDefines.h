@@ -10,14 +10,6 @@ namespace hare
         uiID_Any = -1,
     };
 
-    enum MouseButton
-    {
-        LeftButton,
-        RightButton,
-        MiddleButton,
-        MB_MAX,
-    };
-
     enum uiLayoutDirection
     {
         uiLayout_Default,

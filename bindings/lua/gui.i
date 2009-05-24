@@ -30,6 +30,16 @@ public:
     ThemePackage* getTheme();
     
     void render();
+    
+    bool notifyMouseMove(float deltaX, float deltaY);
+    bool notifyMouseWheel(float delta);
+    bool notifyMousePosition(float posX, float posY);
+    bool notifyMouseButtonUp(uint32 button);
+    bool notifyMouseButtonDown(uint32 button);
+
+    bool notifyKeyDown(uint32 key);
+    bool notifyKeyUp(uint32 key);
+    bool notifyChar(uint32 cp);
 };
 
 class EventHandler : public Object

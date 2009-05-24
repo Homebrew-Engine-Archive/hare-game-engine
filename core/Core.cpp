@@ -25,6 +25,8 @@ namespace hare
         static Log theLog;
         static FileSystem theFileSystem(argv0);
 		MathUtil::rand_seed(0);
+        // Set the numeric locale to C to avoid ','
+        setlocale(LC_NUMERIC, "C");
 
 #if HARE_PLATFORM == HARE_PLATFORM_WIN32
         WSADATA wsaData;

@@ -20,20 +20,38 @@ namespace hare
     }
 
     HARE_BEGIN_EVENT_TABLE(Button, Window)
-        HARE_EVT_MOUSE_EVENTS(Button::onMouseEvent)
+        HARE_EVT_MOTION(Button::onMouseMove)
+        HARE_EVT_LEFT_DOWN(Button::onMouseLButtonDown)
+        HARE_EVT_LEFT_UP(Button::onMouseLButtonUp)
+        HARE_EVT_LEAVE_WINDOW(Button::onMouseLeaves)
     HARE_END_EVENT_TABLE()
 
-    void Button::onMouseEvent(MouseEvent& event)
+    void Button::updateState(const PointF& pos)
     {
-        if (hitTest(event.getPosition()))
-        {
+        hovering = (getCapture() == this || hitTest(pos));
+    }
 
-        }
+    void Button::onMouseMove(MouseEvent& event)
+    {
+        updateState(event.getPosition());
+    }
 
-        if (hasCapture())
-        {
-            hovering = true;
-        }
+    void Button::onMouseLButtonDown(MouseEvent& event)
+    {
+        captureMouse();
+        pushed = true;
+        updateState(event.getPosition());
+    }
+
+    void Button::onMouseLButtonUp(MouseEvent& event)
+    {
+        releaseMouse();
+        pushed = false;
+    }
+
+    void Button::onMouseLeaves(MouseEvent& event)
+    {
+        hovering = false;
     }
 
     HARE_IMPLEMENT_DYNAMIC_CLASS(ButtonTheme, Theme, 0)

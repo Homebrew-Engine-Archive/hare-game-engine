@@ -13,10 +13,11 @@ namespace hare
         uiEvent_Propagate_Max = INT_MAX
     };
 
-    typedef int EventType;
+    typedef int32 EventType;
 
     extern UI_API EventType newEventType();
-
+    extern UI_API int32 newId();
+    extern UI_API int32 newId(const String& name);
     // ---------------------------------------------------------------------------
     // Event Types
     // ---------------------------------------------------------------------------
@@ -27,17 +28,30 @@ namespace hare
     // Mouse Events
     extern UI_API const EventType uiEVT_LEFT_DOWN;
     extern UI_API const EventType uiEVT_LEFT_UP;
-    extern UI_API const EventType uiEVT_MIDDLE_DOWN;
-    extern UI_API const EventType uiEVT_MIDDLE_UP;
+    extern UI_API const EventType uiEVT_LEFT_CLICK;
+    extern UI_API const EventType uiEVT_LEFT_DCLICK;
+    extern UI_API const EventType uiEVT_LEFT_TCLICK;
+
     extern UI_API const EventType uiEVT_RIGHT_DOWN;
     extern UI_API const EventType uiEVT_RIGHT_UP;
-    extern UI_API const EventType uiEVT_MOTION;
-    extern UI_API const EventType uiEVT_LEFT_DCLICK;
-    extern UI_API const EventType uiEVT_MIDDLE_DCLICK;
+    extern UI_API const EventType uiEVT_RIGHT_CLICK;
     extern UI_API const EventType uiEVT_RIGHT_DCLICK;
+    extern UI_API const EventType uiEVT_RIGHT_TCLICK;
+
+    extern UI_API const EventType uiEVT_MIDDLE_DOWN;
+    extern UI_API const EventType uiEVT_MIDDLE_UP;
+    extern UI_API const EventType uiEVT_MIDDLE_CLICK;
+    extern UI_API const EventType uiEVT_MIDDLE_DCLICK;
+    extern UI_API const EventType uiEVT_MIDDLE_TCLICK;
+
+    extern UI_API const EventType uiEVT_MOTION;
     extern UI_API const EventType uiEVT_LEAVE_WINDOW;
     extern UI_API const EventType uiEVT_ENTER_WINDOW;
     extern UI_API const EventType uiEVT_MOUSEWHEEL;
+
+    extern UI_API const EventType uiEVT_CHAR;
+    extern UI_API const EventType uiEVT_KEY_DOWN;
+    extern UI_API const EventType uiEVT_KEY_UP;
     // ---------------------------------------------------------------------------
     // Event Functions
     // ---------------------------------------------------------------------------
@@ -126,6 +140,9 @@ namespace hare
 
         static const EventTable eventTable;
         virtual const EventTable* getEventTable() const;
+
+        virtual bool tryParent(Event& event);
+
     private:
         static const EventTableEntry eventTableEntries[];
     };
@@ -208,6 +225,7 @@ namespace hare
     // ---------------------------------------------------------------------------
     class UI_API Event
     {
+        friend class PropagateOnce;
     private:
         Event& operator=(const Event&);
     protected:
@@ -296,6 +314,26 @@ namespace hare
         bool isCmdEvent;
     };
 
+    class UI_API PropagateOnce
+    {
+    public:
+        PropagateOnce(Event& event) : event(event)
+        {
+            assert(event.propagationLevel > 0);
+            event.propagationLevel--;
+        }
+
+        ~PropagateOnce()
+        {
+            event.propagationLevel++;
+        }
+
+    private:
+        Event& event;
+
+        HARE_DECLARE_NO_COPY_CLASS(PropagateOnce)
+    };
+
     class UI_API MouseEvent : public Event
     {
     public:
@@ -306,10 +344,6 @@ namespace hare
             assign(rhs); 
         }
 
-        bool isControlDown() const { return controlDown; }
-        bool isMetaDown() const { return metaDown; }
-        bool isAltDown() const { return altDown; }
-        bool isShiftDown() const { return shiftDown; }
         bool isLeftDown() const { return leftDown; }
         bool isMiddleDown() const { return middleDown; }
         bool isRightDown() const { return rightDown; }
@@ -348,13 +382,30 @@ namespace hare
         bool middleDown;
         bool rightDown;
 
-        bool controlDown;
-        bool shiftDown;
-        bool altDown;
-        bool metaDown;
-
         float wheelDelta;
         PointF position;
+    };
+
+    class UI_API KeyEvent : public Event
+    {
+    public:
+        KeyEvent(EventType keyType = uiEVT_NULL);
+        KeyEvent(const KeyEvent& rhs);
+
+        uint32 getKeyCode() const { return keyCode; }
+        uint32 getChar() const { return text; }
+
+        virtual Event *cloneEvent() const { return new KeyEvent(*this); }
+
+    public:
+        uint32 keyCode;
+        uint32 text;
+    };
+
+
+    class UI_API CommandEvent : public Event
+    {
+
     };
 
 #define HARE_DECLARE_EVENT_TABLE_ENTRY(type, winid, idLast, fn, data) \
@@ -393,27 +444,18 @@ protected: \
 #define HARE_EVT_RIGHT_DOWN(func)   __HARE_DECLARE_EVT0(uiEVT_RIGHT_DOWN,   MouseEventHandler(func))
 #define HARE_EVT_RIGHT_UP(func)     __HARE_DECLARE_EVT0(uiEVT_RIGHT_UP,     MouseEventHandler(func))
 #define HARE_EVT_MOTION(func)       __HARE_DECLARE_EVT0(uiEVT_MOTION,       MouseEventHandler(func))
+#define HARE_EVT_LEFT_CLICK(func)   __HARE_DECLARE_EVT0(uiEVT_LEFT_CLICK,   MouseEventHandler(func))
+#define HARE_EVT_MIDDLE_CLICK(func) __HARE_DECLARE_EVT0(uiEVT_MIDDLE_CLICK, MouseEventHandler(func))
+#define HARE_EVT_RIGHT_CLICK(func)  __HARE_DECLARE_EVT0(uiEVT_RIGHT_CLICK,  MouseEventHandler(func))
 #define HARE_EVT_LEFT_DCLICK(func)  __HARE_DECLARE_EVT0(uiEVT_LEFT_DCLICK,  MouseEventHandler(func))
 #define HARE_EVT_MIDDLE_DCLICK(func)__HARE_DECLARE_EVT0(uiEVT_MIDDLE_DCLICK,MouseEventHandler(func))
 #define HARE_EVT_RIGHT_DCLICK(func) __HARE_DECLARE_EVT0(uiEVT_RIGHT_DCLICK, MouseEventHandler(func))
+#define HARE_EVT_LEFT_TCLICK(func)  __HARE_DECLARE_EVT0(uiEVT_LEFT_TCLICK,  MouseEventHandler(func))
+#define HARE_EVT_MIDDLE_TCLICK(func)__HARE_DECLARE_EVT0(uiEVT_MIDDLE_TCLICK,MouseEventHandler(func))
+#define HARE_EVT_RIGHT_TCLICK(func) __HARE_DECLARE_EVT0(uiEVT_RIGHT_TCLICK, MouseEventHandler(func))
 #define HARE_EVT_LEAVE_WINDOW(func) __HARE_DECLARE_EVT0(uiEVT_LEAVE_WINDOW, MouseEventHandler(func))
 #define HARE_EVT_ENTER_WINDOW(func) __HARE_DECLARE_EVT0(uiEVT_ENTER_WINDOW, MouseEventHandler(func))
 #define HARE_EVT_MOUSEWHEEL(func)   __HARE_DECLARE_EVT0(uiEVT_MOUSEWHEEL,   MouseEventHandler(func))
-
-#define HARE_EVT_MOUSE_EVENTS(func) \
-    HARE_EVT_LEFT_DOWN(func) \
-    HARE_EVT_LEFT_UP(func) \
-    HARE_EVT_MIDDLE_DOWN(func) \
-    HARE_EVT_MIDDLE_UP(func) \
-    HARE_EVT_RIGHT_DOWN(func) \
-    HARE_EVT_RIGHT_UP(func) \
-    HARE_EVT_MOTION(func) \
-    HARE_EVT_LEFT_DCLICK(func) \
-    HARE_EVT_MIDDLE_DCLICK(func) \
-    HARE_EVT_RIGHT_DCLICK(func) \
-    HARE_EVT_LEAVE_WINDOW(func) \
-    HARE_EVT_ENTER_WINDOW(func) \
-    HARE_EVT_MOUSEWHEEL(func)
 
 }
 

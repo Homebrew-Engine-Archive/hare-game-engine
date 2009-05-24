@@ -49,7 +49,7 @@ namespace hare
 		// convert the polled value to seconds
 		cur = (float)(seconds * sTimerSecondsConversion);
 
-	#else // #if OO_PLATFORM == OO_PLATFORM_WIN32
+	#else // HARE_PLATFORM == HARE_PLATFORM_WIN32
 
         // clock() returns cpu time, can NOT use this
 		// cur = (float)clock() / CLOCKS_PER_SEC;
@@ -66,7 +66,7 @@ namespace hare
         gettimeofday(&now, NULL);
         cur = now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0f;
 
-	#endif
+	#endif // HARE_PLATFORM == HARE_PLATFORM_WIN32
 
 		static float last = 0.f;
 

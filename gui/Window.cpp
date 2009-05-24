@@ -54,23 +54,60 @@ namespace hare
         HARE_META(enabled, bool)
     }
 
-    Window::Window() : parent(0), shown(true), enabled(true), windowId(uiID_Any),
-        minSize(-1, -1), maxSize(-1, -1), clippedByParent(false), position(0, 0),
-        size(20, 20), pixelRect(0, 0, 0, 0), pixelRectValid(false), unclippedRect(0, 0, 0, 0),
-        unclippedRectValid(false), unclippedInnerRect(0, 0, 0, 0),
-        unclippedInnerRectValid(false), innerRect(0, 0, 0, 0),
-        innerRectValid(false), bestSize(-1, -1), bestSizeValid(false)
+    Window::Window() : 
+        parent(0), 
+        shown(true), 
+        enabled(true), 
+        active(false),
+        windowId(uiID_Any),
+        minSize(-1, -1), 
+        maxSize(-1, -1),
+        clippedByParent(false), 
+        distCapturedInputs(false), 
+        wantsMultiClicks(true),
+        mousePassThroughEnabled(false),
+        position(0, 0), 
+        size(20, 20), 
+        pixelRect(0, 0, 0, 0), 
+        pixelRectValid(false), 
+        unclippedRect(0, 0, 0, 0),
+        unclippedRectValid(false), 
+        unclippedInnerRect(0, 0, 0, 0),
+        unclippedInnerRectValid(false), 
+        innerRect(0, 0, 0, 0),
+        innerRectValid(false), 
+        bestSize(-1, -1), 
+        bestSizeValid(false)
     {
+        eventHandler = this;
     }
 
-    Window::Window(Window* parent)
-        : parent(0), shown(true), enabled(true), windowId(uiID_Any),
-        minSize(-1, -1), maxSize(-1, -1), clippedByParent(false), position(0, 0),
-        size(20, 20), pixelRect(0, 0, 0, 0), pixelRectValid(false), unclippedRect(0, 0, 0, 0),
-        unclippedRectValid(false), unclippedInnerRect(0, 0, 0, 0),
-        unclippedInnerRectValid(false), innerRect(0, 0, 0, 0),
-        innerRectValid(false), bestSize(-1, -1), bestSizeValid(false)
+    Window::Window(Window* parent, int32 id) : 
+        parent(parent), 
+        shown(true), 
+        enabled(true), 
+        active(false),
+        windowId(id),
+        minSize(-1, -1), 
+        maxSize(-1, -1), 
+        clippedByParent(false), 
+        distCapturedInputs(false), 
+        wantsMultiClicks(true),
+        mousePassThroughEnabled(false),
+        position(0, 0),
+        size(20, 20), 
+        pixelRect(0, 0, 0, 0), 
+        pixelRectValid(false), 
+        unclippedRect(0, 0, 0, 0),
+        unclippedRectValid(false), 
+        unclippedInnerRect(0, 0, 0, 0),
+        unclippedInnerRectValid(false), 
+        innerRect(0, 0, 0, 0),
+        innerRectValid(false), 
+        bestSize(-1, -1), 
+        bestSizeValid(false)
     {
+        eventHandler = this;
         setParent(parent);
         parent->addChild(this);
     }
@@ -91,12 +128,29 @@ namespace hare
             scriptRunner->setOwner(this);
             scriptRunner->notifyOwnerCreated();
         }
+
+        windowId = newId(windowName);
     }
 
     void Window::postEdited(Attribute* attr)
     {
         layout();
         setArea(position, size);
+    }
+
+    bool Window::tryParent(Event& event)
+    {
+        if (event.shouldPropagate())
+        {
+            Window *parent = getParent();
+            if (parent)
+            {
+                PropagateOnce locker(event);
+                return parent->getEventHandler()->processEvent(event);
+            }
+        }
+
+        return EventHandler::tryParent(event);
     }
 
     void Window::reparent(Window* window)
@@ -296,5 +350,104 @@ namespace hare
         {
             (*it)->render(themes);
         }
+    }
+
+    Window* Window::getTargetChildAtPosition(const PointF& pt)
+    {
+        Window::List::reverse_iterator it = children.rbegin();
+
+        for (; it != children.rend(); ++it)
+        {
+            Window* child = *it;
+            if (child->isShown())
+            {
+                Window* wnd = child->getTargetChildAtPosition(pt);
+
+                if (wnd)
+                {
+                    return wnd;
+                }
+                else if (!child->isMousePassThroughEnabled() && child->hitTest(pt))
+                {
+                    return child;
+                }
+            }
+        }
+
+        return 0;
+    }
+
+    bool Window::distributesCapturedInputs() const
+    {
+        return distCapturedInputs;
+    }
+
+    bool Window::wantsMultiClickEvents() const
+    {
+        return wantsMultiClicks;
+    }
+
+    bool Window::isMousePassThroughEnabled() const
+    {
+        return mousePassThroughEnabled;
+    }
+
+    bool Window::isAncestor(const Window* window) const
+    {
+        if (!parent)
+        {
+            return false;
+        }
+
+        if (parent == window)
+        {
+            return true;
+        }
+
+        return parent->isAncestor(window);
+    }
+
+    Window* Window::getActiveChild()
+    {
+        if (!isActive())
+        {
+            return 0;
+        }
+
+        Window::List::reverse_iterator it = children.rbegin();
+
+        for (; it != children.rend(); ++it)
+        {
+            Window* child = *it;
+            if (child->isActive())
+            {
+                return child->getActiveChild();
+            }
+        }
+
+        return this;
+    }
+
+    bool Window::isActive() const
+    {
+        bool parentActive = (parent == 0) ? true : parent->isActive();
+
+        return active && parentActive;
+    }
+
+    void Window::captureMouse()
+    {
+        if (capturedWindow)
+        {
+
+        }
+
+        capturedWindow = this;
+    }
+
+    void Window::releaseMouse()
+    {
+
+        capturedWindow = NULL;
     }
 }

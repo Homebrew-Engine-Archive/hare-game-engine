@@ -140,12 +140,6 @@
 			Name="Codec"
 			Filter="">
 			<File
-				RelativePath="..\..\graphics\DataHolder.cpp">
-			</File>
-			<File
-				RelativePath="..\..\include\graphics\DataHolder.h">
-			</File>
-			<File
 				RelativePath="..\..\graphics\DevILImageCodec.cpp">
 			</File>
 			<File

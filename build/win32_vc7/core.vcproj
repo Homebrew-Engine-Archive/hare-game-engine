@@ -142,6 +142,9 @@
 				RelativePath="..\..\core\Core.cpp">
 			</File>
 			<File
+				RelativePath="..\..\core\DataHolder.cpp">
+			</File>
+			<File
 				RelativePath="..\..\core\DynamicLibrary.cpp">
 			</File>
 			<File
@@ -290,6 +293,9 @@
 			</File>
 			<File
 				RelativePath="..\..\include\core\CorePrerequisites.h">
+			</File>
+			<File
+				RelativePath="..\..\include\core\DataHolder.h">
 			</File>
 			<File
 				RelativePath="..\..\include\core\DynamicLibrary.h">

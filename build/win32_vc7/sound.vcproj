@@ -2,8 +2,8 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="7.10"
-	Name="dx9_renderer"
-	ProjectGUID="{CB44B9FC-742D-429A-B926-CCE744E2793B}"
+	Name="sound"
+	ProjectGUID="{4825B1EC-EC71-4624-B4D3-5A0D3F01B09E}"
 	Keyword="Win32Proj">
 	<Platforms>
 		<Platform
@@ -12,15 +12,15 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="../../lib/plugins"
-			IntermediateDirectory="$(ConfigurationName)/dx9_renderer"
+			OutputDirectory="../../lib"
+			IntermediateDirectory="$(ConfigurationName)/sound"
 			ConfigurationType="2"
 			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../../include;../../ext/d3d/include"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL"
+				AdditionalIncludeDirectories="../../include;../../include/sound"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;SOUND_EXPORTS"
 				MinimalRebuild="TRUE"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -33,12 +33,14 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="core_d.lib graphics_d.lib d3d9.lib d3dx9d.lib"
-				OutputFile="$(OutDir)/dx9_renderer_d.dll"
+				AdditionalDependencies="core_d.lib"
+				OutputFile="$(OutDir)/sound_d.dll"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="../../lib;../../ext/d3d/lib/x86"
+				AdditionalLibraryDirectories="../../lib"
 				GenerateDebugInformation="TRUE"
+				ProgramDatabaseFile="$(OutDir)/sound.pdb"
 				SubSystem="2"
+				ImportLibrary="$(OutDir)/sound_d.lib"
 				TargetMachine="1"/>
 			<Tool
 				Name="VCMIDLTool"/>
@@ -69,7 +71,7 @@
 			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;D3DRENDER_EXPORTS"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;SOUND_EXPORTS"
 				RuntimeLibrary="0"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
@@ -79,13 +81,13 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="$(OutDir)/D3DRender.dll"
+				OutputFile="$(OutDir)/sound.dll"
 				LinkIncremental="1"
 				GenerateDebugInformation="TRUE"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
-				ImportLibrary="$(OutDir)/D3DRender.lib"
+				ImportLibrary="$(OutDir)/sound.lib"
 				TargetMachine="1"/>
 			<Tool
 				Name="VCMIDLTool"/>
@@ -117,73 +119,7 @@
 			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}">
 			<File
-				RelativePath="..\..\plugins\d3d_renderer\D3DIndexBufferManager.cpp">
-			</File>
-			<File
-				RelativePath="..\..\plugins\d3d_renderer\D3DPlugin.cpp">
-			</File>
-			<File
-				RelativePath="..\..\plugins\d3d_renderer\D3DRenderSystem.cpp">
-			</File>
-			<File
-				RelativePath="..\..\plugins\d3d_renderer\D3DRenderWindow.cpp">
-			</File>
-			<File
-				RelativePath="..\..\plugins\d3d_renderer\D3DSystemManager.cpp">
-			</File>
-			<File
-				RelativePath="..\..\plugins\d3d_renderer\D3DTexture.cpp">
-			</File>
-			<File
-				RelativePath="..\..\plugins\d3d_renderer\D3DTypeConverter.cpp">
-			</File>
-			<File
-				RelativePath="..\..\plugins\d3d_renderer\D3DUtility.cpp">
-			</File>
-			<File
-				RelativePath="..\..\plugins\d3d_renderer\D3DVertexBufferManager.cpp">
-			</File>
-			<File
-				RelativePath="..\..\plugins\d3d_renderer\DeviceManager.cpp">
-			</File>
-		</Filter>
-		<Filter
-			Name="Header Files"
-			Filter="h;hpp;hxx;hm;inl;inc;xsd"
-			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
-			<File
-				RelativePath="..\..\plugins\d3d_renderer\D3DIndexBufferManager.h">
-			</File>
-			<File
-				RelativePath="..\..\plugins\d3d_renderer\D3DRenderSystem.h">
-			</File>
-			<File
-				RelativePath="..\..\plugins\d3d_renderer\D3DRenderWindow.h">
-			</File>
-			<File
-				RelativePath="..\..\plugins\d3d_renderer\D3DSystemManager.h">
-			</File>
-			<File
-				RelativePath="..\..\plugins\d3d_renderer\D3DTexture.h">
-			</File>
-			<File
-				RelativePath="..\..\plugins\d3d_renderer\D3DTypeConverter.h">
-			</File>
-			<File
-				RelativePath="..\..\plugins\d3d_renderer\D3DUtility.h">
-			</File>
-			<File
-				RelativePath="..\..\plugins\d3d_renderer\D3DVertexBufferManager.h">
-			</File>
-			<File
-				RelativePath="..\..\plugins\d3d_renderer\DeviceManager.h">
-			</File>
-		</Filter>
-		<Filter
-			Name="PCH"
-			Filter="">
-			<File
-				RelativePath="..\..\plugins\d3d_renderer\PCH.cpp">
+				RelativePath="..\..\sound\PCH.cpp">
 				<FileConfiguration
 					Name="Debug|Win32">
 					<Tool
@@ -192,9 +128,55 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\plugins\d3d_renderer\PCH.h">
+				RelativePath="..\..\sound\SoundApp.cpp">
+			</File>
+			<File
+				RelativePath="..\..\sound\SoundBuffer.cpp">
+			</File>
+			<File
+				RelativePath="..\..\sound\SoundListener.cpp">
+			</File>
+			<File
+				RelativePath="..\..\sound\SoundManager.cpp">
+			</File>
+			<File
+				RelativePath="..\..\sound\SoundObject.cpp">
 			</File>
 		</Filter>
+		<Filter
+			Name="Header Files"
+			Filter="h;hpp;hxx;hm;inl;inc;xsd"
+			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
+			<File
+				RelativePath="..\..\include\sound\PCH.h">
+			</File>
+			<File
+				RelativePath="..\..\include\sound\SoundApp.h">
+			</File>
+			<File
+				RelativePath="..\..\include\sound\SoundBuffer.h">
+			</File>
+			<File
+				RelativePath="..\..\include\sound\SoundListener.h">
+			</File>
+			<File
+				RelativePath="..\..\include\sound\SoundManager.h">
+			</File>
+			<File
+				RelativePath="..\..\include\sound\SoundObject.h">
+			</File>
+		</Filter>
+		<Filter
+			Name="Resource Files"
+			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx"
+			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}">
+		</Filter>
+		<File
+			RelativePath="..\..\include\sound\Sound.h">
+		</File>
+		<File
+			RelativePath="..\..\include\sound\SoundPrerequisites.h">
+		</File>
 	</Files>
 	<Globals>
 	</Globals>

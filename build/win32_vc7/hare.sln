@@ -73,6 +73,17 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "lua_binding", "lua_binding.
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sound", "sound.vcproj", "{4825B1EC-EC71-4624-B4D3-5A0D3F01B09E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{B7DA67A0-0F8C-479A-A7BB-7EC5DCDCA017} = {B7DA67A0-0F8C-479A-A7BB-7EC5DCDCA017}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "fmod_sound", "fmod_sound.vcproj", "{9F5FE3D6-3D33-478E-ACD4-AB169A8B01A2}"
+	ProjectSection(ProjectDependencies) = postProject
+		{B7DA67A0-0F8C-479A-A7BB-7EC5DCDCA017} = {B7DA67A0-0F8C-479A-A7BB-7EC5DCDCA017}
+		{4825B1EC-EC71-4624-B4D3-5A0D3F01B09E} = {4825B1EC-EC71-4624-B4D3-5A0D3F01B09E}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfiguration) = preSolution
 		Debug = Debug
@@ -143,6 +154,14 @@ Global
 		{13AEF6EC-409F-44C1-8390-27E6E83E7A84}.Debug.Build.0 = Debug|Win32
 		{13AEF6EC-409F-44C1-8390-27E6E83E7A84}.Release.ActiveCfg = Release|Win32
 		{13AEF6EC-409F-44C1-8390-27E6E83E7A84}.Release.Build.0 = Release|Win32
+		{4825B1EC-EC71-4624-B4D3-5A0D3F01B09E}.Debug.ActiveCfg = Debug|Win32
+		{4825B1EC-EC71-4624-B4D3-5A0D3F01B09E}.Debug.Build.0 = Debug|Win32
+		{4825B1EC-EC71-4624-B4D3-5A0D3F01B09E}.Release.ActiveCfg = Release|Win32
+		{4825B1EC-EC71-4624-B4D3-5A0D3F01B09E}.Release.Build.0 = Release|Win32
+		{9F5FE3D6-3D33-478E-ACD4-AB169A8B01A2}.Debug.ActiveCfg = Debug|Win32
+		{9F5FE3D6-3D33-478E-ACD4-AB169A8B01A2}.Debug.Build.0 = Debug|Win32
+		{9F5FE3D6-3D33-478E-ACD4-AB169A8B01A2}.Release.ActiveCfg = Release|Win32
+		{9F5FE3D6-3D33-478E-ACD4-AB169A8B01A2}.Release.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 	EndGlobalSection

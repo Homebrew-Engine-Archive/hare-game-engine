@@ -9,4 +9,5 @@
 @copy ext\physfs\debug\*.pdb 			lib
 @copy ext\devil\lib\*.dll 			lib
 @copy ext\glew\bin\*.dll 			lib
+@copy ext\fmod\lib\*.dll			lib
 @pause

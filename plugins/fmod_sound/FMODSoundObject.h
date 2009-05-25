@@ -28,7 +28,7 @@ namespace hare
         virtual void resume();
         virtual void setLopping(bool state);
         virtual void update();
-
+		virtual bool getPlaying();
 
     protected:
         FMOD::Channel   *pChannel;

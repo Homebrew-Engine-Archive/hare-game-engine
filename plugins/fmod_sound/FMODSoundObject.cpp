@@ -68,11 +68,19 @@ namespace hare
 
     void FMODSoundObject::setLopping(bool state)
     {
+        looping = state;
         if (state){
             pChannel->setMode(FMOD_LOOP_NORMAL);
         }else{
             pChannel->setMode(FMOD_LOOP_OFF);
         }
+    }
+
+    bool FMODSoundObject::getPlaying()
+    {
+        bool bPlaying;
+        pChannel->isPlaying(&bPlaying);
+        return bPlaying;
     }
 
     void FMODSoundObject::update()

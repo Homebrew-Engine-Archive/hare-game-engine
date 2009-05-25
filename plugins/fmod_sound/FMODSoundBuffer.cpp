@@ -44,6 +44,8 @@ namespace hare
         if (pSound)
             return;
 
+        bFromStream = bStream;
+
         FileSystem* fs = getFileSystem();
         FileHandle fh = fs->openFile(fileName, FM_Read);
 

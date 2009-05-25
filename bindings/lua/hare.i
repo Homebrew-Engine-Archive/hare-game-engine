@@ -8,6 +8,7 @@
 #include "core/Core.h"
 #include "graphics/Graphics.h"
 #include "gui/GUI.h"
+#include "sound/sound.h"
 using namespace hare;
 
 %}
@@ -19,3 +20,4 @@ using namespace hare;
 %include graphics.i
 %include gui.i
 %include input.i
+%include sound.i

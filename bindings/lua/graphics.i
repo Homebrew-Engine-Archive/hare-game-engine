@@ -4,6 +4,9 @@
 #include "LuaSceneListener.h"
 %}
 
+%typemap(out) Sprite* { if ($1 && $owner) ($1)->addRef(); dynamicCastObject(L, $1, $owner); SWIG_arg++; }
+
+
 class Sprite : public Object
 {
 public:
@@ -40,11 +43,23 @@ public:
 class SceneManager : public Object
 {
 public:
-	void addSprite(Sprite* sprite);
+	SceneManager();
+	virtual ~SceneManager();
+	
+	int  addSprite(Sprite* sprite);
 
 	void removeSprite(Sprite* sprite);
-	
+
+	void removeAllSprite();
+
 	void setSceneListener(SceneListener* listener);
+
+	Sprite* getSpriteByName(const String& name);
+
+	Sprite* getSpriteByID(int id);
+
+	int getSpriteCount();
+
 };
 
 struct WindowParams
@@ -180,7 +195,7 @@ public:
 
 TextManager* getTextManager();
 
-class Particle : public Object
+class Particle : public Sprite
 {
 public:
 	Particle();
@@ -194,8 +209,29 @@ public:
 	virtual void pause() = 0;
 	virtual void stop() = 0;
 
-	virtual PointF getPosition();
+	virtual const PointF& getPosition();
 	virtual void setPosition(float x, float y);
+	void   setMaterial(Material* mtrl);
+};
+
+class ImageSprite : public Sprite
+{
+public:        
+	ImageSprite();
+	virtual ~ImageSprite();
+	
+	virtual void render();
+
+	void loadFromImage(const String& filename);
+
+	void loadFromMaterial(Material* m);
+
+	void setUV(float l, float r, float t, float b);
+
+	void setUV(const RectF& rect);
+
+	Material* getMaterial();
+
 };
 
 class AnimFrame : public Object
@@ -235,3 +271,33 @@ public:
 
 };
 
+class ComponentSprite : public Sprite
+{
+public:
+	ComponentSprite();
+	virtual ~ComponentSprite();
+
+	virtual void move(float dx, float dy);
+
+	virtual void moveTo(float x, float y);
+
+	virtual void render();
+
+	int addPart(Sprite* s);
+
+	int getPartID(Sprite* s);
+
+	bool removePart(int partID);
+
+	bool removePart(Sprite* s);
+
+	//NB: swap render sequence
+	bool swapPart(int partID_1, int partID_2);
+
+	Sprite* getPart(int partID);
+
+	Sprite* getPart(const String& name);
+
+	uint32 getPartCount();
+
+};

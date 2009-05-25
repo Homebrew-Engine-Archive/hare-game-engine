@@ -51,8 +51,10 @@ namespace hare
 
 	void DataHolder::clear()
 	{
-		delete data;
-		data = 0;
-		size = 0;
+        if (data){
+            delete data;
+            data = NULL;
+            size = 0;
+        }
 	}
 }

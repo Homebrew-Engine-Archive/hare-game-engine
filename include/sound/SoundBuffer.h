@@ -70,6 +70,7 @@ namespace hare
         float   gain;
         float   outerGain;
         float   rolloff;
+        bool    bFromStream;
 
 	};
 }

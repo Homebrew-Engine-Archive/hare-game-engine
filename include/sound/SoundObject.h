@@ -30,6 +30,7 @@ namespace hare
 		virtual void resume()=0;
         virtual void setLopping(bool state) = 0;
         virtual void update() = 0;
+		virtual bool getPlaying() = 0;
 
         virtual void postEdited(Attribute *attr);
 
@@ -47,11 +48,9 @@ namespace hare
 		const Vector2& getVelocity();
         float getVolume();
         bool  getLooping() const;
-		bool  getPlaying() const;
 		float getPrecomputedDistanceSquared();
 
     protected:
-        bool                bPlaying;
         bool                looping;
         Vector2	            position;
         Vector2	            direction;

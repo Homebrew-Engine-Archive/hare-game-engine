@@ -33,7 +33,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="lua51.lib OIS_static_d.lib core_d.lib graphics_d.lib gui_d.lib"
+				AdditionalDependencies="lua51.lib OIS_static_d.lib core_d.lib graphics_d.lib gui_d.lib sound_d.lib"
 				OutputFile="$(OutDir)/$(ProjectName)_d.dll"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="..\..\lib;..\..\ext\lua\src;..\..\ext\ois\lib"
@@ -212,6 +212,9 @@
 		</File>
 		<File
 			RelativePath="..\..\bindings\lua\input.i">
+		</File>
+		<File
+			RelativePath="..\..\bindings\lua\sound.i">
 		</File>
 	</Files>
 	<Globals>

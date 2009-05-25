@@ -18,7 +18,6 @@
 #include "HareApp.h"
 #include "HareGraphicsType.h"
 #include "Image.h"
-#include "DataHolder.h"
 #include "DevILImageCodec.h"
 #include "ImageCodec.h"
 #include "GraphicsUtil.h"

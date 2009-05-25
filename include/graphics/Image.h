@@ -15,7 +15,7 @@
 
 #include "GraphicsPrerequisites.h"
 #include "HareGraphicsType.h"
-#include "DataHolder.h"
+
 
 namespace hare
 {

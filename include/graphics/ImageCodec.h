@@ -14,7 +14,7 @@
 #define _IMAGECODEC_H_
 
 #include "GraphicsPrerequisites.h"
-#include "DataHolder.h"
+
 #include "HareGraphicsType.h"
 
 namespace hare

@@ -26,7 +26,7 @@ namespace hare
         HARE_DECLARE_DYNAMIC_CLASS(SceneManager)
 	public:
 		SceneManager();
-	    ~SceneManager();
+	    virtual ~SceneManager();
 
 		void beginScene();
 

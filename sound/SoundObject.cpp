@@ -30,7 +30,6 @@ namespace hare
         ,volume(100)
         ,precomputedDistanceSquared(0)
         ,looping(false)
-        ,bPlaying(false)
 	{
 
 	}
@@ -89,11 +88,6 @@ namespace hare
     bool SoundObject::getLooping() const
     {
         return looping;
-    }
-
-    bool SoundObject::getPlaying() const
-    {
-        return bPlaying;
     }
 	
     float SoundObject::getPrecomputedDistanceSquared()

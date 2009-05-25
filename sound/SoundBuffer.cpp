@@ -19,7 +19,8 @@ namespace hare
 {
     HARE_IMPLEMENT_ABSTRACT_CLASS(SoundBuffer, Object, 0)
     {
-        HARE_META(fileName, String)
+        HARE_META_F(fileName, String, propHide)
+        HARE_META_F(bFromStream, bool, propHide)
     }
 
     SoundBuffer::SoundBuffer()
@@ -33,6 +34,7 @@ namespace hare
         ,gain(1.0)
         ,outerGain(0.0f)
         ,rolloff(1.0f)
+        ,bFromStream(false)
     {
 
     }
@@ -47,6 +49,7 @@ namespace hare
         ,gain(1.0)
         ,outerGain(0.0f)
         ,rolloff(1.0f)
+        ,bFromStream(false)
 	{
 		fileName = name;
 	}
@@ -58,11 +61,13 @@ namespace hare
 
     void SoundBuffer::postEdited(Attribute *attr)
     {
-
+        update();
     }
 
     void SoundBuffer::postLoaded()
     {
+        unload();
+        load(bFromStream);
         getSoundApp()->getSoundManager()->registSoundBuffer(this);
     }
 

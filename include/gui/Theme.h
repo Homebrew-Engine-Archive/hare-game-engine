@@ -19,15 +19,14 @@ namespace hare
         Material::Ptr mtrl;
     };
 
-    typedef HashMap<String, Theme*> ThemeHashMap;
+    typedef HashMap<const ClassInfo*, Theme*> ThemeHashMap;
 
     class UI_API ThemePackage : public Object
     {
         HARE_DECLARE_DYNAMIC_CLASS(ThemePackage)
     public:
-        Theme* getTheme(Window* window);
-        Theme* getTheme(ClassInfo* classInfo);
-        Theme* getTheme(const String& className);
+        Theme* getTheme(const Window* window);
+        Theme* getTheme(const ClassInfo* classInfo);
 
         Theme::Array& getThemes() { return themes; }
 

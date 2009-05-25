@@ -67,6 +67,8 @@ namespace hare
     // --------------------------------------------------------
     // Event
     // --------------------------------------------------------
+    HARE_IMPLEMENT_ABSTRACT_CLASS(Event, Object, 0) {}
+
     Event::Event(int winid /* = 0 */, EventType commandType /* = uiEVT_NULL */)
     {
         id = winid;
@@ -92,6 +94,8 @@ namespace hare
     // --------------------------------------------------------
     // MouseEvent
     // --------------------------------------------------------
+    HARE_IMPLEMENT_ABSTRACT_CLASS(MouseEvent, Event, 0) {}
+
     MouseEvent::MouseEvent(EventType commandType)
     {
         eventType = commandType;
@@ -110,6 +114,11 @@ namespace hare
         wheelDelta = rhs.wheelDelta;
         position = rhs.position;
     }
+
+    // --------------------------------------------------------
+    // KeyEvent
+    // --------------------------------------------------------
+    HARE_IMPLEMENT_ABSTRACT_CLASS(KeyEvent, Event, 0) {}
 
     KeyEvent::KeyEvent(EventType keyType)
     {
@@ -227,6 +236,7 @@ namespace hare
         {
             cache->eventType = event.getEventType();
             cache->tablePtr = tablePtr;
+            cache->entry = NULL;
             for (; tablePtr != NULL; tablePtr = tablePtr->baseTable)
             {
                 assert(tablePtr != tablePtr->baseTable);

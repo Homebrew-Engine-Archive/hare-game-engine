@@ -21,28 +21,37 @@ namespace hare
         for (; it != themes.end(); ++it)
         {
             Theme* theme = *it;
-            themeMap[theme->getWindowClass()->className] = theme;
+            themeMap[theme->getWindowClass()] = theme;
         }
     }
 
-    Theme* ThemePackage::getTheme(Window* window)
+    Theme* ThemePackage::getTheme(const Window* window)
     {
-        return window ? getTheme(window->getClassInfo()->className) : NULL;
+        return window ? getTheme(window->getClassInfo()) : NULL;
     }
 
-    Theme* ThemePackage::getTheme(ClassInfo* classInfo)
+    Theme* ThemePackage::getTheme(const ClassInfo* classInfo)
     {
-        return classInfo ? getTheme(classInfo->className) : NULL;
-    }
-    
-    Theme* ThemePackage::getTheme(const String& className)
-    {
-        ThemeHashMap::iterator it = themeMap.find(className);
-        if (it != themeMap.end())
-            return it->second;
+        if (!classInfo)
+            return NULL;
+
+        if (classInfo->isDerivedFrom(&Window::CLASS_INFO))
+        {
+            ThemeHashMap::iterator it = themeMap.find(classInfo);
+
+            if (it != themeMap.end())
+            {
+                return it->second;
+            }
+            else
+            {
+                return getTheme(classInfo->getBaseClass());
+            }
+        }
+
         return NULL;
     }
-
+    
     void drawThemeInternal(Material* mtrl, const RectUV& windowRect, const RectUV& rect, const RectUV& rectInner)
     {
         RectF uvRect(0, 0, 0, 0);

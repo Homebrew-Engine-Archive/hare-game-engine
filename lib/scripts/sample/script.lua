@@ -8,6 +8,7 @@ mouseY = 0
 --  Scene listener callbacks
 --*******************************************
 function onBeginScene()
+    collectgarbage()
     mouse:getMouseState().width = window:getWidth()
     mouse:getMouseState().height = window:getHeight()
     mouse:capture()
@@ -46,12 +47,12 @@ end
 
 function onMousePressed(event, button)
     guiSys:notifyMouseButtonDown(button)
-    --print("mouse pressed, button : ", button)
+    print("mouse pressed", swig_type(event), swig_type(button))
 end
 
 function onMouseReleased(event, button)
     guiSys:notifyMouseButtonUp(button)
-    --print("mouse released, button : ", button)
+    print("mouse released", swig_type(event), swig_type(button))
 end
 
 --*******************************************
@@ -111,7 +112,7 @@ function onCreate(this)
     keyListener:setKeyReleasedCallback(onKeyReleased)
     keyboard:setListener(keyListener)
 
-    local layout = hare.importObject('/sample/layouts/test2.layout')
+    local layout = hare.importObject('/sample/layouts/test.layout')
     local theme = hare.importObject('/sample/themes/vista_style.theme')
     print("layout : ", swig_type(layout))
     print("theme : ", swig_type(theme))

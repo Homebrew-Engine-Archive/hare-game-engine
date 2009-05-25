@@ -10,7 +10,7 @@ namespace hare
     }
 
     GUISystem::GUISystem() : windowWithMouse(0), modalTarget(0), mousePos(0, 0), 
-        clickTimeout(0.1f), dbclickTimeout(0.2f), dblclickSize(12, 12)
+        clickTimeout(0.2f), dbclickTimeout(0.33f), dblclickSize(12, 12)
     {
     }
 

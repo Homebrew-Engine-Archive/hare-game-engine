@@ -196,6 +196,12 @@
 				RelativePath="..\..\include\gui\Button.h">
 			</File>
 			<File
+				RelativePath="..\..\gui\CheckBox.cpp">
+			</File>
+			<File
+				RelativePath="..\..\include\gui\CheckBox.h">
+			</File>
+			<File
 				RelativePath="..\..\gui\FrameWindow.cpp">
 			</File>
 			<File

@@ -78,6 +78,9 @@ public:
     void setMouseReleasedCallback(SWIGLUA_REF func);
 };
 
+%rename(OIS_KeyEvent)   OIS::KeyEvent;
+%rename(OIS_MouseEvent) OIS::MouseEvent;
+
 namespace OIS
 {
     class EventArg
@@ -234,7 +237,6 @@ namespace OIS
 		KC_MAIL        = 0xEC,    // Mail
 		KC_MEDIASELECT = 0xED     // Media Select
 	};
-
 	
     class KeyEvent : public EventArg
     {

@@ -223,8 +223,10 @@ namespace hare
     // ---------------------------------------------------------------------------
     // Event
     // ---------------------------------------------------------------------------
-    class UI_API Event
+    class UI_API Event : public Object
     {
+        HARE_DECLARE_ABSTRACT_CLASS(Event)
+
         friend class PropagateOnce;
     private:
         Event& operator=(const Event&);
@@ -246,12 +248,12 @@ namespace hare
             return eventType; 
         }
 
-        void* getEventSender() const 
+        Object* getEventSender() const 
         { 
             return eventSender; 
         }
         
-        void setEventSender(void* sender) 
+        void setEventSender(Object* sender) 
         { 
             eventSender = sender; 
         }
@@ -301,9 +303,11 @@ namespace hare
     protected:
         friend class EventHandler;
 
-        void* eventSender;
+        Object* eventSender;
         EventType eventType;
         int id;
+
+    public:
         void* userData;
 
     protected:
@@ -336,6 +340,8 @@ namespace hare
 
     class UI_API MouseEvent : public Event
     {
+        HARE_DECLARE_ABSTRACT_CLASS(MouseEvent)
+
     public:
         MouseEvent(EventType commandType);
 
@@ -388,6 +394,7 @@ namespace hare
 
     class UI_API KeyEvent : public Event
     {
+        HARE_DECLARE_ABSTRACT_CLASS(KeyEvent)
     public:
         KeyEvent(EventType keyType = uiEVT_NULL);
         KeyEvent(const KeyEvent& rhs);

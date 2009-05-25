@@ -16,16 +16,21 @@
 
 void dynamicCastObject(lua_State* L, Object* object, int owner);
 
-bool notify_error(lua_State *L)
+bool notify_error(const String& err)
 {
-    String err = luaL_checkstring(L, -1);
-
     Log::getSingleton().logError("Lua error : %s", err.c_str());
 
     if (LuaDebuggee::getSingletonPtr())
         return LuaDebuggee::getSingletonPtr()->notifyError(err + "\n");
 
     return false;
+}
+
+bool notify_error(lua_State *L)
+{
+    String err = luaL_checkstring(L, -1);
+
+    return notify_error(err);
 }
 
 lua_State* LuaScriptRunner::luaState = 0;
@@ -148,12 +153,24 @@ bool LuaScriptRunner::callFunction(const String& name)
 
 bool LuaScriptRunner::notifyOwnerCreated()
 {
-    return callFunction("onCreate");
+    if (!callFunction("onCreate"))
+    {
+        notify_error(getLastError());
+        return false;
+    }
+
+    return true;
 }
 
 bool LuaScriptRunner::notifyOwnerDestroyed()
 {
-    return callFunction("onDestroy");
+    if (!callFunction("onDestroy"))
+    {
+        notify_error(getLastError());
+        return false;
+    }
+
+    return true;
 }
 
 void LuaScriptRunner::postLoaded()

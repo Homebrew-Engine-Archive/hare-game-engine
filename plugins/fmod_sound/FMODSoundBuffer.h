@@ -20,10 +20,9 @@ namespace hare
         HARE_DECLARE_DYNAMIC_CLASS(FMODSoundBuffer)
     public:
         FMODSoundBuffer();
-        FMODSoundBuffer(const String& name);
         virtual ~FMODSoundBuffer();
 
-        virtual void load(bool bStream = false);
+        virtual void load();
 
         virtual void unload();
 

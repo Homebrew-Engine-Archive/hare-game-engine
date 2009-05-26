@@ -35,15 +35,6 @@ namespace hare
 
 	}
 
-    SoundBuffer* SoundManager::getSoundBuffer(const String& name)
-    {
-        SoundBuffers::iterator it = soundBuffers.find(name);    
-        if (it == soundBuffers.end()){
-            return NULL;
-        }
-        return it->second;
-    }
-
     SoundListener* SoundManager::getSoundListener()
     {
         return soundListener;
@@ -51,11 +42,11 @@ namespace hare
 
     bool SoundManager::registSoundBuffer(SoundBuffer* buffer)
     {
-        SoundBuffers::iterator it = soundBuffers.find(buffer->getFileName());
+        SoundBuffer::Array::iterator it = std::find(soundBuffers.begin(), soundBuffers.end(), buffer);
         if (it != soundBuffers.end())
             return false;
 
-        soundBuffers[buffer->getFileName()] = buffer;
+        soundBuffers.push_back(buffer);
         return true;
     }
 
@@ -71,7 +62,7 @@ namespace hare
 
     bool SoundManager::unregistSoundBuffer(SoundBuffer* buffer)
     {
-        SoundBuffers::iterator it = soundBuffers.find(buffer->getFileName());
+        SoundBuffer::Array::iterator it = std::find(soundBuffers.begin(), soundBuffers.end(), buffer);
         if (it != soundBuffers.end()){
             soundBuffers.erase(it);
             return true;

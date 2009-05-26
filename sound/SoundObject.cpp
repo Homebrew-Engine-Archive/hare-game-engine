@@ -39,9 +39,9 @@ namespace hare
 
 	}
 
-	void SoundObject::setSoundBuffer(SoundBuffer* buffer)
+	void SoundObject::setSoundData(SoundData* data)
 	{
-		soundBuffer = buffer;
+		soundData = data;
 	}
 
     void SoundObject::setDirection(const Vector2& param)
@@ -65,9 +65,9 @@ namespace hare
     }
 
 
-	SoundBuffer* SoundObject::getSoundBuffer()
+	SoundData* SoundObject::getSoundData()
 	{
-		return soundBuffer;
+		return soundData;
 	}
 
 	const Vector2& SoundObject::getPosition()
@@ -98,16 +98,6 @@ namespace hare
     float SoundObject::getVolume()
     {
         return volume;
-    }
-
-    void SoundObject::postEdited(Attribute *attr)
-    {
-
-    }
-
-    void SoundObject::postLoaded()
-    {
-        getSoundApp()->getSoundManager()->registSoundObject(this);
     }
 
 }

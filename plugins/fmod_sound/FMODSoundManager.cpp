@@ -72,9 +72,9 @@ namespace hare
 
     void FMODSoundManager::update()
     {
-        SoundBuffers::iterator it = soundBuffers.begin();
+        SoundBuffer::Array::iterator it = soundBuffers.begin();
         for (;it != soundBuffers.end(); ++it){
-            it->second->update();
+            (*it)->update();
         }
 
         SoundObject::Array::iterator ait = soundObjects.begin();
@@ -97,13 +97,9 @@ namespace hare
         return soundObject;
     }
 
-    SoundBuffer* FMODSoundManager::createSoundBuffer(const String& name)
+    SoundBuffer* FMODSoundManager::createSoundBuffer()
     {
-        SoundBuffer* soundBuffer = getSoundBuffer(name);
-        if (soundBuffer)
-            return soundBuffer;
-
-        soundBuffer = new FMODSoundBuffer(name);
+        SoundBuffer* soundBuffer = new FMODSoundBuffer;
         assert(registSoundBuffer(soundBuffer));
         return soundBuffer;
     }

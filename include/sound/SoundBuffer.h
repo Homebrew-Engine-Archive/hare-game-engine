@@ -14,6 +14,7 @@
 #define _SOUNDBUFFER_H_
 
 #include "SoundPrerequisites.h"
+#include "SoundParam.h"
 
 namespace hare
 {
@@ -22,56 +23,18 @@ namespace hare
         HARE_DECLARE_ABSTRACT_CLASS(SoundBuffer)
 	public:
         SoundBuffer();
-		SoundBuffer(const String& name);
 		virtual ~SoundBuffer();
 
-        virtual void load(bool bStream = false) = 0;
+        void setSoundParam(SoundParam* param);
+
+        virtual void load() = 0;
 
         virtual void unload() = 0;
 
         virtual void update() = 0;
 
-        virtual void postEdited(Attribute *attr);
-
-        virtual void postLoaded();
-
-        const String& getFileName();
-
-    public:
-        void setCone(float inner, float outer);
-        void setGain(float gain, float outerGain,
-            float min = 0.0f, float max = 1.0f);
-        void setDistance(float ref, float max);
-        void setPitch(float pitch);
-        void setRolloffFactor(float rolloff);
-
-        float getGain() const;
-        float getGainOuter() const;
-        float getGainMin() const;
-        float getGainMax() const;
-        float getRolloff() const;
-        float getReferenceDistance() const;
-        float getMaxDistance() const;
-        float getPitch() const;
-        float getInnerCone() const;
-        float getOuterCone() const;
-        
     protected:
-        String fileName;
-
-    protected:
-        float   innerCone;
-        float   outerCone;
-        float   minGain;
-        float   maxGain;
-        float   refDistance;
-        float   maxDistance;
-        float   pitch;
-        float   gain;
-        float   outerGain;
-        float   rolloff;
-        bool    bFromStream;
-
+        SoundParam::Ptr soundParam;
 	};
 }
 

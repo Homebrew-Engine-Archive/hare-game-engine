@@ -14,6 +14,7 @@
 #define _SOUND_OBJECT_H_
 
 #include "SoundPrerequisites.h"
+#include "SoundData.h"
 
 namespace hare
 {
@@ -32,17 +33,13 @@ namespace hare
         virtual void update() = 0;
 		virtual bool getPlaying() = 0;
 
-        virtual void postEdited(Attribute *attr);
-
-        virtual void postLoaded();
-
-		void setSoundBuffer(SoundBuffer* buffer);
+		void setSoundData(SoundData* data);
         void setPosition(const Vector2& position);
         void setDirection(const Vector2& direction);
         void setVelocity(const Vector2& velocity);
         void setVolume(float val);
      
-        SoundBuffer* getSoundBuffer();
+        SoundData* getSoundData();
 		const Vector2& getPosition();
 		const Vector2& getDirection();
 		const Vector2& getVelocity();
@@ -57,7 +54,7 @@ namespace hare
         Vector2	            velocity;
         float               volume;
         float               precomputedDistanceSquared;
-        SoundBuffer::Ptr    soundBuffer;
+        SoundData::Ptr      soundData;
 
 	};
 

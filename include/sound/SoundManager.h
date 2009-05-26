@@ -25,14 +25,6 @@ namespace hare
 	{
         HARE_DECLARE_ABSTRACT_CLASS(SoundManager)
 	public:
-        typedef std::map<String, SoundBuffer::Ptr> SoundBuffers;
-	
-    protected:
-        SoundObject::Array  soundObjects;
-		SoundBuffers        soundBuffers;
-        SoundListener*      soundListener;
-		
-	public:
 		SoundManager();
 		virtual ~SoundManager();
 
@@ -44,9 +36,7 @@ namespace hare
 
         virtual SoundObject* createSoundObject() = 0;
 		
-		virtual SoundBuffer* createSoundBuffer(const String& name) = 0;
-
-		virtual SoundBuffer* getSoundBuffer(const String& name);
+		virtual SoundBuffer* createSoundBuffer() = 0;
 
         virtual SoundListener* getSoundListener();
 
@@ -57,6 +47,12 @@ namespace hare
         bool unregistSoundBuffer(SoundBuffer* buffer);
 
         bool unregistSoundObject(SoundObject* object);
+
+    protected:
+        SoundObject::Array  soundObjects;
+        SoundBuffer::Array  soundBuffers;
+        SoundListener*      soundListener;
+
     };
 }
 

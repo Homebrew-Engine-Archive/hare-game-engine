@@ -35,10 +35,10 @@ namespace hare
 
     void FMODSoundObject::play()
     {
-        if (!soundBuffer)
+        if (!soundData)
             HARE_EXCEPT(Exception::ERR_INTERNAL_ERROR, "soundBuffer null!", "FMODSoundObject::play"); 
 
-        FMODSoundBuffer* fmodSoundBuffer = (FMODSoundBuffer*)((SoundBuffer*)soundBuffer);
+        FMODSoundBuffer* fmodSoundBuffer = (FMODSoundBuffer*)soundData->getSoundBuffer();
 
         FMOD::Sound* pSound = fmodSoundBuffer->getSound();
 

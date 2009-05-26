@@ -27,27 +27,21 @@ namespace hare
 
     }
 
-    FMODSoundBuffer::FMODSoundBuffer(const String& name)
-        :SoundBuffer(name)
-        ,pSound(NULL)
-    {
-
-    }
-
     FMODSoundBuffer::~FMODSoundBuffer()
     {
         unload();
     }
 
-    void FMODSoundBuffer::load(bool bStream)
+    void FMODSoundBuffer::load()
     {
         if (pSound)
             return;
 
-        bFromStream = bStream;
+        if (!soundParam)
+            HARE_EXCEPT(Exception::ERR_INTERNAL_ERROR, "soundParam null!", "FMODSoundBuffer::load"); 
 
         FileSystem* fs = getFileSystem();
-        FileHandle fh = fs->openFile(fileName, FM_Read);
+        FileHandle fh = fs->openFile(soundParam->fileName, FM_Read);
 
         if (!fh)
             HARE_EXCEPT(Exception::ERR_INTERNAL_ERROR, "filesystem null!", "FMODSoundBuffer::load"); 
@@ -64,7 +58,7 @@ namespace hare
 
         FMOD::System* system = ((FMODSoundManager*)(getSoundApp()->getSoundManager()))->getFMODSystem();
 
-        if (bStream){
+        if (soundParam->bFromStream){
             system->createStream((const char*)buffer.getData(), 
                 FMOD_HARDWARE | FMOD_OPENMEMORY | FMOD_2D, &exinfo, &pSound);
         }else{
@@ -88,11 +82,11 @@ namespace hare
         if (!pSound)
             return;
 
-        pSound->set3DMinMaxDistance(refDistance, maxDistance);
+        pSound->set3DMinMaxDistance(soundParam->refDistance, soundParam->maxDistance);
 
         float iCone, oCone, vCone;
         pSound->get3DConeSettings(&iCone, &oCone, &vCone);
-        pSound->set3DConeSettings(innerCone, outerCone, vCone);
+        pSound->set3DConeSettings(soundParam->innerCone, soundParam->outerCone, vCone);
 
     }
 

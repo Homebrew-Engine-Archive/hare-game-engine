@@ -30,7 +30,7 @@ namespace hare
 
         virtual SoundObject* createSoundObject();
 
-        virtual SoundBuffer* createSoundBuffer(const String& name);
+        virtual SoundBuffer* createSoundBuffer();
 
         FMOD::System* getFMODSystem();
 

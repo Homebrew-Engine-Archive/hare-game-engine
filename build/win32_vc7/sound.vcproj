@@ -134,6 +134,9 @@
 				RelativePath="..\..\sound\SoundBuffer.cpp">
 			</File>
 			<File
+				RelativePath="..\..\sound\SoundData.cpp">
+			</File>
+			<File
 				RelativePath="..\..\sound\SoundListener.cpp">
 			</File>
 			<File
@@ -141,6 +144,9 @@
 			</File>
 			<File
 				RelativePath="..\..\sound\SoundObject.cpp">
+			</File>
+			<File
+				RelativePath="..\..\sound\SoundParam.cpp">
 			</File>
 		</Filter>
 		<Filter
@@ -157,6 +163,9 @@
 				RelativePath="..\..\include\sound\SoundBuffer.h">
 			</File>
 			<File
+				RelativePath="..\..\include\sound\SoundData.h">
+			</File>
+			<File
 				RelativePath="..\..\include\sound\SoundListener.h">
 			</File>
 			<File
@@ -164,6 +173,9 @@
 			</File>
 			<File
 				RelativePath="..\..\include\sound\SoundObject.h">
+			</File>
+			<File
+				RelativePath="..\..\include\sound\SoundParam.h">
 			</File>
 		</Filter>
 		<Filter

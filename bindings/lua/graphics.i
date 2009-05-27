@@ -12,8 +12,36 @@ class Sprite : public Object
 public:
 	Sprite();
 	virtual ~Sprite();
+	
+	virtual void move(float dx, float dy);
+
+	virtual void moveTo(float x, float y);
 
 	virtual void render() = 0;
+
+	virtual const PointF& getPosition();
+    
+	void setOrigoPos(float x, float y);
+
+	void moveOrigoPos(float dx, float dy);
+
+	const PointF& getOrigoPos();
+
+	void setFaceX(bool b);
+
+	void setFaceY(bool b);
+
+	void setSpriteName(const String& name);
+
+	const String& getSpriteName();
+
+	void setColor(uint32 c);
+
+	uint32 getColor();
+
+	void setZ(float z);
+
+	float getZ();
 };
 
 class SceneListener : public ReferenceCounted

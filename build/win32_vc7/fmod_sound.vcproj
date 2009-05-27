@@ -34,7 +34,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="core_d.lib sound_d.lib fmodex_vc.lib"
-				OutputFile="$(OutDir)/fmod_sound.dll"
+				OutputFile="$(OutDir)/$(ProjectName)_d.dll"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="../../lib;../../ext/fmod/lib"
 				GenerateDebugInformation="TRUE"

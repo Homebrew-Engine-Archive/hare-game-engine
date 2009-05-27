@@ -25,17 +25,6 @@ end
 function onEndScene()
 end
 
---[[
-    bool notifyMouseMove(float deltaX, float deltaY);
-    bool notifyMouseWheel(float delta);
-    bool notifyMousePosition(float posX, float posY);
-    bool notifyMouseButtonUp(uint32 button);
-    bool notifyMouseButtonDown(uint32 button);
-
-    bool notifyKeyDown(uint32 key);
-    bool notifyKeyUp(uint32 key);
-    bool notifyChar(uint32 cp);
-]]
 --*******************************************
 --  Mouse listener callbacks
 --*******************************************
@@ -112,7 +101,7 @@ function onCreate(this)
     keyListener:setKeyReleasedCallback(onKeyReleased)
     keyboard:setListener(keyListener)
 
-    local layout = hare.importObject('/sample/layouts/test.layout')
+    local layout = hare.importObject('/sample/layouts/test2.layout')
     local theme = hare.importObject('/sample/themes/vista_style.theme')
     print("layout : ", swig_type(layout))
     print("theme : ", swig_type(theme))

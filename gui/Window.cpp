@@ -47,11 +47,11 @@ namespace hare
         HARE_OBJ_F(windowSizer, Sizer, propHide)
         HARE_META_F(position, PointF, propHide)
         HARE_META_F(size, PointF, propHide)
-        HARE_OBJ_F(scriptRunner, ScriptRunner, propAllowSubs)
         HARE_META(minSize, SizeF)
         HARE_META(maxSize, SizeF)
         HARE_META(shown, bool)
         HARE_META(enabled, bool)
+        HARE_OBJ_F(scriptRunner, ScriptRunner, propAllowSubs)
     }
 
     Window::Window() : 

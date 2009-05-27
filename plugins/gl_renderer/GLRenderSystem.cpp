@@ -106,6 +106,12 @@ void GLRenderSystem::render(RenderUnit* operation)
 		bRenderTextureChange = true;
 		curRenderTexture = 0;	
 		tmpTexMat = Matrix4::IDENTITY;	
+        //ª≠œﬂ ‹ShaderParams”∞œÏ
+        ShaderParams tmpShaderParams;
+        if (curShaderParams != tmpShaderParams){
+            curShaderParams = tmpShaderParams;
+            bShaderParamsChange = true;
+        }
 	}
 
 	if ( bRenderTextureChange || bTextureStageChange || bShaderParamsChange

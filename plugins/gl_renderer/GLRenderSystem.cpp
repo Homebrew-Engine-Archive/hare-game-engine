@@ -45,7 +45,7 @@ void GLRenderSystem::beginFrame()
 
 void GLRenderSystem::render()
 {
-	if (GLVertexBufferManager::getSingletonPtr()->getArrayCount() > 0){
+	if (GLVertexBufferManager::getSingletonPtr() && GLVertexBufferManager::getSingletonPtr()->getArrayCount() > 0){
         GLVertexBufferManager::getSingletonPtr()->lock();
 		glDrawArrays(PrimType, 0, GLVertexBufferManager::getSingletonPtr()->getArrayCount());
         GLVertexBufferManager::getSingletonPtr()->unlock();
@@ -241,8 +241,13 @@ void GLRenderSystem::initalizeParam(bool bZBuffer)
 		glDepthMask(GL_TRUE);
 		glDepthFunc(GL_LEQUAL);	
 	}
-	setShaderParams(curShaderParams);
-	setTextureStage(curTextureStage);
+    resetShaderTextureStage();
+}
+
+void GLRenderSystem::resetShaderTextureStage()
+{
+    setShaderParams(curShaderParams);
+    setTextureStage(curTextureStage);
 }
 
 GLuint GLRenderSystem::getCurTexture()

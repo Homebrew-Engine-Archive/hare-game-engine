@@ -15,10 +15,6 @@
 #include "../GLRenderSystem.h"
 #include "../GLSystemManager.h"
 
-
-static HDC main_hdc = NULL;
-static HGLRC main_hrc = NULL;
-
 #define COLOR_DEPTH 16
 
 static LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
@@ -227,6 +223,8 @@ void GLRenderWindow::active()
 
     setProjection();
 
+    (static_cast<GLRenderSystem*>(RenderSystem::getSingletonPtr()))->resetShaderTextureStage();
+
 	GLRenderSystem::getSingletonPtr()->setCurRenderWindow(this);
 }
 
@@ -254,6 +252,9 @@ void GLRenderWindow::createGLResource()
 {
     GLuint PixelFormat;
 
+    HDC old_hdc = wglGetCurrentDC();
+    HGLRC old_context = wglGetCurrentContext();
+
     if (!(hDC=GetDC(windowParams.hwnd))){	// get DeviceContext
         MessageBox(NULL, "can't get DeviceContext", "error", MB_OK|MB_ICONEXCLAMATION);
         HARE_EXCEPT(Exception::ERR_INTERNAL_ERROR, "can't get DeviceContext!", "GLRenderWindow::createGLResource");
@@ -277,32 +278,24 @@ void GLRenderWindow::createGLResource()
 	if (!wglMakeCurrent(hDC, hRC))
         HARE_EXCEPT(Exception::ERR_INTERNAL_ERROR, "can't wglMakeCurrent context!", "GLRenderWindow::createGLResource"); 
 
-	if (main_hdc){
+	if (old_context && old_context != hRC){
 		// Restore old context
-		if (!wglMakeCurrent(main_hdc, main_hrc))
+		if (!wglMakeCurrent(old_hdc, old_context))
             HARE_EXCEPT(Exception::ERR_INTERNAL_ERROR, "can't Restore old context!", "GLRenderWindow::createGLResource"); 
 		// Share lists with old context
-		if (!wglShareLists(main_hrc, hRC))
+		if (!wglShareLists(old_context, hRC))
 			HARE_EXCEPT(Exception::ERR_INTERNAL_ERROR, "can't Share lists with old context!", "GLRenderWindow::createGLResource"); 
 		
 		if (!wglMakeCurrent(hDC, hRC))
 			HARE_EXCEPT(Exception::ERR_INTERNAL_ERROR, "can't wglMakeCurrent context!", "GLRenderWindow::createGLResource"); 
 	}
 
-    if (!main_hdc){
-        main_hdc = hDC;
-        main_hrc = hRC;
-    }
-
 	if (isMainWnd){
         glewInit();
+
 	}
 
 	(static_cast<GLRenderSystem*>(RenderSystem::getSingletonPtr()))->initalizeParam(windowParams.bZbuffer);
-
-    //wglSwapIntervalEXT(0);  
-    glEnable(GL_TEXTURE_2D);
-
 }
 
 void GLRenderWindow::destoryGLResource()

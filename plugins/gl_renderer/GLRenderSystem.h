@@ -39,6 +39,8 @@ public:
 
 	void initalizeParam(bool bZBuffer);
 
+    void resetShaderTextureStage();
+
     GLuint getCurTexture();
 
 protected:

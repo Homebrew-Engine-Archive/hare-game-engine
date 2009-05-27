@@ -36,7 +36,7 @@
 				AdditionalDependencies="core_d.lib graphics_d.lib d3d9.lib d3dx9d.lib"
 				OutputFile="$(OutDir)/dx9_renderer_d.dll"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="../../lib;../../ext/d3d/lib/x86"
+				AdditionalLibraryDirectories="../../lib;../../ext/d3d/lib/x86/"
 				GenerateDebugInformation="TRUE"
 				SubSystem="2"
 				TargetMachine="1"/>

@@ -38,7 +38,8 @@ namespace hare
         Theme::Array themes;
     };
 
-    void drawThemeInternal(Material* mtrl, const RectUV& windowRect, const RectUV& rect, const RectUV& rectInner);
+    void drawThemeInternal(Material* mtrl, const RectUV& windowRect, 
+        const RectUV& rect, const RectUV& rectInner, bool drawTop = true);
 }
 
 #endif

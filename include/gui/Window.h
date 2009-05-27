@@ -231,6 +231,11 @@ namespace hare
             setArea(PointF(x, y), getSize());
         }
 
+        void setPosition(const PointF& pos)
+        {
+            setArea(pos, getSize());
+        }
+
         void setSize(float cx, float cy)
         {
             setArea(getPosition(), SizeF(cx, cy));
@@ -320,6 +325,8 @@ namespace hare
 
     PointF UI_API windowToScreen(const Window& window, const PointF& pos);
     RectF  UI_API windowToScreen(const Window& window, const RectF& rect);
+    PointF UI_API screenToWindow(const Window& window, const PointF& pos);
+    RectF  UI_API screenToWindow(const Window& window, const RectF& rect);
 }
 
 #endif

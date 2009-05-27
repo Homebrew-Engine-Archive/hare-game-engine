@@ -4,6 +4,7 @@ mouse = nil
 keyboard = nil
 mouseX = 0
 mouseY = 0
+cursor = nil
 --*******************************************
 --  Scene listener callbacks
 --*******************************************
@@ -17,9 +18,10 @@ end
 
 function onRenderScene()
     guiSys:render()
-    hare.getCanvas():drawText(mouseX, mouseY, "_")
     hare.getCanvas():drawText(10, 20, "FPS : "..hare.getTimer():getFPS())
     hare.getCanvas():drawText(10, 35, "X : "..mouseX.." Y : "..mouseY)
+    cursor:moveTo(mouseX, mouseY)
+    cursor:render()
 end
 
 function onEndScene()
@@ -101,8 +103,8 @@ function onCreate(this)
     keyListener:setKeyReleasedCallback(onKeyReleased)
     keyboard:setListener(keyListener)
 
-    local layout = hare.importObject('/sample/layouts/test2.layout')
-    local theme = hare.importObject('/sample/themes/vista_style.theme')
+    local layout = hare.importObject('/sample/layouts/test.layout')
+    local theme = hare.importObject('/sample/themes/test.theme')
     print("layout : ", swig_type(layout))
     print("theme : ", swig_type(theme))
     guiSys = hare.GUISystem()
@@ -111,6 +113,8 @@ function onCreate(this)
 
     local font = hare.importObject('/editor/default.font')
     hare.getCanvas():setFont(font)
+
+    cursor = hare.importObject('/sample/sprites/cursor.sprite')
 
     -- Collect garbage right now, very useful for debugging
     collectgarbage()

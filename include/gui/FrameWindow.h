@@ -20,14 +20,6 @@
 namespace hare
 {
     /*
-     *  Titlebar
-     */
-    class UI_API Titlebar : public Window
-    {
-        HARE_DECLARE_DYNAMIC_CLASS(Titlebar)
-    };
-
-    /*
      *  FrameWindow
      */
     class UI_API FrameWindow : public Window
@@ -38,10 +30,32 @@ namespace hare
         FrameWindow();
         FrameWindow(Window* parent);
 
-        Titlebar* getTitlebar();
+        virtual bool layout(); 
+
+        virtual void render(ThemePackage* themes);
+
+        bool isSizingEnabled() const { return sizingEnabled; }
+        bool isMovingEnabled() const { return movingEnabled; }
+
 
     protected:
-        Titlebar::Ptr titlebar;
+        void onMouseMove(MouseEvent& event);
+        void onMouseLButtonDown(MouseEvent& event);
+        void onMouseLButtonUp(MouseEvent& event);
+
+    protected:
+        bool  sizingEnabled;
+        bool  movingEnabled;
+        float resizeBorder;
+        float titleHeight;
+
+        bool sizing;
+        PointF sizingPos;
+
+        bool moving;
+        PointF movingPos;
+
+        HARE_DECLARE_EVENT_TABLE()
     };
 
     /*

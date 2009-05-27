@@ -52,7 +52,7 @@ namespace hare
         return NULL;
     }
     
-    void drawThemeInternal(Material* mtrl, const RectUV& windowRect, const RectUV& rect, const RectUV& rectInner)
+    void drawThemeInternal(Material* mtrl, const RectUV& windowRect, const RectUV& rect, const RectUV& rectInner, bool drawTop)
     {
         RectF uvRect(0, 0, 0, 0);
 
@@ -64,14 +64,16 @@ namespace hare
         RectF ltRect = uvRect;
         ltRect.scale(w, h);
         ltRect.moveTo(windowRect.minX, windowRect.minY);
-        getCanvas()->drawImage(ltRect, mtrl, uvRect);
+        if (drawTop)
+            getCanvas()->drawImage(ltRect, mtrl, uvRect);
 
         // Righttop Corner
         uvRect.set(rectInner.maxX, rect.minY, rect.maxX, rectInner.minY);
         RectF rtRect = uvRect;
         rtRect.scale(w, h);
         rtRect.moveTo(windowRect.maxX - rtRect.width(), windowRect.minY);
-        getCanvas()->drawImage(rtRect, mtrl, uvRect);
+        if (drawTop)
+            getCanvas()->drawImage(rtRect, mtrl, uvRect);
 
         // Top edge
         uvRect.set(rectInner.minX, rect.minY, rectInner.maxX, rectInner.minY);
@@ -79,7 +81,8 @@ namespace hare
         tRect.scale(w, h);
         tRect.moveTo(windowRect.minX + ltRect.width(), windowRect.minY);
         tRect.maxX = windowRect.maxX - rtRect.width();
-        getCanvas()->drawImage(tRect, mtrl, uvRect);
+        if (drawTop)
+            getCanvas()->drawImage(tRect, mtrl, uvRect);
 
         // Leftbottom Corner
         uvRect.set(rect.minX, rectInner.maxY, rectInner.minX, rect.maxY);

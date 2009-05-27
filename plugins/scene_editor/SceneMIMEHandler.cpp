@@ -153,7 +153,7 @@ bool ScenePage::saveAs()
         wxSAVE | wxOVERWRITE_PROMPT);
 
     if (dlg->ShowModal() == wxID_OK){
-        static const char* tempFileName = "/editor/~Scene.temp";
+        static const char* tempFileName = "/editor/~scene.temp";
         FileSystem::getSingletonPtr()->remove(tempFileName);
         sceneManager->saveToXml(tempFileName);
         String dir = FileSystem::getSingletonPtr()->getRealDir(tempFileName);

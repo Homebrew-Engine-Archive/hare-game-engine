@@ -20,6 +20,19 @@ namespace hare
         return temp;
     }
 
+    PointF screenToWindow(const Window& window, const PointF& pos)
+    {
+        return pos - windowToScreen(window, PointF(0, 0));
+    }
+
+    RectF screenToWindow(const Window& window, const RectF& rect)
+    {
+        RectF temp(rect);
+        PointF winPos = windowToScreen(window, PointF(0, 0));
+        temp.moveTo(-winPos);
+        return temp;
+    }
+
     void reparentAllBySizer(Window* parent, Sizer* sizer)
     {
         if (!sizer)

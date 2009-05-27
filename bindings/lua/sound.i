@@ -1,38 +1,52 @@
 %module hare
 
+class SoundParam : public Object
+{
+public:
+	SoundParam();
+	virtual ~SoundParam();
+
+	String  fileName;
+
+	float   innerCone;
+	float   outerCone;
+	float   minGain;
+	float   maxGain;
+	float   refDistance;
+	float   maxDistance;
+	float   pitch;
+	float   gain;
+	float   outerGain;
+	float   rolloff;
+	bool    bFromStream;
+};
+
 class SoundBuffer : public Object
 {
 public:
 	SoundBuffer();
-	SoundBuffer(const String& name);
 	virtual ~SoundBuffer();
 
-	virtual void load(bool bStream = false) = 0;
+	void setSoundParam(SoundParam* param);
+
+	virtual void load() = 0;
 
 	virtual void unload() = 0;
 
 	virtual void update() = 0;
+};
 
-	const String& getFileName();
-
+class SoundData : public Object
+{
 public:
-	void setCone(float inner, float outer);
-	void setGain(float gain, float outerGain,
-		float min = 0.0f, float max = 1.0f);
-	void setDistance(float ref, float max);
-	void setPitch(float pitch);
-	void setRolloffFactor(float rolloff);
+	SoundData();
+	virtual ~SoundData();
 
-	float getGain() const;
-	float getGainOuter() const;
-	float getGainMin() const;
-	float getGainMax() const;
-	float getRolloff() const;
-	float getReferenceDistance() const;
-	float getMaxDistance() const;
-	float getPitch() const;
-	float getInnerCone() const;
-	float getOuterCone() const;
+	void setSoundParam(SoundParam* param);
+
+	SoundBuffer* getSoundBuffer();
+
+	virtual void postLoaded();
 };
 
 class SoundObject : public Object
@@ -49,17 +63,13 @@ public:
 	virtual void update() = 0;
 	virtual bool getPlaying() = 0;
 
-	virtual void postEdited(Attribute *attr);
-
-	virtual void postLoaded();
-
-	void setSoundBuffer(SoundBuffer* buffer);
+	void setSoundData(SoundData* data);
 	void setPosition(const Vector2& position);
 	void setDirection(const Vector2& direction);
 	void setVelocity(const Vector2& velocity);
 	void setVolume(float val);
      
-	SoundBuffer* getSoundBuffer();
+	SoundData* getSoundData();
 	const Vector2& getPosition();
 	const Vector2& getDirection();
 	const Vector2& getVelocity();
@@ -103,9 +113,7 @@ public:
 
 	virtual SoundObject* createSoundObject() = 0;
 		
-	virtual SoundBuffer* createSoundBuffer(const String& name) = 0;
-
-	virtual SoundBuffer* getSoundBuffer(const String& name);
+	virtual SoundBuffer* createSoundBuffer() = 0;
 
 	virtual SoundListener* getSoundListener();
 
@@ -116,6 +124,7 @@ public:
 	bool unregistSoundBuffer(SoundBuffer* buffer);
 
 	bool unregistSoundObject(SoundObject* object);
+
 };
 
 class SoundApp

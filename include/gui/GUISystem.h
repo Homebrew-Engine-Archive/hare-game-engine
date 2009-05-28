@@ -78,6 +78,9 @@ namespace hare
         MouseEvent& fillMouseEvent(MouseEvent& event, float wheelDelta = 0);
         MouseEvent  makeMouseEvent(uint32 button, uint32 type);
     };
+
+    void UI_API gui_init();
+    void UI_API gui_quit();
 }
 
 #endif

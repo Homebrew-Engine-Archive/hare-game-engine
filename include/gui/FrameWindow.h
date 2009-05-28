@@ -37,6 +37,7 @@ namespace hare
         bool isSizingEnabled() const { return sizingEnabled; }
         bool isMovingEnabled() const { return movingEnabled; }
 
+        void updateCursor(const PointF& pt);
 
     protected:
         void onMouseMove(MouseEvent& event);
@@ -50,11 +51,24 @@ namespace hare
         float titleHeight;
 
         bool sizing;
-        PointF sizingPos;
-
         bool moving;
-        PointF movingPos;
+        PointF mouseDownPos;
+        
+        enum SizingLocation 
+        {
+            SizingNone,			//!< Position is not a sizing location.
+            SizingTopLeft,		//!< Position will size from the top-left.
+            SizingTopRight,		//!< Position will size from the top-right.
+            SizingBottomLeft,	//!< Position will size from the bottom left.
+            SizingBottomRight,	//!< Position will size from the bottom right.
+            SizingTop,			//!< Position will size from the top.
+            SizingLeft,			//!< Position will size from the left.
+            SizingBottom,		//!< Position will size from the bottom.
+            SizingRight         //!< Position will size from the right.
+        };
 
+        SizingLocation getSizingBorderAtPoint(const PointF& pt) const;
+        
         HARE_DECLARE_EVENT_TABLE()
     };
 

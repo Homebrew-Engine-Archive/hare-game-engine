@@ -19,6 +19,39 @@ class ThemePackage : public Object
 {
 };
 
+enum CursorState
+{
+    Cursor_Arrow = 0,
+    Cursor_Moving,
+    Cursor_SizingNESW,
+    Cursor_SizingNS,
+    Cursor_SizingNWSE,
+    Cursor_SizingWE,
+    
+    Cursor_None = -1,
+};
+
+class MouseCursor
+{
+public:
+    void setCursor(CursorState state);
+    CursorState getCursor() const;
+    void setCursorSprite(CursorState state, Sprite* sprite);
+    Sprite* getCursorSprite(CursorState state);
+    Sprite* getCursorSprite();
+private:
+    MouseCursor();
+};
+
+MouseCursor* getMouseCursor();
+
+%{
+    MouseCursor* getMouseCursor()
+    {
+	    return MouseCursor::getSingletonPtr();
+    }
+%}
+
 class GUISystem : public Object
 {
 public:

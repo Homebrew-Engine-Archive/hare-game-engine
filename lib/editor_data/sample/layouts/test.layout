@@ -43,8 +43,8 @@
                     <enabled class="bool" value="1" />
                     <scriptRunner store="2" />
                     <sizingEnabled class="bool" value="1" />
-                    <movingEnabled class="bool" value="0" />
-                    <resizeBorder class="float" value="3.000000" />
+                    <movingEnabled class="bool" value="1" />
+                    <resizeBorder class="float" value="5.000000" />
                     <titleHeight class="float" value="20.000000" />
                 </window>
             </item0>
@@ -81,6 +81,6 @@
     <scriptRunner store="2" />
     <sizingEnabled class="bool" value="1" />
     <movingEnabled class="bool" value="1" />
-    <resizeBorder class="float" value="3.000000" />
+    <resizeBorder class="float" value="5.000000" />
     <titleHeight class="float" value="30.000000" />
 </Object>

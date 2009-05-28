@@ -33,7 +33,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="core_d.lib graphics_d.lib lua51.lib"
+				AdditionalDependencies="core_d.lib graphics_d.lib gui_d.lib lua51.lib"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="..\..\lib;..\..\ext\lua\src"
 				GenerateDebugInformation="TRUE"

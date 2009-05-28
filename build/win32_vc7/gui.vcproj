@@ -207,6 +207,12 @@
 			<File
 				RelativePath="..\..\include\gui\FrameWindow.h">
 			</File>
+			<File
+				RelativePath="..\..\gui\MouseCursor.cpp">
+			</File>
+			<File
+				RelativePath="..\..\include\gui\MouseCursor.h">
+			</File>
 		</Filter>
 	</Files>
 	<Globals>

@@ -4,7 +4,6 @@ mouse = nil
 keyboard = nil
 mouseX = 0
 mouseY = 0
-cursor = nil
 --*******************************************
 --  Scene listener callbacks
 --*******************************************
@@ -20,8 +19,6 @@ function onRenderScene()
     guiSys:render()
     hare.getCanvas():drawText(10, 20, "FPS : "..hare.getTimer():getFPS())
     hare.getCanvas():drawText(10, 35, "X : "..mouseX.." Y : "..mouseY)
-    cursor:moveTo(mouseX, mouseY)
-    cursor:render()
 end
 
 function onEndScene()
@@ -114,7 +111,7 @@ function onCreate(this)
     local font = hare.importObject('/editor/default.font')
     hare.getCanvas():setFont(font)
 
-    cursor = hare.importObject('/sample/sprites/cursor.sprite')
+    setupCursors()
 
     -- Collect garbage right now, very useful for debugging
     collectgarbage()
@@ -123,4 +120,23 @@ end
 function onDestroy(this)
     guiSys:setRoot(nil)
     guiSys:setTheme(nil)
+end
+
+function setupCursors()
+    local cursor = hare.getMouseCursor()
+    
+    local curSpr = hare.importObject('/sample/sprites/cursors/arrow.sprite')
+    cursor:setCursorSprite(hare.Cursor_Arrow, curSpr)
+    curSpr = hare.importObject('/sample/sprites/cursors/moving.sprite')
+    cursor:setCursorSprite(hare.Cursor_Moving, curSpr)
+    curSpr = hare.importObject('/sample/sprites/cursors/sizingWE.sprite')
+    cursor:setCursorSprite(hare.Cursor_SizingWE, curSpr)
+    curSpr = hare.importObject('/sample/sprites/cursors/sizingNS.sprite')
+    cursor:setCursorSprite(hare.Cursor_SizingNS, curSpr)
+    curSpr = hare.importObject('/sample/sprites/cursors/sizingNWSE.sprite')
+    cursor:setCursorSprite(hare.Cursor_SizingNWSE, curSpr)
+    curSpr = hare.importObject('/sample/sprites/cursors/sizingNESW.sprite')
+    cursor:setCursorSprite(hare.Cursor_SizingNESW, curSpr)
+
+    cursor:setCursor(hare.Cursor_Arrow)
 end

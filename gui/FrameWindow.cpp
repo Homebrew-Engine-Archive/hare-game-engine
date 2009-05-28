@@ -12,6 +12,7 @@
 //***************************************************************
 #include "PCH.h"
 #include "FrameWindow.h"
+#include "MouseCursor.h"
 
 namespace hare
 {
@@ -30,12 +31,12 @@ namespace hare
     HARE_END_EVENT_TABLE()
 
     FrameWindow::FrameWindow() : 
-        sizingEnabled(true), movingEnabled(true), resizeBorder(3), titleHeight(30)
+        sizingEnabled(true), movingEnabled(true), resizeBorder(5), titleHeight(30), mouseDownPos(0, 0)
     {
     }
 
     FrameWindow::FrameWindow(Window* parent) : Window(parent),
-        sizingEnabled(true), movingEnabled(true), resizeBorder(3), titleHeight(30)
+        sizingEnabled(true), movingEnabled(true), resizeBorder(5), titleHeight(30), mouseDownPos(0, 0)
     {
     }
 
@@ -67,17 +68,14 @@ namespace hare
             }
             else if (moving)
             {
-                // do dragging
-                setPosition(getPosition() + localMousePos - movingPos);
+                setPosition(getPosition() + localMousePos - mouseDownPos);
                 layout();
             }
             else
             {
-                // do update cursor
+                updateCursor(localMousePos);
             }
-
         }
-
     }
 
     void FrameWindow::onMouseLButtonDown(MouseEvent& event)
@@ -96,7 +94,7 @@ namespace hare
                 {
                     captureMouse();
                     sizing = true;
-                    sizingPos = localPos;
+                    mouseDownPos = localPos;
                     return;
                 }
             }
@@ -109,7 +107,7 @@ namespace hare
                 {
                     captureMouse();
                     moving = true;
-                    movingPos = localPos;
+                    mouseDownPos = localPos;
                     return;
                 }
             }
@@ -124,6 +122,88 @@ namespace hare
             sizing = false;
             moving = false;
         }
+    }
+
+    void FrameWindow::updateCursor(const PointF& pt)
+    {
+        switch (getSizingBorderAtPoint(pt))
+        {
+        case SizingTop:
+        case SizingBottom:
+            MouseCursor::getSingleton().setCursor(Cursor_SizingNS);
+            break;
+
+        case SizingLeft:
+        case SizingRight:
+            MouseCursor::getSingleton().setCursor(Cursor_SizingWE);
+            break;
+
+        case SizingTopLeft:
+        case SizingBottomRight:
+            MouseCursor::getSingleton().setCursor(Cursor_SizingNWSE);
+            break;
+
+        case SizingTopRight:
+        case SizingBottomLeft:
+            MouseCursor::getSingleton().setCursor(Cursor_SizingNESW);
+            break;
+
+        default:
+            MouseCursor::getSingleton().setCursor(Cursor_Arrow);
+        }
+    }
+
+    FrameWindow::SizingLocation FrameWindow::getSizingBorderAtPoint(const PointF& pt) const
+    {
+        RectF rect(0, 0, size.cx, size.cy);
+
+        if (isSizingEnabled())
+        {
+            if (rect.isPointIn(pt))
+            {
+                rect.deflate(resizeBorder, resizeBorder, resizeBorder, resizeBorder);
+
+                bool t = (pt.y <  rect.minY);
+                bool b = (pt.y >= rect.maxY);
+                bool l = (pt.x <  rect.minX);
+                bool r = (pt.x >= rect.maxX);
+
+                if (t && l)
+                {
+                    return SizingTopLeft;
+                }
+                else if (t && r)
+                {
+                    return SizingTopRight;
+                }
+                else if (b && l)
+                {
+                    return SizingBottomLeft;
+                }
+                else if (b && r)
+                {
+                    return SizingBottomRight;
+                }
+                else if (t)
+                {
+                    return SizingTop;
+                }
+                else if (b)
+                {
+                    return SizingBottom;
+                }
+                else if (l)
+                {
+                    return SizingLeft;
+                }
+                else if (r)
+                {
+                    return SizingRight;
+                }
+            }
+        }
+
+        return SizingNone;
     }
 
     HARE_IMPLEMENT_DYNAMIC_CLASS(FrameWindowTheme, Theme, 0)

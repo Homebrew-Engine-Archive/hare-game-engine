@@ -22,5 +22,6 @@
 #include "Theme.h"
 #include "Button.h"
 #include "FrameWindow.h"
+#include "MouseCursor.h"
 
 #endif

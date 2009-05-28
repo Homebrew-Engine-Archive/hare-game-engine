@@ -24,5 +24,6 @@
 
 #include "core/Core.h"
 #include "graphics/Graphics.h"
+#include "gui/GUI.h"
 #include "editor/Editor.h"
 using namespace hare;

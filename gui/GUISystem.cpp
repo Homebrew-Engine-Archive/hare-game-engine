@@ -1,6 +1,7 @@
 #include "PCH.h"
 #include "GUISystem.h"
 #include "Window.h"
+#include "MouseCursor.h"
 
 namespace hare
 {
@@ -334,5 +335,24 @@ namespace hare
         {
             root->render(themes);
         }
+
+        Sprite* sprite = MouseCursor::getSingleton().getCursorSprite();
+
+        if (sprite)
+        {
+            sprite->moveTo(mousePos.x, mousePos.y);
+            sprite->render();
+        }
     }
+
+    void UI_API gui_init()
+    {
+        (void)new MouseCursor();
+    }
+
+    void UI_API gui_quit()
+    {
+        delete MouseCursor::getSingletonPtr();
+    }
+
 }

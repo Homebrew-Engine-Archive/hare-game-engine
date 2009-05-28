@@ -133,7 +133,8 @@ bool EditorApp::OnInit()
         }
     }
 
-    getHareApp()->startUp();
+    graphics_init();
+    gui_init();
 
     if (!wxApp::OnInit())
         return false;
@@ -150,7 +151,8 @@ int EditorApp::OnExit()
 {
     Manager::free();
 
-    getHareApp()->shutDown();
+    gui_quit();
+    graphics_quit();
 
     getHareApp()->freeAllPlugins();
 

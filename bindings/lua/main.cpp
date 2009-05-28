@@ -1,5 +1,6 @@
 #include "core/Core.h"
 #include "graphics/Graphics.h"
+#include "gui/GUI.h"
 using namespace hare;
 
 bool loadPlugins()
@@ -78,6 +79,7 @@ int main(int argc, char *argv[])
     loadResources();
 
     graphics_init();
+    gui_init();
 
     GameApp::Ptr app = NULL;
 
@@ -95,6 +97,7 @@ int main(int argc, char *argv[])
 
     app = 0;
 
+    gui_quit();
     graphics_quit();
 
     HareApp::getSingletonPtr()->freeAllPlugins();

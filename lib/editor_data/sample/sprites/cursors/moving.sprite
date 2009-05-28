@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<Object store="0" class="ImageSprite" version="0">
+    <super_version_Sprite class="uint32" value="0" />
+    <origoPos class="PointF" value="-12.000000 -12.000000" />
+    <pos class="PointF" value="0.000000 0.000000" />
+    <spriteName class="String" value="" />
+    <color class="uint32" value="4294967295" />
+    <zDepth class="float" value="0.000000" />
+    <rectUV class="RectF" value="0.361328 0.000000 0.406250 0.044922" />
+    <mtrl store="1" ref="/sample/materials/ui.material" />
+</Object>

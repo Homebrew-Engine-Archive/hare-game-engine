@@ -67,6 +67,8 @@ namespace hare
             SizingRight         //!< Position will size from the right.
         };
 
+        SizingLocation sizingEdge;
+
         SizingLocation getSizingBorderAtPoint(const PointF& pt) const;
         
         HARE_DECLARE_EVENT_TABLE()

@@ -31,12 +31,14 @@ namespace hare
     HARE_END_EVENT_TABLE()
 
     FrameWindow::FrameWindow() : 
-        sizingEnabled(true), movingEnabled(true), resizeBorder(5), titleHeight(30), mouseDownPos(0, 0)
+        sizingEnabled(true), movingEnabled(true), resizeBorder(5), titleHeight(30), mouseDownPos(0, 0),
+        sizing(false), moving(false)
     {
     }
 
     FrameWindow::FrameWindow(Window* parent) : Window(parent),
-        sizingEnabled(true), movingEnabled(true), resizeBorder(5), titleHeight(30), mouseDownPos(0, 0)
+        sizingEnabled(true), movingEnabled(true), resizeBorder(5), titleHeight(30), mouseDownPos(0, 0),
+        sizing(false), moving(false)
     {
     }
 
@@ -63,8 +65,38 @@ namespace hare
 
             if (sizing)
             {
-                // do sizing
-                //setSize(getPosition() + localMousePos - draggingPos);
+                if (sizingEdge != SizingNone)
+                {
+                    float deltaX = localMousePos.x - mouseDownPos.x;
+                    float deltaY = localMousePos.y - mouseDownPos.y;
+
+                    RectF rect = getArea();
+
+                    // NB : Moving left or top edge changes both position and size,
+                    // moving right or bottom edge only changes size.
+                    if (sizingEdge == SizingTopLeft || sizingEdge == SizingBottomLeft || sizingEdge == SizingLeft)
+                    {
+                        rect.minX += deltaX;
+                    }
+                    else if (sizingEdge == SizingTopRight || sizingEdge == SizingBottomRight || sizingEdge == SizingRight)
+                    {
+                        rect.maxX += deltaX;
+                        mouseDownPos.x = localMousePos.x;
+                    }
+
+                    if (sizingEdge == SizingTopLeft || sizingEdge == SizingTop || sizingEdge == SizingTopRight)
+                    {
+                        rect.minY += deltaY;
+                    }
+                    else if (sizingEdge == SizingBottomLeft || sizingEdge == SizingBottom || sizingEdge == SizingBottomRight)
+                    {
+                        rect.maxY += deltaY;
+                        mouseDownPos.y = localMousePos.y;
+                    }
+
+                    setArea(rect);
+                    layout();
+                }
             }
             else if (moving)
             {
@@ -84,13 +116,11 @@ namespace hare
         {
             PointF localPos(screenToWindow(*this, event.getPosition()));
 
-            RectF outer(0, 0, size.cx, size.cy);
-
             if (isSizingEnabled())
             {
-                RectF inner = outer;
-                inner.deflate(resizeBorder, resizeBorder, resizeBorder, resizeBorder);
-                if (outer.isPointIn(localPos) && !inner.isPointIn(localPos))
+                sizingEdge = getSizingBorderAtPoint(localPos);
+
+                if (sizingEdge != SizingNone)
                 {
                     captureMouse();
                     sizing = true;
@@ -101,7 +131,7 @@ namespace hare
 
             if (isMovingEnabled())
             {
-                RectF titleRect(outer);
+                RectF titleRect(0, 0, size.cx, size.cy);
                 titleRect.maxY = titleRect.minX + titleHeight;
                 if (titleRect.isPointIn(localPos))
                 {

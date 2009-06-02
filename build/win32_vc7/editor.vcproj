@@ -147,6 +147,9 @@
 				RelativePath="..\..\editor\EditorPlugin.cpp">
 			</File>
 			<File
+				RelativePath="..\..\editor\EditorPluginManager.cpp">
+			</File>
+			<File
 				RelativePath="..\..\editor\EncodingDetector.cpp">
 			</File>
 			<File
@@ -178,9 +181,6 @@
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="1"/>
 				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="..\..\editor\PluginManager.cpp">
 			</File>
 			<File
 				RelativePath="..\..\editor\ProjectExplorer.cpp">
@@ -235,6 +235,9 @@
 				RelativePath="..\..\include\editor\EditorPlugin.h">
 			</File>
 			<File
+				RelativePath="..\..\include\editor\EditorPluginManager.h">
+			</File>
+			<File
 				RelativePath="..\..\include\editor\EditorPrerequisites.h">
 			</File>
 			<File
@@ -257,9 +260,6 @@
 			</File>
 			<File
 				RelativePath="..\..\include\editor\PCH.h">
-			</File>
-			<File
-				RelativePath="..\..\include\editor\PluginManager.h">
 			</File>
 			<File
 				RelativePath="..\..\include\editor\ProjectExplorer.h">

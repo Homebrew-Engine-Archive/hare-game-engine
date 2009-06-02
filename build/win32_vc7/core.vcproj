@@ -184,6 +184,9 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\..\core\PluginManager.cpp">
+			</File>
+			<File
 				RelativePath="..\..\core\ScriptRunner.cpp">
 			</File>
 			<File
@@ -332,6 +335,9 @@
 			</File>
 			<File
 				RelativePath="..\..\include\core\Platforms.h">
+			</File>
+			<File
+				RelativePath="..\..\include\core\PluginManager.h">
 			</File>
 			<File
 				RelativePath="..\..\include\core\Pointer.h">

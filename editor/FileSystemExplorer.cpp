@@ -14,7 +14,7 @@
 #include "FileSystemExplorer.h"
 #include "EditorManager.h"
 #include "EditorPageManager.h"
-#include "PluginManager.h"
+#include "EditorPluginManager.h"
 #include "MIMEHandlerPlugin.h"
 #include <wx/listctrl.h>
 #include <wx/textctrl.h>

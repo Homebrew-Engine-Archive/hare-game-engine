@@ -47,7 +47,7 @@ namespace hare
             return fileName;
         }
 
-		bool isRanderAble(){
+		bool isRenderable(){
 			return bIsRenderable;
 		}
 
@@ -56,7 +56,7 @@ namespace hare
 
 		//Gets an image from a texture.
 		virtual void download(Image& img, const RectN& rc = RectN(0,0,0,0)) = 0;
-        virtual void reCreate() = 0;
+        virtual void recreate() = 0;
 		virtual void release() = 0;
 
     protected:

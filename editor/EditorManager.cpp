@@ -15,7 +15,7 @@
 #include "ExplorerManager.h"
 #include "ConfigManager.h"
 #include "EditorPageManager.h"
-#include "PluginManager.h"
+#include "EditorPluginManager.h"
 
 namespace hare
 {
@@ -58,7 +58,7 @@ namespace hare
         ExplorerManager::free();
         ConfigManager::free();
         EditorPageManager::free();
-        PluginManager::free();
+        EditorPluginManager::free();
     }
 
     wxFrame* Manager::getAppWindow() const
@@ -100,9 +100,9 @@ namespace hare
         return EditorPageManager::getInstancePtr();
     }
 
-    PluginManager* Manager::getPluginManager() const
+    EditorPluginManager* Manager::getPluginManager() const
     {
-        return PluginManager::getInstancePtr();
+        return EditorPluginManager::getInstancePtr();
     }
 
     bool Manager::processEvent(EditorEvent& event)

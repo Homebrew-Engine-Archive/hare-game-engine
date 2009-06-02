@@ -18,7 +18,7 @@
 #include "EditorPageManager.h"
 #include "ExplorerManager.h"
 #include "ProjectExplorer.h"
-#include "PluginManager.h"
+#include "EditorPluginManager.h"
 #include "DebuggerPlugin.h"
 #include "TextEditorStyle.h"
 #include <wx/filename.h>

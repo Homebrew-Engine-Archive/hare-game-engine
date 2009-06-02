@@ -123,7 +123,7 @@ bool EditorApp::OnInit()
     for (size_t i = 0; i < plugins.size(); ++i)
     {
         String fileName = pluginDir + plugins[i];
-        if (getHareApp()->loadPlugin(fileName))
+        if (PluginManager::getSingletonPtr()->loadPlugin(fileName))
         {
             Log::getSingleton().logInfo("Load plugin : '%s'", fileName.c_str());
         }
@@ -153,9 +153,6 @@ int EditorApp::OnExit()
 
     gui_quit();
     graphics_quit();
-
-    getHareApp()->freeAllPlugins();
-
     core_quit();
 
     return wxApp::OnExit();

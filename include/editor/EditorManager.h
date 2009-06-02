@@ -62,7 +62,7 @@ namespace hare
         ExplorerManager* getExplorerManager() const;
         ConfigManager* getConfigManager() const;
         EditorPageManager* getEditorPageManager() const;
-        PluginManager* getPluginManager() const;
+        EditorPluginManager* getPluginManager() const;
 
         bool processEvent(EditorEvent& event);
         bool processEvent(EditorDockEvent& event);

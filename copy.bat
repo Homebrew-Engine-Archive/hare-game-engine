@@ -11,4 +11,5 @@
 @copy ext\glew\bin\*.dll 			lib
 @copy ext\fmod\lib\*.dll			lib
 @copy ext\d3d\bin\*.dll				lib
+@copy ext\python\*.dll				lib
 @pause

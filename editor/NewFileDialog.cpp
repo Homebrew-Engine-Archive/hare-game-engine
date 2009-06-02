@@ -97,7 +97,7 @@ namespace hare
 
         treeCtrlFilter->SetImageList(treeImageList);
 
-        plugins = PluginManager::getInstancePtr()->findPlugins(EPT_Wizard);
+        plugins = EditorPluginManager::getInstancePtr()->findPlugins(EPT_Wizard);
 
         for (size_t i = 0; i < plugins.size(); ++i)
         {

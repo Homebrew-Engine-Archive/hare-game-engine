@@ -182,7 +182,7 @@
 				Name="Debug|Win32">
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="..\..\ext\swig\swig.exe -c++ -python -outdir . -I.. &quot;$(InputPath)&quot;
+					CommandLine="..\..\ext\swig\swig.exe -c++ -python -outdir ..\..\lib\ -I.. &quot;$(InputPath)&quot;
 "
 					Outputs="$(InputName)_wrap.cxx"/>
 			</FileConfiguration>

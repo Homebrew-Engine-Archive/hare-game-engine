@@ -135,7 +135,7 @@ void D3DTexture::download(Image &img, const RectN& rc)
 	SAFE_RELEASE(destSurface);
 }
 
-void D3DTexture::reCreate()
+void D3DTexture::recreate()
 {
 	//注册自己到设备对象管理
 	if (bIsRenderable){

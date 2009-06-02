@@ -48,6 +48,8 @@ namespace hare
     class Semaphore;
     class Condition;
     class Thread;
+    class DynamicLibrary;
+    class PluginManager;
 }
 
 #endif // _PREREQUISITES_H_

@@ -42,7 +42,7 @@ namespace hare
 		release();//释放上一次的资源 bIsRenderable = true; 放在此句话的后面是确保正确释放上一次的资源
 		bIsRenderable = isRenderable; //如果不是renderable则使用系统托管的内存
 		bFromImage    = false;
-		reCreate();
+		recreate();
 	}
 
 	void Texture::createFromFile(const String& filename)
@@ -57,7 +57,7 @@ namespace hare
 		release();//释放上一次的资源 bIsRenderable = false; 放在此句话的后面是确保正确释放上一次的资源
 		bIsRenderable = false;
 		bFromImage    = true;
-		reCreate();
+		recreate();
 	}
 
 	void Texture::setProjectionSize(float w, float h)

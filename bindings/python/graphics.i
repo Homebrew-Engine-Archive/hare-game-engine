@@ -127,7 +127,7 @@ class Texture
 {
 public:
 	void createFromFile(const String& filename);
-	virtual void reCreate() = 0;
+	virtual void recreate() = 0;
 	virtual void release() = 0;
 };
 

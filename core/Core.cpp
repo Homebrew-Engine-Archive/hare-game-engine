@@ -14,6 +14,7 @@
 #include "FileSystem.h"
 #include "StringUtil.h"
 #include "CmdLineParser.h"
+#include "PluginManager.h"
 #include "Socket.h"
 #include "MathUtil.h"
 #include "Log.h"
@@ -24,7 +25,9 @@ namespace hare
     {
         static Log theLog;
         static FileSystem theFileSystem(argv0);
-		MathUtil::rand_seed(0);
+		static PluginManager thePluginManager;
+        MathUtil::rand_seed(0);
+
         // Set the numeric locale to C to avoid ','
         setlocale(LC_NUMERIC, "C");
 
@@ -37,10 +40,11 @@ namespace hare
 
     void CORE_API core_quit()
     {
-        Log::getSingleton().dumpMessages();
+        PluginManager::getSingletonPtr()->freeAllPlugins();
 
 #if HARE_PLATFORM == HARE_PLATFORM_WIN32
         WSACleanup();
 #endif
+        Log::getSingleton().dumpMessages();
     }
 }

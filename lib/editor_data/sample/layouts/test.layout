@@ -7,7 +7,7 @@
             <item0 store="0" class="SizerItemWindow" version="0">
                 <super_version_SizerItem class="uint32" value="0" />
                 <proportion class="uint32" value="1" />
-                <border class="uint32" value="100" />
+                <border class="uint32" value="10" />
                 <flag class="uint32" value="139760" />
                 <window store="0" class="FrameWindow" version="0">
                     <super_version_Window class="uint32" value="0" />
@@ -18,12 +18,12 @@
                                 <super_version_SizerItem class="uint32" value="0" />
                                 <proportion class="uint32" value="0" />
                                 <border class="uint32" value="10" />
-                                <flag class="uint32" value="1776" />
+                                <flag class="uint32" value="135920" />
                                 <window store="0" class="Button" version="0">
                                     <super_version_Window class="uint32" value="0" />
                                     <windowSizer store="2" />
-                                    <position class="PointF" value="370.000000 10.000000" />
-                                    <size class="PointF" value="20.000000 20.000000" />
+                                    <position class="PointF" value="10.000000 10.000000" />
+                                    <size class="PointF" value="600.000000 20.000000" />
                                     <minSize class="SizeF" value="20.000000 20.000000" />
                                     <maxSize class="SizeF" value="-1.000000 -1.000000" />
                                     <shown class="bool" value="1" />
@@ -66,7 +66,7 @@
                                             <window store="0" class="CheckBox" version="0">
                                                 <super_version_Window class="uint32" value="0" />
                                                 <windowSizer store="2" />
-                                                <position class="PointF" value="10.000000 80.000000" />
+                                                <position class="PointF" value="40.000000 50.000000" />
                                                 <size class="PointF" value="20.000000 20.000000" />
                                                 <minSize class="SizeF" value="20.000000 20.000000" />
                                                 <maxSize class="SizeF" value="-1.000000 -1.000000" />
@@ -81,13 +81,13 @@
                                             <super_version_SizerItem class="uint32" value="0" />
                                             <proportion class="uint32" value="0" />
                                             <border class="uint32" value="10" />
-                                            <flag class="uint32" value="263152" />
+                                            <flag class="uint32" value="394224" />
                                             <window store="0" class="Button" version="0">
                                                 <super_version_Window class="uint32" value="0" />
                                                 <windowSizer store="2" />
-                                                <position class="PointF" value="10.000000 110.000000" />
-                                                <size class="PointF" value="70.000000 40.000000" />
-                                                <minSize class="SizeF" value="60.000000 40.000000" />
+                                                <position class="PointF" value="70.000000 50.000000" />
+                                                <size class="PointF" value="300.000000 193.333328" />
+                                                <minSize class="SizeF" value="300.000000 200.000000" />
                                                 <maxSize class="SizeF" value="-1.000000 -1.000000" />
                                                 <shown class="bool" value="1" />
                                                 <enabled class="bool" value="1" />
@@ -95,16 +95,16 @@
                                             </window>
                                         </item2>
                                     </items>
-                                    <minSize class="SizeF" value="-1.000000 -1.000000" />
-                                    <orient class="int32" value="8" />
+                                    <minSize class="SizeF" value="100.000000 100.000000" />
+                                    <orient class="int32" value="4" />
                                 </sizer>
                             </item1>
                         </items>
                         <minSize class="SizeF" value="-1.000000 -1.000000" />
                         <orient class="int32" value="8" />
                     </windowSizer>
-                    <position class="PointF" value="100.000000 100.000000" />
-                    <size class="PointF" value="400.000000 280.000000" />
+                    <position class="PointF" value="10.000000 10.000000" />
+                    <size class="PointF" value="620.000000 420.000000" />
                     <minSize class="SizeF" value="100.000000 100.000000" />
                     <maxSize class="SizeF" value="-1.000000 -1.000000" />
                     <shown class="bool" value="1" />
@@ -120,12 +120,12 @@
                 <super_version_SizerItem class="uint32" value="0" />
                 <proportion class="uint32" value="0" />
                 <border class="uint32" value="10" />
-                <flag class="uint32" value="1776" />
+                <flag class="uint32" value="132848" />
                 <window store="0" class="Button" version="0">
                     <super_version_Window class="uint32" value="0" />
                     <windowSizer store="2" />
-                    <position class="PointF" value="610.000000 10.000000" />
-                    <size class="PointF" value="20.000000 20.000000" />
+                    <position class="PointF" value="10.000000 450.000000" />
+                    <size class="PointF" value="620.000000 20.000000" />
                     <minSize class="SizeF" value="20.000000 20.000000" />
                     <maxSize class="SizeF" value="-1.000000 -1.000000" />
                     <shown class="bool" value="1" />
@@ -138,7 +138,7 @@
             </item1>
         </items>
         <minSize class="SizeF" value="-1.000000 -1.000000" />
-        <orient class="int32" value="4" />
+        <orient class="int32" value="8" />
     </windowSizer>
     <position class="PointF" value="0.000000 0.000000" />
     <size class="PointF" value="640.000000 480.000000" />

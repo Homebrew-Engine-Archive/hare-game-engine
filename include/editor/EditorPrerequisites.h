@@ -32,7 +32,7 @@ namespace hare
     class ConfigManager;
     class ExplorerManager;
     class EditorPageManager;
-    class PluginManager;
+    class EditorPluginManager;
     class EditorPlugin;
     class EditorPage;
     class TextEditorPage;

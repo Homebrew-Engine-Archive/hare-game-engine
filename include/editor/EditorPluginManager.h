@@ -1,5 +1,5 @@
 //***************************************************************
-//  File:    PluginManager.h
+//  File:    EditorPluginManager.h
 //  Data:    11/04/2008
 //  Author:  littlesome (littlesome@live.cn)
 //-------------------------------------------------------------
@@ -45,9 +45,9 @@ namespace hare
     WX_DEFINE_ARRAY(PluginElement*, PluginElementsArray);
     WX_DEFINE_ARRAY(EditorPlugin*, PluginsArray);
 
-    class EDITOR_API PluginManager : public TManager<PluginManager>
+    class EDITOR_API EditorPluginManager : public TManager<EditorPluginManager>
     {
-        friend class TManager<PluginManager>;
+        friend class TManager<EditorPluginManager>;
 
     public:
         int scanForPlugins(const wxString& path);
@@ -92,8 +92,8 @@ namespace hare
         PluginElementsArray plugins;
 
     private:
-         PluginManager();
-        ~PluginManager();
+         EditorPluginManager();
+        ~EditorPluginManager();
     };
 
     template<typename T> class PluginRegistrant

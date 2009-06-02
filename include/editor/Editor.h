@@ -27,7 +27,7 @@
 #include "EditorManager.h"
 #include "NewFileDialog.h"
 #include "FileSystemExplorer.h"
-#include "PluginManager.h"
+#include "EditorPluginManager.h"
 #include "ProjectExplorer.h"
 #include "TextEditorPage.h"
 #include "TextEditorStyle.h"

@@ -163,7 +163,7 @@ Object* ThemeWizard::wizard(int index)
 
         if (themes)
         {
-            EditorPlugin* plugin = PluginManager::getInstancePtr()->findPluginByName(wxT("ThemeMIMEHandler"));
+            EditorPlugin* plugin = EditorPluginManager::getInstancePtr()->findPluginByName(wxT("ThemeMIMEHandler"));
             if (plugin && plugin->getType() == EPT_MIMEHandler)
             {
                 ThemeMIMEHandler* handler = (ThemeMIMEHandler*)plugin;

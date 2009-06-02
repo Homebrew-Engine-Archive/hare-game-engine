@@ -29,7 +29,7 @@ public:
 
     virtual void download(Image& img, const RectN& rc = RectN(0,0,0,0));
 
-    virtual void reCreate();
+    virtual void recreate();
 
     virtual void release();
 

@@ -12,7 +12,7 @@ bool loadPlugins()
     {
         String fileName = pluginDir + plugins[i];
 
-        if (getHareApp()->loadPlugin(fileName))
+        if (PluginManager::getSingletonPtr()->loadPlugin(fileName))
         {
             Log::getSingleton().logInfo("Load plugin : '%s'", fileName.c_str());
         }
@@ -96,9 +96,6 @@ int main(int argc, char *argv[])
 
     gui_quit();
     graphics_quit();
-
-    HareApp::getSingletonPtr()->freeAllPlugins();
-
     core_quit();
 
     return EXIT_SUCCESS;

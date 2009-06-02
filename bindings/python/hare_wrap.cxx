@@ -6066,20 +6066,20 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Texture_reCreate(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_Texture_recreate(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   Texture *arg1 = (Texture *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject * obj0 = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"O:Texture_reCreate",&obj0)) SWIG_fail;
+  if (!PyArg_ParseTuple(args,(char *)"O:Texture_recreate",&obj0)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_Texture, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Texture_reCreate" "', argument " "1"" of type '" "Texture *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Texture_recreate" "', argument " "1"" of type '" "Texture *""'"); 
   }
   arg1 = reinterpret_cast< Texture * >(argp1);
-  (arg1)->reCreate();
+  (arg1)->recreate();
   resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
@@ -14547,7 +14547,7 @@ static PyMethodDef SwigMethods[] = {
 	 { (char *)"delete_RenderWindow", _wrap_delete_RenderWindow, METH_VARARGS, NULL},
 	 { (char *)"RenderWindow_swigregister", RenderWindow_swigregister, METH_VARARGS, NULL},
 	 { (char *)"Texture_createFromFile", _wrap_Texture_createFromFile, METH_VARARGS, NULL},
-	 { (char *)"Texture_reCreate", _wrap_Texture_reCreate, METH_VARARGS, NULL},
+	 { (char *)"Texture_recreate", _wrap_Texture_recreate, METH_VARARGS, NULL},
 	 { (char *)"Texture_release", _wrap_Texture_release, METH_VARARGS, NULL},
 	 { (char *)"delete_Texture", _wrap_delete_Texture, METH_VARARGS, NULL},
 	 { (char *)"Texture_swigregister", Texture_swigregister, METH_VARARGS, NULL},

@@ -51,7 +51,7 @@ Object* UVRCWizard::wizard(int index)
 
     if (object)
     {
-        EditorPlugin* plugin = PluginManager::getInstancePtr()->findPluginByName(wxT("UVRCMIMEHandler"));
+        EditorPlugin* plugin = EditorPluginManager::getInstancePtr()->findPluginByName(wxT("UVRCMIMEHandler"));
         if (plugin && plugin->getType() == EPT_MIMEHandler)
         {
             UVRCMIMEHandler* handler = (UVRCMIMEHandler*)plugin;

@@ -47,5 +47,6 @@
 #include "ScriptRunner.h"
 #include "GameApp.h"
 #include "DataHolder.h"
+#include "PluginManager.h"
 
 #endif

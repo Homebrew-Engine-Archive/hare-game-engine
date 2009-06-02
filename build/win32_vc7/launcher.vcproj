@@ -2,7 +2,7 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="7.10"
-	Name="lua_launcher"
+	Name="game_launcher"
 	ProjectGUID="{CA562D90-4592-4DEA-BE8B-F3B9B89D11D3}"
 	RootNamespace="launcher"
 	Keyword="Win32Proj">

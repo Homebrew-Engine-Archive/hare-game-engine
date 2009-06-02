@@ -44,10 +44,6 @@ namespace hare
 
 		void setGraphicsSystem(SystemManager* systemManager);
 
-		DynamicLibrary* loadPlugin(const String& moduleName);
-
-		void freeAllPlugins();
-
 		RenderWindow* createRenderWindow(const WindowParams& params);
 
 		SceneManager* createSceneManager();

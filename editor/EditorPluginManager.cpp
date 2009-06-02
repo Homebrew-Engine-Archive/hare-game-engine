@@ -1,5 +1,5 @@
 //***************************************************************
-//  File:    PluginManager.cpp
+//  File:    EditorPluginManager.cpp
 //  Data:    11/04/2008
 //  Author:  littlesome (littlesome@live.cn)
 //-------------------------------------------------------------
@@ -11,7 +11,7 @@
 //
 //***************************************************************
 #include "PCH.h"
-#include "PluginManager.h"
+#include "EditorPluginManager.h"
 #include "EditorManager.h"
 #include "EditorPlugin.h"
 #include <wx/dynload.h>
@@ -20,19 +20,19 @@
 
 namespace hare
 {
-    template<> PluginManager* TManager<PluginManager>::instance = 0;
-    template<> bool TManager<PluginManager>::autoCreate = true;
+    template<> EditorPluginManager* TManager<EditorPluginManager>::instance = 0;
+    template<> bool TManager<EditorPluginManager>::autoCreate = true;
 
-    PluginManager::PluginManager()
+    EditorPluginManager::EditorPluginManager()
     {
     }
 
-    PluginManager::~PluginManager()
+    EditorPluginManager::~EditorPluginManager()
     {
         unloadAllPlugins();
     }
 
-    bool PluginManager::attachPlugin(EditorPlugin* plugin)
+    bool EditorPluginManager::attachPlugin(EditorPlugin* plugin)
     {
         if (!plugin)
             return false;
@@ -43,7 +43,7 @@ namespace hare
         return true;
     }
 
-    bool PluginManager::detachPlugin(EditorPlugin* plugin)
+    bool EditorPluginManager::detachPlugin(EditorPlugin* plugin)
     {
         if (!plugin)
             return false;
@@ -55,7 +55,7 @@ namespace hare
         return true;
     }
 
-    void PluginManager::unloadAllPlugins()
+    void EditorPluginManager::unloadAllPlugins()
     {
         while (plugins.GetCount())
         {
@@ -64,7 +64,7 @@ namespace hare
         plugins.Clear();
     }
 
-    void PluginManager::unloadPlugin(PluginElement* elem)
+    void EditorPluginManager::unloadPlugin(PluginElement* elem)
     {
         if (!elem)
             return;
@@ -86,7 +86,7 @@ namespace hare
         delete elem;
     }
 
-    int PluginManager::scanForPlugins(const wxString& path)
+    int EditorPluginManager::scanForPlugins(const wxString& path)
     {
         static const wxString pluginsMask = wxT("*.plugin");
         int count = 0;
@@ -118,7 +118,7 @@ namespace hare
         return count;
     }
 
-    bool PluginManager::loadPlugin(const wxString& fileName)
+    bool EditorPluginManager::loadPlugin(const wxString& fileName)
     {
         registeredPlugins.clear();
 
@@ -166,7 +166,7 @@ namespace hare
         return true;
     }
 
-    void PluginManager::loadAllPlugins()
+    void EditorPluginManager::loadAllPlugins()
     {
         PluginElement* elem = 0;
         for (unsigned int i = 0; i < plugins.GetCount(); ++i)
@@ -180,7 +180,7 @@ namespace hare
         }
     }
 
-    void PluginManager::registerPlugin(const PluginInfo& info, FNcreatePlugin fncreatePlugin,
+    void EditorPluginManager::registerPlugin(const PluginInfo& info, FNcreatePlugin fncreatePlugin,
         FNfreePlugin fnfreePlugin, FNgetVersion fngetVersion)
     {
         if (!fncreatePlugin || !fnfreePlugin || !fngetVersion)
@@ -211,7 +211,7 @@ namespace hare
         registeredPlugins.push_back(pr);
     }
 
-    EditorPlugin* PluginManager::findPluginByName(const wxString& pluginName)
+    EditorPlugin* EditorPluginManager::findPluginByName(const wxString& pluginName)
     {
         for (unsigned int i = 0; i < plugins.GetCount(); ++i)
         {
@@ -222,7 +222,7 @@ namespace hare
         return 0;
     }
 
-    EditorPlugin* PluginManager::findPluginByFileName(const wxString& pluginFileName)
+    EditorPlugin* EditorPluginManager::findPluginByFileName(const wxString& pluginFileName)
     {
         for (unsigned int i = 0; i < plugins.GetCount(); ++i)
         {
@@ -233,7 +233,7 @@ namespace hare
         return 0;
     }
 
-    PluginsArray PluginManager::findPlugins(EditorPluginType type)
+    PluginsArray EditorPluginManager::findPlugins(EditorPluginType type)
     {
         PluginsArray arr;
 
@@ -246,7 +246,7 @@ namespace hare
         return arr;
     }
 
-    const PluginInfo* PluginManager::getPluginInfo(EditorPlugin* plugin)
+    const PluginInfo* EditorPluginManager::getPluginInfo(EditorPlugin* plugin)
     {
         for (unsigned int i = 0; i < plugins.GetCount(); ++i)
         {

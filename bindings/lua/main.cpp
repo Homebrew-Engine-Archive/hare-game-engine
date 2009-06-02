@@ -15,13 +15,13 @@ bool loadPlugins()
     {
         String fileName = pluginDir + plugins[i];
 
-        if (getHareApp()->loadPlugin(fileName))
+        if (PluginManager::getSingletonPtr()->loadPlugin(fileName))
         {
             Log::getSingleton().logInfo("Load plugin : '%s'", fileName.c_str());
         }
         else
         {
-            Log::getSingleton().logError("HareApp::loadPlugin failed to load '%s'", fileName.c_str());
+            Log::getSingleton().logError("Load plugin failed to load '%s'", fileName.c_str());
         }
     }
 
@@ -64,7 +64,6 @@ bool loadResources()
 INT WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR cmd, INT)
 {
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
-    //_CrtSetBreakAlloc(386);
     core_init(NULL);
     CmdLineParser cmdLine(cmd);
 #else
@@ -81,27 +80,31 @@ int main(int argc, char *argv[])
     graphics_init();
     gui_init();
 
-    GameApp::Ptr app = NULL;
+    String game = CmdLineParser::getSingleton().getOptionValue("game") + "/gameapp.xml";
 
-    ClassInfo* appClass = ClassInfo::findClass("LuaGameApp");
+    GameApp::Ptr gameApp = NULL;
 
-    if (appClass)
+    try 
     {
-        app = (GameApp*)appClass->createObject();
+        gameApp = (GameApp*)Object::importObject(game);
+    }
+    catch (...)
+    {
     }
 
-    if (app)
+    if (gameApp)
     {
-        app->go();
+        gameApp->go();
+        gameApp = 0;
     }
-
-    app = 0;
+    else
+    {
+        String err = "Failed to create GameApp from file, url : " + game;
+        Log::getSingleton().logError(err.c_str());
+    }
 
     gui_quit();
     graphics_quit();
-
-    HareApp::getSingletonPtr()->freeAllPlugins();
-
     core_quit();
 
     return EXIT_SUCCESS;

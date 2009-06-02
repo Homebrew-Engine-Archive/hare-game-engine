@@ -256,7 +256,7 @@ bool GLTexture::doCreate()
     return true;
 }
 
-void GLTexture::reCreate()
+void GLTexture::recreate()
 {
     assert(doCreate());
 }

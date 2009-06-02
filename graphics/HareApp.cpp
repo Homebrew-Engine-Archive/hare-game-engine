@@ -54,46 +54,6 @@ namespace hare
         DevILImageCodec::shutDown();
 	}
 
-	/*void HareApp::setGraphicsSystem(SystemManager* systemManager)
-	{
-		graphicsSystemManager = systemManager;
-	}*/
-
-	DynamicLibrary* HareApp::loadPlugin(const String& moduleName)
-	{
-        PluginMap::iterator it = pluginMap.find(moduleName);
-        if (it != pluginMap.end())
-        {
-            it->second->addRef();
-            return it->second;
-        }
-        else
-        {
-            DynamicLibrary* plugin = new DynamicLibrary(moduleName);
-            if (plugin->isLoaded())
-            {
-                plugin->addRef();
-                pluginMap[moduleName] = plugin;
-            }
-            else
-            {
-                delete plugin;
-                plugin = NULL;
-            }
-            return plugin;
-        }
-	}
-
-    void HareApp::freeAllPlugins()
-	{
-        PluginMap::iterator it = pluginMap.begin();
-        for (; it != pluginMap.end(); ++it)
-        {
-            it->second->decRef();
-        }
-        pluginMap.clear();
-	}
-
 	RenderWindow* HareApp::createRenderWindow(const WindowParams& params)
 	{
 		return graphicsSystemManager->createRenderWindow(params);

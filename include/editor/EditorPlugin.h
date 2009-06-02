@@ -63,7 +63,7 @@ namespace hare
         bool attached;
 
     private:
-        friend class PluginManager;
+        friend class EditorPluginManager;
         void attach();
         void detach(bool isShutDown);
 

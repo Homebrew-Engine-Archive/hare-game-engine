@@ -202,7 +202,7 @@ Object* MtrlWizard::wizard(int index)
 
         if (object)
         {
-            EditorPlugin* plugin = PluginManager::getInstancePtr()->findPluginByName(wxT("MtrlMIMEHandler"));
+            EditorPlugin* plugin = EditorPluginManager::getInstancePtr()->findPluginByName(wxT("MtrlMIMEHandler"));
             if (plugin && plugin->getType() == EPT_MIMEHandler)
             {
                 MtrlMIMEHandler* handler = (MtrlMIMEHandler*)plugin;

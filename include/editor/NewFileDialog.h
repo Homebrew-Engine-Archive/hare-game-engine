@@ -14,7 +14,7 @@
 #define NEWFILEDIALOG_H
 
 #include "EditorPrerequisites.h"
-#include "PluginManager.h"
+#include "EditorPluginManager.h"
 #include "WizardPlugin.h"
 #include <wx/treectrl.h>
 #include <wx/listctrl.h>

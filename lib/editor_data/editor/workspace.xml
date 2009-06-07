@@ -1,46 +1,59 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <Object store="0" class="Workspace" version="0">
-    <projects class="object_list" number="1">
+    <projects class="object_list" number="2">
         <item0 store="0" class="Project" version="0">
-            <projectName class="String" value="sample" />
-            <debuggerName class="String" value="LuaDebugger" />
-            <files class="object_list" number="4">
+            <projectName class="String" value="python" />
+            <debuggerName class="String" value="PythonDebugger" />
+            <files class="object_list" number="2">
                 <item0 store="0" class="ProjectFile" version="0">
-                    <fileName class="String" value="script2.lua" />
+                    <fileName class="String" value="game_app.xml" />
                     <editorOpen class="bool" value="0" />
                     <editorPos class="int32" value="0" />
                     <editorTopLine class="int32" value="0" />
-                    <editorTabPos class="int32" value="0" />
+                    <editorTabPos class="int32" value="5" />
                     <breakPoints class="meta_array" number="0" />
                 </item0>
                 <item1 store="0" class="ProjectFile" version="0">
-                    <fileName class="String" value="script.lua~" />
+                    <fileName class="String" value="script.py" />
                     <editorOpen class="bool" value="0" />
-                    <editorPos class="int32" value="0" />
+                    <editorPos class="int32" value="845" />
                     <editorTopLine class="int32" value="0" />
-                    <editorTabPos class="int32" value="0" />
+                    <editorTabPos class="int32" value="4" />
+                    <breakPoints class="meta_array" number="0" />
+                </item1>
+            </files>
+        </item0>
+        <item1 store="0" class="Project" version="0">
+            <projectName class="String" value="sample" />
+            <debuggerName class="String" value="LuaDebugger" />
+            <files class="object_list" number="3">
+                <item0 store="0" class="ProjectFile" version="0">
+                    <fileName class="String" value="game_app.xml" />
+                    <editorOpen class="bool" value="0" />
+                    <editorPos class="int32" value="288" />
+                    <editorTopLine class="int32" value="0" />
+                    <editorTabPos class="int32" value="3" />
+                    <breakPoints class="meta_array" number="0" />
+                </item0>
+                <item1 store="0" class="ProjectFile" version="0">
+                    <fileName class="String" value="script.lua" />
+                    <editorOpen class="bool" value="0" />
+                    <editorPos class="int32" value="360" />
+                    <editorTopLine class="int32" value="0" />
+                    <editorTabPos class="int32" value="1" />
                     <breakPoints class="meta_array" number="0" />
                 </item1>
                 <item2 store="0" class="ProjectFile" version="0">
                     <fileName class="String" value="test.lua" />
-                    <editorOpen class="bool" value="1" />
-                    <editorPos class="int32" value="221" />
-                    <editorTopLine class="int32" value="0" />
-                    <editorTabPos class="int32" value="1" />
-                    <breakPoints class="meta_array" number="1">
-                        <item0 class="int32" value="7" />
-                    </breakPoints>
-                </item2>
-                <item3 store="0" class="ProjectFile" version="0">
-                    <fileName class="String" value="script.lua" />
-                    <editorOpen class="bool" value="1" />
-                    <editorPos class="int32" value="101" />
+                    <editorOpen class="bool" value="0" />
+                    <editorPos class="int32" value="222" />
                     <editorTopLine class="int32" value="0" />
                     <editorTabPos class="int32" value="2" />
                     <breakPoints class="meta_array" number="0" />
-                </item3>
+                </item2>
             </files>
-        </item0>
+        </item1>
     </projects>
     <activeProject class="String" value="sample" />
+    <activePage class="int32" value="-1" />
 </Object>

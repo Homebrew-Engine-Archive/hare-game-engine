@@ -1,0 +1,53 @@
+Microsoft Visual Studio Solution File, Format Version 8.00
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dx9_renderer", "dx9_renderer.vcproj", "{CB44B9FC-742D-429A-B926-CCE744E2793B}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gl_renderer", "gl_renderer.vcproj", "{8E83E98C-F83A-4470-B63C-16C7C1151FD4}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "fmod_sound", "fmod_sound.vcproj", "{9F5FE3D6-3D33-478E-ACD4-AB169A8B01A2}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "lua_binding", "lua_binding.vcproj", "{13AEF6EC-409F-44C1-8390-27E6E83E7A84}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "python_binding", "python_binding.vcproj", "{70A9B9F8-06F4-4A36-A674-45FA342AAA1E}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfiguration) = preSolution
+		Debug = Debug
+		Release = Release
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{CB44B9FC-742D-429A-B926-CCE744E2793B}.Debug.ActiveCfg = Debug|Win32
+		{CB44B9FC-742D-429A-B926-CCE744E2793B}.Debug.Build.0 = Debug|Win32
+		{CB44B9FC-742D-429A-B926-CCE744E2793B}.Release.ActiveCfg = Release|Win32
+		{CB44B9FC-742D-429A-B926-CCE744E2793B}.Release.Build.0 = Release|Win32
+		{8E83E98C-F83A-4470-B63C-16C7C1151FD4}.Debug.ActiveCfg = Debug|Win32
+		{8E83E98C-F83A-4470-B63C-16C7C1151FD4}.Debug.Build.0 = Debug|Win32
+		{8E83E98C-F83A-4470-B63C-16C7C1151FD4}.Release.ActiveCfg = Release|Win32
+		{8E83E98C-F83A-4470-B63C-16C7C1151FD4}.Release.Build.0 = Release|Win32
+		{9F5FE3D6-3D33-478E-ACD4-AB169A8B01A2}.Debug.ActiveCfg = Debug|Win32
+		{9F5FE3D6-3D33-478E-ACD4-AB169A8B01A2}.Debug.Build.0 = Debug|Win32
+		{9F5FE3D6-3D33-478E-ACD4-AB169A8B01A2}.Release.ActiveCfg = Release|Win32
+		{9F5FE3D6-3D33-478E-ACD4-AB169A8B01A2}.Release.Build.0 = Release|Win32
+		{13AEF6EC-409F-44C1-8390-27E6E83E7A84}.Debug.ActiveCfg = Debug|Win32
+		{13AEF6EC-409F-44C1-8390-27E6E83E7A84}.Debug.Build.0 = Debug|Win32
+		{13AEF6EC-409F-44C1-8390-27E6E83E7A84}.Release.ActiveCfg = Release|Win32
+		{13AEF6EC-409F-44C1-8390-27E6E83E7A84}.Release.Build.0 = Release|Win32
+		{70A9B9F8-06F4-4A36-A674-45FA342AAA1E}.Debug.ActiveCfg = Debug|Win32
+		{70A9B9F8-06F4-4A36-A674-45FA342AAA1E}.Debug.Build.0 = Debug|Win32
+		{70A9B9F8-06F4-4A36-A674-45FA342AAA1E}.Release.ActiveCfg = Release|Win32
+		{70A9B9F8-06F4-4A36-A674-45FA342AAA1E}.Release.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal

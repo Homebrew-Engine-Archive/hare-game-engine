@@ -1,0 +1,69 @@
+Microsoft Visual Studio Solution File, Format Version 8.00
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "lua_debugger", "lua_debugger.vcproj", "{4DA1AEDA-70D0-4EB5-BB57-F692C907B405}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "font_editor", "font_editor.vcproj", "{DED2B450-0ED2-493B-9BBC-A443B7F0666F}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mtrl_editor", "mtrl_editor.vcproj", "{C77B3474-2C3D-4138-A8EF-183D356703FB}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "uv_editor", "uv_editor.vcproj", "{09CCE340-9DC9-4461-A6AB-AB2E3680DFCA}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gui_editor", "gui_editor.vcproj", "{2A663F90-96FA-4121-9B4E-AAFFD54E143B}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sprite_editor", "sprite_editor.vcproj", "{E42360F5-F290-4B33-A327-1179E46BBEB6}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "scene_editor", "scene_editor.vcproj", "{0681EFC0-AAAB-4D4F-A7C8-3133B1C8F47B}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfiguration) = preSolution
+		Debug = Debug
+		Release = Release
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{4DA1AEDA-70D0-4EB5-BB57-F692C907B405}.Debug.ActiveCfg = Debug|Win32
+		{4DA1AEDA-70D0-4EB5-BB57-F692C907B405}.Debug.Build.0 = Debug|Win32
+		{4DA1AEDA-70D0-4EB5-BB57-F692C907B405}.Release.ActiveCfg = Release|Win32
+		{4DA1AEDA-70D0-4EB5-BB57-F692C907B405}.Release.Build.0 = Release|Win32
+		{DED2B450-0ED2-493B-9BBC-A443B7F0666F}.Debug.ActiveCfg = Debug|Win32
+		{DED2B450-0ED2-493B-9BBC-A443B7F0666F}.Debug.Build.0 = Debug|Win32
+		{DED2B450-0ED2-493B-9BBC-A443B7F0666F}.Release.ActiveCfg = Release|Win32
+		{DED2B450-0ED2-493B-9BBC-A443B7F0666F}.Release.Build.0 = Release|Win32
+		{C77B3474-2C3D-4138-A8EF-183D356703FB}.Debug.ActiveCfg = Debug|Win32
+		{C77B3474-2C3D-4138-A8EF-183D356703FB}.Debug.Build.0 = Debug|Win32
+		{C77B3474-2C3D-4138-A8EF-183D356703FB}.Release.ActiveCfg = Release|Win32
+		{C77B3474-2C3D-4138-A8EF-183D356703FB}.Release.Build.0 = Release|Win32
+		{09CCE340-9DC9-4461-A6AB-AB2E3680DFCA}.Debug.ActiveCfg = Debug|Win32
+		{09CCE340-9DC9-4461-A6AB-AB2E3680DFCA}.Debug.Build.0 = Debug|Win32
+		{09CCE340-9DC9-4461-A6AB-AB2E3680DFCA}.Release.ActiveCfg = Release|Win32
+		{09CCE340-9DC9-4461-A6AB-AB2E3680DFCA}.Release.Build.0 = Release|Win32
+		{2A663F90-96FA-4121-9B4E-AAFFD54E143B}.Debug.ActiveCfg = Debug|Win32
+		{2A663F90-96FA-4121-9B4E-AAFFD54E143B}.Debug.Build.0 = Debug|Win32
+		{2A663F90-96FA-4121-9B4E-AAFFD54E143B}.Release.ActiveCfg = Release|Win32
+		{2A663F90-96FA-4121-9B4E-AAFFD54E143B}.Release.Build.0 = Release|Win32
+		{E42360F5-F290-4B33-A327-1179E46BBEB6}.Debug.ActiveCfg = Debug|Win32
+		{E42360F5-F290-4B33-A327-1179E46BBEB6}.Debug.Build.0 = Debug|Win32
+		{E42360F5-F290-4B33-A327-1179E46BBEB6}.Release.ActiveCfg = Release|Win32
+		{E42360F5-F290-4B33-A327-1179E46BBEB6}.Release.Build.0 = Release|Win32
+		{0681EFC0-AAAB-4D4F-A7C8-3133B1C8F47B}.Debug.ActiveCfg = Debug|Win32
+		{0681EFC0-AAAB-4D4F-A7C8-3133B1C8F47B}.Debug.Build.0 = Debug|Win32
+		{0681EFC0-AAAB-4D4F-A7C8-3133B1C8F47B}.Release.ActiveCfg = Release|Win32
+		{0681EFC0-AAAB-4D4F-A7C8-3133B1C8F47B}.Release.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal

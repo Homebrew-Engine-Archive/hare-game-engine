@@ -10,8 +10,10 @@
 //***************************************************************
 // 
 //***************************************************************
-#ifndef LUA_GAME_APP_H
-#define LUA_GAME_APP_H
+#ifndef PY_GAME_APP_H
+#define PY_GAME_APP_H
+
+#include "PyScriptRunner.h"
 
 class PyGameApp : public GameApp
 {
@@ -21,6 +23,9 @@ public:
     virtual bool go();
 
 protected:
+    PyScriptRunner::Ptr mainScript;
 };
+
+String PyErr_GetAsString();
 
 #endif

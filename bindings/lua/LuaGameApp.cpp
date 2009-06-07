@@ -21,8 +21,9 @@ extern "C"
 
 bool notify_error(lua_State *L);
 
-HARE_IMPLEMENT_DYNAMIC_CLASS(LuaGameApp, Object, 0)
+HARE_IMPLEMENT_DYNAMIC_CLASS(LuaGameApp, GameApp, 0)
 {
+    HARE_OBJ(mainScript, LuaScriptRunner)
 }
 
 bool LuaGameApp::go()
@@ -53,19 +54,28 @@ bool LuaGameApp::go()
 
     LuaScriptRunner::setState(L);
 
-    String game = CmdLineParser::getSingletonPtr()->getOptionValue("game");
-
-    mainScript = new LuaScriptRunner();
-
-    String gameScript;
-
-    // Script url MUST start with '/' for debugging.
-    if (game.empty()) 
-        gameScript = "/script.lua";
+    if (mainScript)
+    {
+        mainScript->loadScript();
+    }
     else
-        gameScript = "/" + game + "/script.lua";
+    {
+        mainScript = new LuaScriptRunner();
 
-    if (!mainScript->loadScript(gameScript))
+        String game = CmdLineParser::getSingletonPtr()->getOptionValue("game");
+        
+        String script;
+
+        // Script url MUST start with '/' for debugging.
+        if (game.empty()) 
+            script = "/script.lua";
+        else
+            script = "/" + game + "/script.lua";
+
+        mainScript->loadScript(script);
+    }
+
+    if (!mainScript->isLoaded())
     {
         notify_error(L);
         LuaScriptRunner::setState(NULL);
@@ -73,13 +83,11 @@ bool LuaGameApp::go()
         return false;
     }
 
-    if (!mainScript->notifyOwnerCreated())
-        notify_error(L);
+    mainScript->notifyOwnerCreated();
     
     HareApp::getSingletonPtr()->hareRun();
 
-    if (!mainScript->notifyOwnerDestroyed())
-        notify_error(L);
+    mainScript->notifyOwnerDestroyed();
 
     // Destroy all lua objects first.
     lua_close(L);

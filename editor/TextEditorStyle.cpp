@@ -126,6 +126,101 @@ namespace hare
 
             opt->saveToXml("/editor/lexers/lexer_xml.xml");
         }
+
+        // make lexer_py.xml for py
+        {
+            OptionSet::Ptr opt = new OptionSet;
+            opt->lang = "python";
+            opt->fileMasks.push_back("*.py");
+            opt->lexer = wxSCI_LEX_PYTHON;
+
+            opt->keywords.push_back(
+                "and assert break class continue def del elif else except "
+                "exec finally for from global if import in is lambda None "
+                "not or pass print raise return try while yield "
+                "__import__ abs basestring bool callable chr classmethod "
+                "cmp compile complex delattr dict dir divmod enumerate "
+                "eval execfile file filter float frozenset getattr globals "
+                "hasattr hash help hex id input int isinstance issubclass "
+                "iter len list locals long map max min object oct open "
+                "ord pow property range raw_input reduce reload repr "
+                "reversed round set setattr slice sorted staticmethod "
+                "str sum super tuple type type unichr unicode vars xrange "
+                "zip "
+                "apply buffer coerce intern "
+                "__dict__ Ellipsis False True NotImplemented "
+                "__class__ __bases__ __name__ "
+                "exception Exception StandardError ArithmeticError "
+                "LookupError EnvironmentError AssertionError "
+                "AttributeError EOFError FloatingPointError IOError "
+                "ImportError IndexError KeyError KeyboardInterrupt "
+                "MemoryError NameError NotImplementedError OSError "
+                "OverflowError ReferenceError RuntimeError "
+                "StopIteration SyntaxError SystemError SystemExit "
+                "TypeError UnboundLocalError UnicodeError "
+                "UnicodeEncodeError UnicodeDecodeError "
+                "UnicodeTranslateError ValueError WindowsError "
+                "ZeroDivisionError Warning UserWarning "
+                "DeprecationWarning PendingDeprecationWarning "
+                "SyntaxWarning RuntimeWarning FutureWarning");
+
+            opt->keywords.push_back(
+                "sys gc weakref fpectl atexit types UserDict UserList UserString "
+                "operator inspect traceback linecache pickle cPickle copy_reg "
+                "shelve copy marshal warnings imp zipimport pkgutil modulefinder "
+                "code codeop pprint repr new site user __builtin__ __main__ "
+                "__future__ "
+                "string re struct difflib fpformat StringIO cStringIO textwrap "
+                "codecs encodings.idna unicodedata stringprep "
+                "pydoc doctest unittest test test.test_support decimal math "
+                "cmath random whrandom bisect collections heapq array sets "
+                "itertools ConfigParser fileinput calendar cmd shlex "
+                "os os.path dircache stat statcache statvfs filecmp subprocess "
+                "popen2 datetime time sched mutex getpass curses curses.textpad "
+                "curses.wrapper curses.ascii curses.panel getopt optparse tempfile "
+                "errno glob fnmatch shutil locale gettext logging platform "
+                "signal socket select thread threading dummy_thread dummy_threading "
+                "Queue mmap anydbm dbhash whichdb bsddb dumbdbm zlib gzip bz2 "
+                "zipfile tarfile readline rlcompleter "
+                "posix pwd grp crypt dl dbm gdbm termios tty pty fcntl pipes "
+                "posixfile resource nis syslog commands "
+                "hotshot timeit "
+                "webbrowser cgi cgitb urllib urllib2 httplib ftplib gopherlib "
+                "poplib imaplib nntplib smtplib smtpd telnetlib urlparse "
+                "SocketServer BaseHTTPServer SimpleHTTPServer CGIHTTPServer "
+                "cookielib Cookie xmlrpclib SimpleXMLRPCServer DocXMLRPCServer "
+                "asyncore asynchat "
+                "formatter email email.Message email.Parser email.Generator "
+                "email.Header email.Charset email.Encoders email.Errors "
+                "email.Utils email.Iterators mailcap mailbox mhlib mimetools "
+                "mimetypes MimeWriter mimify multifile rfc822 base64 binascii "
+                "binhex quopri uu xdrlib netrc robotparser csv "
+                "HTMLParser sgmllib htmllib htmlentitydefs xml.parsers.expat "
+                "xml.dom xml.dom.minidom xml.dom.pulldom xml.sax "
+                "xml.sax.handler xml.sax.saxutils xml.sax.xmlreader xmllib "
+                "audioop imageop aifc sunau wave chunk colorsys rgbimg imghdr "
+                "sndhdr ossaudiodev "
+                "hmac md5 sha "
+                "Tkinter Tix ScrolledText turtle "
+                "parser symbol token keyword tokenize tabnanny pyclbr "
+                "py_compile compileall dis pickletools distutils");
+
+            MAKE_OptionColour("Default",         0,  MAKE_RGB(0,0,0),       MAKE_RGB(255,255,255), 0, 0, 0);
+            MAKE_OptionColour("Comment line",    1,  MAKE_RGB(0,128,0),     MAKE_RGB(255,255,255), 0, 0, 0);
+            MAKE_OptionColour("Number",          2,  MAKE_RGB(255,0,0),     MAKE_RGB(255,255,255), 0, 0, 0);
+            MAKE_OptionColour("String",          3,  MAKE_RGB(128,128,128), MAKE_RGB(255,255,255), 0, 0, 0);
+            MAKE_OptionColour("Character",       4,  MAKE_RGB(128,128,128), MAKE_RGB(255,255,255), 0, 0, 0);
+            MAKE_OptionColour("Keywords",        5,  MAKE_RGB(0,0,255),     MAKE_RGB(255,255,255), 1, 0, 0);
+            MAKE_OptionColour("Triple",          6,  MAKE_RGB(255,128,0),   MAKE_RGB(255,255,255), 0, 0, 0);
+            MAKE_OptionColour("Triple double",   7,  MAKE_RGB(0,0,255),     MAKE_RGB(255,255,255), 0, 0, 0);
+            MAKE_OptionColour("Class name",      8,  MAKE_RGB(0,0,0),       MAKE_RGB(255,255,255), 1, 0, 0);
+            MAKE_OptionColour("Def name",        9,  MAKE_RGB(255,0,255),   MAKE_RGB(255,255,255), 0, 0, 0);
+            MAKE_OptionColour("Operator",        10, MAKE_RGB(0,0,128),     MAKE_RGB(255,255,255), 1, 0, 0);
+            MAKE_OptionColour("Identifier",      11, MAKE_RGB(0,0,0),       MAKE_RGB(255,255,255), 0, 0, 0);
+            MAKE_OptionColour("Comment block",   12, MAKE_RGB(128,0,128),MAKE_RGB(255,255,255), 0, 0, 0);
+
+            opt->saveToXml("/editor/lexers/lexer_py.xml");
+        }
 #endif
         load();
     }

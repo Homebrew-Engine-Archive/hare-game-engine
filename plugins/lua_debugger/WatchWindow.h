@@ -15,13 +15,13 @@
 
 #include <wx/xrc/xmlres.h>
 
-class LuaDebugger;
+class LuaDebuggerPlugin;
 class wxTreeListCtrl;
 
 class LuaWatchWindow : public wxPanel
 {
 public:
-    LuaWatchWindow(wxWindow* parent, LuaDebugger* dbg);
+    LuaWatchWindow(wxWindow* parent, LuaDebuggerPlugin* dbg);
     virtual ~LuaWatchWindow();
 
     void addEmptyRow();
@@ -32,7 +32,7 @@ public:
     void onDropText(const wxString& text);
 
 protected:
-    LuaDebugger* debugger;
+    LuaDebuggerPlugin* debugger;
     wxTreeListCtrl* treeList;
     wxTreeItemId root;
 

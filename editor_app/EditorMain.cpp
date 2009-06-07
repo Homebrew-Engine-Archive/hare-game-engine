@@ -206,10 +206,10 @@ void EditorFrame::createIDE()
 		wxAuiPaneInfo().Name(wxT("EditorPagePane")).CenterPane());
 
     // Explorer
-    wxSize bestSize = wxSize(clientsize.GetWidth() / 5, clientsize.GetHeight() / 2);
+    wxSize bestSize = wxSize(clientsize.GetWidth() / 4, clientsize.GetHeight() / 2);
     layoutManager.AddPane(Manager::getInstancePtr()->getExplorerManager()->getNotebook(),
         wxAuiPaneInfo().Name(wxT("ExplorerPane")).Caption(_("Explorer")).BestSize(bestSize).
-        FloatingSize(bestSize).MinSize(wxSize(50, 100)).Left().CloseButton(true).MaximizeButton(true));
+        MinSize(wxSize(50, 100)).Left().CloseButton(true).MaximizeButton(true));
 
     wxString pluginPath = Manager::getInstancePtr()->getAppDir() + wxT("/editor_plugins/");
 

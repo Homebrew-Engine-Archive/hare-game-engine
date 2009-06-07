@@ -47,11 +47,11 @@ end
 --  Key listener callbacks
 --*******************************************
 function onKeyPressed(event)
-    --print("key pressed, keycode : ", event.key, event.text)
+    print("key pressed, keycode : ", event.key, event.text)
 end
 
 function onKeyReleased(event)
-    --print("key pressed, keycode : ", event.key, event.text)
+    print("key pressed, keycode : ", event.key, event.text)
 end
 
 --*******************************************

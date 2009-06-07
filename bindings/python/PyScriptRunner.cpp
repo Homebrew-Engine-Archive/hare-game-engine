@@ -14,6 +14,8 @@
 #include "PyScriptRunner.h"
 
 PyObject* dynamicCastObject(Object* object, int owner);
+String PyErr_GetAsString();
+bool notify_error(const String& err);
 
 HARE_IMPLEMENT_DYNAMIC_CLASS(PyScriptRunner, ScriptRunner, 0)
 {
@@ -29,6 +31,12 @@ bool PyScriptRunner::loadScript(const String& fileName)
     if (!fileName.empty())
     {
         scriptFile = fileName;
+    }
+
+    if (!Py_IsInitialized())
+    {
+        error = "PyScriptRunner::loadScript() Py_Initialized() MUST be called first.";
+        return false;
     }
 
     if (!StringUtil::startsWith(scriptFile, "/"))
@@ -54,10 +62,17 @@ bool PyScriptRunner::loadScript(const String& fileName)
         return false;
     }
 
-    char* buffer = new char[size];
+    char* buffer = new char[size + 1];
     fs->readFile(fh, buffer, size, 1);
+    buffer[size] = 0;
 
-    PyObject* code = Py_CompileString(buffer, scriptFile.c_str(), Py_file_input); 
+    /* Python's Doc says : When embedding Python, source code strings should be passed to 
+     *   Python APIs using the standard C conventions for newline characters 
+     *   (the \n character, representing ASCII LF, is the line terminator).
+     */
+    String buff = StringUtil::replace(buffer, "\r", "");
+
+    PyObject* code = Py_CompileString(buff.c_str(), scriptFile.c_str(), Py_file_input); 
     if (code)
     {
         module = PyImport_ExecCodeModule("hare_python_temp_module", code);
@@ -67,10 +82,14 @@ bool PyScriptRunner::loadScript(const String& fileName)
             PyObject *obj = PyImport_GetModuleDict();
             PyDict_DelItemString(obj, "hare_python_temp_module");
         }
+        else
+        {
+            error = "PyScriptRunner::loadScript() PyImport_ExecCodeModule failed : \n" + PyErr_GetAsString();
+        }
     }
     else
     {
-
+        error = "PyScriptRunner::loadScript() Py_CompileString failed : \n" + PyErr_GetAsString();
     }
     delete [] buffer;
 
@@ -91,6 +110,11 @@ bool PyScriptRunner::callFunction(const String& name)
 
     PyObject* ret = PyObject_CallMethod(module, (char*)name.c_str(), "O", object);
 
+    if (!ret)
+    {
+        error = "PyScriptRunner::callFunction() PyObject_CallMethod failed : \n" + PyErr_GetAsString();
+    }
+
     Py_XDECREF(ret);
 
     return (ret != NULL);
@@ -100,6 +124,7 @@ bool PyScriptRunner::notifyOwnerCreated()
 {
     if (!callFunction("onCreate"))
     {
+        notify_error(getLastError());
         return false;
     }
 
@@ -110,6 +135,7 @@ bool PyScriptRunner::notifyOwnerDestroyed()
 {
     if (!callFunction("onDestroy"))
     {
+        notify_error(getLastError());
         return false;
     }
 
@@ -118,7 +144,7 @@ bool PyScriptRunner::notifyOwnerDestroyed()
 
 void PyScriptRunner::postLoaded()
 {
-    if (!scriptFile.empty())
+    if (Py_IsInitialized() && !scriptFile.empty())
     {
         loadScript();
     }

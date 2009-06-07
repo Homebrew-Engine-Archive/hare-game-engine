@@ -15,12 +15,12 @@
 
 #include <wx/xrc/xmlres.h>
 
-class LuaDebugger;
+class LuaDebuggerPlugin;
 
 class LuaCallStackWindow : public wxPanel
 {
 public:
-    LuaCallStackWindow(wxWindow* parent, LuaDebugger* dbg);
+    LuaCallStackWindow(wxWindow* parent, LuaDebuggerPlugin* dbg);
    ~LuaCallStackWindow();
 
     void clear();
@@ -29,7 +29,7 @@ public:
 protected:
     void onDbClick(wxListEvent& event);
 
-    LuaDebugger* debugger;
+    LuaDebuggerPlugin* debugger;
     LuaDebugData::Ptr callStackData;
 private:
     DECLARE_EVENT_TABLE();

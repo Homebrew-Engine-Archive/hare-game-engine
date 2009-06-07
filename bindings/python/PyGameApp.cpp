@@ -20,26 +20,8 @@ String PyErr_GetAsString()
 
     String errStr;
 
-    PyObject *type, *value, *tb, *errorName;
+    PyObject *type, *value, *tb;
     PyErr_Fetch(&type, &value, &tb);
-
-    errorName = PyObject_GetAttrString(type, "__name__");
-    if (errorName != NULL)
-    {
-        errStr += PyString_AsString(errorName);
-        Py_DECREF(errorName);
-    }
-
-    if (value != NULL)
-    {
-        PyObject *message = PyObject_Str(value);
-
-        if (message != NULL)
-        {
-            errStr += PyString_AsString(errorName);
-            Py_DECREF(message);
-        }
-    }
 
     PyObject *module = NULL, *cls = NULL, *stringIO = NULL, *result = NULL;
     PyObject *_stderr = PySys_GetObject("stderr");
@@ -71,7 +53,7 @@ String PyErr_GetAsString()
 
     if (result != NULL)
     {
-        errStr += PyString_AsString(errorName);
+        errStr += PyString_AsString(result);
         Py_DECREF(result);
     }
 
@@ -87,12 +69,9 @@ err:
 
 bool notify_error(const String& err)
 {
-    Log::getSingleton().logError("Lua error : %s", err.c_str());
+    Log::getSingleton().logError("Python error : %s", err.c_str());
 
-    //if (LuaDebuggee::getSingletonPtr())
-    //    return LuaDebuggee::getSingletonPtr()->notifyError(err + "\n");
-
-    return false;
+    return true;
 }
 
 bool notify_error()
@@ -103,12 +82,59 @@ bool notify_error()
     return notify_error(PyErr_GetAsString());
 }
 
-HARE_IMPLEMENT_DYNAMIC_CLASS(PyGameApp, Object, 0)
+extern "C"
 {
+    void init_hare(void);
+}
+
+HARE_IMPLEMENT_DYNAMIC_CLASS(PyGameApp, GameApp, 0)
+{
+    HARE_OBJ(mainScript, PyScriptRunner)
 }
 
 bool PyGameApp::go()
 {
+    Py_Initialize();
+
+    init_hare();
+
+    if (mainScript)
+    {
+        mainScript->loadScript();
+    }
+    else
+    {
+        mainScript = new PyScriptRunner();
+
+        String game = CmdLineParser::getSingletonPtr()->getOptionValue("game");
+
+        String script;
+
+        if (game.empty()) 
+            script = "/script.py";
+        else
+            script = "/" + game + "/script.py";
+
+        mainScript->loadScript(script);
+    }
+
+    if (!mainScript->isLoaded())
+    {
+        notify_error();
+        Py_Finalize();
+        return false;
+    }
+
+    mainScript->notifyOwnerCreated();
+
+    HareApp::getSingletonPtr()->hareRun();
+
+    mainScript->notifyOwnerDestroyed();
+
+    Py_Finalize();
+
+    mainScript = 0;
+
     return true;
 }
 

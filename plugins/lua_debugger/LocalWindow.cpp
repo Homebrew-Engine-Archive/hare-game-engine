@@ -13,7 +13,7 @@ BEGIN_EVENT_TABLE(LuaLocalWindow, wxPanel)
     EVT_TREE_ITEM_EXPANDED(wxID_ANY, LuaLocalWindow::onTreeItemExpanded)
 END_EVENT_TABLE()
 
-LuaLocalWindow::LuaLocalWindow(wxWindow* parent, LuaDebugger* dbg)
+LuaLocalWindow::LuaLocalWindow(wxWindow* parent, LuaDebuggerPlugin* dbg)
 : wxPanel(parent), debugger(dbg)
 {
     wxBoxSizer* sizer = new wxBoxSizer(wxVERTICAL);

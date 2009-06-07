@@ -14,8 +14,8 @@
 #include "LuaDebugger.h"
 
 static const PluginInfo luaDebugger = {
-    wxT("LuaDebugger"), 
-    wxT("LuaDebugger"),
+    wxT("LuaDebuggerPlugin"), 
+    wxT("LuaDebuggerPlugin"),
     wxT("This is a plugin for lua debugging") };
 
-PluginRegistrant<LuaDebugger> regLuaDebugger(luaDebugger);
+PluginRegistrant<LuaDebuggerPlugin> regLuaDebugger(luaDebugger);

@@ -67,6 +67,7 @@ namespace hare
     {
         HARE_OBJ_LIST(projects, Project)
         HARE_META(activeProject, String)
+        HARE_META(activePage, int32)
     }
 
     int idProjectExplorer = wxNewId();
@@ -81,7 +82,7 @@ namespace hare
         wxBoxSizer* sizer = new wxBoxSizer(wxVERTICAL);
 
         projectTree = new wxTreeCtrl(this, idProjectExplorer, wxDefaultPosition, wxDefaultSize,
-            wxTR_EDIT_LABELS | wxTR_HAS_BUTTONS | wxNO_BORDER);
+            wxTR_HAS_BUTTONS | wxNO_BORDER);
 
         createImageList();
 
@@ -97,7 +98,17 @@ namespace hare
         wxTreeItemId id = projectTree->GetSelection();
         TreeItemData* dat = (TreeItemData*)projectTree->GetItemData(id);
 
-        if (dat && dat->file)
+        if (!dat)
+        {
+            wxString projName = projectTree->GetItemText(id);
+
+            if (workspace->projects.size() > 0)
+            {
+                workspace->activeProject = projName.ToUTF8().data();
+                setProjectActive(workspace->findProject(workspace->activeProject));
+            }
+        }
+        else if (dat->file)
         {
             TextEditorPage* page = Manager::getInstancePtr()->getEditorPageManager()->openInTextEditor(dat->file->fname.GetFullPath());
             if (page)
@@ -165,6 +176,9 @@ namespace hare
                     }
                 }
             }
+
+            workspace->activeProject = savedWorkspace->activeProject;
+            workspace->activePage = savedWorkspace->activePage;
         }
 
         typedef std::map<int, ProjectFile*> open_files_map;
@@ -200,9 +214,6 @@ namespace hare
                 page->setProjectFile(ite->second);
         }
 
-        //wxFlatNotebook* noteBook = Manager::getInstancePtr()->getEditorPageManager()->getNotebook();
-        //noteBook->SetSelection(project->activePage);
-
         if (workspace->projects.size() > 0)
         {
             if (workspace->activeProject.empty())
@@ -211,6 +222,9 @@ namespace hare
         }
 
         projectTree->Expand(root);
+
+        wxFlatNotebook* noteBook = Manager::getInstancePtr()->getEditorPageManager()->getNotebook();
+        noteBook->SetSelection(workspace->activePage);
 
         return true;
     }
@@ -226,12 +240,17 @@ namespace hare
 
     void ProjectExplorer::updateProjectFiles()
     {
-        //ProjectFile::List& list = project->files;
-        //ProjectFile::List::iterator it = list.begin();
-        //for (; it != list.end(); ++it)
-        //{
-        //    (*it)->editorOpen = false;
-        //}
+        Project::List::iterator it0 = workspace->projects.begin();
+        for (; it0 != workspace->projects.end(); ++it0)
+        {
+            Project* prj = *it0;
+            ProjectFile::List::iterator it1 = prj->files.begin();
+            for (; it1 != prj->files.end(); ++it1)
+            {
+                ProjectFile* file = *it1;
+                file->editorOpen = false;
+            }
+        }
 
         wxFlatNotebook* noteBook = Manager::getInstancePtr()->getEditorPageManager()->getNotebook();
         for (int i = 0; i < noteBook->GetPageCount(); ++i)
@@ -251,7 +270,8 @@ namespace hare
                 }
             }
         }
-        //project->activePage = noteBook->GetSelection();
+        
+        workspace->activePage = noteBook->GetSelection();
     }
 
     void ProjectExplorer::createImageList()

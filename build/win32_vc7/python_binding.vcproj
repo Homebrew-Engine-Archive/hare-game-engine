@@ -126,9 +126,6 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\bindings\python\main.cpp">
-			</File>
-			<File
 				RelativePath="..\..\bindings\python\PCH.cpp">
 				<FileConfiguration
 					Name="Debug|Win32">

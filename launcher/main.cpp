@@ -17,11 +17,11 @@ bool loadPlugins()
 
         if (PluginManager::getSingletonPtr()->loadPlugin(fileName))
         {
-            Log::getSingleton().logInfo("Load plugin : '%s'", fileName.c_str());
+            Log::getSingleton().logInfo("Plugin loaded : '%s'", fileName.c_str());
         }
         else
         {
-            Log::getSingleton().logError("Load plugin failed to load '%s'", fileName.c_str());
+            Log::getSingleton().logError("Failed to load plugin : '%s'", fileName.c_str());
         }
     }
 
@@ -43,12 +43,12 @@ bool loadResources()
     Log::getSingleton().logInfo("Filesystem write dir : '%s'", writeDir.c_str());
 
     fs->addSearchPath(scriptDir);
-    Log::getSingleton().logInfo("Filesystem add search path : '%s'", scriptDir.c_str());
+    Log::getSingleton().logInfo("Filesystem append search path : '%s'", scriptDir.c_str());
 
     for (size_t i = 0; i < searchPaths.size(); ++i)
     {
         fs->addSearchPath(searchPaths[i]);
-        Log::getSingleton().logInfo("Filesystem add search path : '%s'", searchPaths[i].c_str());
+        Log::getSingleton().logInfo("Filesystem append search path : '%s'", searchPaths[i].c_str());
     }
 
     return true;
@@ -80,7 +80,7 @@ int main(int argc, char *argv[])
     graphics_init();
     gui_init();
 
-    String game = CmdLineParser::getSingleton().getOptionValue("game") + "/gameapp.xml";
+    String game = CmdLineParser::getSingleton().getOptionValue("game") + "/game_app.xml";
 
     GameApp::Ptr gameApp = NULL;
 
@@ -92,16 +92,17 @@ int main(int argc, char *argv[])
     {
     }
 
-    if (gameApp)
+    if (gameApp && gameApp->isA(&GameApp::CLASS_INFO))
     {
         gameApp->go();
-        gameApp = 0;
     }
     else
     {
         String err = "Failed to create GameApp from file, url : " + game;
         Log::getSingleton().logError(err.c_str());
     }
+
+    gameApp = NULL;
 
     gui_quit();
     graphics_quit();

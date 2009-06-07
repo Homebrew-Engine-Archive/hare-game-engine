@@ -1,5 +1,5 @@
 //***************************************************************
-//  File:    LuaDebugger.h
+//  File:    LuaDebuggerPlugin.h
 //  Data:    01/03/2009
 //  Author:  littlesome (littlesome@live.cn)
 //-------------------------------------------------------------
@@ -22,9 +22,9 @@
 class LuaDebuggerProcess;
 class LuaDebuggerEvent;
 
-class LuaDebuggerConfig : public Object
+class LuaDebugger : public Object
 {
-    HARE_DECLARE_DYNAMIC_CLASS(LuaDebuggerConfig)
+    HARE_DECLARE_DYNAMIC_CLASS(LuaDebugger)
 private:
     bool remoteDebug;
     String hostName;
@@ -33,7 +33,7 @@ private:
     String layout;
 
 public:
-    LuaDebuggerConfig();
+    LuaDebugger();
 
     wxString getLayout() const;
     void setLayout(const wxString& val);
@@ -59,7 +59,7 @@ enum LuaDebuggerState
     Debugger_Running,
 };
 
-class LuaDebugger : public DebuggerPlugin
+class LuaDebuggerPlugin : public DebuggerPlugin
 {
 public:
     virtual bool buildMenuBar(wxMenuBar* menuBar);
@@ -67,12 +67,12 @@ public:
 
 protected:
     // ----------------------------------------------------------------------------
-    // LuaThread - a wxThread for the LuaDebugger
+    // LuaThread - a wxThread for the LuaDebuggerPlugin
     // ----------------------------------------------------------------------------
     class LuaThread : public wxThread
     {
     public:
-        LuaThread(LuaDebugger *dbg) : wxThread(wxTHREAD_JOINABLE),
+        LuaThread(LuaDebuggerPlugin *dbg) : wxThread(wxTHREAD_JOINABLE),
             debugger(dbg) {}
 
         virtual void* Entry()
@@ -81,12 +81,12 @@ protected:
             return 0;
         }
 
-        LuaDebugger *debugger;
+        LuaDebuggerPlugin *debugger;
     };
 
 public:
-    LuaDebugger();
-    virtual ~LuaDebugger();
+    LuaDebuggerPlugin();
+    virtual ~LuaDebuggerPlugin();
 
 public:
     virtual bool start();
@@ -154,7 +154,7 @@ public:
     LuaOutputWindow* outputWindow;
     LuaLocalWindow* localWindow;
 
-    LuaDebuggerConfig::Ptr config;
+    LuaDebugger::Ptr config;
     wxString previousLayout;
 
     int currStackLevel;
@@ -168,6 +168,8 @@ public:
 
     LuaDebuggerState state;
     StartCommand startCmd;
+
+    bool projectActived;
 
 private:
     bool checkSocketConnected(bool sendEvent, const wxString& msg);
@@ -204,6 +206,7 @@ private:
     void onLuaDebugTableEnum(LuaDebuggerEvent& event);
     
     void onAppBeforeShutdown(EditorEvent& event);
+    void onProjectActived(EditorEvent& event);
 
 private:
     DECLARE_EVENT_TABLE()
@@ -214,13 +217,13 @@ class LuaDebuggerProcess : public wxProcess
 public:
     // Don't use the debugger as the event handler since we don't want
     //   problems when this may exist when the debugger is being deleted.
-    LuaDebuggerProcess(LuaDebugger* dbg)
+    LuaDebuggerProcess(LuaDebuggerPlugin* dbg)
         : wxProcess(NULL), debugger(dbg) {}
 
     // don't send event, but delete this and NULL debugger's pointer to this
     virtual void OnTerminate(int pid, int status);
 
-    LuaDebugger* debugger;
+    LuaDebuggerPlugin* debugger;
 };
 
 class LuaDebuggerEvent : public wxEvent

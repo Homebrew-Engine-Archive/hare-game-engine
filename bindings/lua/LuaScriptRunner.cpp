@@ -175,7 +175,7 @@ bool LuaScriptRunner::notifyOwnerDestroyed()
 
 void LuaScriptRunner::postLoaded()
 {
-    if (!scriptFile.empty())
+    if (luaState && !scriptFile.empty())
     {
         loadScript();
     }

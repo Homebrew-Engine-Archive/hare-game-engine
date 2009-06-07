@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<Object store="0" class="OptionSet" version="0">
+    <lang class="String" value="python" />
+    <lexer class="int32" value="2" />
+    <colours class="object_array" number="13">
+        <item0 store="0" class="OptionColour" version="0">
+            <name class="String" value="Default" />
+            <value class="int32" value="0" />
+            <fore class="String" value="RGB(0,0,0)" />
+            <back class="String" value="RGB(255,255,255)" />
+            <bold class="uint8" value="0" />
+            <italics class="uint8" value="0" />
+            <underlined class="uint8" value="0" />
+        </item0>
+        <item1 store="0" class="OptionColour" version="0">
+            <name class="String" value="Comment line" />
+            <value class="int32" value="1" />
+            <fore class="String" value="RGB(0,128,0)" />
+            <back class="String" value="RGB(255,255,255)" />
+            <bold class="uint8" value="0" />
+            <italics class="uint8" value="0" />
+            <underlined class="uint8" value="0" />
+        </item1>
+        <item2 store="0" class="OptionColour" version="0">
+            <name class="String" value="Number" />
+            <value class="int32" value="2" />
+            <fore class="String" value="RGB(255,0,0)" />
+            <back class="String" value="RGB(255,255,255)" />
+            <bold class="uint8" value="0" />
+            <italics class="uint8" value="0" />
+            <underlined class="uint8" value="0" />
+        </item2>
+        <item3 store="0" class="OptionColour" version="0">
+            <name class="String" value="String" />
+            <value class="int32" value="3" />
+            <fore class="String" value="RGB(128,128,128)" />
+            <back class="String" value="RGB(255,255,255)" />
+            <bold class="uint8" value="0" />
+            <italics class="uint8" value="0" />
+            <underlined class="uint8" value="0" />
+        </item3>
+        <item4 store="0" class="OptionColour" version="0">
+            <name class="String" value="Character" />
+            <value class="int32" value="4" />
+            <fore class="String" value="RGB(128,128,128)" />
+            <back class="String" value="RGB(255,255,255)" />
+            <bold class="uint8" value="0" />
+            <italics class="uint8" value="0" />
+            <underlined class="uint8" value="0" />
+        </item4>
+        <item5 store="0" class="OptionColour" version="0">
+            <name class="String" value="Keywords" />
+            <value class="int32" value="5" />
+            <fore class="String" value="RGB(0,0,255)" />
+            <back class="String" value="RGB(255,255,255)" />
+            <bold class="uint8" value="1" />
+            <italics class="uint8" value="0" />
+            <underlined class="uint8" value="0" />
+        </item5>
+        <item6 store="0" class="OptionColour" version="0">
+            <name class="String" value="Triple" />
+            <value class="int32" value="6" />
+            <fore class="String" value="RGB(255,128,0)" />
+            <back class="String" value="RGB(255,255,255)" />
+            <bold class="uint8" value="0" />
+            <italics class="uint8" value="0" />
+            <underlined class="uint8" value="0" />
+        </item6>
+        <item7 store="0" class="OptionColour" version="0">
+            <name class="String" value="Triple double" />
+            <value class="int32" value="7" />
+            <fore class="String" value="RGB(0,0,255)" />
+            <back class="String" value="RGB(255,255,255)" />
+            <bold class="uint8" value="0" />
+            <italics class="uint8" value="0" />
+            <underlined class="uint8" value="0" />
+        </item7>
+        <item8 store="0" class="OptionColour" version="0">
+            <name class="String" value="Class name" />
+            <value class="int32" value="8" />
+            <fore class="String" value="RGB(0,0,0)" />
+            <back class="String" value="RGB(255,255,255)" />
+            <bold class="uint8" value="1" />
+            <italics class="uint8" value="0" />
+            <underlined class="uint8" value="0" />
+        </item8>
+        <item9 store="0" class="OptionColour" version="0">
+            <name class="String" value="Def name" />
+            <value class="int32" value="9" />
+            <fore class="String" value="RGB(255,0,255)" />
+            <back class="String" value="RGB(255,255,255)" />
+            <bold class="uint8" value="0" />
+            <italics class="uint8" value="0" />
+            <underlined class="uint8" value="0" />
+        </item9>
+        <item10 store="0" class="OptionColour" version="0">
+            <name class="String" value="Operator" />
+            <value class="int32" value="10" />
+            <fore class="String" value="RGB(0,0,128)" />
+            <back class="String" value="RGB(255,255,255)" />
+            <bold class="uint8" value="1" />
+            <italics class="uint8" value="0" />
+            <underlined class="uint8" value="0" />
+        </item10>
+        <item11 store="0" class="OptionColour" version="0">
+            <name class="String" value="Identifier" />
+            <value class="int32" value="11" />
+            <fore class="String" value="RGB(0,0,0)" />
+            <back class="String" value="RGB(255,255,255)" />
+            <bold class="uint8" value="0" />
+            <italics class="uint8" value="0" />
+            <underlined class="uint8" value="0" />
+        </item11>
+        <item12 store="0" class="OptionColour" version="0">
+            <name class="String" value="Comment block" />
+            <value class="int32" value="12" />
+            <fore class="String" value="RGB(128,0,128)" />
+            <back class="String" value="RGB(255,255,255)" />
+            <bold class="uint8" value="0" />
+            <italics class="uint8" value="0" />
+            <underlined class="uint8" value="0" />
+        </item12>
+    </colours>
+    <keywords class="meta_array" number="2">
+        <item0 class="String" value="and assert break class continue def del elif else except exec finally for from global if import in is lambda None not or pass print raise return try while yield __import__ abs basestring bool callable chr classmethod cmp compile complex delattr dict dir divmod enumerate eval execfile file filter float frozenset getattr globals hasattr hash help hex id input int isinstance issubclass iter len list locals long map max min object oct open ord pow property range raw_input reduce reload repr reversed round set setattr slice sorted staticmethod str sum super tuple type type unichr unicode vars xrange zip apply buffer coerce intern __dict__ Ellipsis False True NotImplemented __class__ __bases__ __name__ exception Exception StandardError ArithmeticError LookupError EnvironmentError AssertionError AttributeError EOFError FloatingPointError IOError ImportError IndexError KeyError KeyboardInterrupt MemoryError NameError NotImplementedError OSError OverflowError ReferenceError RuntimeError StopIteration SyntaxError SystemError SystemExit TypeError UnboundLocalError UnicodeError UnicodeEncodeError UnicodeDecodeError UnicodeTranslateError ValueError WindowsError ZeroDivisionError Warning UserWarning DeprecationWarning PendingDeprecationWarning SyntaxWarning RuntimeWarning FutureWarning" />
+        <item1 class="String" value="sys gc weakref fpectl atexit types UserDict UserList UserString operator inspect traceback linecache pickle cPickle copy_reg shelve copy marshal warnings imp zipimport pkgutil modulefinder code codeop pprint repr new site user __builtin__ __main__ __future__ string re struct difflib fpformat StringIO cStringIO textwrap codecs encodings.idna unicodedata stringprep pydoc doctest unittest test test.test_support decimal math cmath random whrandom bisect collections heapq array sets itertools ConfigParser fileinput calendar cmd shlex os os.path dircache stat statcache statvfs filecmp subprocess popen2 datetime time sched mutex getpass curses curses.textpad curses.wrapper curses.ascii curses.panel getopt optparse tempfile errno glob fnmatch shutil locale gettext logging platform signal socket select thread threading dummy_thread dummy_threading Queue mmap anydbm dbhash whichdb bsddb dumbdbm zlib gzip bz2 zipfile tarfile readline rlcompleter posix pwd grp crypt dl dbm gdbm termios tty pty fcntl pipes posixfile resource nis syslog commands hotshot timeit webbrowser cgi cgitb urllib urllib2 httplib ftplib gopherlib poplib imaplib nntplib smtplib smtpd telnetlib urlparse SocketServer BaseHTTPServer SimpleHTTPServer CGIHTTPServer cookielib Cookie xmlrpclib SimpleXMLRPCServer DocXMLRPCServer asyncore asynchat formatter email email.Message email.Parser email.Generator email.Header email.Charset email.Encoders email.Errors email.Utils email.Iterators mailcap mailbox mhlib mimetools mimetypes MimeWriter mimify multifile rfc822 base64 binascii binhex quopri uu xdrlib netrc robotparser csv HTMLParser sgmllib htmllib htmlentitydefs xml.parsers.expat xml.dom xml.dom.minidom xml.dom.pulldom xml.sax xml.sax.handler xml.sax.saxutils xml.sax.xmlreader xmllib audioop imageop aifc sunau wave chunk colorsys rgbimg imghdr sndhdr ossaudiodev hmac md5 sha Tkinter Tix ScrolledText turtle parser symbol token keyword tokenize tabnanny pyclbr py_compile compileall dis pickletools distutils" />
+    </keywords>
+    <fileMasks class="meta_array" number="1">
+        <item0 class="String" value="*.py" />
+    </fileMasks>
+    <sampleCode class="String" value="" />
+</Object>

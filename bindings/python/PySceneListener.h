@@ -3,6 +3,8 @@
 
 #include "graphics/Graphics.h"
 
+bool notify_error();
+
 class PySceneListener : public SceneListener
 {
 public:
@@ -43,7 +45,7 @@ public:
         PyObject* ret = PyObject_CallObject(func, NULL);
         if (!ret)
         {
-            PyErr_Print();
+            notify_error();
         }
         Py_XDECREF(ret);
     }

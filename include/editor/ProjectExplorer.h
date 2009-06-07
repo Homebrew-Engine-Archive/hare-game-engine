@@ -38,9 +38,11 @@ namespace hare
     {
         HARE_DECLARE_DYNAMIC_CLASS(Workspace)
     public:
-        Project::List projects;
+        Workspace() : activePage(-1) {}
 
+        Project::List projects;
         String activeProject;
+        int32 activePage;
 
         Project::Ptr findProject(const String& name);
     };

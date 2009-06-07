@@ -15,7 +15,7 @@
 
 #include <wx/xrc/xmlres.h>
 
-class LuaDebugger;
+class LuaDebuggerPlugin;
 
 enum LuaLoggerType
 {
@@ -29,7 +29,7 @@ enum LuaLoggerType
 class LuaOutputWindow : public wxPanel
 {
 public:
-    LuaOutputWindow(wxWindow* parent, LuaDebugger* dbg);
+    LuaOutputWindow(wxWindow* parent, LuaDebuggerPlugin* dbg);
    ~LuaOutputWindow();
 
 public:
@@ -37,7 +37,7 @@ public:
     void clear();
 
 protected:
-    LuaDebugger* debugger;
+    LuaDebuggerPlugin* debugger;
     wxTextAttr type[Log_MaxType];
 
 private:

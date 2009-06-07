@@ -6,7 +6,7 @@ BEGIN_EVENT_TABLE(LuaCallStackWindow, wxPanel)
     EVT_LIST_ITEM_ACTIVATED(XRCID("lstLuaCallStack"), LuaCallStackWindow::onDbClick)
 END_EVENT_TABLE()
 
-LuaCallStackWindow::LuaCallStackWindow(wxWindow* parent, LuaDebugger* dbg)
+LuaCallStackWindow::LuaCallStackWindow(wxWindow* parent, LuaDebuggerPlugin* dbg)
 : debugger(dbg)
 {
     wxXmlResource::Get()->LoadPanel(this, parent, _T("luaCallStack"));

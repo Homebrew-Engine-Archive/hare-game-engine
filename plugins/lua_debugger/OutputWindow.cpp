@@ -5,7 +5,7 @@
 BEGIN_EVENT_TABLE(LuaOutputWindow, wxPanel)
 END_EVENT_TABLE()
 
-LuaOutputWindow::LuaOutputWindow(wxWindow* parent, LuaDebugger* dbg)
+LuaOutputWindow::LuaOutputWindow(wxWindow* parent, LuaDebuggerPlugin* dbg)
 : debugger(dbg)
 {
     wxXmlResource::Get()->LoadPanel(this, parent, _T("luaLogger"));

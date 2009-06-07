@@ -15,20 +15,20 @@
 
 #include <wx/xrc/xmlres.h>
 
-class LuaDebugger;
+class LuaDebuggerPlugin;
 class wxTreeListCtrl;
 
 class LuaLocalWindow : public wxPanel
 {
 public:
-    LuaLocalWindow(wxWindow* parent, LuaDebugger* dbg);
+    LuaLocalWindow(wxWindow* parent, LuaDebuggerPlugin* dbg);
     virtual ~LuaLocalWindow();
 
     void updateLocalData(LuaDebugData* debugData);
     void updateTableData(const String& tableName, LuaDebugData* debugData);
 
 protected:
-    LuaDebugger* debugger;
+    LuaDebuggerPlugin* debugger;
     wxTreeListCtrl* treeList;
     wxTreeItemId root;
 

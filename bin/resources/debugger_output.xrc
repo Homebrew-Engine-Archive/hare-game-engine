@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<resource xmlns="http://www.wxwindows.org/wxxrc" version="2.3.0.1">
+    <object class="wxPanel" name="luaLogger">
+        <object class="wxBoxSizer">
+            <orient>wxVERTICAL</orient>
+            <object class="sizeritem">
+                <option>1</option>
+                <flag>wxALIGN_LEFT|wxALIGN_TOP|wxEXPAND</flag>
+                <object class="wxTextCtrl" name="txtLuaLogger">
+					<style>wxTE_AUTO_URL|wxTE_MULTILINE|wxTE_READONLY|wxTE_NOHIDESEL|wxTE_RICH</style>
+					<value></value>
+					<maxlength>0</maxlength>
+				</object>
+            </object>
+        </object>
+    </object>
+</resource>

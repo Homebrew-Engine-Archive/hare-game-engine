@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<Object store="0" class="SceneManager" version="0">
+    <spriteList class="object_list" number="23">
+        <item0 store="0" class="ParticleSprite" version="0">
+            <super_version_Sprite class="uint32" value="0" />
+            <origoPos class="PointF" value="0.000000 0.000000" />
+            <pos class="PointF" value="0.000000 0.000000" />
+            <spriteName class="String" value="" />
+            <color class="uint32" value="4294967295" />
+            <zDepth class="float" value="0.000000" />
+            <super_version_Particle class="uint32" value="0" />
+            <particleMtrl store="1" ref="/sample/materials/par1.material" />
+            <particleInfo store="0" class="ParticleInfo" version="0">
+                <emission class="int32" value="900" />
+                <lifeTime class="float" value="-1.000000" />
+                <particleLifeMin class="float" value="0.400000" />
+                <particleLifeMax class="float" value="1.000000" />
+                <direction class="float" value="0.000000" />
+                <spread class="float" value="6.283185" />
+                <relative class="bool" value="1" />
+                <speedMin class="float" value="100.000000" />
+                <speedMax class="float" value="300.000000" />
+                <gravityMin class="float" value="0.000000" />
+                <gravityMax class="float" value="0.000000" />
+                <radialAccelMin class="float" value="-0.600000" />
+                <radialAccelMax class="float" value="-0.600000" />
+                <tangentialAccelMin class="float" value="0.000000" />
+                <tangentialAccelMax class="float" value="0.000000" />
+                <sizeStart class="float" value="1.000000" />
+                <sizeEnd class="float" value="1.000000" />
+                <sizeVar class="float" value="0.500000" />
+                <spinStart class="float" value="0.000000" />
+                <spinEnd class="float" value="0.000000" />
+                <spinVar class="float" value="0.000000" />
+                <colorStart class="uint32" value="4294901760" />
+                <colorEnd class="uint32" value="4294967040" />
+                <colorVar class="float" value="0.100000" />
+                <alphaVar class="float" value="0.500000" />
+            </particleInfo>
+        </item0>
+        <item1 store="0" class="ImageSprite" version="0">
+            <super_version_Sprite class="uint32" value="0" />
+            <origoPos class="PointF" value="-12.000000 -4.000000" />
+            <pos class="PointF" value="102.000000 406.000000" />
+            <spriteName class="String" value="" />
+            <color class="uint32" value="4294967295" />
+            <zDepth class="float" value="0.000000" />
+            <rectUV class="RectF" value="0.203125 0.000000 0.248047 0.017578" />
+            <mtrl store="1" ref="/sample/materials/ui.material" />
+        </item1>
+        <item2 store="0" class="ImageSprite" version="0">
+            <super_version_Sprite class="uint32" value="0" />
+            <origoPos class="PointF" value="-12.000000 -4.000000" />
+            <pos class="PointF" value="136.000000 412.000000" />
+            <spriteName class="String" value="" />
+            <color class="uint32" value="4294967295" />
+            <zDepth class="float" value="0.000000" />
+            <rectUV class="RectF" value="0.203125 0.000000 0.248047 0.017578" />
+            <mtrl store="1" ref="/sample/materials/ui.material" />
+        </item2>
+        <item3 store="0" class="ImageSprite" version="0">
+            <super_version_Sprite class="uint32" value="0" />
+            <origoPos class="PointF" value="-12.000000 -4.000000" />
+            <pos class="PointF" value="232.000000 411.000000" />
+            <spriteName class="String" value="" />
+            <color class="uint32" value="4294967295" />
+            <zDepth class="float" value="0.000000" />
+            <rectUV class="RectF" value="0.203125 0.000000 0.248047 0.017578" />
+            <mtrl store="1" ref="/sample/materials/ui.material" />
+        </item3>
+        <item4 store="0" class="ImageSprite" version="0">
+            <super_version_Sprite class="uint32" value="0" />
+            <origoPos class="PointF" value="-12.000000 -4.000000" />
+            <pos class="PointF" value="294.000000 415.000000" />
+            <spriteName class="String" value="" />
+            <color class="uint32" value="4294967295" />
+            <zDepth class="float" value="0.000000" />
+            <rectUV class="RectF" value="0.203125 0.000000 0.248047 0.017578" />
+            <mtrl store="1" ref="/sample/materials/ui.material" />
+        </item4>
+        <item5 store="0" class="ImageSprite" version="0">
+            <super_version_Sprite class="uint32" value="0" />
+            <origoPos class="PointF" value="-12.000000 -4.000000" />
+            <pos class="PointF" value="355.000000 419.000000" />
+            <spriteName class="String" value="" />
+            <color class="uint32" value="4294967295" />
+            <zDepth class="float" value="0.000000" />
+            <rectUV class="RectF" value="0.203125 0.000000 0.248047 0.017578" />
+            <mtrl store="1" ref="/sample/materials/ui.material" />
+        </item5>
+        <item6 store="0" class="ImageSprite" version="0">
+            <super_version_Sprite class="uint32" value="0" />
+            <origoPos class="PointF" value="-12.000000 -4.000000" />
+            <pos class="PointF" value="429.000000 388.000000" />
+            <spriteName class="String" value="" />
+            <color class="uint32" value="4294967295" />
+            <zDepth class="float" value="0.000000" />
+            <rectUV class="RectF" value="0.203125 0.000000 0.248047 0.017578" />
+            <mtrl store="1" ref="/sample/materials/ui.material" />
+        </item6>
+        <item7 store="0" class="ImageSprite" version="0">
+            <super_version_Sprite class="uint32" value="0" />
+            <origoPos class="PointF" value="-12.000000 -4.000000" />
+            <pos class="PointF" value="455.000000 329.000000" />
+            <spriteName class="String" value="" />
+            <color class="uint32" value="4294967295" />
+            <zDepth class="float" value="0.000000" />
+            <rectUV class="RectF" value="0.203125 0.000000 0.248047 0.017578" />
+            <mtrl store="1" ref="/sample/materials/ui.material" />
+        </item7>
+        <item8 store="0" class="ImageSprite" version="0">
+            <super_version_Sprite class="uint32" value="0" />
+            <origoPos class="PointF" value="-12.000000 -4.000000" />
+            <pos class="PointF" value="460.000000 281.000000" />
+            <spriteName class="String" value="" />
+            <color class="uint32" value="4294967295" />
+            <zDepth class="float" value="0.000000" />
+            <rectUV class="RectF" value="0.203125 0.000000 0.248047 0.017578" />
+            <mtrl store="1" ref="/sample/materials/ui.material" />
+        </item8>
+        <item9 store="0" class="ImageSprite" version="0">
+            <super_version_Sprite class="uint32" value="0" />
+            <origoPos class="PointF" value="-12.000000 -4.000000" />
+            <pos class="PointF" value="461.000000 213.000000" />
+            <spriteName class="String" value="" />
+            <color class="uint32" value="4294967295" />
+            <zDepth class="float" value="0.000000" />
+            <rectUV class="RectF" value="0.203125 0.000000 0.248047 0.017578" />
+            <mtrl store="1" ref="/sample/materials/ui.material" />
+        </item9>
+        <item10 store="0" class="ImageSprite" version="0">
+            <super_version_Sprite class="uint32" value="0" />
+            <origoPos class="PointF" value="-12.000000 -4.000000" />
+            <pos class="PointF" value="440.000000 166.000000" />
+            <spriteName class="String" value="" />
+            <color class="uint32" value="4294967295" />
+            <zDepth class="float" value="0.000000" />
+            <rectUV class="RectF" value="0.203125 0.000000 0.248047 0.017578" />
+            <mtrl store="1" ref="/sample/materials/ui.material" />
+        </item10>
+        <item11 store="0" class="ImageSprite" version="0">
+            <super_version_Sprite class="uint32" value="0" />
+            <origoPos class="PointF" value="-12.000000 -4.000000" />
+            <pos class="PointF" value="383.000000 103.000000" />
+            <spriteName class="String" value="" />
+            <color class="uint32" value="4294967295" />
+            <zDepth class="float" value="0.000000" />
+            <rectUV class="RectF" value="0.203125 0.000000 0.248047 0.017578" />
+            <mtrl store="1" ref="/sample/materials/ui.material" />
+        </item11>
+        <item12 store="0" class="ImageSprite" version="0">
+            <super_version_Sprite class="uint32" value="0" />
+            <origoPos class="PointF" value="-12.000000 -4.000000" />
+            <pos class="PointF" value="272.000000 51.000000" />
+            <spriteName class="String" value="" />
+            <color class="uint32" value="4294967295" />
+            <zDepth class="float" value="0.000000" />
+            <rectUV class="RectF" value="0.203125 0.000000 0.248047 0.017578" />
+            <mtrl store="1" ref="/sample/materials/ui.material" />
+        </item12>
+        <item13 store="0" class="ImageSprite" version="0">
+            <super_version_Sprite class="uint32" value="0" />
+            <origoPos class="PointF" value="-12.000000 -4.000000" />
+            <pos class="PointF" value="174.000000 51.000000" />
+            <spriteName class="String" value="" />
+            <color class="uint32" value="4294967295" />
+            <zDepth class="float" value="0.000000" />
+            <rectUV class="RectF" value="0.203125 0.000000 0.248047 0.017578" />
+            <mtrl store="1" ref="/sample/materials/ui.material" />
+        </item13>
+        <item14 store="0" class="ImageSprite" version="0">
+            <super_version_Sprite class="uint32" value="0" />
+            <origoPos class="PointF" value="-12.000000 -4.000000" />
+            <pos class="PointF" value="112.000000 131.000000" />
+            <spriteName class="String" value="" />
+            <color class="uint32" value="4294967295" />
+            <zDepth class="float" value="0.000000" />
+            <rectUV class="RectF" value="0.203125 0.000000 0.248047 0.017578" />
+            <mtrl store="1" ref="/sample/materials/ui.material" />
+        </item14>
+        <item15 store="0" class="ImageSprite" version="0">
+            <super_version_Sprite class="uint32" value="0" />
+            <origoPos class="PointF" value="-12.000000 -4.000000" />
+            <pos class="PointF" value="99.000000 163.000000" />
+            <spriteName class="String" value="" />
+            <color class="uint32" value="4294967295" />
+            <zDepth class="float" value="0.000000" />
+            <rectUV class="RectF" value="0.203125 0.000000 0.248047 0.017578" />
+            <mtrl store="1" ref="/sample/materials/ui.material" />
+        </item15>
+        <item16 store="0" class="ImageSprite" version="0">
+            <super_version_Sprite class="uint32" value="0" />
+            <origoPos class="PointF" value="-12.000000 -4.000000" />
+            <pos class="PointF" value="97.000000 220.000000" />
+            <spriteName class="String" value="" />
+            <color class="uint32" value="4294967295" />
+            <zDepth class="float" value="0.000000" />
+            <rectUV class="RectF" value="0.203125 0.000000 0.248047 0.017578" />
+            <mtrl store="1" ref="/sample/materials/ui.material" />
+        </item16>
+        <item17 store="0" class="ImageSprite" version="0">
+            <super_version_Sprite class="uint32" value="0" />
+            <origoPos class="PointF" value="-12.000000 -4.000000" />
+            <pos class="PointF" value="111.000000 299.000000" />
+            <spriteName class="String" value="" />
+            <color class="uint32" value="4294967295" />
+            <zDepth class="float" value="0.000000" />
+            <rectUV class="RectF" value="0.203125 0.000000 0.248047 0.017578" />
+            <mtrl store="1" ref="/sample/materials/ui.material" />
+        </item17>
+        <item18 store="0" class="ImageSprite" version="0">
+            <super_version_Sprite class="uint32" value="0" />
+            <origoPos class="PointF" value="-12.000000 -4.000000" />
+            <pos class="PointF" value="130.000000 340.000000" />
+            <spriteName class="String" value="" />
+            <color class="uint32" value="4294967295" />
+            <zDepth class="float" value="0.000000" />
+            <rectUV class="RectF" value="0.203125 0.000000 0.248047 0.017578" />
+            <mtrl store="1" ref="/sample/materials/ui.material" />
+        </item18>
+        <item19 store="0" class="ImageSprite" version="0">
+            <super_version_Sprite class="uint32" value="0" />
+            <origoPos class="PointF" value="-12.000000 -4.000000" />
+            <pos class="PointF" value="145.000000 365.000000" />
+            <spriteName class="String" value="" />
+            <color class="uint32" value="4294967295" />
+            <zDepth class="float" value="0.000000" />
+            <rectUV class="RectF" value="0.203125 0.000000 0.248047 0.017578" />
+            <mtrl store="1" ref="/sample/materials/ui.material" />
+        </item19>
+        <item20 store="0" class="ImageSprite" version="0">
+            <super_version_Sprite class="uint32" value="0" />
+            <origoPos class="PointF" value="-12.000000 -4.000000" />
+            <pos class="PointF" value="166.000000 384.000000" />
+            <spriteName class="String" value="" />
+            <color class="uint32" value="4294967295" />
+            <zDepth class="float" value="0.000000" />
+            <rectUV class="RectF" value="0.203125 0.000000 0.248047 0.017578" />
+            <mtrl store="1" ref="/sample/materials/ui.material" />
+        </item20>
+        <item21 store="0" class="ImageSprite" version="0">
+            <super_version_Sprite class="uint32" value="0" />
+            <origoPos class="PointF" value="-12.000000 -4.000000" />
+            <pos class="PointF" value="193.000000 400.000000" />
+            <spriteName class="String" value="" />
+            <color class="uint32" value="4294967295" />
+            <zDepth class="float" value="0.000000" />
+            <rectUV class="RectF" value="0.203125 0.000000 0.248047 0.017578" />
+            <mtrl store="1" ref="/sample/materials/ui.material" />
+        </item21>
+        <item22 store="0" class="ImageSprite" version="0">
+            <super_version_Sprite class="uint32" value="0" />
+            <origoPos class="PointF" value="-12.000000 -4.000000" />
+            <pos class="PointF" value="209.000000 410.000000" />
+            <spriteName class="String" value="" />
+            <color class="uint32" value="4294967295" />
+            <zDepth class="float" value="0.000000" />
+            <rectUV class="RectF" value="0.203125 0.000000 0.248047 0.017578" />
+            <mtrl store="1" ref="/sample/materials/ui.material" />
+        </item22>
+    </spriteList>
+</Object>

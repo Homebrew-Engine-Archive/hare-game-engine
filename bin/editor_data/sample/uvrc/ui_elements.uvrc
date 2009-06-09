@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<Object store="0" class="UVEditorState" version="0">
+    <rects class="object_list" number="18">
+        <item0 store="0" class="RectState" version="0">
+            <name class="String" value="check_pushedChecked" />
+            <rect class="RectUV" value="0.140625 0.050781 0.166016 0.076172" />
+        </item0>
+        <item1 store="0" class="RectState" version="0">
+            <name class="String" value="check_disabledChecked" />
+            <rect class="RectUV" value="0.140625 0.076172 0.166016 0.101563" />
+        </item1>
+        <item2 store="0" class="RectState" version="0">
+            <name class="String" value="check_hoverChecked" />
+            <rect class="RectUV" value="0.140625 0.025391 0.166016 0.050781" />
+        </item2>
+        <item3 store="0" class="RectState" version="0">
+            <name class="String" value="check_normalChecked" />
+            <rect class="RectUV" value="0.140625 0.000000 0.166016 0.025391" />
+        </item3>
+        <item4 store="0" class="RectState" version="0">
+            <name class="String" value="check_normal" />
+            <rect class="RectUV" value="0.115234 0.000000 0.140625 0.025391" />
+        </item4>
+        <item5 store="0" class="RectState" version="0">
+            <name class="String" value="check_disabled" />
+            <rect class="RectUV" value="0.115234 0.076172 0.140625 0.101563" />
+        </item5>
+        <item6 store="0" class="RectState" version="0">
+            <name class="String" value="check_pushed" />
+            <rect class="RectUV" value="0.115234 0.050781 0.140625 0.076172" />
+        </item6>
+        <item7 store="0" class="RectState" version="0">
+            <name class="String" value="check_hover" />
+            <rect class="RectUV" value="0.115234 0.025391 0.140625 0.050781" />
+        </item7>
+        <item8 store="0" class="RectState" version="0">
+            <name class="String" value="frame_rectInner" />
+            <rect class="RectUV" value="0.062500 0.017578 0.089844 0.046875" />
+        </item8>
+        <item9 store="0" class="RectState" version="0">
+            <name class="String" value="frame_rect" />
+            <rect class="RectUV" value="0.048828 0.003906 0.103516 0.060547" />
+        </item9>
+        <item10 store="0" class="RectState" version="0">
+            <name class="String" value="button_rectDisabledInner" />
+            <rect class="RectUV" value="0.005859 0.140625 0.033203 0.169922" />
+        </item10>
+        <item11 store="0" class="RectState" version="0">
+            <name class="String" value="button_rectDisabled" />
+            <rect class="RectUV" value="0.000000 0.134766 0.039063 0.175781" />
+        </item11>
+        <item12 store="0" class="RectState" version="0">
+            <name class="String" value="button_rectPushed" />
+            <rect class="RectUV" value="0.000000 0.089844 0.039063 0.130859" />
+        </item12>
+        <item13 store="0" class="RectState" version="0">
+            <name class="String" value="button_rectPushedInner" />
+            <rect class="RectUV" value="0.005859 0.095703 0.033203 0.125000" />
+        </item13>
+        <item14 store="0" class="RectState" version="0">
+            <name class="String" value="button_rectHover" />
+            <rect class="RectUV" value="0.000000 0.044922 0.039063 0.085938" />
+        </item14>
+        <item15 store="0" class="RectState" version="0">
+            <name class="String" value="button_rectNormal" />
+            <rect class="RectUV" value="0.000000 0.000000 0.039063 0.041016" />
+        </item15>
+        <item16 store="0" class="RectState" version="0">
+            <name class="String" value="button_rectHoverInner" />
+            <rect class="RectUV" value="0.005859 0.050781 0.033203 0.080078" />
+        </item16>
+        <item17 store="0" class="RectState" version="0">
+            <name class="String" value="button_rectNormalInner" />
+            <rect class="RectUV" value="0.005859 0.005859 0.033203 0.035156" />
+        </item17>
+    </rects>
+    <mtrl store="1" ref="/sample/materials/ui.material" />
+</Object>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<Object store="0" class="UVEditorState" version="0">
+    <rects class="object_list" number="6">
+        <item0 store="0" class="RectState" version="0">
+            <name class="String" value="6" />
+            <rect class="RectUV" value="0.361328 0.000000 0.406250 0.044922" />
+        </item0>
+        <item1 store="0" class="RectState" version="0">
+            <name class="String" value="5" />
+            <rect class="RectUV" value="0.322266 0.001953 0.355469 0.035156" />
+        </item1>
+        <item2 store="0" class="RectState" version="0">
+            <name class="String" value="4" />
+            <rect class="RectUV" value="0.296875 0.001953 0.314453 0.046875" />
+        </item2>
+        <item3 store="0" class="RectState" version="0">
+            <name class="String" value="3" />
+            <rect class="RectUV" value="0.251953 0.001953 0.285156 0.035156" />
+        </item3>
+        <item4 store="0" class="RectState" version="0">
+            <name class="String" value="2" />
+            <rect class="RectUV" value="0.203125 0.000000 0.248047 0.017578" />
+        </item4>
+        <item5 store="0" class="RectState" version="0">
+            <name class="String" value="1" />
+            <rect class="RectUV" value="0.175781 0.000000 0.199219 0.037109" />
+        </item5>
+    </rects>
+    <mtrl store="1" ref="/sample/materials/ui.material" />
+</Object>

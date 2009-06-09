@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<Object store="0" class="LuaGameApp" version="0">
+    <super_version_GameApp class="uint32" value="0" />
+    <mainScript store="0" class="LuaScriptRunner" version="0">
+        <super_version_ScriptRunner class="uint32" value="0" />
+        <scriptFile class="String" value="/sample/script.lua" />
+    </mainScript>
+</Object>

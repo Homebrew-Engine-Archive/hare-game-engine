@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<resource xmlns="http://www.wxwindows.org/wxxrc" version="2.3.0.1">
+	<object class="wxPanel" name="idSceneEditPanel">
+		<style>wxTAB_TRAVERSAL</style>
+		<size>500,300</size>
+		<object class="wxBoxSizer">
+			<orient>wxHORIZONTAL</orient>
+			<object class="sizeritem">
+				<option>1</option>
+				<flag>wxALL|wxEXPAND</flag>
+				<border>5</border>
+				<object class="wxTreeCtrl" name="idSceneTree">
+					<style>wxTR_DEFAULT_STYLE</style>
+				</object>
+			</object>
+			<object class="sizeritem">
+				<option>2</option>
+				<flag>wxEXPAND</flag>
+				<border>5</border>
+				<object class="wxBoxSizer">
+					<orient>wxVERTICAL</orient>
+					<object class="sizeritem">
+						<option>3</option>
+						<flag>wxEXPAND|wxTOP|wxRIGHT</flag>
+						<border>5</border>
+						<object class="wxPanel" name="idScenePanel">
+							<style>wxTAB_TRAVERSAL</style>
+							<object class="wxBoxSizer">
+								<orient>wxVERTICAL</orient>
+							</object>
+						</object>
+					</object>
+					<object class="sizeritem">
+						<option>1</option>
+						<flag>wxEXPAND</flag>
+						<border>5</border>
+						<object class="wxPanel" name="m_panel2">
+							<style>wxTAB_TRAVERSAL</style>
+							<object class="wxBoxSizer">
+								<orient>wxHORIZONTAL</orient>
+								<object class="sizeritem">
+									<option>1</option>
+									<flag>wxEXPAND|wxBOTTOM|wxRIGHT</flag>
+									<border>5</border>
+									<object class="wxListBox" name="idSpriteList">
+										<content />
+									</object>
+								</object>
+								<object class="sizeritem">
+									<option>1</option>
+									<flag>wxEXPAND</flag>
+									<border>5</border>
+									<object class="wxBoxSizer">
+										<orient>wxVERTICAL</orient>
+										<object class="sizeritem">
+											<option>0</option>
+											<flag></flag>
+											<border>5</border>
+											<object class="wxToggleButton" name="idAddSprite">
+												<label>Add Sprite</label>
+												<checked>1</checked>
+											</object>
+										</object>
+										<object class="sizeritem">
+											<option>1</option>
+											<flag>wxEXPAND|wxTOP|wxBOTTOM|wxRIGHT</flag>
+											<border>5</border>
+											<object class="wxPanel" name="idSpriteView">
+												<style>wxTAB_TRAVERSAL</style>
+												<object class="wxBoxSizer">
+													<orient>wxVERTICAL</orient>
+												</object>
+											</object>
+										</object>
+									</object>
+								</object>
+							</object>
+						</object>
+					</object>
+				</object>
+			</object>
+		</object>
+	</object>
+</resource>

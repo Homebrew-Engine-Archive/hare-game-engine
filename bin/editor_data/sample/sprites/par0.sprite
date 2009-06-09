@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<Object store="0" class="ParticleSprite" version="0">
+    <super_version_Sprite class="uint32" value="0" />
+    <origoPos class="PointF" value="0.000000 0.000000" />
+    <pos class="PointF" value="0.000000 0.000000" />
+    <spriteName class="String" value="" />
+    <color class="uint32" value="4294967295" />
+    <zDepth class="float" value="0.000000" />
+    <super_version_Particle class="uint32" value="0" />
+    <particleMtrl store="1" ref="/sample/materials/par0.material" />
+    <particleInfo store="0" class="ParticleInfo" version="0">
+        <emission class="int32" value="1000" />
+        <lifeTime class="float" value="-1.000000" />
+        <particleLifeMin class="float" value="0.400000" />
+        <particleLifeMax class="float" value="1.000000" />
+        <direction class="float" value="0.000000" />
+        <spread class="float" value="6.000000" />
+        <relative class="bool" value="1" />
+        <speedMin class="float" value="100.000000" />
+        <speedMax class="float" value="100.000000" />
+        <gravityMin class="float" value="-200.000000" />
+        <gravityMax class="float" value="0.000000" />
+        <radialAccelMin class="float" value="0.000000" />
+        <radialAccelMax class="float" value="0.000000" />
+        <tangentialAccelMin class="float" value="0.000000" />
+        <tangentialAccelMax class="float" value="0.000000" />
+        <sizeStart class="float" value="1.000000" />
+        <sizeEnd class="float" value="1.000000" />
+        <sizeVar class="float" value="0.500000" />
+        <spinStart class="float" value="50.000000" />
+        <spinEnd class="float" value="50.000000" />
+        <spinVar class="float" value="1.000000" />
+        <colorStart class="uint32" value="4294967040" />
+        <colorEnd class="uint32" value="4294901760" />
+        <colorVar class="float" value="0.200000" />
+        <alphaVar class="float" value="0.000000" />
+    </particleInfo>
+</Object>

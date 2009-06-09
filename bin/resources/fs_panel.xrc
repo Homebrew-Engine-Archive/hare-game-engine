@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<resource xmlns="http://www.wxwindows.org/wxxrc" version="2.3.0.1">
+	<object class="wxPanel" name="panelFSPanel">
+		<style>wxTAB_TRAVERSAL</style>
+		<size>377,255</size>
+		<object class="wxBoxSizer">
+			<orient>wxVERTICAL</orient>
+			<object class="sizeritem">
+				<option>0</option>
+				<flag>wxEXPAND</flag>
+				<border>0</border>
+				<object class="wxToolBar" name="idFSPanelToolBar">
+					<style>wxTB_FLAT|wxTB_HORIZONTAL|wxTB_NOALIGN</style>
+					<tooltip>Up</tooltip>
+					<bitmapsize></bitmapsize>
+					<margins></margins>
+					<packing>1</packing>
+					<separation>5</separation>
+					<object class="tool" name="idFSPanelUp">
+						<label>Up</label>
+						<tooltip>Go Up</tooltip>
+						<longhelp></longhelp>
+						<bitmap>up.png</bitmap>
+					</object>
+					<object class="tool" name="idFSPanelRefresh">
+						<label>Refresh</label>
+						<tooltip>Refresh</tooltip>
+						<longhelp></longhelp>
+						<bitmap>refresh.png</bitmap>
+					</object>
+					<object class="separator" />
+					<object class="tool" name="idFSPanelChageView">
+						<label>Chage View</label>
+						<tooltip>Chage View</tooltip>
+						<longhelp></longhelp>
+						<bitmap>change_view.png</bitmap>
+					</object>
+				</object>
+			</object> 
+			<object class="sizeritem">
+				<option>0</option>
+				<flag>wxEXPAND</flag>
+				<border>5</border>
+				<object class="wxToolBar" name="toolbar">
+					<style>wxTB_FLAT|wxTB_HORIZONTAL</style>
+					<bitmapsize></bitmapsize>
+					<margins></margins>
+					<packing>1</packing>
+					<separation>5</separation>
+					<object class="wxStaticText" name="idFSPanelText">
+						<label> URL : </label>
+					</object>
+					<object class="wxStaticText" name="idFSPanelURL">
+						<label></label>
+					</object>
+				</object>
+			</object>
+		</object>
+	</object>
+</resource>

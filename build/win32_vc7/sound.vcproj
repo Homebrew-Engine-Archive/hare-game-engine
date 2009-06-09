@@ -12,8 +12,8 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="../../lib"
-			IntermediateDirectory="$(ConfigurationName)/sound"
+			OutputDirectory="..\..\lib\debug"
+			IntermediateDirectory="$(ConfigurationName)\sound"
 			ConfigurationType="2"
 			CharacterSet="2">
 			<Tool
@@ -34,11 +34,11 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="core_d.lib"
-				OutputFile="$(OutDir)/sound_d.dll"
+				OutputFile="$(OutDir)/$(ProjectName)_d.dll"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="../../lib"
+				AdditionalLibraryDirectories="..\..\lib\debug"
 				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile="$(OutDir)/sound.pdb"
+				ProgramDatabaseFile="$(OutDir)/$(ProjectName)_d.pdb"
 				SubSystem="2"
 				ImportLibrary="$(OutDir)/sound_d.lib"
 				TargetMachine="1"/>
@@ -65,14 +65,15 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="Release"
-			IntermediateDirectory="Release"
+			OutputDirectory="../../lib/release"
+			IntermediateDirectory="$(ConfigurationName)/sound"
 			ConfigurationType="2"
 			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;SOUND_EXPORTS"
-				RuntimeLibrary="0"
+				AdditionalIncludeDirectories="../../include;../../include/sound"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;SOUND_EXPORTS"
+				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="TRUE"
@@ -81,8 +82,10 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="core.lib"
 				OutputFile="$(OutDir)/sound.dll"
 				LinkIncremental="1"
+				AdditionalLibraryDirectories="../../lib/release"
 				GenerateDebugInformation="TRUE"
 				SubSystem="2"
 				OptimizeReferences="2"

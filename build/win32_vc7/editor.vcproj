@@ -13,7 +13,7 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="..\..\lib"
+			OutputDirectory="..\..\lib\debug"
 			IntermediateDirectory="$(ConfigurationName)\editor"
 			ConfigurationType="2"
 			CharacterSet="1">
@@ -37,7 +37,7 @@
 				AdditionalDependencies="core_d.lib graphics_d.lib wxexpatd.lib wxjpegd.lib wxmsw28ud.lib wxpngd.lib wxregexud.lib wxtiffd.lib wxzlibd.lib winmm.lib comctl32.lib rpcrt4.lib wsock32.lib odbc32.lib oleacc.lib"
 				OutputFile="$(OutDir)/$(ProjectName)_d.dll"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="..\..\lib;..\..\ext\wxWidgets\lib\vc_dll"
+				AdditionalLibraryDirectories="..\..\lib\debug;..\..\ext\wxWidgets\lib\vc_dll"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="$(OutDir)/$(ProjectName)_d.pdb"
 				SubSystem="0"
@@ -67,14 +67,14 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="..\..\lib"
+			OutputDirectory="..\..\lib\release"
 			IntermediateDirectory="$(ConfigurationName)\editor"
 			ConfigurationType="2"
 			CharacterSet="1">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="..\..\ext\wxWidgets\lib\vc_dll\mswu;..\..\ext\wxWidgets\include;..\..\include\editor\wxTreeListCtrl\include;..\..\include\editor\wxScintilla\include;..\..\editor\wxScintilla\src\scintilla;..\..\editor\wxScintilla\src\scintilla\include;..\..\editor\wxScintilla\src\scintilla\src;..\..\include\editor\wxFlatNotebook\include;..\..\include\editor\wxPropGrid\include;..\..\ext\physfs;..\..\include\;..\..\include\editor"
-				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;__WXMSW__;__WX__;WXUSINGDLL;WXMAKINGDLL_FNB;SCI_LEXER;LINK_LEXERS;WXMAKINGDLL_SCI;WXMAKINGDLL_PROPGRID;WXMAKINGDLL_TL;EDITOR_EXPORTS"
+				AdditionalIncludeDirectories="..\..\ext\wxWidgets\lib\vc_dll\mswu;..\..\ext\wxWidgets\include;..\..\include\editor\wxTreeListCtrl\include;..\..\include\editor\wxScintilla\include;..\..\editor\wxScintilla\src\scintilla;..\..\editor\wxScintilla\src\scintilla\include;..\..\editor\wxScintilla\src\scintilla\src;..\..\include\editor\wxFlatNotebook\include;..\..\include\editor\wxPropGrid\include;..\..\include\editor\wxHareCanvas\include;..\..\ext\physfs;..\..\include\;..\..\include\editor"
+				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;__WXMSW__;__WX__;WXUSINGDLL;WXMAKINGDLL_FNB;SCI_LEXER;LINK_LEXERS;WXMAKINGDLL_SCI;WXMAKINGDLL_PROPGRID;WXMAKINGDLL_TL;WXMAKINGDLL_HARE_CANVAS;EDITOR_EXPORTS"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="3"
 				PrecompiledHeaderThrough="PCH.h"
@@ -87,7 +87,7 @@
 				AdditionalDependencies="core.lib wxexpat.lib wxjpeg.lib wxmsw28u.lib wxpng.lib wxregexu.lib wxtiff.lib wxzlib.lib winmm.lib comctl32.lib rpcrt4.lib wsock32.lib odbc32.lib oleacc.lib"
 				OutputFile="$(OutDir)/editor.dll"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="..\..\lib;..\..\ext\wxWidgets\lib\vc_dll"
+				AdditionalLibraryDirectories="..\..\lib\release;..\..\ext\wxWidgets\lib\vc_dll"
 				GenerateDebugInformation="TRUE"
 				SubSystem="2"
 				OptimizeReferences="2"
@@ -1968,6 +1968,12 @@
 					RelativePath="..\..\editor\wxHareCanvas\src\harecanvas.cpp">
 					<FileConfiguration
 						Name="Debug|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
 							UsePrecompiledHeader="0"/>

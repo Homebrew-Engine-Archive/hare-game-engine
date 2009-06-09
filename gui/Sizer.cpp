@@ -123,5 +123,35 @@ namespace hare
 
         recalcSizes();
     }
+
+    SizeF Sizer::fit(Window *window)
+    {
+        SizeF size = computeFittingWindowSize(window);
+        window->setSize(size.cx, size.cy);
+        return size;
+    }
+
+    void Sizer::setSizeHints(Window *window)
+    {
+        SizeF size = computeFittingWindowSize(window);
+
+        window->setSizeHints(size, window->getMaxSize());
+
+        window->setSize(size.cx, size.cy);
+    }
+
+    SizeF Sizer::computeFittingWindowSize(Window *window)
+    {
+        SizeF fitSize = getMinSize();
+        SizeF maxSize = window->getMaxSize();
+
+        if (maxSize.cx > 0 && fitSize.cx > maxSize.cx)
+            fitSize.cx = maxSize.cx;
+        if (maxSize.cy > 0 && fitSize.cy > maxSize.cy)
+            fitSize.cy = maxSize.cy;
+
+        return fitSize;
+    }
+
 }
 

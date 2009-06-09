@@ -88,7 +88,8 @@ void D3DTexture::beforeResetDevice()
 void D3DTexture::afterResetDevice()
 {
 	assert(bIsRenderable);
-	assert(doCreate());
+    bool ok = doCreate();
+	assert(ok);
 }
 
 void D3DTexture::upload(const Image &img, uint32 destX, uint32 destY)
@@ -142,7 +143,8 @@ void D3DTexture::recreate()
 		DeviceManager::getSingletonPtr()->registerDeviceObject(this);
 	}
 
-	assert(doCreate());
+    bool ok = doCreate();
+	assert(ok);
 }
 
 void D3DTexture::release()

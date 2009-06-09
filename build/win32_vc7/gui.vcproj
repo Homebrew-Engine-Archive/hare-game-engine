@@ -12,8 +12,8 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="../../lib/"
-			IntermediateDirectory="$(ConfigurationName)/gui"
+			OutputDirectory="..\..\lib\debug"
+			IntermediateDirectory="$(ConfigurationName)\gui"
 			ConfigurationType="2"
 			CharacterSet="2">
 			<Tool
@@ -34,12 +34,12 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="core_d.lib graphics_d.lib"
-				OutputFile="$(OutDir)/gui_d.dll"
+				OutputFile="$(OutDir)/$(ProjectName)_d.dll"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="../../lib"
+				AdditionalLibraryDirectories="..\..\lib\debug"
 				GenerateDebugInformation="TRUE"
+				ProgramDatabaseFile="$(OutDir)/$(ProjectName)_d.pdb"
 				SubSystem="2"
-				ImportLibrary="../../lib/$(TargetName).lib"
 				TargetMachine="1"/>
 			<Tool
 				Name="VCMIDLTool"/>
@@ -64,15 +64,17 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="Release"
-			IntermediateDirectory="Release"
+			OutputDirectory="../../lib/release"
+			IntermediateDirectory="$(ConfigurationName)/gui"
 			ConfigurationType="2"
 			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;D3DRENDER_EXPORTS"
-				RuntimeLibrary="0"
-				UsePrecompiledHeader="0"
+				AdditionalIncludeDirectories="../../include;../../include/gui"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;UI_EXPORTS"
+				RuntimeLibrary="2"
+				UsePrecompiledHeader="3"
+				PrecompiledHeaderThrough="PCH.h"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="TRUE"
 				DebugInformationFormat="3"/>
@@ -80,13 +82,13 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="$(OutDir)/D3DRender.dll"
+				AdditionalDependencies="core.lib graphics.lib"
 				LinkIncremental="1"
+				AdditionalLibraryDirectories="../../lib/release"
 				GenerateDebugInformation="TRUE"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
-				ImportLibrary="$(OutDir)/D3DRender.lib"
 				TargetMachine="1"/>
 			<Tool
 				Name="VCMIDLTool"/>
@@ -130,6 +132,12 @@
 				RelativePath="..\..\gui\PCH.cpp">
 				<FileConfiguration
 					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="1"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="1"/>

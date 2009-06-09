@@ -61,37 +61,37 @@ namespace hare
     {
         if (isSizingEnabled())
         {
-            PointF localMousePos(screenToWindow(*this, event.getPosition()));
-
             if (sizing)
             {
                 if (sizingEdge != SizingNone)
                 {
-                    float deltaX = localMousePos.x - mouseDownPos.x;
-                    float deltaY = localMousePos.y - mouseDownPos.y;
+                    float deltaX = event.getPosition().x - mouseDownPos.x;
+                    float deltaY = event.getPosition().y - mouseDownPos.y;
+
+                    mouseDownPos = event.getPosition();
 
                     RectF rect = getArea();
 
-                    // NB : Moving left or top edge changes both position and size,
-                    // moving right or bottom edge only changes size.
                     if (sizingEdge == SizingTopLeft || sizingEdge == SizingBottomLeft || sizingEdge == SizingLeft)
                     {
                         rect.minX += deltaX;
+                        if (maxSize.cx > 0 && rect.width() > maxSize.cx) rect.minX = rect.maxX - maxSize.cx;
+                        if (minSize.cx > 0 && rect.width() < minSize.cx) rect.minX = rect.maxX - minSize.cx;
                     }
                     else if (sizingEdge == SizingTopRight || sizingEdge == SizingBottomRight || sizingEdge == SizingRight)
                     {
                         rect.maxX += deltaX;
-                        mouseDownPos.x = localMousePos.x;
                     }
 
                     if (sizingEdge == SizingTopLeft || sizingEdge == SizingTop || sizingEdge == SizingTopRight)
                     {
                         rect.minY += deltaY;
+                        if (maxSize.cy > 0 && rect.height() > maxSize.cy) rect.minY = rect.maxY - maxSize.cy;
+                        if (minSize.cy > 0 && rect.height() < minSize.cy) rect.minY = rect.maxY - minSize.cy;
                     }
                     else if (sizingEdge == SizingBottomLeft || sizingEdge == SizingBottom || sizingEdge == SizingBottomRight)
                     {
                         rect.maxY += deltaY;
-                        mouseDownPos.y = localMousePos.y;
                     }
 
                     setArea(rect);
@@ -100,12 +100,14 @@ namespace hare
             }
             else if (moving)
             {
-                setPosition(getPosition() + localMousePos - mouseDownPos);
+                PointF delta = event.getPosition() - mouseDownPos;
+                mouseDownPos = event.getPosition();
+                setPosition(getPosition() + delta);
                 layout();
             }
             else
             {
-                updateCursor(localMousePos);
+                updateCursor(screenToWindow(*this, event.getPosition()));
             }
         }
     }
@@ -124,7 +126,8 @@ namespace hare
                 {
                     captureMouse();
                     sizing = true;
-                    mouseDownPos = localPos;
+                    mouseDownPos = event.getPosition();
+                    updateCursor(localPos);
                     return;
                 }
             }
@@ -137,7 +140,7 @@ namespace hare
                 {
                     captureMouse();
                     moving = true;
-                    mouseDownPos = localPos;
+                    mouseDownPos = event.getPosition();
                     return;
                 }
             }
@@ -152,6 +155,7 @@ namespace hare
             sizing = false;
             moving = false;
         }
+        updateCursor(screenToWindow(*this, event.getPosition()));
     }
 
     void FrameWindow::updateCursor(const PointF& pt)
@@ -181,6 +185,27 @@ namespace hare
         default:
             MouseCursor::getSingleton().setCursor(Cursor_Arrow);
         }
+    }
+
+    void FrameWindow::postLoaded()
+    {
+        Window::postLoaded();
+
+        if (windowSizer && isSizingEnabled())
+        {
+            windowSizer->setSizeHints(this);
+            layout();
+        }
+    }
+
+    void FrameWindow::postEdited(Attribute* attr)
+    {
+        if (windowSizer && isSizingEnabled())
+        {
+            windowSizer->setSizeHints(this);
+        }
+
+        Window::postEdited(attr);
     }
 
     FrameWindow::SizingLocation FrameWindow::getSizingBorderAtPoint(const PointF& pt) const

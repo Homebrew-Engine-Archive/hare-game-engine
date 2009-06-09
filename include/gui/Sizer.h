@@ -91,6 +91,12 @@ namespace hare
             layout();
         }
 
+        SizeF fit(Window *window);
+
+        void setSizeHints(Window *window);
+
+        SizeF computeFittingWindowSize(Window *window);
+
     public:
         virtual void recalcSizes() = 0;
 

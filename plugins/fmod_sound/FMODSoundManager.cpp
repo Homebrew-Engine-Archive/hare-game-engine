@@ -93,14 +93,16 @@ namespace hare
     SoundObject* FMODSoundManager::createSoundObject()
     {
         FMODSoundObject::Ptr soundObject = new FMODSoundObject;
-        assert(registSoundObject(soundObject));
+        bool ok = registSoundObject(soundObject);
+        assert(ok);
         return soundObject;
     }
 
     SoundBuffer* FMODSoundManager::createSoundBuffer()
     {
         SoundBuffer* soundBuffer = new FMODSoundBuffer;
-        assert(registSoundBuffer(soundBuffer));
+        bool ok = registSoundBuffer(soundBuffer);
+        assert(ok);
         return soundBuffer;
     }
 

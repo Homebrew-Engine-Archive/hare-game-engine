@@ -12,7 +12,7 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="..\..\lib"
+			OutputDirectory="..\..\lib\debug"
 			IntermediateDirectory="$(ConfigurationName)\core"
 			ConfigurationType="2"
 			CharacterSet="2">
@@ -36,9 +36,9 @@
 				AdditionalDependencies="physfs.lib wsock32.lib winmm.lib"
 				OutputFile="$(OutDir)/core_d.dll"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="..\..\lib;..\..\ext\physfs\debug"
+				AdditionalLibraryDirectories="..\..\lib\debug;..\..\ext\physfs\debug"
 				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile="$(OutDir)/core_d.pdb"
+				ProgramDatabaseFile="$(OutDir)/$(ProjectName)_d.pdb"
 				SubSystem="0"
 				ImportLibrary="$(OutDir)/core_d.lib"
 				TargetMachine="1"/>
@@ -65,7 +65,7 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="..\..\lib"
+			OutputDirectory="..\..\lib\release"
 			IntermediateDirectory="$(ConfigurationName)\core"
 			ConfigurationType="2"
 			CharacterSet="2">
@@ -82,10 +82,10 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="physfs.lib wsock32.lib"
+				AdditionalDependencies="physfs.lib wsock32.lib winmm.lib"
 				OutputFile="$(OutDir)/core.dll"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="..\..\lib;..\..\ext\physfs\release"
+				AdditionalLibraryDirectories="..\..\lib\release;..\..\ext\physfs\release"
 				GenerateDebugInformation="TRUE"
 				SubSystem="2"
 				OptimizeReferences="2"
@@ -133,6 +133,12 @@
 				RelativePath="..\..\core\ConvertUTF.cpp">
 				<FileConfiguration
 					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="0"/>

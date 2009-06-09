@@ -19,6 +19,21 @@
 
 namespace hare
 {
+
+#define ERROR_MARKER        1
+#define ERROR_STYLE         wxSCI_MARK_SMALLRECT
+#define BOOKMARK_MARKER     2
+#define BOOKMARK_STYLE      wxSCI_MARK_ROUNDRECT
+#define BREAKPOINT_MARKER   3
+#define BREAKPOINT_STYLE    wxSCI_MARK_CIRCLE
+#define DEBUG_MARKER        4
+#define DEBUG_STYLE         wxSCI_MARK_ARROW
+
+#define MARGIN_LINENUMBER   0
+#define MARGIN_SYMBOL       1
+#define MARGIN_FOLDING      2
+
+
     class EDITOR_API TextEditorPage : public EditorPage
     {
     public:
@@ -43,6 +58,7 @@ namespace hare
         void foldLine(int line);
         void unfoldLine(int line);
 
+        int getLineCount();
         void markLine(int marker, int line);
         bool lineHasMarker(int marker, int line) const;
         void toggleMarker(int marker, int line);
@@ -84,6 +100,9 @@ namespace hare
         void onEditorModified(wxScintillaEvent& event);
 
         void updateLineNumberColWidth();
+
+        void addBreakPoint(const String& file, int line);
+        void removeBreakPoint(const String& file, int line);
 
     private:
         wxScintilla* editorCtrl;

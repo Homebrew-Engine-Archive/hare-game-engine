@@ -175,12 +175,13 @@ namespace hare
             return clippedArea.isPointIn(pt);
         }
 
+        void setSizeHints(const SizeF& newMinSize, const SizeF& newMaxSize);
+
         virtual void setMinSize(const SizeF& size) { minSize = size; }
         virtual void setMaxSize(const SizeF& size) { maxSize = size; }
 
         virtual SizeF getMinSize() const { return minSize; }
         virtual SizeF getMaxSize() const { return maxSize; }
-
 
         SizeF getBestSize();
         virtual SizeF getBestSize_impl();
@@ -234,6 +235,11 @@ namespace hare
         void setPosition(const PointF& pos)
         {
             setArea(pos, getSize());
+        }
+
+        void setSize(const SizeF& sz)
+        {
+            setArea(getPosition(), sz);
         }
 
         void setSize(float cx, float cy)

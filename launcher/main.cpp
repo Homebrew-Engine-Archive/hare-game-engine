@@ -63,7 +63,7 @@ bool loadResources()
 
 INT WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR cmd, INT)
 {
-    _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+//  _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
     core_init(NULL);
     CmdLineParser cmdLine(cmd);
 #else

@@ -27,6 +27,7 @@ namespace hare
 
         bool addBreakPoint(int line);
         bool removeBreakPoint(int line);
+        bool updateBreakPoint(TextEditorPage* page);
 
     public:
         String fileName;

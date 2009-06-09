@@ -12,6 +12,7 @@
 //***************************************************************
 #include "PCH.h"
 #include "ProjectFile.h"
+#include "TextEditorPage.h"
 
 namespace hare
 {
@@ -46,5 +47,25 @@ namespace hare
             breakPoints.erase(it);
 
         return true;
+    }
+
+    bool ProjectFile::updateBreakPoint(TextEditorPage* page)
+    {
+        breakPoints.clear();
+
+        if (page)
+        {
+            for (int i = 0; i < page->getLineCount(); ++i)
+            {
+                if (page->lineHasMarker(BREAKPOINT_MARKER, i))
+                {
+                    breakPoints.push_back(i);
+                }
+            }
+
+            return true;
+        }
+
+        return false;
     }
 }

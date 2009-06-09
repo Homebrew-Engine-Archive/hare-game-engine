@@ -258,7 +258,8 @@ bool GLTexture::doCreate()
 
 void GLTexture::recreate()
 {
-    assert(doCreate());
+    bool ok = doCreate();
+    assert(ok);
 }
 
 void GLTexture::release()

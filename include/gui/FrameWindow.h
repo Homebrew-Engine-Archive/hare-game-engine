@@ -39,6 +39,9 @@ namespace hare
 
         void updateCursor(const PointF& pt);
 
+        virtual void postLoaded();
+        virtual void postEdited(Attribute* attr);
+
     protected:
         void onMouseMove(MouseEvent& event);
         void onMouseLButtonDown(MouseEvent& event);

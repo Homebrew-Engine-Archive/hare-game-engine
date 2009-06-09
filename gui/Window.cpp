@@ -59,7 +59,7 @@ namespace hare
     {
         HARE_OBJ_F(windowSizer, Sizer, propHide)
         HARE_META_F(position, PointF, propHide)
-        HARE_META_F(size, PointF, propHide)
+        HARE_META_F(size, SizeF, propHide)
         HARE_META(minSize, SizeF)
         HARE_META(maxSize, SizeF)
         HARE_META(shown, bool)
@@ -134,6 +134,11 @@ namespace hare
             windowSizer->setContainingWindow(this);
 
             reparentAllBySizer(this, windowSizer);
+
+            if (size.cx < 0 && size.cy < 0)
+            {
+                windowSizer->fit(this);
+            }
         }
 
         if (scriptRunner && scriptRunner->isLoaded())
@@ -239,6 +244,29 @@ namespace hare
 
         position = pos;
         size = sz;
+        
+        if (minSize.cx > 0)
+        {
+            MathUtil::clampMin(size.cx, minSize.cx);
+        }
+        if (minSize.cy > 0)
+        {
+            MathUtil::clampMin(size.cy, minSize.cy);
+        }
+        if (maxSize.cx > 0)
+        {
+            MathUtil::clampMax(size.cx, maxSize.cx);
+        }
+        if (maxSize.cy > 0)
+        {
+            MathUtil::clampMax(size.cy, maxSize.cy);
+        }
+    }
+
+    void Window::setSizeHints(const SizeF& newMinSize, const SizeF& newMaxSize)
+    {
+        minSize = newMinSize;
+        maxSize = newMaxSize;
     }
 
     SizeF Window::getBestSize()

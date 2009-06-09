@@ -13,7 +13,7 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="..\..\lib\plugins"
+			OutputDirectory="..\..\lib\debug\plugins"
 			IntermediateDirectory="$(ConfigurationName)\python_binding"
 			ConfigurationType="2"
 			CharacterSet="1">
@@ -36,7 +36,7 @@
 				AdditionalDependencies="core_d.lib graphics_d.lib gui_d.lib sound_d.lib python26_d.lib OIS_static_d.lib"
 				OutputFile="$(OutDir)/$(ProjectName)_d.dll"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="..\..\lib;..\..\ext\ois\lib;..\..\ext\python\libs"
+				AdditionalLibraryDirectories="..\..\lib\debug;..\..\ext\ois\lib;..\..\ext\python\libs"
 				GenerateDebugInformation="TRUE"
 				SubSystem="0"
 				TargetMachine="1"/>
@@ -63,15 +63,17 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="Release"
-			IntermediateDirectory="Release"
+			OutputDirectory="..\..\lib\release\plugins"
+			IntermediateDirectory="$(ConfigurationName)\python_binding"
 			ConfigurationType="2"
-			CharacterSet="2">
+			CharacterSet="1">
 			<Tool
 				Name="VCCLCompilerTool"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;HARE_LUA_EXPORTS"
-				RuntimeLibrary="0"
-				UsePrecompiledHeader="0"
+				AdditionalIncludeDirectories="..\..\include;..\..\ext\ois\includes;..\..\ext\python\include"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS"
+				RuntimeLibrary="2"
+				UsePrecompiledHeader="3"
+				PrecompiledHeaderThrough="PCH.h"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="TRUE"
 				DebugInformationFormat="3"/>
@@ -79,13 +81,13 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="$(OutDir)/lua_binding.dll"
+				AdditionalDependencies="core.lib graphics.lib gui.lib sound.lib python26.lib OIS_static.lib"
 				LinkIncremental="1"
+				AdditionalLibraryDirectories="..\..\lib\release;..\..\ext\ois\lib;..\..\ext\python\libs"
 				GenerateDebugInformation="TRUE"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
-				ImportLibrary="$(OutDir)/lua_binding.lib"
 				TargetMachine="1"/>
 			<Tool
 				Name="VCMIDLTool"/>
@@ -124,11 +126,23 @@
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\..\bindings\python\PCH.cpp">
 				<FileConfiguration
 					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="1"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="1"/>
@@ -179,7 +193,7 @@
 				Name="Debug|Win32">
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="..\..\ext\swig\swig.exe -c++ -python -outdir ..\..\lib\ -I.. &quot;$(InputPath)&quot;
+					CommandLine="..\..\ext\swig\swig.exe -c++ -python -outdir ..\..\lib\debug -I.. &quot;$(InputPath)&quot;
 "
 					Outputs="$(InputName)_wrap.cxx"/>
 			</FileConfiguration>

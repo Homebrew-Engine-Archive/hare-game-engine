@@ -12,7 +12,7 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="../../lib/plugins"
+			OutputDirectory="../../lib/debug/plugins"
 			IntermediateDirectory="$(ConfigurationName)/dx9_renderer"
 			ConfigurationType="2"
 			CharacterSet="2">
@@ -34,9 +34,9 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="core_d.lib graphics_d.lib d3d9.lib d3dx9d.lib"
-				OutputFile="$(OutDir)/dx9_renderer_d.dll"
+				OutputFile="$(OutDir)/$(ProjectName)_d.dll"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="../../lib;../../ext/d3d/lib/x86/"
+				AdditionalLibraryDirectories="../../lib/debug;../../ext/d3d/lib/x86/"
 				GenerateDebugInformation="TRUE"
 				SubSystem="2"
 				TargetMachine="1"/>
@@ -63,14 +63,15 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="Release"
-			IntermediateDirectory="Release"
+			OutputDirectory="../../lib/release/plugins"
+			IntermediateDirectory="$(ConfigurationName)/dx9_renderer"
 			ConfigurationType="2"
 			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
+				AdditionalIncludeDirectories="../../include;../../ext/d3d/include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;D3DRENDER_EXPORTS"
-				RuntimeLibrary="0"
+				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="TRUE"
@@ -79,8 +80,9 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="$(OutDir)/D3DRender.dll"
+				AdditionalDependencies="core.lib graphics.lib d3d9.lib d3dx9.lib"
 				LinkIncremental="1"
+				AdditionalLibraryDirectories="../../lib/release;../../ext/d3d/lib/x86/"
 				GenerateDebugInformation="TRUE"
 				SubSystem="2"
 				OptimizeReferences="2"

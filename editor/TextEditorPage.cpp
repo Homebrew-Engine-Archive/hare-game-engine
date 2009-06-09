@@ -30,19 +30,6 @@
 
 namespace hare
 {
-    #define ERROR_MARKER        1
-    #define ERROR_STYLE         wxSCI_MARK_SMALLRECT
-    #define BOOKMARK_MARKER     2
-    #define BOOKMARK_STYLE      wxSCI_MARK_ROUNDRECT
-    #define BREAKPOINT_MARKER   3
-    #define BREAKPOINT_STYLE    wxSCI_MARK_CIRCLE
-    #define DEBUG_MARKER        4
-    #define DEBUG_STYLE         wxSCI_MARK_ARROW
-
-    #define MARGIN_LINENUMBER   0
-    #define MARGIN_SYMBOL       1
-    #define MARGIN_FOLDING      2
-
     IMPLEMENT_ABSTRACT_CLASS(TextEditorPage, EditorPage)
 
     bool writeStringToFile(wxFile& f, const wxString& data, wxFontEncoding encoding, bool useBOM)
@@ -184,7 +171,7 @@ namespace hare
             (wxObjectEventFunction)(wxEventFunction)(wxScintillaEventFunction)
             &TextEditorPage::onEditorChange);
         Connect(editorID, -1, wxEVT_SCI_MODIFIED,
-            (wxObjectEventFunction) (wxEventFunction) (wxScintillaEventFunction)
+            (wxObjectEventFunction)(wxEventFunction)(wxScintillaEventFunction)
             &TextEditorPage::onEditorModified);
 
         return control;
@@ -213,34 +200,56 @@ namespace hare
         }
     }
 
+    void TextEditorPage::addBreakPoint(const String& file, int line)
+    {
+        projectFile->addBreakPoint(line);
+
+        ProjectExplorer* pe = Manager::getInstancePtr()->getExplorerManager()->getProjectExplorer();
+        Project* prj = pe->getActiveProject();
+        if (prj)
+        {
+            EditorPlugin* plugin = Manager::getInstancePtr()->getPluginManager()->findPluginByName(wxString::FromUTF8(prj->debuggerName.c_str()));
+            if (plugin && plugin->getType() == EPT_Debugger)
+            {
+                DebuggerPlugin* debugger = (DebuggerPlugin*)plugin;
+                debugger->addBreakPoint(file, line);
+            }
+        }
+    }
+
+    void TextEditorPage::removeBreakPoint(const String& file, int line)
+    {
+        projectFile->removeBreakPoint(line);
+
+        ProjectExplorer* pe = Manager::getInstancePtr()->getExplorerManager()->getProjectExplorer();
+        Project* prj = pe->getActiveProject();
+        if (prj)
+        {
+            EditorPlugin* plugin = Manager::getInstancePtr()->getPluginManager()->findPluginByName(wxString::FromUTF8(prj->debuggerName.c_str()));
+            if (plugin && plugin->getType() == EPT_Debugger)
+            {
+                DebuggerPlugin* debugger = (DebuggerPlugin*)plugin;
+                debugger->removeBreakPoint(file, line);
+            }
+        }
+    }
+
     void TextEditorPage::toggleBreakPoint(int line)
     {
         bool exist = lineHasMarker(BREAKPOINT_MARKER, line);
 
         if (projectFile)
         {
-            if (exist)
-                projectFile->removeBreakPoint(line);
-            else
-                projectFile->addBreakPoint(line);
-
-            Manager* man = Manager::getInstancePtr();
-            ProjectExplorer* pe = man->getExplorerManager()->getProjectExplorer();
+            ProjectExplorer* pe = Manager::getInstancePtr()->getExplorerManager()->getProjectExplorer();
             Project* prj = pe->getActiveProject();
             if (prj)
             {
-                if (!prj->debuggerName.empty())
-                {
-                    EditorPlugin* plugin = man->getPluginManager()->findPluginByName(wxString::FromUTF8(prj->debuggerName.c_str()));
-                    if (plugin && plugin->getType() == EPT_Debugger)
-                    {
-                        DebuggerPlugin* debugger = (DebuggerPlugin*)plugin;
-                        if (exist)
-                            debugger->removeBreakPoint("/" + prj->projectName + "/" + projectFile->fileName, line);
-                        else
-                            debugger->addBreakPoint("/" + prj->projectName + "/" + projectFile->fileName, line);
-                    }
-                }
+                String fileName = "/" + prj->projectName + "/" + projectFile->fileName;
+
+                if (exist)
+                    removeBreakPoint(fileName, line);
+                else
+                    addBreakPoint(fileName, line);
             }
         }
 
@@ -250,6 +259,11 @@ namespace hare
     bool TextEditorPage::getIsOK() const
     {
         return isOK;
+    }
+
+    int TextEditorPage::getLineCount()
+    {
+        return getControl()->GetLineCount();
     }
 
     void TextEditorPage::markLine(int marker, int line)
@@ -290,22 +304,6 @@ namespace hare
     void TextEditorPage::onEditorChange(wxScintillaEvent& event)
     {
         setModified(getControl()->GetModify());
-
-        int linesAdded = event.GetLinesAdded();
-        int isAdd = event.GetModificationType() & wxSCI_MOD_INSERTTEXT;
-        int isDel = event.GetModificationType() & wxSCI_MOD_DELETETEXT;
-        if ((isAdd || isDel) && linesAdded != 0)
-        {
-            if (projectFile)
-            {
-                Manager* man = Manager::getInstancePtr();
-                ProjectExplorer* pe = man->getExplorerManager()->getProjectExplorer();
-                Project* prj = pe->getActiveProject();
-                if (prj)
-                {
-                }
-            }
-        }
     }
 
     void TextEditorPage::updateLineNumberColWidth()
@@ -331,6 +329,10 @@ namespace hare
         if ((isAdd || isDel) && linesAdded != 0)
         {
             updateLineNumberColWidth();
+            if (projectFile)
+            {
+                projectFile->updateBreakPoint(this);
+            }
         }
     }
 
@@ -666,6 +668,7 @@ namespace hare
             setTextEditorTitle(shortName);
         }
     }
+
     ProjectFile* TextEditorPage::getProjectFile()
     {
         return projectFile;

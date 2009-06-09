@@ -12,7 +12,7 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="..\..\lib"
+			OutputDirectory="..\..\lib\debug"
 			IntermediateDirectory="$(ConfigurationName)\editor_app"
 			ConfigurationType="1"
 			CharacterSet="1">
@@ -35,8 +35,9 @@
 				AdditionalDependencies="core_d.lib graphics_d.lib gui_d.lib editor_d.lib wxexpatd.lib wxjpegd.lib wxmsw28ud.lib wxpngd.lib wxregexud.lib wxtiffd.lib wxzlibd.lib winmm.lib comctl32.lib rpcrt4.lib wsock32.lib odbc32.lib oleacc.lib"
 				OutputFile="$(OutDir)/editor_d.exe"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="..\..\lib;..\..\ext\wxWidgets\lib\vc_dll"
+				AdditionalLibraryDirectories="..\..\lib\debug;..\..\ext\wxWidgets\lib\vc_dll"
 				GenerateDebugInformation="TRUE"
+				ProgramDatabaseFile="$(OutDir)/$(ProjectName)_d.pdb"
 				SubSystem="2"
 				TargetMachine="1"/>
 			<Tool
@@ -63,14 +64,14 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="..\..\lib"
+			OutputDirectory="..\..\lib\release"
 			IntermediateDirectory="$(ConfigurationName)\editor_app"
 			ConfigurationType="1"
 			CharacterSet="1">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="..\..\ext\wxWidgets\lib\vc_dll\mswu;..\..\ext\wxWidgets\include;..\..\include;..\..\include\editor\wxFlatNotebook\include;..\..\include\editor\wxScintilla\include;..\..\include\editor\wxPropGrid\include"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;__WX__;WXUSINGDLL"
+				AdditionalIncludeDirectories="..\..\ext\wxWidgets\lib\vc_dll\mswu;..\..\ext\wxWidgets\include;..\..\include;..\..\include\editor\wxFlatNotebook\include;..\..\include\editor\wxScintilla\include;..\..\include\editor\wxPropGrid\include;..\..\include\editor\wxHareCanvas\include"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;__WX__;WXUSINGDLL;WXUSINGDLL_HARE_CANVAS"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="3"
 				PrecompiledHeaderThrough="PCH.h"
@@ -81,10 +82,10 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="core.lib editor.lib wxexpat.lib wxjpeg.lib wxmsw28u.lib wxpng.lib wxregexu.lib wxtiff.lib wxzlib.lib winmm.lib comctl32.lib rpcrt4.lib wsock32.lib odbc32.lib oleacc.lib"
+				AdditionalDependencies="core.lib graphics.lib gui.lib editor.lib wxexpat.lib wxjpeg.lib wxmsw28u.lib wxpng.lib wxregexu.lib wxtiff.lib wxzlib.lib winmm.lib comctl32.lib rpcrt4.lib wsock32.lib odbc32.lib oleacc.lib"
 				OutputFile="$(OutDir)/editor.exe"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="..\..\lib;..\..\ext\wxWidgets\lib\vc_dll"
+				AdditionalLibraryDirectories="..\..\lib\release;..\..\ext\wxWidgets\lib\vc_dll"
 				GenerateDebugInformation="TRUE"
 				SubSystem="2"
 				OptimizeReferences="2"
@@ -117,6 +118,12 @@
 	<Files>
 		<File
 			RelativePath="..\..\editor_app\editor.rc">
+			<FileConfiguration
+				Name="Release|Win32">
+				<Tool
+					Name="VCResourceCompilerTool"
+					AdditionalIncludeDirectories="..\..\ext\wxWidgets\include"/>
+			</FileConfiguration>
 		</File>
 		<File
 			RelativePath="..\..\editor_app\EditorApp.cpp">

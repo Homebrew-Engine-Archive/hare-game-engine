@@ -2,6 +2,6 @@
 <Object store="0" class="Font" version="0">
     <fontFile class="String" value="/editor/comic.ttf" />
     <fontSize class="float" value="9.000000" />
-    <cacheBufferSize class="uint32" value="324" />
+    <cacheBufferSize class="uint32" value="81" />
     <resolution class="uint32" value="100" />
 </Object>

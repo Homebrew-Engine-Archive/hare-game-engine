@@ -4,6 +4,7 @@ mouse = nil
 keyboard = nil
 mouseX = 0
 mouseY = 0
+
 --*******************************************
 --  Scene listener callbacks
 --*******************************************
@@ -35,23 +36,23 @@ end
 
 function onMousePressed(event, button)
     guiSys:notifyMouseButtonDown(button)
-    print("mouse pressed", swig_type(event), swig_type(button))
+    --print("mouse pressed", swig_type(event), swig_type(button))
 end
 
 function onMouseReleased(event, button)
     guiSys:notifyMouseButtonUp(button)
-    print("mouse released", swig_type(event), swig_type(button))
+    --print("mouse released", swig_type(event), swig_type(button))
 end
 
 --*******************************************
 --  Key listener callbacks
 --*******************************************
 function onKeyPressed(event)
-    print("key pressed, keycode : ", event.key, event.text)
+    --print("key pressed, keycode : ", event.key, event.text)
 end
 
 function onKeyReleased(event)
-    print("key pressed, keycode : ", event.key, event.text)
+    --print("key pressed, keycode : ", event.key, event.text)
 end
 
 --*******************************************
@@ -102,8 +103,6 @@ function onCreate(this)
 
     local layout = hare.importObject('/sample/layouts/test.layout')
     local theme = hare.importObject('/sample/themes/test.theme')
-    print("layout : ", swig_type(layout))
-    print("theme : ", swig_type(theme))
     guiSys = hare.GUISystem()
     guiSys:setRoot(layout)
     guiSys:setTheme(theme)

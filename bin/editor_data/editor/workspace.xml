@@ -10,15 +10,15 @@
                     <editorOpen class="bool" value="0" />
                     <editorPos class="int32" value="0" />
                     <editorTopLine class="int32" value="0" />
-                    <editorTabPos class="int32" value="5" />
+                    <editorTabPos class="int32" value="1" />
                     <breakPoints class="meta_array" number="0" />
                 </item0>
                 <item1 store="0" class="ProjectFile" version="0">
                     <fileName class="String" value="script.py" />
-                    <editorOpen class="bool" value="1" />
-                    <editorPos class="int32" value="361" />
+                    <editorOpen class="bool" value="0" />
+                    <editorPos class="int32" value="0" />
                     <editorTopLine class="int32" value="0" />
-                    <editorTabPos class="int32" value="3" />
+                    <editorTabPos class="int32" value="2" />
                     <breakPoints class="meta_array" number="0" />
                 </item1>
             </files>
@@ -30,30 +30,30 @@
                 <item0 store="0" class="ProjectFile" version="0">
                     <fileName class="String" value="game_app.xml" />
                     <editorOpen class="bool" value="0" />
-                    <editorPos class="int32" value="288" />
+                    <editorPos class="int32" value="382" />
                     <editorTopLine class="int32" value="0" />
-                    <editorTabPos class="int32" value="3" />
+                    <editorTabPos class="int32" value="1" />
                     <breakPoints class="meta_array" number="0" />
                 </item0>
                 <item1 store="0" class="ProjectFile" version="0">
                     <fileName class="String" value="script.lua" />
-                    <editorOpen class="bool" value="1" />
-                    <editorPos class="int32" value="228" />
-                    <editorTopLine class="int32" value="0" />
-                    <editorTabPos class="int32" value="1" />
+                    <editorOpen class="bool" value="0" />
+                    <editorPos class="int32" value="440" />
+                    <editorTopLine class="int32" value="11" />
+                    <editorTabPos class="int32" value="2" />
                     <breakPoints class="meta_array" number="0" />
                 </item1>
                 <item2 store="0" class="ProjectFile" version="0">
                     <fileName class="String" value="test.lua" />
-                    <editorOpen class="bool" value="1" />
-                    <editorPos class="int32" value="222" />
+                    <editorOpen class="bool" value="0" />
+                    <editorPos class="int32" value="518" />
                     <editorTopLine class="int32" value="0" />
-                    <editorTabPos class="int32" value="2" />
+                    <editorTabPos class="int32" value="5" />
                     <breakPoints class="meta_array" number="0" />
                 </item2>
             </files>
         </item1>
     </projects>
     <activeProject class="String" value="sample" />
-    <activePage class="int32" value="2" />
+    <activePage class="int32" value="-1" />
 </Object>

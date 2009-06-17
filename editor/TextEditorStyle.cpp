@@ -43,7 +43,7 @@ namespace hare
 
     TextEditorStyle::TextEditorStyle()
     {
-#if 1
+#if 0
         #define MAKE_OptionColour(NAME,VALUE,FORE,BACK,BOLD,ITALICS,UNDERLINED) \
         {   OptionColour::Ptr col = new OptionColour;\
             col->name = NAME;\
@@ -107,6 +107,12 @@ namespace hare
             OptionSet::Ptr opt = new OptionSet;
             opt->lang = "xml";
             opt->fileMasks.push_back("*.xml");
+            opt->fileMasks.push_back("*.sprite");
+            opt->fileMasks.push_back("*.layout");
+            opt->fileMasks.push_back("*.font");
+            opt->fileMasks.push_back("*.theme");
+            opt->fileMasks.push_back("*.scene");
+            opt->fileMasks.push_back("*.material");
             opt->lexer = wxSCI_LEX_XML;
 
             MAKE_OptionColour("Default",         0,  MAKE_RGB(0,0,0),    MAKE_RGB(255,255,255), 0, 0, 0);

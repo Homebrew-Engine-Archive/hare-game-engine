@@ -131,8 +131,14 @@
         </item13>
     </colours>
     <keywords class="meta_array" number="0" />
-    <fileMasks class="meta_array" number="1">
+    <fileMasks class="meta_array" number="7">
         <item0 class="String" value="*.xml" />
+        <item1 class="String" value="*.sprite" />
+        <item2 class="String" value="*.layout" />
+        <item3 class="String" value="*.font" />
+        <item4 class="String" value="*.theme" />
+        <item5 class="String" value="*.scene" />
+        <item6 class="String" value="*.material" />
     </fileMasks>
     <sampleCode class="String" value="" />
 </Object>

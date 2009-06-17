@@ -345,14 +345,18 @@ namespace hare
         }
     }
 
+    MouseCursor* theMouse = NULL;
+
     void UI_API gui_init()
     {
-        (void)new MouseCursor();
+        if (!theMouse)
+        {
+            theMouse = new MouseCursor();
+        }
     }
 
     void UI_API gui_quit()
     {
-        delete MouseCursor::getSingletonPtr();
+        SAFE_DELETE(theMouse);
     }
-
 }

@@ -3,146 +3,71 @@
     <super_version_Window class="uint32" value="0" />
     <windowSizer store="0" class="BoxSizer" version="0">
         <super_version_Sizer class="uint32" value="0" />
-        <items class="object_list" number="2">
-            <item0 store="0" class="SizerItemWindow" version="0">
+        <items class="object_list" number="1">
+            <item0 store="0" class="SizerItemSizer" version="0">
                 <super_version_SizerItem class="uint32" value="0" />
                 <proportion class="uint32" value="1" />
-                <border class="uint32" value="10" />
-                <flag class="uint32" value="139760" />
-                <window store="0" class="FrameWindow" version="0">
-                    <super_version_Window class="uint32" value="0" />
-                    <windowSizer store="0" class="BoxSizer" version="0">
-                        <super_version_Sizer class="uint32" value="0" />
-                        <items class="object_list" number="2">
-                            <item0 store="0" class="SizerItemWindow" version="0">
-                                <super_version_SizerItem class="uint32" value="0" />
-                                <proportion class="uint32" value="0" />
-                                <border class="uint32" value="10" />
-                                <flag class="uint32" value="135920" />
-                                <window store="0" class="Button" version="0">
-                                    <super_version_Window class="uint32" value="0" />
-                                    <windowSizer store="2" />
-                                    <position class="PointF" value="10.000000 10.000000" />
-                                    <size class="PointF" value="600.000000 20.000000" />
-                                    <minSize class="SizeF" value="20.000000 20.000000" />
-                                    <maxSize class="SizeF" value="-1.000000 -1.000000" />
-                                    <shown class="bool" value="1" />
-                                    <enabled class="bool" value="1" />
-                                    <scriptRunner store="2" />
-                                </window>
-                            </item0>
-                            <item1 store="0" class="SizerItemSizer" version="0">
-                                <super_version_SizerItem class="uint32" value="0" />
-                                <proportion class="uint32" value="1" />
-                                <border class="uint32" value="5" />
-                                <flag class="uint32" value="131072" />
-                                <sizer store="0" class="BoxSizer" version="0">
+                <border class="uint32" value="5" />
+                <flag class="uint32" value="131312" />
+                <sizer store="0" class="BoxSizer" version="0">
+                    <super_version_Sizer class="uint32" value="0" />
+                    <items class="object_list" number="1">
+                        <item0 store="0" class="SizerItemWindow" version="0">
+                            <super_version_SizerItem class="uint32" value="0" />
+                            <proportion class="uint32" value="1" />
+                            <border class="uint32" value="30" />
+                            <flag class="uint32" value="131904" />
+                            <window store="0" class="FrameWindow" version="0">
+                                <super_version_Window class="uint32" value="0" />
+                                <windowSizer store="0" class="BoxSizer" version="0">
                                     <super_version_Sizer class="uint32" value="0" />
-                                    <items class="object_list" number="3">
+                                    <items class="object_list" number="1">
                                         <item0 store="0" class="SizerItemWindow" version="0">
                                             <super_version_SizerItem class="uint32" value="0" />
-                                            <proportion class="uint32" value="0" />
+                                            <proportion class="uint32" value="1" />
                                             <border class="uint32" value="10" />
-                                            <flag class="uint32" value="848" />
-                                            <window store="0" class="CheckBox" version="0">
-                                                <super_version_Window class="uint32" value="0" />
-                                                <windowSizer store="2" />
-                                                <position class="PointF" value="10.000000 50.000000" />
-                                                <size class="PointF" value="20.000000 20.000000" />
-                                                <minSize class="SizeF" value="20.000000 20.000000" />
-                                                <maxSize class="SizeF" value="-1.000000 -1.000000" />
-                                                <shown class="bool" value="1" />
-                                                <enabled class="bool" value="1" />
-                                                <scriptRunner store="2" />
-                                                <super_version_Button class="uint32" value="0" />
-                                                <checked class="bool" value="0" />
-                                            </window>
-                                        </item0>
-                                        <item1 store="0" class="SizerItemWindow" version="0">
-                                            <super_version_SizerItem class="uint32" value="0" />
-                                            <proportion class="uint32" value="0" />
-                                            <border class="uint32" value="10" />
-                                            <flag class="uint32" value="848" />
-                                            <window store="0" class="CheckBox" version="0">
-                                                <super_version_Window class="uint32" value="0" />
-                                                <windowSizer store="2" />
-                                                <position class="PointF" value="40.000000 50.000000" />
-                                                <size class="PointF" value="20.000000 20.000000" />
-                                                <minSize class="SizeF" value="20.000000 20.000000" />
-                                                <maxSize class="SizeF" value="-1.000000 -1.000000" />
-                                                <shown class="bool" value="1" />
-                                                <enabled class="bool" value="1" />
-                                                <scriptRunner store="2" />
-                                                <super_version_Button class="uint32" value="0" />
-                                                <checked class="bool" value="0" />
-                                            </window>
-                                        </item1>
-                                        <item2 store="0" class="SizerItemWindow" version="0">
-                                            <super_version_SizerItem class="uint32" value="0" />
-                                            <proportion class="uint32" value="0" />
-                                            <border class="uint32" value="10" />
-                                            <flag class="uint32" value="394224" />
+                                            <flag class="uint32" value="132080" />
                                             <window store="0" class="Button" version="0">
                                                 <super_version_Window class="uint32" value="0" />
                                                 <windowSizer store="2" />
-                                                <position class="PointF" value="70.000000 50.000000" />
-                                                <size class="PointF" value="300.000000 193.333328" />
-                                                <minSize class="SizeF" value="300.000000 200.000000" />
-                                                <maxSize class="SizeF" value="-1.000000 -1.000000" />
+                                                <position class="PointF" value="10.000000 10.000000" />
+                                                <size class="SizeF" value="100.000000 20.000000" />
+                                                <minSize class="SizeF" value="20.000000 20.000000" />
+                                                <maxSize class="SizeF" value="100.000000 20.000000" />
                                                 <shown class="bool" value="1" />
                                                 <enabled class="bool" value="1" />
                                                 <scriptRunner store="2" />
                                             </window>
-                                        </item2>
+                                        </item0>
                                     </items>
-                                    <minSize class="SizeF" value="100.000000 100.000000" />
+                                    <minSize class="SizeF" value="-1.000000 -1.000000" />
                                     <orient class="int32" value="4" />
-                                </sizer>
-                            </item1>
-                        </items>
-                        <minSize class="SizeF" value="-1.000000 -1.000000" />
-                        <orient class="int32" value="8" />
-                    </windowSizer>
-                    <position class="PointF" value="10.000000 10.000000" />
-                    <size class="PointF" value="620.000000 420.000000" />
-                    <minSize class="SizeF" value="100.000000 100.000000" />
-                    <maxSize class="SizeF" value="-1.000000 -1.000000" />
-                    <shown class="bool" value="1" />
-                    <enabled class="bool" value="1" />
-                    <scriptRunner store="2" />
-                    <sizingEnabled class="bool" value="1" />
-                    <movingEnabled class="bool" value="1" />
-                    <resizeBorder class="float" value="5.000000" />
-                    <titleHeight class="float" value="20.000000" />
-                </window>
+                                </windowSizer>
+                                <position class="PointF" value="5.000000 35.000000" />
+                                <size class="SizeF" value="630.000000 440.000000" />
+                                <minSize class="SizeF" value="20.000000 20.000000" />
+                                <maxSize class="SizeF" value="-1.000000 -1.000000" />
+                                <shown class="bool" value="1" />
+                                <enabled class="bool" value="1" />
+                                <scriptRunner store="2" />
+                                <sizingEnabled class="bool" value="0" />
+                                <movingEnabled class="bool" value="0" />
+                                <resizeBorder class="float" value="5.000000" />
+                                <titleHeight class="float" value="30.000000" />
+                            </window>
+                        </item0>
+                    </items>
+                    <minSize class="SizeF" value="-1.000000 -1.000000" />
+                    <orient class="int32" value="4" />
+                </sizer>
             </item0>
-            <item1 store="0" class="SizerItemWindow" version="0">
-                <super_version_SizerItem class="uint32" value="0" />
-                <proportion class="uint32" value="0" />
-                <border class="uint32" value="10" />
-                <flag class="uint32" value="132848" />
-                <window store="0" class="Button" version="0">
-                    <super_version_Window class="uint32" value="0" />
-                    <windowSizer store="2" />
-                    <position class="PointF" value="10.000000 450.000000" />
-                    <size class="PointF" value="620.000000 20.000000" />
-                    <minSize class="SizeF" value="20.000000 20.000000" />
-                    <maxSize class="SizeF" value="-1.000000 -1.000000" />
-                    <shown class="bool" value="1" />
-                    <enabled class="bool" value="1" />
-                    <scriptRunner store="0" class="LuaScriptRunner" version="0">
-                        <super_version_ScriptRunner class="uint32" value="0" />
-                        <scriptFile class="String" value="/sample/test.lua" />
-                    </scriptRunner>
-                </window>
-            </item1>
         </items>
-        <minSize class="SizeF" value="-1.000000 -1.000000" />
-        <orient class="int32" value="8" />
+        <minSize class="SizeF" value="320.000000 240.000000" />
+        <orient class="int32" value="4" />
     </windowSizer>
     <position class="PointF" value="0.000000 0.000000" />
-    <size class="PointF" value="640.000000 480.000000" />
-    <minSize class="SizeF" value="-1.000000 -1.000000" />
+    <size class="SizeF" value="640.000000 480.000000" />
+    <minSize class="SizeF" value="640.000000 480.000000" />
     <maxSize class="SizeF" value="-1.000000 -1.000000" />
     <shown class="bool" value="1" />
     <enabled class="bool" value="1" />

@@ -78,11 +78,7 @@ namespace hare
     void Object::accept(XmlVisitor &visitor, bool super)
     {
         uint32 savedVer = visitor.classVersion;
-
-        // do not write this <_super_version_Object class="uint32" value="0" />
-        /* visitor.visitEnter("Object", super, CLASS_INFO.classVersion); */
         Object_accept(visitor);
-
         visitor.classVersion = savedVer;
     }
 

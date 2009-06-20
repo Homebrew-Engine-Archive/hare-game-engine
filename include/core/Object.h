@@ -64,59 +64,100 @@ namespace hare
         HARE_DECLARE_DYNAMIC_CLASS(Object)
 
     public:
+
+        /// Enum identifying object storage types
         enum StoreType
         {
-            storeEmbedded,  // embeded object.
-            storeReference, // reference a global object.
-            storeNull,	    // null object pointer.
+            /// Embeded object.
+            storeEmbedded,  
+            /// Reference a global object.
+            storeReference, 
+            /// Null object pointer.
+            storeNull,	    
         };
 
+        /// Enum identifying object property flags
         enum PropertyFlag
         {
-            propHide            = 1 << 1,   // hide in editor
-            propReadOnly        = 1 << 2,   // read only in editor
-            propEnumIsFlag      = 1 << 3,   // enum is used as bit flag
-            propFSUrl           = 1 << 4,   // string is url of file system
-            propColor           = 1 << 5,   // edit this value as color, value type must be uint32
-            propImport          = 1 << 6,   // object can be imported form a file
-            propAvoidNull       = 1 << 7,   // object can not set null in editor
-            propAllowSubs       = 1 << 8,   // object can be created from sub-classes in editor
+            /// Hide this property in editor.
+            propHide = 1 << 1,   
+            /// Property is read-only in editor.
+            propReadOnly = 1 << 2,   
+            /// EnumProperty is used as bit flag.
+            propEnumIsFlag = 1 << 3,
+            /// String is url of file system.
+            propFSUrl = 1 << 4,
+            /// Property is color, must be uint32.
+            propColor = 1 << 5,
+            /// Object can be imported form a file.
+            propImport = 1 << 6,
+            /// Object can not set null in editor.
+            propAvoidNull = 1 << 7,
+            /// Object can be created from sub-classes in editor.
+            propAllowSubs = 1 << 8,
         };
 
+        /** If this object is derived from some class.
+        */
         bool isA(const ClassInfo* base) const;
 
-        /** import Object from url, if share = false, object will be cloned.
+        /** Import object from url, if share = false, object will be cloned.
+            This function auto detects the file's format (xml or bin).
         */
         static Object* importObject(const String &url, bool share = true);
+
+        /** Clone object from existing object.
+        */
         static Object* cloneObject(Object *obj);
+
+        /** Find object by url.
+        */
         static Object* findByUrl(const String &url);
+
+        /** Load object from xml file, same as importObject(url, false).
+        */
         static Object* loadFromXml(const String &url);
+
+        /** Load object from xml file, same as importObject(url, false).
+        */
         static Object* loadFromBin(const String &url);
 
+        /** Save object to file in xml format.
+        */
         bool saveToXml(const String &path);
+
+        /** Save object to file in binary format.
+        */
         bool saveToBin(const String &path);
 
+        /** Set object's url.
+        */
         void setUrl(const String& url)
         {
             objUrl = url;
         }
 
+        /** Get object's url.
+        */
         const String& getUrl() const
         {
             return objUrl;
         }
 
-        // event after one attribute is changed in editor..
+        /** Event after one attribute is changed in editor.
+        */
         virtual void postEdited(Attribute *attr)
         {
         }
 
-        // event after an object is loaded.
+        /** Event after an object is loaded.
+        */
         virtual void postLoaded()
         {
         }
 
-        // event after an object is saved.
+        /** Event after an object is saved.
+        */
         virtual void postSaved()
         {
         }

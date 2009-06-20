@@ -22,16 +22,28 @@ namespace hare
     class CORE_API ReferenceCounted
     {
     public:
+        /** Default constructor.
+        */
         ReferenceCounted() : numRef(0)
         {
         }
+
+        /** Default destructor.
+        */
         virtual ~ReferenceCounted()
         {
         }
+
+        /** Increase reference count.
+        */
         void addRef()
         {
             ++numRef;
         }
+
+        /** Decrease reference count, if reference count is zero, 
+            _doRelease() will be called.
+        */
         void decRef()
         {
             assert(numRef > 0);
@@ -39,6 +51,9 @@ namespace hare
             if (numRef == 0)
                 _doRelease();
         }
+
+        /** Get reference count.
+        */
         int getRef() const
         {
             return numRef;
@@ -55,7 +70,8 @@ namespace hare
         }
 
     private:
-        // do "delete this;"
+        /** do 'delete this;'
+        */
         virtual void _doRelease() = 0;
 
         int numRef;

@@ -22,6 +22,8 @@ namespace hare
 
     typedef std::vector<ClassInfo*> ClassInfoList;
 
+    /**
+     */
     class CORE_API ClassInfo
     {
     public:

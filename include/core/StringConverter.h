@@ -18,6 +18,8 @@
 
 namespace hare
 {
+    /**  Class for converting data types to/from Strings.
+     */
     class CORE_API StringConverter
     {
     public:

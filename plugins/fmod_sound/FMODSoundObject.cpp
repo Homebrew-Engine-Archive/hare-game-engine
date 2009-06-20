@@ -41,6 +41,8 @@ namespace hare
         FMODSoundBuffer* fmodSoundBuffer = (FMODSoundBuffer*)soundData->getSoundBuffer();
 
         FMOD::Sound* pSound = fmodSoundBuffer->getSound();
+        if (!pSound)
+            HARE_EXCEPT(Exception::ERR_INTERNAL_ERROR, "FMOD::Sound is null !", "FMODSoundObject::play"); 
 
         FMOD::System* system = ((FMODSoundManager*)(getSoundApp()->getSoundManager()))->getFMODSystem();
 

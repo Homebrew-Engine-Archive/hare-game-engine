@@ -16,34 +16,33 @@
 
 namespace hare
 {
+    /** Template class for creating single-instance global classes.
+    */
     template<typename T> class Singleton
     {
     public:
 	    Singleton()
         {
-		    assert(m_Singleton == 0);
-		    m_Singleton = (T*)this;
+		    assert(instance == 0);
+		    instance = (T*)this;
 	    }
-
-	    ~Singleton()
-        {}
 
 	    static T& getSingleton()
         {
-		    assert(m_Singleton != 0);
-		    return *m_Singleton;
+		    assert(instance != 0);
+		    return *instance;
 	    }
 
 	    static T* getSingletonPtr()
         {
-		    return m_Singleton;
+		    return instance;
 	    }
 
     protected:
-	    static T* m_Singleton;
+	    static T* instance;
     };
 
-    template <typename T> T* Singleton<T>::m_Singleton = 0;
+    template <typename T> T* Singleton<T>::instance = 0;
 
 #define HARE_DECLARE_SINGLETON(CLASS)               \
     public:	static CLASS& getSingleton();           \

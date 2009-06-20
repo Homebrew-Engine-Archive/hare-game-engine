@@ -22,7 +22,7 @@ namespace hare
 
     typedef std::vector<ClassInfo*> ClassInfoList;
 
-    /**
+    /** Class used for run-time type identification.
      */
     class CORE_API ClassInfo
     {
@@ -32,49 +32,71 @@ namespace hare
 
         ~ClassInfo();
 
+        /** Create an object using the default constructor.
+        */
         Object *createObject() const
         {
             return objectConstructor ? (*objectConstructor)() : 0;
         }
 
+        /** Test if the class is dynamic.
+        */
         bool isDynamic() const
         {
             return 0 != objectConstructor;
         }
 
+        /** Get class's name.
+        */
         const char *getClassName() const
         {
             return className;
         }
 
+        /** Get base class.
+        */
         const ClassInfo* getBaseClass() const
         {
             return baseClass;
         }
 
+        /** Get class's version.
+        */
         uint32 getClassVersion() const
         {
             return classVersion;
         }
 
+        /** Get class's size.
+        */
         uint32 getSize() const
         {
             return objectSize;
         }
 
+        /** Get class's constructor function.
+        */
         ObjectConstructorFunc getConstructor() const
         {
             return objectConstructor;
         }
 
+        /** Find class by name, return NULL if not found.
+        */
         static ClassInfo *findClass(const String &name);
 
+        /** Test if this class derived from some class.
+        */
         bool isDerivedFrom(const ClassInfo* base) const
         {
             return base != 0 && (base == this || (baseClass && baseClass->isDerivedFrom(base)));
         }
 
-        int findSubs(ClassInfoList& list);
+        /** Find all subclasses derived form this.
+        @remarks
+            Currently only return dynamic classes. 
+        */
+        void findSubs(ClassInfoList& list);
 
     public:
         const char*             className;

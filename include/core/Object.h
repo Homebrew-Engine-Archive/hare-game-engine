@@ -101,8 +101,8 @@ namespace hare
         */
         bool isA(const ClassInfo* base) const;
 
-        /** Import object from url, if share = false, object will be cloned.
-            This function auto detects the file's format (xml or bin).
+        /** Import object from url, if <code>share</code> is false, object will be cloned.
+            This function auto detects the file's format (xml or binary).
         */
         static Object* importObject(const String &url, bool share = true);
 

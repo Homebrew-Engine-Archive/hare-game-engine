@@ -18,27 +18,33 @@
 
 namespace hare
 {
-    typedef void* FileHandle;
+    typedef struct file_handle {} *FileHandle;
 
+    /// File open mode
     enum FileMode
     {
+        /// Open for reading.
         FM_Read,
+        /// Open for writing.
         FM_Write,
+        /// Open for appending.
         FM_Append,
     };
 
+    /** Class provides abstract interface for file accessing. 
+    */
     class CORE_API FileSystem : public Singleton<FileSystem>
     {
         HARE_DECLARE_SINGLETON(FileSystem)
 
     public:
         /**
-        * Adds a directory to the search path.
+        * Adds a directory or archive to the search path.
         **/
         bool addSearchPath(const String& dir);
 
         /**
-        * Removes a directory from the PhysFS search path.
+        * Removes a directory or archive from search path.
         **/
         bool removeSearchPath(const String& dir);
 
@@ -163,22 +169,6 @@ namespace hare
     };
 
     CORE_API FileSystem* getFileSystem();
-
-    //class File
-    //{
-    //public:
-    //    File();
-    //    File(const String& filename, FileMode mode = FM_Read);
-
-    //    FileMode getMode() const;
-
-    //    readAll();
-
-    //    write();
-
-    //private:
-    //    char* data;
-    //};
 }
 
 #endif

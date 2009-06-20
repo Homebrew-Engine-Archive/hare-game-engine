@@ -18,6 +18,8 @@
 
 namespace hare
 {
+    /** Utility class for manipulating command-line. 
+    */
     class CORE_API CmdLineParser : public Singleton<CmdLineParser>
     {
         HARE_DECLARE_SINGLETON(CmdLineParser)
@@ -31,16 +33,29 @@ namespace hare
 #endif
 
     public:
+        /** Parse command-line using argc and argv passed by app's main entry. 
+        */
         void parseCmdLine(int argc, char* argv[]);
 
+        /** Get parsed command-line. 
+        */
         String getParsedCmdLine();
 
+        /** Test if command-line has the option. 
+        */
         bool hasOption(const String &optName);
 
+        /** Get command-line option's value. 
+        */
         String getOptionValue(const String &optName);
 
+        /** Set command-line option's value, option will be added if not exists.
+        */
         void setOptionValue(const String &optName, const String &optValue);
 
+        /** Remove some option form command-line. 
+        @return Return true if removed, false if failed or the option does not exist.
+        */
         bool removeOption(const String &optName);
 
     private:

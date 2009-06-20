@@ -31,17 +31,17 @@ namespace hare
         static void toUpperCase(String &str);
 
         /** Replace all old string with new string in the string.
-            @param
-                olds String to be replaced by.
-            @param
-                news String to be replaced with.
+        @param
+            olds String to be replaced by.
+        @param
+            news String to be replaced with.
         */
         static String replace(const String &str, const String& olds, const String& news);
 
         /** Returns a StringVector that contains all the substrings delimited
             by the characters in the passed <code>delims</code> argument.
-            @param
-                delims A list of delimiter characters to split by
+        @param
+            delims A list of delimiter characters to split by
         */
         static StringVector split(const String &str, const String& delims = "\t\n\r ");
 
@@ -55,10 +55,10 @@ namespace hare
 
         /** Removes any whitespace characters, be it standard space or
             TABs and so on.
-            @remarks
-                The user may specify wether they want to trim only the
-                beginning or the end of the String (the default action is
-                to trim both).
+        @remarks
+            The user may specify wether they want to trim only the
+            beginning or the end of the String (the default action is
+            to trim both).
         */
         static void trim(String& str, bool left = true, bool right = true);
 
@@ -75,20 +75,20 @@ namespace hare
         static WString fromUTF8(const String& str);
 
         /** Returns whether the string begins with the pattern passed in.
-            @param 
-                pattern The pattern to compare with.
-            @param 
-                lowerCase If true, the end of the string will be lower cased before
-                comparison, pattern should also be in lower case.
+        @param 
+            pattern The pattern to compare with.
+        @param 
+            lowerCase If true, the end of the string will be lower cased before
+            comparison, pattern should also be in lower case.
         */
         static bool startsWith(const String& str, const String& pattern, bool lowerCase = true);
 
         /** Returns whether the string ends with the pattern passed in.
-            @param 
-                pattern The pattern to compare with.
-            @param 
-                lowerCase If true, the end of the string will be lower cased before
-                comparison, pattern should also be in lower case.
+        @param 
+            pattern The pattern to compare with.
+        @param 
+            lowerCase If true, the end of the string will be lower cased before
+            comparison, pattern should also be in lower case.
         */
         static bool endsWith(const String& str, const String& pattern, bool lowerCase = true);
 

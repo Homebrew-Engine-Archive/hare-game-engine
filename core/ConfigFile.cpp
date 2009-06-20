@@ -15,9 +15,6 @@
 
 namespace hare
 {
-    ConfigFile::ConfigFile()
-    {
-    }
     ConfigFile::~ConfigFile()
     {
         SettingsBySection::iterator seci, secend;

@@ -65,13 +65,12 @@ namespace hare
     }
 
 
-    int ClassInfo::findSubs(ClassInfoList& list)
+    void ClassInfo::findSubs(ClassInfoList& list)
     {
-        int num = 0;
         list.clear();
 
         if (!classMap)
-            return num;
+            return;
 
         ClassNameMap::iterator it = classMap->begin();
 
@@ -80,8 +79,6 @@ namespace hare
             if (it->second->isDynamic() && it->second->isDerivedFrom(this))
                 list.push_back(it->second);
         }
-
-        return num;
     }
 
 }

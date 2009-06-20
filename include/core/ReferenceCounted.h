@@ -22,14 +22,10 @@ namespace hare
     class CORE_API ReferenceCounted
     {
     public:
-        /** Default constructor.
-        */
         ReferenceCounted() : numRef(0)
         {
         }
 
-        /** Default destructor.
-        */
         virtual ~ReferenceCounted()
         {
         }
@@ -69,11 +65,11 @@ namespace hare
             return *this;
         }
 
-    private:
         /** do 'delete this;'
         */
         virtual void _doRelease() = 0;
 
+    private:
         int numRef;
     };
 }

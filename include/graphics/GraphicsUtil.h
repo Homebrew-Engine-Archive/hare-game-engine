@@ -18,6 +18,8 @@
 
 namespace hare
 {
+    /** The class is Graphics Utility
+    */
 	class GRAPHICS_API GraphicsUtil
 	{
 	public:

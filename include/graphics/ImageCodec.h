@@ -19,7 +19,9 @@
 
 namespace hare
 {
-	class GRAPHICS_API ImageCodec
+    /** ImageCodec class is used for encoding and decoding image file
+	*/
+    class GRAPHICS_API ImageCodec
 	{
 	protected:
 		typedef std::map<String, ImageCodec*> CodecMap;
@@ -30,16 +32,27 @@ namespace hare
 		static void registerCodec(ImageCodec* imageCodec);
 		static void unregisterCodec(ImageCodec* imageCodec);
 		static StringVector getExtensions();
-		static ImageCodec* getCodec(const String& extension);
+
+        /** Get ImageCodec object pointer by image format. eg. "png"
+		*/
+        static ImageCodec* getCodec(const String& extension);
 
 	public:
 		ImageCodec(const String& type, uint32 devILTypeID);
 		virtual ~ImageCodec(void);
 
-		virtual const String& getType() = 0;
-		virtual bool encode(const DataHolder& input, DataHolder& output, const ImageInfo& info) = 0;
-		virtual bool decode(const DataHolder& input, DataHolder& output, ImageInfo& info) = 0;
-		virtual bool codeToFile(const DataHolder& input, const String& fileName, const ImageInfo& info) = 0;
+        /** Get encode and decode image type.
+		*/
+        virtual const String& getType() = 0;
+        /** Encode image data
+		*/
+        virtual bool encode(const DataHolder& input, DataHolder& output, const ImageInfo& info) = 0;
+		/** Decode image data
+        */
+        virtual bool decode(const DataHolder& input, DataHolder& output, ImageInfo& info) = 0;
+		/** Encode Image data save to file
+		*/
+        virtual bool codeToFile(const DataHolder& input, const String& fileName, const ImageInfo& info) = 0;
 
 	protected:
 		String codecType;

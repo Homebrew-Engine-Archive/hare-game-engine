@@ -18,10 +18,12 @@
 
 namespace hare
 {
+    /** The class implement ImageCodec use DevIL Library.
+    */
 	class GRAPHICS_API DevILImageCodec : public ImageCodec
 	{
 	public:
-		DevILImageCodec(const String& type, uint32 devILTypeID); //‘⁄devil¿Ô ILenum «ID
+		DevILImageCodec(const String& type, uint32 devILTypeID); //devILTypeID is ILenum ID in devIL
 		virtual ~DevILImageCodec(void);
 
 		virtual const String& getType();
@@ -30,7 +32,9 @@ namespace hare
 		virtual bool decode(const DataHolder& input, DataHolder& output, ImageInfo& info);
 
 	public:
+        /// startUp DevIL Library.
 		static void startUp();
+        /// shutDown DevIL Library.
 		static void shutDown();
 
 	private:

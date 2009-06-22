@@ -15,13 +15,18 @@
 
 namespace hare
 {
-    /// Enum 
+    /// Enum identifying pixel format
 	enum HarePixelFormat
 	{
+        /// UnKnow format
 		HPF_UnKnow,
+        /// 2 byte pixel format, 1 byte luminance, 1 byte alpha
 		HPF_BYTE_LA, //for font
+        /// 32-bit pixel format, 8 bits for alpha, red, green and blue.
 		HPF_A8R8G8B8,
+        /// 32-bit pixel format, 8 bits for blue, green, red and alpha.
 		HPF_A8B8G8R8,//fuck this type
+        // Number of pixel formats currently defined
 		HPF_Count,
 	};
 
@@ -93,14 +98,18 @@ namespace hare
 		to.b = from.b;
 	}
 
-	struct Vertex
+    /** Vertex struct
+	*/
+    struct Vertex
 	{
 		float x, y, z;
 		uint32 diffuse;
 		float u, v;
 	};
 
-	class GRAPHICS_API Color : public Object
+    /** Color class
+	*/
+    class GRAPHICS_API Color : public Object
 	{
 		HARE_DECLARE_DYNAMIC_CLASS(Color)
 	public:

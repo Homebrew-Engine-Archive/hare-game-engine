@@ -19,6 +19,8 @@
 
 namespace hare
 {
+    /** The base class Texture.
+    */
     class GRAPHICS_API Texture : public Object, public RenderTarget
     {
 		HARE_DECLARE_ABSTRACT_CLASS(Texture)
@@ -27,35 +29,51 @@ namespace hare
 
 		virtual ~Texture();
 
+        /** Create empty texture. 
+        */
         void create(uint32 w, uint32 h, HarePixelFormat format, bool isRenderable = false);
+        
+        /** Create texture from file.
+        */
         void createFromFile(const String& filename);
 
+        /** Set projection size for dynamic texture.
+            default size is texture size.
+        */
 		void setProjectionSize(float w, float h);
 
+        /** Get texture width.
+        */
 		uint32 getWidth(){
             return width;
         }
+
+        /** Get texture height.
+        */
         uint32 getHeight(){
             return height;
         }
 
-		uint32 getSize() {
-			return size;
-		}
-
+        /** Get file name.
+        */
         const String& getFileName() {
             return fileName;
         }
 
+        /** Is dynamic texture.
+        */
 		bool isRenderable(){
 			return bIsRenderable;
 		}
 
-		//Copies an image to the texture.
+		/** Copies an image to the texture.
+        */
 		virtual void upload(const Image& img, uint32 destX = 0, uint32 destY = 0) = 0;
 
-		//Gets an image from a texture.
+		/** Gets an image from a texture.
+        */
 		virtual void download(Image& img, const RectN& rc = RectN(0,0,0,0)) = 0;
+        
         virtual void recreate() = 0;
 		virtual void release() = 0;
 
@@ -64,7 +82,6 @@ namespace hare
 
 		uint32 width;
 		uint32 height;
-        uint32 size;
 
 		HarePixelFormat texPixelFormat;
 

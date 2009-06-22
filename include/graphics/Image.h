@@ -28,41 +28,53 @@ namespace hare
 		Image(const Image& rhs);
 		virtual ~Image();
 
-        /// Create empty image  the HarePixelFormat should be HPF_A8R8G8B8
-		void create(uint32 width, uint32 height, HarePixelFormat format);
+        /** Create empty image  the HarePixelFormat should be HPF_A8R8G8B8
+		*/
+        void create(uint32 width, uint32 height, HarePixelFormat format);
 		
-        /// Destroy image
+        /** Destroy image
+        */
         void destroy();
 
-        /// Load image data from image file
-		bool loadFromFile(const String& fileName);
+        /** Load image data from image file
+		*/
+        bool loadFromFile(const String& fileName);
 
-        /// Load image data from memory
-		bool loadFromMemory(const DataHolder& input, const String& type);
+        /** Load image data from memory
+		*/
+        bool loadFromMemory(const DataHolder& input, const String& type);
 		
-        /// Save image data to file
+        /** Save image data to file
+        */
         bool saveToFile(const String& fileName);
 
-        /// Get image width
+        /** Get image width
+        */
 		uint32 getWidth() const;
 
-        /// Get image height
+        /** Get image height
+        */
 		uint32 getHeight() const;
 		
-        /// Get image pixel format
+        /** Get image pixel format
+        */
         HarePixelFormat getPixelFormat() const;
 
-        /// Get image data
-		void* getImageData() const;
+        /** Get image data
+		*/
+        void* getImageData() const;
 		
-        /// Get image size
+        /** Get image size
+        */
         uint32  getImageSize() const;
 		
-        /// Get bytes per row
+        /** Get bytes per row
+        */
         uint32  getRowStride() const;
 
-        /// scale image 
-		bool  scale(int newWidth, int newHeight);
+        /** scale image 
+		*/
+        bool  scale(int newWidth, int newHeight);
 
 		const Image& operator = (const Image& rimg);
 	

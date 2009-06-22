@@ -30,7 +30,6 @@ namespace hare
 
 	void Texture::create(uint32 w, uint32 h, HarePixelFormat format, bool isRenderable)
 	{
-		size = 0;
 		width = w;	//转换成2的幂次方
 		height = h;	//转换成2的幂次方
 		projectionWidth = (float)w;//默认设置投影宽度
@@ -48,7 +47,6 @@ namespace hare
 	void Texture::createFromFile(const String& filename)
 	{
 		assert(!filename.empty());
-		size = 0;
 		width = 0;
 		height = 0;
 		fileName = filename;

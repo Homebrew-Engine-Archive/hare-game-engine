@@ -19,7 +19,8 @@
 
 namespace hare
 {
-
+    /** Image class stores image data 
+    */
 	class GRAPHICS_API Image
 	{
 	public:
@@ -27,25 +28,45 @@ namespace hare
 		Image(const Image& rhs);
 		virtual ~Image();
 
+        /// Create empty image  the HarePixelFormat should be HPF_A8R8G8B8
 		void create(uint32 width, uint32 height, HarePixelFormat format);
-		void destory();
+		
+        /// Destroy image
+        void destroy();
 
+        /// Load image data from image file
 		bool loadFromFile(const String& fileName);
-		bool loadFromMemery(const DataHolder& input, const String& type);
-		bool saveToFile(const String& fileName);
 
+        /// Load image data from memory
+		bool loadFromMemory(const DataHolder& input, const String& type);
+		
+        /// Save image data to file
+        bool saveToFile(const String& fileName);
+
+        /// Get image width
 		uint32 getWidth() const;
+
+        /// Get image height
 		uint32 getHeight() const;
-		HarePixelFormat getPixelFormat() const;
+		
+        /// Get image pixel format
+        HarePixelFormat getPixelFormat() const;
 
+        /// Get image data
 		void* getImageData() const;
-		uint32  getImageSize() const;
-		uint32  getRowStride() const;//Ò»ÐÐµÄsize
+		
+        /// Get image size
+        uint32  getImageSize() const;
+		
+        /// Get bytes per row
+        uint32  getRowStride() const;
 
+        /// scale image 
 		bool  scale(int newWidth, int newHeight);
 
 		const Image& operator = (const Image& rimg);
-	protected:
+	
+    protected:
 		String		fileName;
 		ImageInfo	imageInfo;
 		DataHolder	imageData;

@@ -15,6 +15,7 @@
 
 namespace hare
 {
+    /// Enum 
 	enum HarePixelFormat
 	{
 		HPF_UnKnow,

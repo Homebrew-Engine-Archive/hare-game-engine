@@ -35,7 +35,7 @@ namespace hare
 
 	void Image::create(uint32 width, uint32 height, HarePixelFormat format)
 	{
-		destory();
+		destroy();
 		imageInfo.width = width;
 		imageInfo.height= height;
 		imageInfo.format= format;
@@ -43,7 +43,7 @@ namespace hare
 		imageData.allocate(size);
 	}
 
-	void Image::destory()
+	void Image::destroy()
 	{
 		imageData.clear();
 
@@ -70,10 +70,10 @@ namespace hare
 		fs->readFile(fh, (char*)input.getData(), size, 1);
 		fs->closeFile(fh);
 
-		return loadFromMemery(input, fileExt);
+		return loadFromMemory(input, fileExt);
 	}
 
-	bool Image::loadFromMemery(const DataHolder& input, const String& type)
+	bool Image::loadFromMemory(const DataHolder& input, const String& type)
 	{
 		ImageCodec* imageCodec = ImageCodec::getCodec(type);
 

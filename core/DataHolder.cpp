@@ -15,11 +15,8 @@
 
 namespace hare
 {
-	DataHolder::DataHolder()
-		:data(NULL)
-		,size(0)
+	DataHolder::DataHolder() : data(NULL), size(0)
 	{
-
 	}
 
 	DataHolder::~DataHolder()
@@ -27,20 +24,19 @@ namespace hare
 		clear();
 	}
 
-	void DataHolder::set(uint8* data, uint32 size)
-	{
-		assert(data && size >  0);
+	//void DataHolder::set(uint8* data, uint32 size)
+	//{
+	//	assert(data && size >  0);
 
-		clear();
+	//	clear();
 
-		this->data = data;
-		this->size = size;
-
-	}
+	//	this->data = data;
+	//	this->size = size;
+	//}
 
 	void DataHolder::allocate(uint32 size)
 	{
-		assert(size);
+		assert(size > 0);
 
 		clear();
 
@@ -51,7 +47,8 @@ namespace hare
 
 	void DataHolder::clear()
 	{
-        if (data){
+        if (data)
+        {
             delete data;
             data = NULL;
             size = 0;

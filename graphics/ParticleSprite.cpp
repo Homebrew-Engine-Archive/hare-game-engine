@@ -254,35 +254,35 @@ namespace hare
 				if(particlesAlive >= MAX_PARTICLES) break;
 
 				pPar->age = 0.0f;
-				pPar->terminalAge = MathUtil::rand_float(particleInfo->particleLifeMin, particleInfo->particleLifeMax);
+				pPar->terminalAge = MathUtil::randRange(particleInfo->particleLifeMin, particleInfo->particleLifeMax);
 
-				pPar->location = prevLocation + (location - prevLocation) * MathUtil::rand_float(0.0f, 1.0f);
-				pPar->location.x += MathUtil::rand_float(-2.0f, 2.0f);
-				pPar->location.y += MathUtil::rand_float(-2.0f, 2.0f);
+				pPar->location = prevLocation + (location - prevLocation) * MathUtil::randRange(0.0f, 1.0f);
+				pPar->location.x += MathUtil::randRange(-2.0f, 2.0f);
+				pPar->location.y += MathUtil::randRange(-2.0f, 2.0f);
 
-				ang = particleInfo->direction - MathUtil::PI / 2.f + MathUtil::rand_float(0, particleInfo->spread) - particleInfo->spread / 2.0f;
+				ang = particleInfo->direction - MathUtil::PI / 2.f + MathUtil::randRange(0.0f, particleInfo->spread) - particleInfo->spread / 2.0f;
 				if(particleInfo->relative) ang += (prevLocation - location).angle() + MathUtil::PI / 2.f;
 				pPar->velocity.x = MathUtil::cosf(ang);
 				pPar->velocity.y = MathUtil::sinf(ang);
-				pPar->velocity *= MathUtil::rand_float(particleInfo->speedMin, particleInfo->speedMax);
+				pPar->velocity *= MathUtil::randRange(particleInfo->speedMin, particleInfo->speedMax);
 
-				pPar->gravity = MathUtil::rand_float(particleInfo->gravityMin, particleInfo->gravityMax);
-				pPar->radialAccel = MathUtil::rand_float(particleInfo->radialAccelMin, particleInfo->radialAccelMax);
-				pPar->tangentialAccel = MathUtil::rand_float(particleInfo->tangentialAccelMin, particleInfo->tangentialAccelMax);
+				pPar->gravity = MathUtil::randRange(particleInfo->gravityMin, particleInfo->gravityMax);
+				pPar->radialAccel = MathUtil::randRange(particleInfo->radialAccelMin, particleInfo->radialAccelMax);
+				pPar->tangentialAccel = MathUtil::randRange(particleInfo->tangentialAccelMin, particleInfo->tangentialAccelMax);
 
-				pPar->size = MathUtil::rand_float(particleInfo->sizeStart, particleInfo->sizeStart + (particleInfo->sizeEnd - particleInfo->sizeStart) * particleInfo->sizeVar);
+				pPar->size = MathUtil::randRange(particleInfo->sizeStart, particleInfo->sizeStart + (particleInfo->sizeEnd - particleInfo->sizeStart) * particleInfo->sizeVar);
 				pPar->sizeDelta = (particleInfo->sizeEnd - pPar->size) / pPar->terminalAge;
 
-				pPar->spin = MathUtil::rand_float(particleInfo->spinStart, particleInfo->spinStart + (particleInfo->spinEnd - particleInfo->spinStart) * particleInfo->spinVar);
+				pPar->spin = MathUtil::randRange(particleInfo->spinStart, particleInfo->spinStart + (particleInfo->spinEnd - particleInfo->spinStart) * particleInfo->spinVar);
 				pPar->spinDelta = (particleInfo->spinEnd - pPar->spin) / pPar->terminalAge;
 
 				Color randColorBegin(particleInfo->colorStart);
 				Color randColorEnd(particleInfo->colorEnd);
 
-				pPar->color.R = MathUtil::rand_float(randColorBegin.R, randColorBegin.R + (randColorEnd.R - randColorBegin.R) * particleInfo->colorVar);
-				pPar->color.G = MathUtil::rand_float(randColorBegin.G, randColorBegin.G + (randColorEnd.G - randColorBegin.G) * particleInfo->colorVar);
-				pPar->color.B = MathUtil::rand_float(randColorBegin.B, randColorBegin.B + (randColorEnd.B - randColorBegin.B) * particleInfo->colorVar);
-				pPar->color.A = MathUtil::rand_float(randColorBegin.A, randColorBegin.A + (randColorEnd.A - randColorBegin.A) * particleInfo->alphaVar);
+				pPar->color.R = MathUtil::randRange(randColorBegin.R, randColorBegin.R + (randColorEnd.R - randColorBegin.R) * particleInfo->colorVar);
+				pPar->color.G = MathUtil::randRange(randColorBegin.G, randColorBegin.G + (randColorEnd.G - randColorBegin.G) * particleInfo->colorVar);
+				pPar->color.B = MathUtil::randRange(randColorBegin.B, randColorBegin.B + (randColorEnd.B - randColorBegin.B) * particleInfo->colorVar);
+				pPar->color.A = MathUtil::randRange(randColorBegin.A, randColorBegin.A + (randColorEnd.A - randColorBegin.A) * particleInfo->alphaVar);
 
 				pPar->colorDelta.R = (randColorEnd.R - pPar->color.R) / pPar->terminalAge;
 				pPar->colorDelta.G = (randColorEnd.G - pPar->color.G) / pPar->terminalAge;

@@ -31,42 +31,55 @@ namespace hare
             : text(text), level(level), time(time) {}
     };
 
+    /** Class for logging messages
+    */
     class CORE_API Log : public Singleton<Log>
     {
     public:
         Log();
-        ~Log();
+       ~Log();
 
+       /// Log some errors
         void logError(const char *msg, ...);
+        /// Log some warnings
         void logWarning(const char *msg, ...);
+        /// Log some info
         void logInfo(const char *msg, ...);
+        /// Log debug messages
         void logDebug(const char *msg, ...);
 
+        /// Get a message for message queue, return false if queue is empty.
         bool getMessage(LogMessage& msg);
+        /// Get a message for message queue
         const char *getMessage(int *level, float *time);
 
+        /// Get max messages count
         uint32 getMaxNumMessages() const
         {
             return maxNumMessages;
         }
 
+        /// Set max messages count
         void setMaxNumMessages(uint32 maxNum)
         {
             maxNumMessages = maxNum;
         }
 
+        /// Get max log level
         uint32 getMaxLogLevel() const
         {
             return maxLogLevel;
         }
 
+        /// Set max log level
         void setMaxLogLevel(uint32 maxLevel)
         {
             maxLogLevel = maxLevel;
         }
 
+        /// Change log file's name, old file will be flushed if opened.
         void changeFileName(const String& fileName);
-
+        /// Dump messages to file in html format.
         bool dumpMessages();
 
     protected:

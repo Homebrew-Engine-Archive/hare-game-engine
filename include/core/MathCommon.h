@@ -1,15 +1,19 @@
-#ifndef MATHCOMMON
-#define MATHCOMMON
+#ifndef _MATH_COMMON_
+#define _MATH_COMMON_
 
 namespace hare
 {
+    /** Template class for point 
+    */
     template <class T>
     class TPoint
     {
     public:
+        /// Const value
         static const TPoint<T> ZERO;
-
+        /// X value
         T x;
+        /// Y value
         T y;
 
     public:
@@ -101,12 +105,14 @@ namespace hare
 			return TPoint<T>(x / rhs, y / rhs);
 		}
 
+        /// Set values
         void set(T ix, T iy)
         {
             x = ix;
             y = iy;
         }
 
+        /// Move offset
         void move(T offsetX, T offsetY)
         {
             x += offsetX;
@@ -117,12 +123,15 @@ namespace hare
     template<class T>
     const TPoint<T> TPoint<T>::ZERO(0, 0);
 
+    /** Template class for size 
+    */
     template <class T>
     class TSize
     {
     public:
+        /// Const value
         static const TSize<T> ZERO;
-
+        /// Size
         T cx, cy;
 
         TSize() {}
@@ -144,28 +153,34 @@ namespace hare
             return !(*this == rhs);
         }
 
+        /// Set size
         void set(T icx, T icy)
         {
             cx = icx;
             cy = icy;
         }
-
+        
+        /// Zero size
         void zero()
         {
             cx = 0;
             cy = 0;
         }
+
+        /// Is size zero ?
         bool isZero() const
         {
             return cx == 0 && cy == 0;
         }
 
+        /// Increase size
         void increase(T dx, T dy)
         {
             cx += dx;
             cy += dy;
         }
 
+        /// Decrease size
         void decrease(T dx, T dy)
         {
             cx -= dx;
@@ -176,14 +191,19 @@ namespace hare
     template<class T>
     const TSize<T> TSize<T>::ZERO(0, 0);
 
-
+    /** Template class for rect 
+    */
     template <class T>
     class TRect
     {
     public:
+        /// Const value
         static const TRect<T> ZERO;
 
+        //@{
+        /// Rect coord values
         T minX, minY, maxX, maxY;
+        //@}
 
         TRect() {}
         TRect(T iminX, T iminY, T imaxX, T imaxY) : minX(iminX), minY(iminY), maxX(imaxX), maxY(imaxY) {}
@@ -198,6 +218,7 @@ namespace hare
             return !(*this == rhs);
         }
 
+        /// Set rect
         void set(T iminX, T iminY, T imaxX, T imaxY)
         {
             minX = iminX;
@@ -206,16 +227,19 @@ namespace hare
             maxY = imaxY;
         }
 
+        /// Get rect's width
         T width() const
         {
             return maxX - minX;
         }
 
+        /// Get rect's height
         T height() const
         {
             return maxY - minY;
         }
 
+        /// Normalize rect, if min > max then swap them.
         void normalize()
         {
             if (minX > maxX)
@@ -224,16 +248,19 @@ namespace hare
                 std::swap(minY, maxY);
         }
 
+        /// Is rect normalized ?
         bool isNormalized() const
         {
             return minX <= maxX && minY <= maxY;
         }
 
+        /// Are rect's width and height both zero ?
         bool isEmpty() const
         {
             return width() == 0 || height() == 0;
         }
 
+        /// Make rect infinite
         void infinite()
         {
             minX = minY = std::numeric_limits<T>::min();
@@ -244,6 +271,7 @@ namespace hare
 
         inline void unionRect(const TRect<T> &r1, const TRect<T> &r2);
 
+        /// Move offset
         void move(T offsetX, T offsetY)
         {
             minX += offsetX;
@@ -252,21 +280,25 @@ namespace hare
             maxY += offsetY;
         }
 
+        /// Move offset with TPoint argument
         void move(const TPoint<T> &offset)
         {
             move(offset.x, offset.y);
         }
 
+        /// Move rect to (x, y)
         void moveTo(T x, T y)
         {
             move(x - minX, y - minY);
         }
 
+        /// Move rect to (x, y) with TPoint argument
         void moveTo(const TPoint<T> pt)
         {
             move(pt.x - minX, pt.y - minY);
         }
 
+        /// Inflate rect
         void inflate(T iminX, T iminY, T imaxX, T imaxY)
         {
             minX -= iminX;
@@ -275,6 +307,7 @@ namespace hare
             maxY += imaxY;
         }
 
+        /// Deflate rect
         void deflate(T iminX, T iminY, T imaxX, T imaxY)
         {
             minX += iminX;
@@ -283,26 +316,31 @@ namespace hare
             maxY -= imaxY;
         }
 
+        /// Test is point (x, y) in rect
         bool isPointIn(T x, T y) const
         {
             return x >= minX && x <= maxX && y >= minY && y <= maxY;
         }
 
+        /// Test is point (x, y) in rect
         bool isPointIn(const TPoint<T> &pt) const
         {
             return isPointIn(pt.x, pt.y);
         }
 
+        /// Test is rect in rect
         bool isRectIn(const TRect<T> rc) const
         {
             return rc.minX >= minX && rc.minY >= minY && rc.maxX <= maxX && rc.maxY <= maxY;
         }
 
+        /// Get rect's center point
         TPoint<T> center() const
         {
             return TPoint<T>(minX + width()/2, minY + height()/2);
         }
 
+        /// Scale rect
         template<class T2>
         void scale(T2 w, T2 h)
         {

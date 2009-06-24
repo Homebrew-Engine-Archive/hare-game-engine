@@ -5,17 +5,22 @@
 
 namespace hare
 {
+    /** Utility class for math.
+    */
 	class CORE_API MathUtil
 	{
 	public:
+        /// Const value
 		static const float PI;
 
+        /// Test if the number is power of two
 		template<typename T>
         static inline bool isPO2(T n)
         {
             return (n & (n-1)) == 0;
         }
 
+        /// Get the first power of two number from the argument
         static inline uint32 firstPO2From(uint32 n)
         {
             --n;
@@ -68,7 +73,8 @@ namespace hare
 
         static inline float fastInvsqrt(float x)
         {
-            union {
+            union 
+            {
                 int32 s32Part;
                 float f32Part;
             } conv;
@@ -78,50 +84,49 @@ namespace hare
             return conv.f32Part * (1.5f - 0.4999f * x * conv.f32Part * conv.f32Part);
         }
 
-		static uint32 g_seed;
+        static uint32 rand_seed;
 
-		static void rand_seed(int seed);
+		static void randSeed(uint32 seed);
 
-		static int rand_int(int min, int max);
-
-		static float rand_float(float min, float max);
+        static int32 randRange(int32 min, int32 max);
+        static float randRange(float min, float max);
 
 		template <typename T, typename U> inline
-		static bool clampMin( T& val, const U& min_val )
+		static bool clampMin(T& val, const U& min_val)
 		{
-			if ( val < min_val )
+			if (val < min_val)
 			{
 				val = min_val;
-				return ( true );
+				return (true);
 			}
-			return ( false );
+			return (false);
 		}
 
 		template <typename T, typename U> inline
-		static bool clampMax( T& val, const U& max_val )
+		static bool clampMax(T& val, const U& max_val)
 		{
-			if ( val > max_val )
+			if (val > max_val)
 			{
 				val = max_val;
-				return ( true );
+				return (true);
 			}
-			return ( false );
+			return (false);
 		}
 
 		template <typename T, typename U, typename V> inline
-		static bool clampMinMax( T& val, const U& min_val, const V& max_val )
+		static bool clampMinMax(T& val, const U& min_val, const V& max_val)
 		{
-			if ( val < min_val )
+			if (val < min_val)
 			{
 				val = min_val;
-				return ( true );
+				return (true);
 			}
-			else if ( val > max_val )
+			else if (val > max_val)
 			{
 				val = max_val;
-				return ( true );
+				return (true);
 			}
-			return ( false );
+			return (false);
 		}
 	};
 }

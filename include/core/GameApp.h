@@ -19,6 +19,8 @@
 
 namespace hare
 {
+    /** Game launcher base class
+    */
     class CORE_API GameApp : public Object
     {
         HARE_DECLARE_ABSTRACT_CLASS(GameApp)
@@ -26,6 +28,7 @@ namespace hare
         GameApp();
         virtual ~GameApp();
 
+        /// Override this method for game launching.
         virtual bool go() = 0;
     };
 }

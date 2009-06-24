@@ -17,6 +17,8 @@
 
 namespace hare
 {
+    /** Exception base class
+    */
     class CORE_API Exception : public std::exception
     {
     protected:
@@ -133,9 +135,7 @@ namespace hare
     class ExceptionFactory
     {
     private:
-
-        ExceptionFactory()
-        {}
+        ExceptionFactory() {}
     public:
 
         static NotImplementedException create(
@@ -177,9 +177,6 @@ namespace hare
         {
             return InternalErrorException(code.number, desc, src, file, line);
         }
-
-
-
     };
 }
 

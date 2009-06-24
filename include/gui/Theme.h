@@ -5,6 +5,8 @@
 
 namespace hare
 {
+    /** Class for rendering one kind of control 
+    */
     class UI_API Theme : public Object
     {
         HARE_DECLARE_ABSTRACT_CLASS(Theme)
@@ -21,6 +23,8 @@ namespace hare
 
     typedef HashMap<const ClassInfo*, Theme*> ThemeHashMap;
 
+    /** A set of theme representing a skin
+    */
     class UI_API ThemePackage : public Object
     {
         HARE_DECLARE_DYNAMIC_CLASS(ThemePackage)

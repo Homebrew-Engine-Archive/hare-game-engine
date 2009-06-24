@@ -46,7 +46,7 @@ namespace hare
         {
             messages.push(LogMessage(StringUtil::formatV(msg, args), level, time));
         }
-        else if(messages.size() == maxNumMessages - 1)
+        else if (messages.size() == maxNumMessages - 1)
         {
             messages.push(LogMessage(String("Message queue is full"), 1, time));
         }

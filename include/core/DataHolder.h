@@ -17,23 +17,26 @@
 
 namespace hare
 {
+
 	class CORE_API DataHolder
 	{
 	public:
 		DataHolder();
-		DataHolder(uint8* data, uint32 size){ set(data, size); }
-		virtual ~DataHolder();
+		//DataHolder(uint8* data, uint32 size){ set(data, size); }
+	   ~DataHolder();
 
-		void set(uint8* data, uint32 size);
+		//void set(uint8* data, uint32 size);
 
 		void allocate(uint32 size);
 		void clear();
 
-		void* getData() const {
+		void* getData() const 
+        {
 			return data;
 		}
 
-		uint32 getSize() const {
+		uint32 getSize() const 
+        {
 			return size;
 		}
 

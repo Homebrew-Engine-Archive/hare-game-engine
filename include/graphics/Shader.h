@@ -14,41 +14,59 @@
 #define _SHADER_H_
 
 #include "GraphicsPrerequisites.h"
-//着色器
 #include "Material.h"
 
 namespace hare
 {
+    /** Shadow param
+    */
 	class GRAPHICS_API ShaderParams : public Object
 	{
 		HARE_DECLARE_DYNAMIC_CLASS(ShaderParams)
 	public:
+        /// Enum identifying blend operator.
 		enum SceneBlendOperation{
+            /// The result is the destination added to the source. Result = Source + Destination
 			SBO_Add,
+            /// The result is the source subtracted from the destination. Result = Destination - Source
 			SBO_Revsubtract,
+            /// The result is the minimum of the source and destination. Result = MIN(Source, Destination)
 			SBO_Min,
+            /// The result is the maximum of the source and destination. Result = MAX(Source, Destination)
 			SBO_Max,
 		};
 
+        /// Enum identifying blend mode
 		enum SceneBlendArgument{
+            /// Blend factor is (As, As, As, As).
 			SBA_Srcalpha,
-			SBA_Invsrcalpha,
-			SBA_One,
-			SBA_Zero,
+			/// Blend factor is ( 1 - As, 1 - As, 1 - As, 1 - As).
+            SBA_Invsrcalpha,
+			/// Blend factor is (1, 1, 1, 1).
+            SBA_One,
+			/// Blend factor is (0, 0, 0, 0).
+            SBA_Zero,
 		};
 
 		ShaderParams();
 		~ShaderParams(){}
 
+        /// enable alpha blend
 		bool AlphaBlendEnable;
 
+        /// blend operator
 		uint8 SceneBlendOP;
+        /// source blend model
 		uint8 SceneBlendSrcArg;
-		uint8 SceneBlendDesArg;
+		/// destination blend model
+        uint8 SceneBlendDesArg;
 
+        /// enable alpha test
 		bool  AlphaTestEnable;
+        /// the threshold value for alpha testing
 		uint8 AlphaRef;
 
+        /// enable z
 		bool  bUseZ;
 
 		bool operator != (const ShaderParams& right);
@@ -57,8 +75,8 @@ namespace hare
 		ShaderParams& operator = (const ShaderParams& right);
 	};
 
-	//着色器基类
-
+    /** The shadow base class
+    */
 	class GRAPHICS_API Shader : public Material
 	{
 		HARE_DECLARE_ABSTRACT_CLASS(Shader)
@@ -66,19 +84,28 @@ namespace hare
 		Shader();
 		virtual ~Shader();
 
+        /** Set material
+        */
 		virtual void setMaterial(StandardMtrl* m) = 0;
-		virtual StandardMtrl* getMaterial() = 0;
+		
+        /** Get material
+        */
+        virtual StandardMtrl* getMaterial() = 0;
 
 		virtual Shader* getShader()
 		{
 			return this;
 		}
 
+        /** Set shadow params
+        */
 		void setShaderParams(const ShaderParams& s)
 		{
 			*shaderParams = s;
 		}
 
+        /** Get shadow params
+        */
 		const ShaderParams& getShaderParams()
 		{
 			return *shaderParams;
@@ -89,6 +116,11 @@ namespace hare
 		ShaderParams::Ptr shaderParams;
 	};
 
+
+    /** implement Shader class.
+        ShaderParams use default params
+        alpha test enable alpha blend disable
+    */
 	class GRAPHICS_API SimpleShader : public Shader
 	{
 		HARE_DECLARE_DYNAMIC_CLASS(SimpleShader)
@@ -122,6 +154,8 @@ namespace hare
 	};
 
 
+    /** Alpha blend enable alpha test disable
+    */
 	class GRAPHICS_API ParticleShader : public Shader
 	{
 		HARE_DECLARE_DYNAMIC_CLASS(ParticleShader)

@@ -107,23 +107,30 @@ namespace hare
 		Material();
 		virtual ~Material();
 
-
+        /** Operator texture matrix.
+        */
 		virtual void frameMove() = 0;
-		virtual TextureMtrl* getTextureMtrl() = 0;
-		virtual Shader* getShader() = 0;
+		
+        /** Get TextureMtrl object pointer.
+        */
+        virtual TextureMtrl* getTextureMtrl() = 0;
+		
+        /** Get Shader material object pointer.
+        */
+        virtual Shader* getShader() = 0;
 
 	};
 
 
-	//节点材质
-	//创建这一层抽象类使保存材质文件明确
-	class GRAPHICS_API StandardMtrl : public Material
+	/** The base class standard material. 
+        Material derived class must implement StandardMtrl.
+    */
+    class GRAPHICS_API StandardMtrl : public Material
 	{
 		HARE_DECLARE_ABSTRACT_CLASS(StandardMtrl)
 	public:
 		StandardMtrl();
 		virtual ~StandardMtrl();
-
 
 		virtual TextureMtrl* getTextureMtrl()
 		{
@@ -137,7 +144,9 @@ namespace hare
 	};
 
 
-	//纹理材质
+    /** The final material node.
+        TextureMtrl stores texture.
+    */
 	class GRAPHICS_API TextureMtrl : public StandardMtrl
 	{
 		HARE_DECLARE_DYNAMIC_CLASS(TextureMtrl)
@@ -151,26 +160,40 @@ namespace hare
 			return this;
 		}
 
+        /** Set texture.
+        */
 		void setTexture(Texture* tex)
 		{
 			texture = tex;
 			fileName = texture->getFileName();
 		}
+
+        /** Get texture.
+        */
 		Texture* getTexture()
 		{
 			return texture;
 		}
 
+        /** Set TextureStage.
+        */
 		void setTextureStage(const TextureStage& ts)
 		{
 			*textureStage = ts;
 		}
 
+        /** get TextureStage.
+        */
 		const TextureStage& getTextureStage()
 		{
 			return *textureStage;
 		}
 
+        /** create TextureMtrl from image file
+            exp: TextureMtrl::Ptr texMtrl = new TextureMtrl;
+                 texMtrl->fileName = "xxx.png";
+                 texMtrl->postLoaded();
+        */
 		virtual void postLoaded();
 
 		virtual void postEdited(Attribute *attr);
@@ -180,12 +203,15 @@ namespace hare
 		TextureStage::Ptr textureStage;
 
 	public:
+        /// texture matrix
 		Matrix4      texMat;
+        /// image file name 
 		String       fileName;
 
 	};
 
-	//节点包裹材质基类
+	/** Node material store sub material.
+    */
 	class GRAPHICS_API WrapperMtrl : public StandardMtrl
 	{
 		HARE_DECLARE_ABSTRACT_CLASS(WrapperMtrl)
@@ -193,11 +219,15 @@ namespace hare
 		WrapperMtrl();
 		virtual ~WrapperMtrl();
 
+        /** Get sub material.
+        */
 		virtual StandardMtrl* getSubMtrl()
 		{
 			return mtrl;
 		}
 
+        /** Set sub material.
+        */
 		virtual void setSubMtrl(StandardMtrl* m)
 		{
 			mtrl = m;
@@ -212,9 +242,9 @@ namespace hare
 		StandardMtrl::Ptr mtrl;
 	};
 
-	//材质修改器计算纹理坐标
 
-	//平移材质修改器
+    /** Translate material
+    */
 	class GRAPHICS_API PannerMod : public WrapperMtrl
 	{
 		HARE_DECLARE_DYNAMIC_CLASS(PannerMod)
@@ -224,8 +254,11 @@ namespace hare
 
 		virtual void frameMove();
 	public:
-		PointF  offset;
+        /// Translation offset
+        PointF  offset;
+        /// Translation direction
 		PointF  panDirection;
+        /// Translation rate
 		float   panRate;
 
 		PointF  oscillationPhase;
@@ -236,7 +269,8 @@ namespace hare
 
 	};
 
-	//缩放材质修改器
+    /** Scale material.
+    */
 	class GRAPHICS_API ScalerMod : public WrapperMtrl
 	{
 		HARE_DECLARE_DYNAMIC_CLASS(ScalerMod)
@@ -246,7 +280,9 @@ namespace hare
 
 		virtual void frameMove();
 	public:
+        /// scale size.
 		PointF	scale;
+        /// scale center.
 		PointF	center;
 
 		PointF	oscillationPhase;
@@ -257,7 +293,8 @@ namespace hare
 
 	};
 
-	//旋转材质修改器
+    /** rotate material
+    */
 	class GRAPHICS_API RotatorMod : public WrapperMtrl
 	{
 		HARE_DECLARE_DYNAMIC_CLASS(RotatorMod)
@@ -267,8 +304,11 @@ namespace hare
 
 		virtual void frameMove();
 	public:
+        /// rotate center
 		PointF      center;
+        /// rotate offset
 		float		rotation;
+        /// rotate speed
 		float		speed;
 
 		float		oscillationPhase;

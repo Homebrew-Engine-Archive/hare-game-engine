@@ -13,43 +13,63 @@
 #ifndef _MATERIAL_H_
 #define _MATERIAL_H_
 
-//材质
+
 #include "GraphicsPrerequisites.h"
 #include "Texture.h"
 
 namespace hare
 {
+    /** Store Texture stage params.
+    */
 	class GRAPHICS_API TextureStage : public Object
 	{
 		HARE_DECLARE_DYNAMIC_CLASS(TextureStage)
 	public:
+
+        /// Enum identifying color and alpha operation when multiple texture.
 		enum ColorAlphaBlendOperation
 		{
+            /// Params multiplied.
 			CABO_Modulate,
+            /// Select param one.
 			CABO_Select1,
+            /// Params add
 			CABO_Add,
+            /// Use current alpha as linear mixed param
 			CABO_BlendTexAlpha,
 		};
 
+        /// Enum identifying color and alpha param when multiple texture. 
 		enum ColorAlphaBlendArgument
 		{
+            /// Use current stage texture blend value.
 			CBBA_Current,
+            /// Use current texture value.
 			CABA_Texture,
+            /// Use Diffuse Reflectance value.
 			CABA_Diffuse,
 		};
 
+        /// Enum identifying texture address mode
 		enum WrapMode
 		{
+            /// Repeat address.
 			WM_Wrap,
+            /// Mirror address.
 			WM_Mirror,
+            /// Border address color
 			WM_Clamp,
+            /// Border color by user define.
 			WM_Shadow,
 		};
 
+        /// Enum identifying filter type
 		enum FliterType
 		{
-			FT_Point,	    //没有minimap
-			FT_Line,		//
+            /// point flit
+			FT_Point,	    
+            /// line  flit
+			FT_Line,		
 		};
 
 		TextureStage();
@@ -74,16 +94,19 @@ namespace hare
 		TextureStage& operator = (const TextureStage& right);
 	};
 
-	//材质基类
+
 	class TextureMtrl;
 	class Shader;
 
+    /** The base class material.
+    */ 
 	class GRAPHICS_API Material : public Object
 	{
 		HARE_DECLARE_ABSTRACT_CLASS(Material)
 	public:
 		Material();
 		virtual ~Material();
+
 
 		virtual void frameMove() = 0;
 		virtual TextureMtrl* getTextureMtrl() = 0;

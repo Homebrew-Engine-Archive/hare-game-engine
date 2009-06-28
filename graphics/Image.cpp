@@ -77,6 +77,9 @@ namespace hare
 	{
 		ImageCodec* imageCodec = ImageCodec::getCodec(type);
 
+        if (!imageCodec)
+            return false;
+
 		DataHolder output;
 		ImageInfo  info;
 

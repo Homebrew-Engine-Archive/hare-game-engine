@@ -53,9 +53,8 @@ namespace hare
 		String lwrcase = extension;
 		StringUtil::toLowerCase(lwrcase);
 		CodecMap::const_iterator it = codecMap.find(lwrcase);
-		if (it == codecMap.end())
-		{
-			//exception
+		if (it == codecMap.end()){
+			return NULL;
 		}
 
 		return it->second;

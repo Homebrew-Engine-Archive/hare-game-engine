@@ -198,7 +198,8 @@ bool D3DTexture::doCreate()
 	}else{
 		Image img;
 		assert(!fileName.empty());
-		img.loadFromFile(fileName);
+		if (!img.loadFromFile(fileName))
+            return false;
 
 		uint32 srcWidth = img.getWidth();
 		uint32 srcHeight= img.getHeight();

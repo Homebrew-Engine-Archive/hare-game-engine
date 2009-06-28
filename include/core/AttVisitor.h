@@ -17,6 +17,8 @@
 
 namespace hare
 {
+    /** AttVisitor for accessing object's properities
+    */
     class CORE_API AttVisitor
     {
     public:

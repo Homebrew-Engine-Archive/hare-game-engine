@@ -15,6 +15,8 @@
 
 namespace hare
 {
+    /** BinVisitor for Serialization in binary format
+    */
     class BinVisitor
     {
     public:

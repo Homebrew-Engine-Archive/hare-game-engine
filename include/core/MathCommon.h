@@ -131,8 +131,11 @@ namespace hare
     public:
         /// Const value
         static const TSize<T> ZERO;
+        
+        //@{
         /// Size
         T cx, cy;
+        //@}
 
         TSize() {}
         TSize(T icx, T icy) : cx(icx), cy(icy) {}

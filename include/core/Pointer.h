@@ -15,6 +15,8 @@
 
 namespace hare
 {
+    /** Shared pointer class
+    */
     template <typename T> class Pointer
     {
     public:
@@ -45,21 +47,25 @@ namespace hare
                 ptr->decRef();
         }
 
+        /// Get raw pointer
         T* pointer()
         {
             return ptr;
         }
 
+        /// Get raw pointer's ref
         T*& pointerRef()
         {
             return ptr;
         }
 
+        /// Get raw pointer, const version
         const T* pointer() const
         {
             return ptr;
         }
 
+        /// Get raw pointer's ref, const version
         const T*& pointerRef() const
         {
             return ptr;

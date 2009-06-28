@@ -107,6 +107,13 @@ bool EditorApp::OnInit()
     // Also add scriptDir to search path.
     fs->addSearchPath(scriptDir);
 
+    StringVector searchPaths = resource.getMultiSetting("SearchPath");
+    for (size_t i = 0; i < searchPaths.size(); ++i)
+    {
+        fs->addSearchPath(searchPaths[i]);
+        Log::getSingleton().logInfo("Filesystem append search path : '%s'", searchPaths[i].c_str());
+    }
+
     Log::getSingleton().logInfo("Filesystem write dir '%s' is used for search path in editor mode.",
         writeDir.c_str());
 

@@ -16,11 +16,15 @@
 
 namespace hare
 {
+    /** Class for plugin management
+    */
     class CORE_API PluginManager : public Singleton<PluginManager>
     {
     public:
+        /// Load a plugin and return the DynamicLibrary
         DynamicLibrary* loadPlugin(const String& fileName);
 
+        /// Free all loaded plugins by decreasing DynamicLibrary's ref-count
         void freeAllPlugins();
 
     private:

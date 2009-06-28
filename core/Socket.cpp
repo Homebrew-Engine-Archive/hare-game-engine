@@ -20,39 +20,11 @@
 
 namespace hare
 {
-    String ISocket::getErrorMsg(bool clear)
-    {
-        String str(errorMsg);
-        if (clear)
-            errorMsg.clear();
-
-        return str;
-    }
-
-    void ISocket::appendErrorMsg(const String& msg)
-    {
-        String s(msg);
-
-        if (address.length() != 0)
-            s += StringUtil::format(" Address '%s'.", address.c_str());
-        if (portNumber > 0)
-            s += StringUtil::format(" Port %d.", portNumber);
-
-        String lastErrorMsg = getLastErrorMsg();
-        if (lastErrorMsg.length() > 0)
-            s += ("\n") + lastErrorMsg;
-
-        if (errorMsg.length() > 0)
-            errorMsg += "\n\n";
-
-        errorMsg += s;
-    }
-
     // ----------------------------------------------------------------------------
     // Socket
     // ----------------------------------------------------------------------------
 
-    Socket::Socket() : sock(0), sockState(SOCKET_Closed)
+    Socket::Socket() : portNumber(-1), sock(0), sockState(SOCKET_Closed)
     {
         memset(&sockAddress, 0, sizeof(sockAddress));
     }
@@ -76,6 +48,34 @@ namespace hare
             ::close(sock);
 #endif // HARE_PLATFORM == HARE_PLATFORM_WIN32
         }
+    }
+
+    String Socket::getErrorMsg(bool clear)
+    {
+        String str(errorMsg);
+        if (clear)
+            errorMsg.clear();
+
+        return str;
+    }
+
+    void Socket::appendErrorMsg(const String& msg)
+    {
+        String s(msg);
+
+        if (address.length() != 0)
+            s += StringUtil::format(" Address '%s'.", address.c_str());
+        if (portNumber > 0)
+            s += StringUtil::format(" Port %d.", portNumber);
+
+        String lastErrorMsg = getLastErrorMsg();
+        if (lastErrorMsg.length() > 0)
+            s += ("\n") + lastErrorMsg;
+
+        if (errorMsg.length() > 0)
+            errorMsg += "\n\n";
+
+        errorMsg += s;
     }
 
     bool Socket::listen(uint16 port, int backLog)

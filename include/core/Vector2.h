@@ -6,10 +6,12 @@
 
 namespace hare
 {
+    /** Standard 2-dimensional vector
+    */
     class CORE_API Vector2
     {
     public:
-        float	x, y;
+        float x, y;
 
         Vector2(float _x, float _y)
         {
@@ -78,19 +80,27 @@ namespace hare
             y *= scalar;
             return *this;
         }
-
+        
+        /** Calculates the dot (scalar) product of this vector with another.
+        */
         float dot(const Vector2 *v) const
         {
             return x*v->x + y*v->y;
         }
 
+        /** Returns the length (magnitude) of the vector.
+        */
         float length() const
         {
             return MathUtil::sqrtf(dot(this));
         }
 
+        /** Calculates the angle between this vector and another.
+        */
         float angle(const Vector2 *v = 0) const;
 
+        /** Clamp the vector.
+        */
         void clamp(const float max)
         {
             if (length() > max)
@@ -101,6 +111,8 @@ namespace hare
             }
         }
 
+        /** Normalize the vector.
+        */
         Vector2* normalize()
         {
             float rc = MathUtil::fastInvsqrt(dot(this));
@@ -109,6 +121,8 @@ namespace hare
             return this;
         }
 
+        /** Rotate the vector.
+        */
         Vector2* rotate(float a);
     };
 

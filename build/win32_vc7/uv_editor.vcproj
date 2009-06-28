@@ -77,7 +77,7 @@
 				UsePrecompiledHeader="3"
 				PrecompiledHeaderThrough="PCH.h"
 				WarningLevel="3"
-				Detect64BitPortabilityProblems="TRUE"
+				Detect64BitPortabilityProblems="FALSE"
 				DebugInformationFormat="3"/>
 			<Tool
 				Name="VCCustomBuildTool"/>

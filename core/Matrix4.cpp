@@ -3,17 +3,19 @@
 
 namespace hare
 {
-	const Matrix4 Matrix4::ZERO(0, 0, 0, 0,
+	const Matrix4 Matrix4::ZERO(
+        0, 0, 0, 0,
 		0, 0, 0, 0,
 		0, 0, 0, 0,
 		0, 0, 0, 0);
 
-	const Matrix4 Matrix4::IDENTITY(1, 0, 0, 0,
+	const Matrix4 Matrix4::IDENTITY(
+        1, 0, 0, 0,
 		0, 1, 0, 0,
 		0, 0, 1, 0,
 		0, 0, 0, 1);
 
-	Matrix4 Matrix4::Matrix4Multiply( const Matrix4 *pM1, const Matrix4 *pM2 ) const
+	Matrix4 Matrix4::matrix4Multiply(const Matrix4 *pM1, const Matrix4 *pM2) const
 	{
 		Matrix4 mat;
 		mat._11 = pM1->_11 * pM2->_11 + pM1->_12 * pM2->_21 + pM1->_13 * pM2->_31 + pM1->_14 * pM2->_41;

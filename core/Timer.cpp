@@ -13,7 +13,7 @@
 
 namespace hare
 {
-	float getTime()
+	float Timer::getTime()
 	{
 		float cur = 0.0f;
 
@@ -51,9 +51,6 @@ namespace hare
 
 	#else // HARE_PLATFORM == HARE_PLATFORM_WIN32
 
-        // clock() returns cpu time, can NOT use this
-		// cur = (float)clock() / CLOCKS_PER_SEC;
-
         static bool time_inited = false;
         static struct timeval start;
         if (!time_inited)
@@ -78,12 +75,6 @@ namespace hare
 		}
 	}
 
-	Timer& getTimer()
-	{
-		static Timer timer;
-		return timer;
-	}
-
 	void Timer::update()
     {
         float cur = getTime();
@@ -98,6 +89,17 @@ namespace hare
             oldFPSTime = curTime;
             frameCount = 0;
         }
+    }
+
+    Timer& getTimer()
+    {
+        static Timer timer;
+        return timer;
+    }
+
+    float getTime()
+    {
+        return Timer::getTime();
     }
 }
 

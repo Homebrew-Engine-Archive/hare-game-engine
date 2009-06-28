@@ -18,29 +18,37 @@
 
 namespace hare
 {
+    /** Class for dynamic-loading libraries
+    */
     class CORE_API DynamicLibrary : public ReferenceCounted
     {
     public:
         DynamicLibrary() : handle(0) {}
 
+        /// Constructor
         DynamicLibrary(const String& path)
         {
             load(path);
         }
        
-        ~DynamicLibrary()
+        virtual ~DynamicLibrary()
         {
             unload();
         }
 
+        /// Load a dynamic library form path
         void load(const String& path);
 
+        /// Get a symbol from loaded library
         void* getSymbol(const String& name);
 
+        /// Is dynamic library loaded ?
         bool isLoaded() { return handle != 0; }
 
+        /// Get dynamic library's handle 
         void* getHandle() const { return handle; }
 
+        /// Unload the dynamic library 
         void unload() 
         {
             if (handle)
@@ -50,6 +58,7 @@ namespace hare
             }
         }
 
+        /// Unload a dynamic library 
         static void unload(void* libHandle);
 
     private:

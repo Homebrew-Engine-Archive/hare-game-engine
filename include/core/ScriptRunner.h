@@ -18,6 +18,8 @@
 
 namespace hare
 {
+    /** ScriptRunner for running scripts
+    */
     class CORE_API ScriptRunner : public Object
     {
         HARE_DECLARE_ABSTRACT_CLASS(ScriptRunner)
@@ -26,27 +28,33 @@ namespace hare
         ScriptRunner();
         virtual ~ScriptRunner();
 
+        /// Get script file path (filesystem url)
         const String& getScriptFile() const
         {
             return scriptFile;
         }
 
+        /// Get script's owner object
         Object* getOwner() const
         {
             return owner;
         }
 
+        /// Set script's owner object
         void setOwner(Object* object)
         {
             owner = object;
         }
 
+        /// Is script loaded ?
         bool isLoaded() const
         {
             return loaded;
         }
 
+        /// Notify script that owner object has been created
         virtual bool notifyOwnerCreated() = 0;
+        /// Notify script that owner object will be destroyed
         virtual bool notifyOwnerDestroyed() = 0;
 
     protected:

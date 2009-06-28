@@ -21,6 +21,8 @@
 
 namespace hare
 {
+    /** XmlVisitor for Serialization in xml format
+    */
     class CORE_API XmlVisitor
     {
     public:

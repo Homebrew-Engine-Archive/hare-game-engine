@@ -255,6 +255,10 @@ public:
         keyboard->capture();
     }
 
+    bool isKeyDown(OIS::KeyCode key)
+    {
+        return keyboard->isKeyDown(key);
+    }
 
 protected:
     LuaKeyListener::Ptr keyListener;

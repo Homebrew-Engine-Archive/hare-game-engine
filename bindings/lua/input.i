@@ -51,6 +51,8 @@ public:
     LuaKeyListener* getListener();
     
     void capture();
+    
+    bool isKeyDown(OIS::KeyCode key);
 };
 
 class JoyStick : public LuaInputObject

@@ -205,8 +205,13 @@ namespace hare
         if ((listCtrl->GetWindowStyleFlag() & wxLC_REPORT) &&
             listCtrl->GetItemCount() > 0)
         {
+#ifdef __WXMSW__
+            listCtrl->SetColumnWidth(0, wxLIST_AUTOSIZE_USEHEADER);
+            listCtrl->SetColumnWidth(1, wxLIST_AUTOSIZE_USEHEADER);
+#else
             listCtrl->SetColumnWidth(0, wxLIST_AUTOSIZE);
             listCtrl->SetColumnWidth(1, wxLIST_AUTOSIZE);
+#endif
         }
     }
 

@@ -96,6 +96,10 @@ namespace hare
     void ProjectExplorer::onProjectFileActivated(wxTreeEvent& event)
     {
         wxTreeItemId id = projectTree->GetSelection();
+
+        if (projectTree->GetRootItem() == id)
+            return;
+
         TreeItemData* dat = (TreeItemData*)projectTree->GetItemData(id);
 
         if (!dat)
@@ -304,8 +308,11 @@ namespace hare
 
         activeProject = project;
 
-        projectTree->SetItemBold(activeProject->treeNode, true);
-        projectTree->EnsureVisible(activeProject->treeNode);
+        if (activeProject)
+        {
+            projectTree->SetItemBold(activeProject->treeNode, true);
+            projectTree->EnsureVisible(activeProject->treeNode);
+        }
 
         EditorEvent event(editorEVT_PROJECT_ACTIVED);
         event.project = activeProject;

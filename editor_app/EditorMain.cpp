@@ -376,8 +376,7 @@ void EditorFrame::onPluginAttached(EditorEvent& event)
     {
         const PluginInfo* info = Manager::getInstancePtr()->getPluginManager()->getPluginInfo(event.plugin);
 
-        Log::getSingleton().logInfo("Editor plugin attached : type %d, name %s", event.plugin->getType(),
-            info->name.ToUTF8().data());
+        Log::getSingleton().logInfo("Editor plugin attached : %s", info->name.ToUTF8().data());
 
         event.plugin->buildMenuBar(GetMenuBar());
 
@@ -620,6 +619,13 @@ void EditorFrame::onApplicationClose(wxCloseEvent& event)
         Manager::getInstancePtr()->getConfigManager()->getAppConfigFile()->setLayout(layout);
 
     Manager::getInstancePtr()->getExplorerManager()->getProjectExplorer()->saveWorkspace();
+
+    Hide();
+
+    layoutManager.DetachPane(Manager::getInstancePtr()->getEditorPageManager()->getNotebook());
+    layoutManager.DetachPane(Manager::getInstancePtr()->getExplorerManager()->getNotebook());
+    layoutManager.DetachPane(mainToolBar);
+    layoutManager.DetachPane(fullScreenToolBar);
 
     layoutManager.UnInit();
 

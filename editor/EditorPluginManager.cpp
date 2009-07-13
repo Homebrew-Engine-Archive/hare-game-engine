@@ -69,9 +69,6 @@ namespace hare
         if (!elem)
             return;
 
-        Log::getSingleton().logInfo("Unload plugin : file %s, name %s", 
-            elem->fileName.ToUTF8().data(), elem->info.name.ToUTF8().data());
-
         detachPlugin(elem->plugin);
 
         if (elem->freeProc)

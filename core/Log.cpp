@@ -23,7 +23,7 @@ namespace hare
         firstTick = getTime();
         maxNumMessages = 1024;
         maxLogLevel = 4;
-        logFileName = "EngineLog.html";
+        logFileName = "engine_log.html";
     }
 
     Log::~Log()

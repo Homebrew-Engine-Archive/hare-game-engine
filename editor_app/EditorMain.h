@@ -23,6 +23,7 @@ class EditorFrame: public wxFrame
 public:
     EditorFrame(wxFrame *frame, const wxString& title, const wxString& scriptDir);
    ~EditorFrame();
+
 private:
     wxAuiManager layoutManager;
     wxAuiToolBar* mainToolBar;
@@ -41,11 +42,12 @@ private:
     void createStatusBar();
 
 public:
-    // event handlers
+    // Event handlers
     void onEraseBackground(wxEraseEvent& event);
     void onSize(wxSizeEvent& event);
     void onApplicationClose(wxCloseEvent& event);
-    // file menu
+
+    // File menu
     void onFileNew(wxCommandEvent& event);
     void onFileOpen(wxCommandEvent& event);
     void onFileReopenProject(wxCommandEvent& event);
@@ -55,7 +57,8 @@ public:
     void onFileSave(wxCommandEvent& event);
     void onFileSaveAll(wxCommandEvent& event);
     void onFileQuit(wxCommandEvent& event);
-    // edit menu
+
+    // Edit menu
     void onEditUndo(wxCommandEvent& event);
     void onEditRedo(wxCommandEvent& event);
     void onEditCut(wxCommandEvent& event);

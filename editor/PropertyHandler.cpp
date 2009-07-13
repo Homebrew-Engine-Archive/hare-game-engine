@@ -673,6 +673,7 @@ namespace hare
         if (attr->hasFlag(Object::propReadOnly))
             prop->SetFlag(wxPG_PROP_READONLY | wxPG_PROP_DISABLED);
     }
+
     /*template <typename T>
     void doBindMetaArray(Attribute* attr, PropertyGridPage* page, wxPGProperty* parent)
     {
@@ -747,8 +748,6 @@ namespace hare
                 Attribute *at = *it;
                 bindAttribute(at, page, prop);
             }
-
-            //prop->SetExpanded(false);
         }
         else
         {
@@ -841,7 +840,7 @@ namespace hare
 
             reBindObject(attr, objectProp, page);
         }
-        else// if (objectProp->currentSelection >= 0)
+        else
         {
             objectProp->SetValue(objectProp->currentSelection);
         }
@@ -862,12 +861,12 @@ namespace hare
 
     void PropertyGridPage::onPropertySelect(wxPropertyGridEvent& event)
     {
-
     }
+
     void PropertyGridPage::onPropertyChanging(wxPropertyGridEvent& event)
     {
-
     }
+
     void PropertyGridPage::onPropertyChange(wxPropertyGridEvent& event)
     {
         wxPGProperty* p = event.GetProperty();
@@ -960,7 +959,6 @@ namespace hare
 
     void PropertyGridPage::onPageChange(wxPropertyGridEvent& event)
     {
-
     }
 
     void bindAttribute(Attribute* attr, PropertyGridPage* page, wxPGProperty* parent)

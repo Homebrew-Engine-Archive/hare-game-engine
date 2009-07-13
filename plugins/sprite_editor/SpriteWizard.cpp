@@ -25,11 +25,10 @@ const ClassInfo* spriteClasses[] = {
 
 SpriteWizard::SpriteWizard()
 {
-    wxString fullPath = Manager::getInstancePtr()->getAppDir() + wxT("/resources/");
-    bitmap.LoadFile(fullPath + wxT("file32.png"), wxBITMAP_TYPE_PNG);
-    wizardImageSpriteBitmap.LoadFile(fullPath + wxT("mtrl_edit.png"), wxBITMAP_TYPE_PNG);
-    wizardAnimationBitmap.LoadFile(fullPath + wxT("mtrl_edit.png"), wxBITMAP_TYPE_PNG);
-    wizardComponentBitmap.LoadFile(fullPath + wxT("mtrl_edit.png"), wxBITMAP_TYPE_PNG);
+    bitmap = Manager::loadBitmap(Manager::getInstancePtr()->getAppDir() + wxT("/resources.zip#zip:file32.png"));
+    wizardImageSpriteBitmap = Manager::loadBitmap(Manager::getInstancePtr()->getAppDir() + wxT("/resources.zip#zip:mtrl_edit.png"));
+    wizardAnimationBitmap = wizardImageSpriteBitmap;
+    wizardComponentBitmap = wizardImageSpriteBitmap;
 }
 
 wxString SpriteWizard::getFolder() const

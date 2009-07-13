@@ -82,41 +82,34 @@ bool EditorApp::OnInit()
     wxString argv0 = argv[0];
     core_init(argv0.ToUTF8().data());
 
-    Log::getSingleton().changeFileName("EditorLog.html");
+    Log::getSingleton().changeFileName("editor_log.html");
 
     FileSystem* fs = FileSystem::getSingletonPtr();
 
     // -------------------------------------------------------------------
-    // Read resource config file
+    // Read filesystem config file
     // -------------------------------------------------------------------
-    ConfigFile resource;
-    resource.load("resource.cfg");
+    ConfigFile filesystem;
+    filesystem.load("filesystem.cfg");
 
     // NB: ScriptDir will not be added to search path in editor,
     //     it's used for Workspace.
-    String scriptDir = resource.getSetting("ScriptDir");
+    String scriptDir = filesystem.getSetting("ScriptDir");
     wxString workspaceDir = wxString::FromUTF8(scriptDir.c_str());
 
-    Log::getSingleton().logInfo("ScriptDir '%s' is used for workspace in editor mode.",
-        scriptDir.c_str());
-
     // NB: SearchPath is same as WriteDir, so we can save edited result. 
-    String writeDir = resource.getSetting("WriteDir");
+    String writeDir = filesystem.getSetting("WriteDir");
     fs->addSearchPath(writeDir);
     fs->setWriteDir(writeDir);
     // Also add scriptDir to search path.
     fs->addSearchPath(scriptDir);
 
-    StringVector searchPaths = resource.getMultiSetting("SearchPath");
+    StringVector searchPaths = filesystem.getMultiSetting("SearchPath");
     for (size_t i = 0; i < searchPaths.size(); ++i)
     {
         fs->addSearchPath(searchPaths[i]);
-        Log::getSingleton().logInfo("Filesystem append search path : '%s'", searchPaths[i].c_str());
+        Log::getSingleton().logInfo("FileSystem append search path : '%s'", searchPaths[i].c_str());
     }
-
-    Log::getSingleton().logInfo("Filesystem write dir '%s' is used for search path in editor mode.",
-        writeDir.c_str());
-
 
     // -------------------------------------------------------------------
     // Read plugin config file
@@ -136,7 +129,7 @@ bool EditorApp::OnInit()
         }
         else
         {
-            Log::getSingleton().logError("HareApp::loadPlugin failed to load '%s'", fileName.c_str());
+            Log::getSingleton().logError("Failed to load plugin : '%s'", fileName.c_str());
         }
     }
 

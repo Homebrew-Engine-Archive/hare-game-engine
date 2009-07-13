@@ -28,14 +28,14 @@ bool loadPlugins()
     return true;
 }
 
-bool loadResources()
+bool loadFileSystem()
 {
-    ConfigFile resource;
-    resource.load("resource.cfg");
+    ConfigFile filesystem;
+    filesystem.load("filesystem.cfg");
 
-    String writeDir = resource.getSetting("WriteDir");
-    String scriptDir = resource.getSetting("ScriptDir");
-    StringVector searchPaths = resource.getMultiSetting("SearchPath");
+    String writeDir = filesystem.getSetting("WriteDir");
+    String scriptDir = filesystem.getSetting("ScriptDir");
+    StringVector searchPaths = filesystem.getMultiSetting("SearchPath");
 
     FileSystem* fs = FileSystem::getSingletonPtr();
 
@@ -75,7 +75,7 @@ int main(int argc, char *argv[])
 #endif
 
     loadPlugins();
-    loadResources();
+    loadFileSystem();
 
     graphics_init();
     gui_init();

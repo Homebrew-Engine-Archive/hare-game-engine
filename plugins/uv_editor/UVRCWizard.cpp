@@ -16,8 +16,7 @@
 
 UVRCWizard::UVRCWizard()
 {
-    wxString fullPath = Manager::getInstancePtr()->getAppDir() + wxT("/resources/");
-    bitmap.LoadFile(fullPath + wxT("file32.png"), wxBITMAP_TYPE_PNG);
+    bitmap = Manager::loadBitmap(Manager::getInstancePtr()->getAppDir() + wxT("/resources.zip#zip:file32.png"));
 }
 
 wxString UVRCWizard::getFolder() const

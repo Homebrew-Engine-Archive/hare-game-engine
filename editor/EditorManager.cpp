@@ -11,6 +11,11 @@
 //
 //***************************************************************
 #include "PCH.h"
+#include <wx/xrc/xmlres.h>
+#include <wx/filesys.h>
+#include <wx/file.h>
+#include <wx/fs_zip.h>
+#include <wx/fs_mem.h>
 #include "EditorManager.h"
 #include "ExplorerManager.h"
 #include "ConfigManager.h"
@@ -75,14 +80,53 @@ namespace hare
         return appWindow;
     }
 
-    void Manager::setAppDir(const wxString& dir)
-    {
-        appDir = dir;
-    }
-
     const wxString Manager::getAppDir() const
     {
         return appDir;
+    }
+
+    bool Manager::loadResource(const wxString& fileName)
+    {
+        wxString resFile = Manager::getInstancePtr()->getAppDir() + wxT("/") + fileName;
+        wxString memFile = wxT("memory:") + fileName;
+
+        if (!wxFile::Access(resFile, wxFile::read))
+            return false;
+
+        wxFile file(resFile, wxFile::read);
+        char *buf = 0;
+
+        try
+        {
+            size_t len = file.Length();
+            buf = new char[len];
+            file.Read(buf, len);
+            {
+                wxMemoryFSHandler::AddFile(fileName, buf, len);
+            }
+            wxXmlResource::Get()->Load(memFile);
+            delete[] buf;
+            return false;
+        }
+        catch (...)
+        {
+            delete[] buf;
+            return true;
+        }
+    }
+
+    wxBitmap Manager::loadBitmap(const wxString& fileName, int bitmapType)
+    {
+        wxImage im;
+        wxFileSystem fs;
+        wxFSFile* f = fs.OpenFile(fileName);
+        if (f)
+        {
+            wxInputStream* is = f->GetStream();
+            im.LoadFile(*is, bitmapType);
+            delete f;
+        }
+        return wxBitmap(im);
     }
 
     ExplorerManager* Manager::getExplorerManager() const

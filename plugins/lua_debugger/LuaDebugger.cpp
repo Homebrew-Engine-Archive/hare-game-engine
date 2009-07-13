@@ -302,31 +302,30 @@ bool LuaDebuggerPlugin::buildMenuBar(wxMenuBar* menuBar)
 
 bool LuaDebuggerPlugin::buildToolBar(wxAuiToolBar* toolBar)
 {
-    wxString fullPath = Manager::getInstancePtr()->getAppDir() + wxT("/resources/");
-    wxBitmap bmp;
+    wxString zipFile = Manager::getInstancePtr()->getAppDir() + wxT("/resources.zip#zip:");
 
-    bmp.LoadFile(fullPath + wxT("start.png"), wxBITMAP_TYPE_PNG);
-    toolBar->AddTool(idLuaDebugStart, _("Start"), bmp, wxT("Start"));
-    bmp.LoadFile(fullPath + wxT("pause.png"), wxBITMAP_TYPE_PNG);
-    toolBar->AddTool(idLuaDebugPause, _("Pause"), bmp, wxT("Pause"));
-    bmp.LoadFile(fullPath + wxT("stop.png"), wxBITMAP_TYPE_PNG);
-    toolBar->AddTool(idLuaDebugStop, _("Stop"), bmp, wxT("Stop"));
+    toolBar->AddTool(idLuaDebugStart, _("Start"), 
+        Manager::loadBitmap(zipFile + wxT("start.png")), wxT("Start"));
+    toolBar->AddTool(idLuaDebugPause, _("Pause"), 
+        Manager::loadBitmap(zipFile + wxT("pause.png")), wxT("Pause"));
+    toolBar->AddTool(idLuaDebugStop, _("Stop"), 
+        Manager::loadBitmap(zipFile + wxT("stop.png")), wxT("Stop"));
     toolBar->AddSeparator();
-    bmp.LoadFile(fullPath + wxT("step_in.png"), wxBITMAP_TYPE_PNG);
-    toolBar->AddTool(idLuaDebugStepIn, _("StepIn"), bmp, wxT("StepIn"));
-    bmp.LoadFile(fullPath + wxT("step_over.png"), wxBITMAP_TYPE_PNG);
-    toolBar->AddTool(idLuaDebugStepOver, _("StepOver"), bmp, wxT("StepOver"));
-    bmp.LoadFile(fullPath + wxT("step_out.png"), wxBITMAP_TYPE_PNG);
-    toolBar->AddTool(idLuaDebugStepOut, _("StepOut"), bmp, wxT("StepOut"));
+    toolBar->AddTool(idLuaDebugStepIn, _("StepIn"), 
+        Manager::loadBitmap(zipFile + wxT("step_in.png")), wxT("StepIn"));
+    toolBar->AddTool(idLuaDebugStepOver, _("StepOver"), 
+        Manager::loadBitmap(zipFile + wxT("step_over.png")), wxT("StepOver"));
+    toolBar->AddTool(idLuaDebugStepOut, _("StepOut"), 
+        Manager::loadBitmap(zipFile + wxT("step_out.png")), wxT("StepOut"));
     toolBar->AddSeparator();
-    bmp.LoadFile(fullPath + wxT("locals.png"), wxBITMAP_TYPE_PNG);
-    toolBar->AddTool(idLuaDebugLocals, _("Locals"), bmp, wxEmptyString);
-    bmp.LoadFile(fullPath + wxT("watch.png"), wxBITMAP_TYPE_PNG);
-    toolBar->AddTool(idLuaDebugWatch, _("Watch"), bmp, wxEmptyString);
-    bmp.LoadFile(fullPath + wxT("call_stack.png"), wxBITMAP_TYPE_PNG);
-    toolBar->AddTool(idLuaDebugCallStack, _("Call Stack"), bmp, wxEmptyString);
-    bmp.LoadFile(fullPath + wxT("output.png"), wxBITMAP_TYPE_PNG);
-    toolBar->AddTool(idLuaDebugOutput, _("Debug Output"), bmp, wxEmptyString);
+    toolBar->AddTool(idLuaDebugLocals, _("Locals"), 
+        Manager::loadBitmap(zipFile + wxT("locals.png")), wxEmptyString);
+    toolBar->AddTool(idLuaDebugWatch, _("Watch"), 
+        Manager::loadBitmap(zipFile + wxT("watch.png")), wxEmptyString);
+    toolBar->AddTool(idLuaDebugCallStack, _("Call Stack"), 
+        Manager::loadBitmap(zipFile + wxT("call_stack.png")), wxEmptyString);
+    toolBar->AddTool(idLuaDebugOutput, _("Debug Output"), 
+        Manager::loadBitmap(zipFile + wxT("output.png")), wxEmptyString);
 
     return true;
 }

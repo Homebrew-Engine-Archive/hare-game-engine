@@ -62,13 +62,10 @@ namespace hare
         treeImageList = new wxImageList(16, 16);
         listImageList = new wxImageList(32, 32);
 
-        wxString fullPath = Manager::getInstancePtr()->getAppDir() + wxT("/resources/");
-        wxBitmap bmp[2];
-        bmp[0].LoadFile(fullPath + wxT("folder_closed.png"), wxBITMAP_TYPE_PNG);
-        bmp[1].LoadFile(fullPath + wxT("folder.png"), wxBITMAP_TYPE_PNG);
+        wxString zipFile = Manager::getInstancePtr()->getAppDir() + wxT("/resources.zip#zip:");
 
-        treeImageList->Add(bmp[0]);
-        treeImageList->Add(bmp[1]);
+        treeImageList->Add(Manager::loadBitmap(zipFile + wxT("folder_closed.png")));
+        treeImageList->Add(Manager::loadBitmap(zipFile + wxT("folder.png")));
         
         rebuildTree();
     }

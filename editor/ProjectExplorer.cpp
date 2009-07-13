@@ -287,14 +287,12 @@ namespace hare
             wxT("file.png"),
         };
 
-        wxString fullPath = Manager::getInstancePtr()->getAppDir() + wxT("/resources/");
+        wxString fullPath = Manager::getInstancePtr()->getAppDir() + wxT("/resources.zip#zip:");
         imageList = new wxImageList(16, 16);
 
-        wxBitmap bmp;
         for (int i = 0; i < sizeof(imgs) / sizeof(imgs[0]); ++i)
         {
-            bmp.LoadFile(fullPath + imgs[i], wxBITMAP_TYPE_PNG);
-            imageList->Add(bmp);
+            imageList->Add(Manager::loadBitmap(fullPath + imgs[i]));
         }
     }
 

@@ -111,14 +111,10 @@ GUIEditorPage::GUIEditorPage(wxWindow* parent) : isModified(false)
 
     imageList = new wxImageList(16, 16);
 
-    wxBitmap bmp;
-    wxString fullPath = Manager::getInstancePtr()->getAppDir() + wxT("/resources/");
-    bmp.LoadFile(fullPath + wxT("root.png"), wxBITMAP_TYPE_PNG);
-    Image_ROOT = imageList->Add(bmp);
-    bmp.LoadFile(fullPath + wxT("sizer.png"), wxBITMAP_TYPE_PNG);
-    Image_SIZER = imageList->Add(bmp);
-    bmp.LoadFile(fullPath + wxT("ctrl.png"), wxBITMAP_TYPE_PNG);
-    Image_CTRL = imageList->Add(bmp);
+    wxString zipFile = Manager::getInstancePtr()->getAppDir() + wxT("/resources.zip#zip:");
+    Image_ROOT = imageList->Add(Manager::loadBitmap(zipFile + wxT("root.png")));
+    Image_SIZER = imageList->Add(Manager::loadBitmap(zipFile + wxT("sizer.png")));
+    Image_CTRL = imageList->Add(Manager::loadBitmap(zipFile + wxT("ctrl.png")));
 
     treeCtrl = XRCCTRL(*this, "idTreeView", wxTreeCtrl);
     treeCtrl->SetImageList(imageList);

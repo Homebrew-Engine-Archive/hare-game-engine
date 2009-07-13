@@ -50,9 +50,11 @@ namespace hare
         wxFrame* getAppWindow() const;
         wxFrame* setAppWindow(wxFrame* win);
         const wxString getAppDir() const;
-        void setAppDir(const wxString& dir);
 
         static void shutdown();
+
+        static bool loadResource(const wxString& fileName);
+        static wxBitmap loadBitmap(const wxString& fileName, int bitmapType = wxBITMAP_TYPE_PNG);
 
         static bool isAppShuttingDown()
         {

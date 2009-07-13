@@ -15,6 +15,9 @@
 #include <wx/wxscintilla.h>
 #include <wx/wxFlatNotebook/wxFlatNotebook.h>
 #include <wx/xrc/xmlres.h>
+#include <wx/file.h>
+#include <wx/fs_zip.h>
+#include <wx/fs_mem.h>
 
 #if HARE_PLATFORM == HARE_PLATFORM_WIN32
 #   include <wx/harecanvas.h>
@@ -27,8 +30,8 @@
 class FileDropTarget : public wxFileDropTarget
 {
 public:
-    FileDropTarget(EditorFrame *f) : frame(f)
-    {}
+    FileDropTarget(EditorFrame *f) : frame(f) {}
+
     virtual bool OnDropFiles(wxCoord x, wxCoord y, const wxArrayString& filenames)
     {
         if (!frame) return false;
@@ -80,11 +83,9 @@ BEGIN_EVENT_TABLE(EditorFrame, wxFrame)
     EVT_ERASE_BACKGROUND(EditorFrame::onEraseBackground)
     EVT_SIZE(EditorFrame::onSize)
     EVT_CLOSE(EditorFrame::onApplicationClose)
-
     EVT_UPDATE_UI(idFileOpenRecentFileClearHistory, EditorFrame::onFileMenuUpdateUI)
     EVT_UPDATE_UI(idFileSaveAll, EditorFrame::onFileMenuUpdateUI)
     EVT_UPDATE_UI(idFileClose, EditorFrame::onFileMenuUpdateUI)
-
     EVT_UPDATE_UI(idEditUndo, EditorFrame::onEditMenuUpdateUI)
     EVT_UPDATE_UI(idEditRedo, EditorFrame::onEditMenuUpdateUI)
     EVT_UPDATE_UI(idEditCopy, EditorFrame::onEditMenuUpdateUI)
@@ -94,7 +95,6 @@ BEGIN_EVENT_TABLE(EditorFrame, wxFrame)
     EVT_UPDATE_UI(idEditFind, EditorFrame::onEditMenuUpdateUI)
     EVT_UPDATE_UI(idEditFindInFile, EditorFrame::onEditMenuUpdateUI)
     EVT_UPDATE_UI(idEditGoto, EditorFrame::onEditMenuUpdateUI)
-
     EVT_MENU(idFileNew, EditorFrame::onFileNew)
     EVT_MENU(idFileOpen, EditorFrame::onFileOpen)
     EVT_MENU(idFileSave, EditorFrame::onFileSave)
@@ -103,7 +103,6 @@ BEGIN_EVENT_TABLE(EditorFrame, wxFrame)
     EVT_MENU_RANGE(wxID_FILE1, wxID_FILE9, EditorFrame::onFileReopen)
     EVT_MENU_RANGE(wxID_FILE10, wxID_FILE19, EditorFrame::onFileReopenProject)
     EVT_MENU(idFileExit, EditorFrame::onFileQuit)
-
     EVT_MENU(idEditUndo, EditorFrame::onEditUndo)
     EVT_MENU(idEditRedo, EditorFrame::onEditRedo)
     EVT_MENU(idEditCut, EditorFrame::onEditCut)
@@ -113,13 +112,10 @@ BEGIN_EVENT_TABLE(EditorFrame, wxFrame)
     EVT_MENU(idEditFind, EditorFrame::onEditFind)
     EVT_MENU(idEditFindInFile, EditorFrame::onEditFindInFile)
     EVT_MENU(idEditGoto, EditorFrame::onEditGoto)
-
     EVT_MENU(idViewToolMain, EditorFrame::onShowToolBar)
     EVT_MENU(idViewExplorer, EditorFrame::onShowToolBar)
     EVT_MENU(idViewToolFullScreen, EditorFrame::onShowToolBar)
-
     EVT_MENU(idViewFullScreen, EditorFrame::onToggleFullScreen)
-
     EVT_AUITOOLBAR_TOOL_DROPDOWN(idFileNew, EditorFrame::onToolbarDropDownCreate)
 END_EVENT_TABLE()
 
@@ -144,6 +140,8 @@ EditorFrame::EditorFrame(wxFrame *frame, const wxString& title, const wxString& 
 
     wxXmlResource::Get()->InitAllHandlers();
     wxImage::AddHandler(new wxPNGHandler);
+    wxFileSystem::AddHandler(new wxZipFSHandler);
+    wxFileSystem::AddHandler(new wxMemoryFSHandler);
 
     SetDropTarget(new FileDropTarget(this));
 
@@ -227,8 +225,7 @@ void EditorFrame::createIDE()
 
 void EditorFrame::preLoadXRC()
 {
-    wxString fullPath = Manager::getInstancePtr()->getAppDir() + wxT("/resources/");
-    wxXmlResource::Get()->Load(fullPath + wxT("*.xrc"));
+    Manager::loadResource(wxT("resources.zip"));
 }
 
 void EditorFrame::createMenuBar()
@@ -243,35 +240,34 @@ void EditorFrame::createToolBar()
         wxAUI_TB_DEFAULT_STYLE | wxAUI_TB_OVERFLOW | wxAUI_TB_HORZ_LAYOUT);
     mainToolBar->SetToolBitmapSize(wxSize(16, 16));
 
-    wxString fullPath = Manager::getInstancePtr()->getAppDir() + wxT("/resources/");
-    wxBitmap bmp;
+    wxString zipFile = Manager::getInstancePtr()->getAppDir() + wxT("/resources.zip#zip:");
 
-    bmp.LoadFile(fullPath + wxT("new.png"), wxBITMAP_TYPE_PNG);
-    mainToolBar->AddTool(idFileNew, _("New"), bmp, wxT("New"));
+    mainToolBar->AddTool(idFileNew, _("New"), 
+        Manager::loadBitmap(zipFile + wxT("new.png")), _("New"));
     mainToolBar->SetToolDropDown(idFileNew, true);
-    bmp.LoadFile(fullPath + wxT("open.png"), wxBITMAP_TYPE_PNG);
-    mainToolBar->AddTool(idFileOpen, _("Open"), bmp, wxT("Open"));
-    bmp.LoadFile(fullPath + wxT("save.png"), wxBITMAP_TYPE_PNG);
-    mainToolBar->AddTool(idFileSave, _("Save"), bmp, wxT("Save"));
-    bmp.LoadFile(fullPath + wxT("save_all.png"), wxBITMAP_TYPE_PNG);
-    mainToolBar->AddTool(idFileSaveAll, _("Save All"), bmp, wxT("Save All"));
+    mainToolBar->AddTool(idFileOpen, _("Open"), 
+        Manager::loadBitmap(zipFile + wxT("open.png")), _("Open"));
+    mainToolBar->AddTool(idFileSave, _("Save"), 
+        Manager::loadBitmap(zipFile + wxT("save.png")), _("Save"));
+    mainToolBar->AddTool(idFileSaveAll, _("Save All"), 
+        Manager::loadBitmap(zipFile + wxT("save_all.png")), _("Save All"));
     mainToolBar->AddSeparator();
-    bmp.LoadFile(fullPath + wxT("cut.png"), wxBITMAP_TYPE_PNG);
-    mainToolBar->AddTool(idEditCut, _("Cut"), bmp, _("Cut"));
-    bmp.LoadFile(fullPath + wxT("copy.png"), wxBITMAP_TYPE_PNG);
-    mainToolBar->AddTool(idEditCopy, _("Copy"), bmp, _("Copy"));
-    bmp.LoadFile(fullPath + wxT("paste.png"), wxBITMAP_TYPE_PNG);
-    mainToolBar->AddTool(idEditPaste, _("Paste"), bmp, _("Paste"));
+    mainToolBar->AddTool(idEditCut, _("Cut"), 
+        Manager::loadBitmap(zipFile + wxT("cut.png")), _("Cut"));
+    mainToolBar->AddTool(idEditCopy, _("Copy"), 
+        Manager::loadBitmap(zipFile + wxT("copy.png")), _("Copy"));
+    mainToolBar->AddTool(idEditPaste, _("Paste"), 
+        Manager::loadBitmap(zipFile + wxT("paste.png")), _("Paste"));
     mainToolBar->AddSeparator();
-    bmp.LoadFile(fullPath + wxT("undo.png"), wxBITMAP_TYPE_PNG);
-    mainToolBar->AddTool(idEditUndo, _("Undo"), bmp, _("Undo"));
-    bmp.LoadFile(fullPath + wxT("redo.png"), wxBITMAP_TYPE_PNG);
-    mainToolBar->AddTool(idEditRedo, _("Redo"), bmp, _("Redo"));
+    mainToolBar->AddTool(idEditUndo, _("Undo"), 
+        Manager::loadBitmap(zipFile + wxT("undo.png")), _("Undo"));
+    mainToolBar->AddTool(idEditRedo, _("Redo"), 
+        Manager::loadBitmap(zipFile + wxT("redo.png")), _("Redo"));
     mainToolBar->AddSeparator();
-    bmp.LoadFile(fullPath + wxT("find.png"), wxBITMAP_TYPE_PNG);
-    mainToolBar->AddTool(idEditFind, _("Find"), bmp, _("Find"));
-    bmp.LoadFile(fullPath + wxT("find_in_file.png"), wxBITMAP_TYPE_PNG);
-    mainToolBar->AddTool(idEditFindInFile, _("FineInFile"), bmp, _("FineInFile"));
+    mainToolBar->AddTool(idEditFind, _("Find"), 
+        Manager::loadBitmap(zipFile + wxT("find.png")), _("Find"));
+    mainToolBar->AddTool(idEditFindInFile, _("FineInFile"), 
+        Manager::loadBitmap(zipFile + wxT("find_in_file.png")), _("FineInFile"));
     mainToolBar->AddSeparator();
 
     mainToolBar->Realize();
@@ -280,10 +276,10 @@ void EditorFrame::createToolBar()
     layoutManager.AddPane(mainToolBar, wxAuiPaneInfo().Name(wxT("MainToolbar"))
         .Caption(wxT("Main Toolbar")).ToolbarPane().Top().LeftDockable(false).RightDockable(false));
 
-    bmp.LoadFile(fullPath + wxT("full_screen.png"), wxBITMAP_TYPE_PNG);
     fullScreenToolBar = new wxAuiToolBar(this, wxID_ANY, wxDefaultPosition, wxSize(16, 16),
         wxAUI_TB_DEFAULT_STYLE | wxAUI_TB_HORZ_TEXT);
-    fullScreenToolBar->AddTool(idViewFullScreen, _("Full Screen"), bmp, wxEmptyString, wxITEM_CHECK);
+    fullScreenToolBar->AddTool(idViewFullScreen, _("Full Screen"), 
+        Manager::loadBitmap(zipFile + wxT("full_screen.png")), wxEmptyString, wxITEM_CHECK);
     fullScreenToolBar->Realize();
     fullScreenToolBar->SetInitialSize();
 
@@ -651,18 +647,23 @@ void EditorFrame::onFileOpen(wxCommandEvent& event)
 {
     _doOpenFile();
 }
+
 void EditorFrame::onFileReopenProject(wxCommandEvent& event)
 {
 }
+
 void EditorFrame::onFileOpenRecentProjectClearHistory(wxCommandEvent& event)
 {
 }
+
 void EditorFrame::onFileReopen(wxCommandEvent& event)
 {
 }
+
 void EditorFrame::onFileOpenRecentClearHistory(wxCommandEvent& event)
 {
 }
+
 void EditorFrame::onFileSave(wxCommandEvent& event)
 {
     EditorPage* curPage = Manager::getInstancePtr()->getEditorPageManager()->getActivePage();
@@ -671,14 +672,17 @@ void EditorFrame::onFileSave(wxCommandEvent& event)
         curPage->save();
     }
 }
+
 void EditorFrame::onFileSaveAll(wxCommandEvent& event)
 {
     EditorPageManager::getInstancePtr()->saveAll();
 }
+
 void EditorFrame::onFileQuit(wxCommandEvent& event)
 {
     Close(false);
 }
+
 void EditorFrame::onEditUndo(wxCommandEvent& event)
 {
     EditorPage* curPage = Manager::getInstancePtr()->getEditorPageManager()->getActivePage();
@@ -687,6 +691,7 @@ void EditorFrame::onEditUndo(wxCommandEvent& event)
         curPage->undo();
     }
 }
+
 void EditorFrame::onEditRedo(wxCommandEvent& event)
 {
     EditorPage* curPage = Manager::getInstancePtr()->getEditorPageManager()->getActivePage();
@@ -695,6 +700,7 @@ void EditorFrame::onEditRedo(wxCommandEvent& event)
         curPage->redo();
     }
 }
+
 void EditorFrame::onEditCut(wxCommandEvent& event)
 {
     EditorPage* curPage = Manager::getInstancePtr()->getEditorPageManager()->getActivePage();
@@ -703,6 +709,7 @@ void EditorFrame::onEditCut(wxCommandEvent& event)
         curPage->cut();
     }
 }
+
 void EditorFrame::onEditCopy(wxCommandEvent& event)
 {
     EditorPage* curPage = Manager::getInstancePtr()->getEditorPageManager()->getActivePage();
@@ -711,6 +718,7 @@ void EditorFrame::onEditCopy(wxCommandEvent& event)
         curPage->copy();
     }
 }
+
 void EditorFrame::onEditPaste(wxCommandEvent& event)
 {
     EditorPage* curPage = Manager::getInstancePtr()->getEditorPageManager()->getActivePage();
@@ -719,6 +727,7 @@ void EditorFrame::onEditPaste(wxCommandEvent& event)
         curPage->paste();
     }
 }
+
 void EditorFrame::onEditSelectAll(wxCommandEvent& event)
 {
     EditorPage* curPage = Manager::getInstancePtr()->getEditorPageManager()->getActivePage();
@@ -727,6 +736,7 @@ void EditorFrame::onEditSelectAll(wxCommandEvent& event)
         curPage->selectAll();
     }
 }
+
 void EditorFrame::onEditFind(wxCommandEvent& event)
 {
     static bool firstTimeShow = true;
@@ -738,13 +748,13 @@ void EditorFrame::onEditFind(wxCommandEvent& event)
     findReplaceDlg->Show();
     findReplaceDlg->SetFocus();
 }
+
 void EditorFrame::onEditFindInFile(wxCommandEvent& event)
 {
-
 }
+
 void EditorFrame::onEditGoto(wxCommandEvent& event)
 {
-
 }
 
 void EditorFrame::_doOpenFile()

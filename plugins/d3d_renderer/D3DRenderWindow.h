@@ -42,6 +42,8 @@ public:
 
 	HWND getWindowHandle();
 
+    virtual bool getCustomData(const String& key, void* data);
+
 	LPDIRECT3DSURFACE9 getRenderSurface();
 
 	D3DPRESENT_PARAMETERS* getPresentationParameters();
@@ -56,6 +58,7 @@ private:
 	LPDIRECT3DSURFACE9		pRenderSurface;
 	LPDIRECT3DSURFACE9	    pDepthStencilSurface;
 	D3DPRESENT_PARAMETERS	D3Dpp;
+    HWND                    hWindow;
 
 };
 

@@ -23,7 +23,7 @@ static LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM l
 	switch( uMsg )
 	{
 	case WM_SIZE:
-		if (renderWindow && !renderWindow->getWindowParams().bFullScreen){// not Alt + Tab
+		if (renderWindow && !renderWindow->getWindowParams().fullScreen){// not Alt + Tab
             int w = LOWORD(lParam) > 0 ? LOWORD(lParam) : 1;
             int h = HIWORD(lParam) > 0 ? HIWORD(lParam) : 1;
 
@@ -44,9 +44,7 @@ static LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM l
 
 
 D3DRenderWindow::D3DRenderWindow(LPDIRECT3DDEVICE9 pD3DDevice)
-	:pRenderSurface(NULL)
-	,pDepthStencilSurface(NULL)
-	,pSwapChain(NULL)
+	: pRenderSurface(NULL), pDepthStencilSurface(NULL), pSwapChain(NULL), hWindow(NULL)
 {
 	isMainWnd = (pD3DDevice == NULL);//如果为空则为主窗口
 }
@@ -74,17 +72,17 @@ void D3DRenderWindow::initalizeD3DConfigParam()
 		assert(false);
 	}
 
-	D3Dpp.Windowed	= !windowParams.bFullScreen;
+	D3Dpp.Windowed	= !windowParams.fullScreen;
 	D3Dpp.SwapEffect = D3DSWAPEFFECT_DISCARD;
 	D3Dpp.BackBufferCount = 1;
 	D3Dpp.BackBufferFormat = d3ddm.Format;
 	D3Dpp.MultiSampleType = D3DMULTISAMPLE_NONE;//不要多重采样
-	D3Dpp.hDeviceWindow = (HWND)windowParams.hwnd;
+	D3Dpp.hDeviceWindow = hWindow;
 	D3Dpp.BackBufferWidth = windowParams.width;
 	D3Dpp.BackBufferHeight = windowParams.height;
 	D3Dpp.PresentationInterval = D3DPRESENT_INTERVAL_ONE; //D3DPRESENT_INTERVAL_IMMEDIATE;
 	
-  	if (windowParams.bZbuffer){
+  	if (windowParams.hasZbuffer){
 		D3Dpp.EnableAutoDepthStencil = TRUE;	
 		D3Dpp.AutoDepthStencilFormat = D3DFMT_D16;
 	}
@@ -95,11 +93,9 @@ void D3DRenderWindow::initalizeD3DConfigParam()
 
 void D3DRenderWindow::create(const WindowParams& params)
 {
-	//assert(params.hwnd);
-	HWND hwnd;
+    windowParams = params;
 
-	if (params.hwnd == NULL){//如果窗口句柄为空则制动创建
-
+	if (!windowParams.hasCustomData("WINDOW")) {//如果窗口句柄为空则制动创建
 
 		HINSTANCE hInstance = (HINSTANCE)GetModuleHandle(NULL);
         
@@ -119,43 +115,40 @@ void D3DRenderWindow::create(const WindowParams& params)
         RegisterClass(&wc);
 
         uint32 style = WS_OVERLAPPEDWINDOW;
-        if (params.bFullScreen){
+        if (windowParams.fullScreen) {
             style = WS_POPUP;
         }
-		hwnd = CreateWindow("HareRenderWindow", params.title.c_str(), 
-			style, CW_USEDEFAULT, 0, params.width, params.height, NULL, NULL, hInstance, NULL);
+
+		hWindow = CreateWindow("HareRenderWindow", windowParams.title.c_str(), 
+			style, CW_USEDEFAULT, 0, windowParams.width, windowParams.height, NULL, NULL, hInstance, NULL);
 
 		RECT  rect;
 
 
-		int xL = (GetSystemMetrics(SM_CXSCREEN) - params.width ) / 2;
-		int yT = (GetSystemMetrics(SM_CYSCREEN) - params.height) / 2;
-		int xR = xL + params.width;
-		int yB = yT + params.height;
+		int xL = (GetSystemMetrics(SM_CXSCREEN) - windowParams.width) / 2;
+		int yT = (GetSystemMetrics(SM_CYSCREEN) - windowParams.height) / 2;
+		int xR = xL + windowParams.width;
+		int yB = yT + windowParams.height;
 
 		SetRect(&rect, xL, yT, xR, yB);
 
-		AdjustWindowRectEx(&rect, GetWindowLong(hwnd, GWL_STYLE), 
-			(GetMenu(hwnd) != NULL), GetWindowLong(hwnd, GWL_EXSTYLE));
+		AdjustWindowRectEx(&rect, GetWindowLong(hWindow, GWL_STYLE), 
+			(GetMenu(hWindow) != NULL), GetWindowLong(hWindow, GWL_EXSTYLE));
 
-		MoveWindow(hwnd, rect.left, rect.top, rect.right - rect.left,
+		MoveWindow(hWindow, rect.left, rect.top, rect.right - rect.left,
 			rect.bottom - rect.top, TRUE);
 
-		ShowWindow(hwnd, SW_NORMAL);
+		ShowWindow(hWindow, SW_NORMAL);
 
-		UpdateWindow(hwnd);
+		UpdateWindow(hWindow);
 
         isExternal = false;
 	} else {
-		hwnd = params.hwnd;
+		hWindow = (HWND)strtoul(windowParams.getCustomData("WINDOW").c_str(), 0, 10);
         isExternal = true;
 	}
 
-	windowParams = params;
-
-	windowParams.hwnd = hwnd;
-
-	SetWindowLongPtr(hwnd, GWLP_USERDATA, (uint32)this);
+	SetWindowLongPtr(hWindow, GWLP_USERDATA, (uint32)this);
 
 	//配置信息以后加
 	//从配置文件中得到 D3Dpp
@@ -181,6 +174,17 @@ void D3DRenderWindow::destoryWindow()
 		//副窗口则释放资源
 		D3DSystemManager::getSingletonPtr()->destoryRenderWindow(this);	
 	}
+}
+
+bool D3DRenderWindow::getCustomData(const String& key, void* data)
+{
+    if (key == "WINDOW")
+    {
+        *static_cast<HWND*>(data) = hWindow;
+        return true;
+    }
+
+    return false;
 }
 
 void D3DRenderWindow::resize(uint32 w, uint32 h)
@@ -210,7 +214,7 @@ void D3DRenderWindow::swapBuffer()
 		pSwapChain->Present(NULL, NULL, NULL, NULL, 0);
 	}
     //清空d3d场景
-    D3DRenderSystem::getSingletonPtr()->clear(windowParams.bZbuffer);
+    D3DRenderSystem::getSingletonPtr()->clear(windowParams.hasZbuffer);
 }
 
 void D3DRenderWindow::active()
@@ -263,7 +267,7 @@ void D3DRenderWindow::afterResetDevice()
 
 HWND D3DRenderWindow::getWindowHandle()
 {
-	return windowParams.hwnd;
+	return hWindow;
 }
 
 void D3DRenderWindow::createD3DResource()

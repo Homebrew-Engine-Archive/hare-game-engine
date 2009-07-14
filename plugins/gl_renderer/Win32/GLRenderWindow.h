@@ -17,7 +17,7 @@ class GLRenderWindow : public RenderWindow
 {
     friend class GLRenderSystem;
 public:
-    GLRenderWindow(bool bMainWindow);
+    GLRenderWindow(bool isMainWindow);
 
     virtual ~GLRenderWindow();
 
@@ -33,11 +33,14 @@ public:
 
     virtual void inactive();
 
+    virtual bool getCustomData(const String& key, void* data);
+
     HWND getWindowHandle();
 
     HGLRC getRenderContext();
 
     PIXELFORMATDESCRIPTOR* getPixelFormatDescriptor();
+
 
 private:
     void initalizeGLConfigParam();
@@ -49,6 +52,7 @@ private:
     HGLRC hRC;
     HDC   hDC;
     PIXELFORMATDESCRIPTOR pfd;
+    HWND hWindow;
 
 };
 

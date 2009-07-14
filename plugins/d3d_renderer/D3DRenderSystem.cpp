@@ -105,7 +105,7 @@ void D3DRenderSystem::createDevice(D3DRenderWindow* renderWindow)
 			
 			hr = pD3DDevice->GetRenderTarget(0, &(renderWindow->pRenderSurface));
 
-			if (renderWindow->getWindowParams().bZbuffer)
+			if (renderWindow->getWindowParams().hasZbuffer)
 			    hr = pD3DDevice->GetDepthStencilSurface(&(renderWindow->pDepthStencilSurface));
 			
 			if (FAILED(hr)){
@@ -158,7 +158,7 @@ void D3DRenderSystem::createDevice(D3DRenderWindow* renderWindow)
 		//µÃµ½äÖÈ¾Ãæ
 		pD3DDevice->GetRenderTarget(0, &(renderWindow->pRenderSurface));
 
-		if (renderWindow->getWindowParams().bZbuffer)
+		if (renderWindow->getWindowParams().hasZbuffer)
 			pD3DDevice->GetDepthStencilSurface(&(renderWindow->pDepthStencilSurface));
 
 		pPrimaryWindow = renderWindow;
@@ -183,7 +183,7 @@ void D3DRenderSystem::createDevice(D3DRenderWindow* renderWindow)
 
 		renderWindow->pSwapChain->GetBackBuffer(0, D3DBACKBUFFER_TYPE_MONO, &(renderWindow->pRenderSurface));
 	
-		if (renderWindow->getWindowParams().bZbuffer){
+		if (renderWindow->getWindowParams().hasZbuffer){
 			hr = pD3DDevice->CreateDepthStencilSurface(
 				renderWindow->windowParams.width,
 				renderWindow->windowParams.height,
@@ -214,7 +214,7 @@ void D3DRenderSystem::resetDevice()
 		assert(false);
 	}
 	
-	clear(pPrimaryWindow->getWindowParams().bZbuffer);
+	clear(pPrimaryWindow->getWindowParams().hasZbuffer);
 
 	DeviceManager::getSingletonPtr()->afterResetDevice();
 }
@@ -376,7 +376,7 @@ void D3DRenderSystem::setShaderParams(const ShaderParams& shaderParams)
 
 	RenderWindow* w = getCurRenderWindow();
 	if (w){
-		if (w->getWindowParams().bZbuffer){
+		if (w->getWindowParams().hasZbuffer){
 			if (shaderParams.bUseZ){
 	            pD3DDevice->SetRenderState(D3DRS_ZENABLE, D3DZB_TRUE);
 			}else{

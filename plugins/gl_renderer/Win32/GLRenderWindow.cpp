@@ -40,11 +40,10 @@ static LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM l
     return DefWindowProc(hWnd, uMsg, wParam, lParam);
 }
 
-GLRenderWindow::GLRenderWindow(bool bMainWindow)
-    :hRC(NULL)
-    ,hDC(NULL)
+GLRenderWindow::GLRenderWindow(bool isMainWindow)
+    : hRC(NULL), hDC(NULL), hWindow(NULL)
 {
-    isMainWnd = bMainWindow;
+    isMainWnd = isMainWindow;
 }
 
 GLRenderWindow::~GLRenderWindow()
@@ -67,7 +66,7 @@ void GLRenderWindow::initalizeGLConfigParam()
         0,                              // 忽略Shift Bit
         0,                              // 无累加缓存
         0, 0, 0, 0,                     // 忽略聚集位
-        windowParams.bZbuffer ? 16 : 0, // 16位 Z-缓存 (深度缓存)
+        windowParams.hasZbuffer ? 16 : 0, // 16位 Z-缓存 (深度缓存)
         0,                              // 无蒙板缓存
         0,                              // 无辅助缓存
         PFD_MAIN_PLANE,                 // 主绘图层
@@ -80,10 +79,9 @@ void GLRenderWindow::initalizeGLConfigParam()
 
 void GLRenderWindow::create(const WindowParams& params)
 {
-    HWND hwnd;
-    bool bFullScreen = params.bFullScreen;
+    windowParams = params;
 
-    if (params.hwnd == NULL){//如果窗口句柄为空则制动创建
+    if (!windowParams.hasCustomData("WINDOW")) {
 
         HINSTANCE hInstance = (HINSTANCE)GetModuleHandle(NULL);
 
@@ -102,65 +100,69 @@ void GLRenderWindow::create(const WindowParams& params)
 
         RegisterClass(&wc);
 
-        if (bFullScreen){
+        if (windowParams.fullScreen) {
             DEVMODE dmScreenSettings;
             memset(&dmScreenSettings, 0, sizeof(dmScreenSettings));
-            dmScreenSettings.dmSize         = sizeof(dmScreenSettings);
-            dmScreenSettings.dmPelsWidth	= params.width;
-            dmScreenSettings.dmPelsHeight	= params.height;
-            dmScreenSettings.dmBitsPerPel	= COLOR_DEPTH;  // color depth per pixel
-            dmScreenSettings.dmFields       = DM_BITSPERPEL|DM_PELSWIDTH|DM_PELSHEIGHT;
+            dmScreenSettings.dmSize = sizeof(dmScreenSettings);
+            dmScreenSettings.dmPelsWidth = windowParams.width;
+            dmScreenSettings.dmPelsHeight = windowParams.height;
+            dmScreenSettings.dmBitsPerPel = COLOR_DEPTH;  // color depth per pixel
+            dmScreenSettings.dmFields = DM_BITSPERPEL|DM_PELSWIDTH|DM_PELSHEIGHT;
 
             if (ChangeDisplaySettings(&dmScreenSettings, CDS_FULLSCREEN) != DISP_CHANGE_SUCCESSFUL){
-                bFullScreen = false;
+                windowParams.fullScreen = false;
             }
         }
 
         uint32 style = WS_OVERLAPPEDWINDOW;
-        if (bFullScreen){
+        if (windowParams.fullScreen){
             style = WS_POPUP;
         }
 
-        hwnd = CreateWindow("HareRenderWindow", params.title.c_str(), 
-            style, CW_USEDEFAULT, 0, params.width, params.height, NULL, NULL, hInstance, NULL);
+        hWindow = CreateWindow("HareRenderWindow", windowParams.title.c_str(), 
+            style, CW_USEDEFAULT, 0, windowParams.width, windowParams.height, NULL, NULL, hInstance, NULL);
 
         RECT  rect;
 
-        int xL = (GetSystemMetrics(SM_CXSCREEN) - params.width ) / 2;
-        int yT = (GetSystemMetrics(SM_CYSCREEN) - params.height) / 2;
-        int xR = xL + params.width;
-        int yB = yT + params.height;
+        int xL = (GetSystemMetrics(SM_CXSCREEN) - windowParams.width) / 2;
+        int yT = (GetSystemMetrics(SM_CYSCREEN) - windowParams.height) / 2;
+        int xR = xL + windowParams.width;
+        int yB = yT + windowParams.height;
 
         SetRect(&rect, xL, yT, xR, yB);
 
-        AdjustWindowRectEx(&rect, GetWindowLong(hwnd, GWL_STYLE), 
-            (GetMenu(hwnd) != NULL), GetWindowLong(hwnd, GWL_EXSTYLE));
+        AdjustWindowRectEx(&rect, GetWindowLong(hWindow, GWL_STYLE), 
+            (GetMenu(hWindow) != NULL), GetWindowLong(hWindow, GWL_EXSTYLE));
 
-        MoveWindow(hwnd, rect.left, rect.top, rect.right - rect.left,
+        MoveWindow(hWindow, rect.left, rect.top, rect.right - rect.left,
             rect.bottom - rect.top, TRUE);
 
-        ShowWindow(hwnd, SW_NORMAL);
+        ShowWindow(hWindow, SW_NORMAL);
 
-        UpdateWindow(hwnd);
+        UpdateWindow(hWindow);
 
         isExternal = false;
     } else {
-        hwnd = params.hwnd;
+        hWindow = (HWND)strtoul(windowParams.getCustomData("WINDOW").c_str(), 0, 10);
         isExternal = true;
     }
-
-    windowParams = params;
-
-    windowParams.hwnd = hwnd;
-
-    windowParams.bFullScreen = bFullScreen;
-
-    SetWindowLongPtr(hwnd, GWLP_USERDATA, (uint32)this);
+    SetWindowLongPtr(hWindow, GWLP_USERDATA, (uint32)this);
 
     //get information from config
     initalizeGLConfigParam();
 
     createGLResource();
+}
+
+bool GLRenderWindow::getCustomData(const String& key, void* data)
+{
+    if (key == "WINDOW")
+    {
+        *static_cast<HWND*>(data) = hWindow;
+        return true;
+    }
+
+    return false;
 }
 
 void GLRenderWindow::setProjection()
@@ -190,7 +192,7 @@ void GLRenderWindow::swapBuffer()
     }
     SwapBuffers(hDC);
 
-    GLRenderSystem::getSingletonPtr()->clear(windowParams.bZbuffer);
+    GLRenderSystem::getSingletonPtr()->clear(windowParams.hasZbuffer);
 
 }
 
@@ -235,7 +237,7 @@ void GLRenderWindow::inactive()
 
 HWND GLRenderWindow::getWindowHandle()
 {
-    return windowParams.hwnd;
+    return hWindow;
 }
 
 HGLRC GLRenderWindow::getRenderContext()
@@ -255,7 +257,7 @@ void GLRenderWindow::createGLResource()
     HDC old_hdc = wglGetCurrentDC();
     HGLRC old_context = wglGetCurrentContext();
 
-    if (!(hDC=GetDC(windowParams.hwnd))){	// get DeviceContext
+    if (!(hDC=GetDC(hWindow))){	// get DeviceContext
         MessageBox(NULL, "can't get DeviceContext", "error", MB_OK|MB_ICONEXCLAMATION);
         HARE_EXCEPT(Exception::ERR_INTERNAL_ERROR, "can't get DeviceContext!", "GLRenderWindow::createGLResource");
     }
@@ -295,13 +297,13 @@ void GLRenderWindow::createGLResource()
 
 	}
 
-	(static_cast<GLRenderSystem*>(RenderSystem::getSingletonPtr()))->initalizeParam(windowParams.bZbuffer);
+	(static_cast<GLRenderSystem*>(RenderSystem::getSingletonPtr()))->initalizeParam(windowParams.hasZbuffer);
 }
 
 void GLRenderWindow::destoryGLResource()
 {
 
-    if (windowParams.bFullScreen){
+    if (windowParams.fullScreen){
         ChangeDisplaySettings(NULL, 0);	
     }
 
@@ -316,12 +318,12 @@ void GLRenderWindow::destoryGLResource()
         hRC = NULL;							
     }
 
-    if (hDC && !ReleaseDC(windowParams.hwnd, hDC)){
+    if (hDC && !ReleaseDC(hWindow, hDC)){
         hDC = NULL;
     }
 
-	if (!isExternal && windowParams.hwnd && !DestroyWindow(windowParams.hwnd)){
-		windowParams.hwnd = NULL;							
+	if (!isExternal && hWindow && !DestroyWindow(hWindow)){
+		hWindow = NULL;							
 	}	
 
 }

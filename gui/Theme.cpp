@@ -21,7 +21,8 @@ namespace hare
         for (; it != themes.end(); ++it)
         {
             Theme* theme = *it;
-            themeMap[theme->getWindowClass()] = theme;
+            size_t key = (size_t)theme->getWindowClass();
+            themeMap[key] = theme;
         }
     }
 
@@ -37,7 +38,8 @@ namespace hare
 
         if (classInfo->isDerivedFrom(&Window::CLASS_INFO))
         {
-            ThemeHashMap::iterator it = themeMap.find(classInfo);
+            size_t key = (size_t)classInfo;
+            ThemeHashMap::iterator it = themeMap.find(key);
 
             if (it != themeMap.end())
             {

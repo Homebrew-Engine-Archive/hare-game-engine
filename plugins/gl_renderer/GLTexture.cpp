@@ -71,7 +71,7 @@ void GLTexture::inactive()
         glBindTexture(GL_TEXTURE_2D, 0);
         glPopAttrib(); // GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT
 
-        //GLRenderSystem::getSingletonPtr()->clear(GLRenderSystem::getSingletonPtr()->getCurRenderWindow()->getWindowParams().bZbuffer);
+        //GLRenderSystem::getSingletonPtr()->clear(GLRenderSystem::getSingletonPtr()->getCurRenderWindow()->getWindowParams().hasZbuffer);
 
         glBindTexture(GL_TEXTURE_2D, (static_cast<GLRenderSystem*>(GLRenderSystem::getSingletonPtr()))->getCurTexture());
 	}

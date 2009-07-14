@@ -20,7 +20,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\include;..\..\ext\ois\includes;..\..\ext\lua\src"
+				AdditionalIncludeDirectories="..\..\include;..\..\ext\ois\include;..\..\ext\lua\src"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;LUA_BINDING_EXPORTS"
 				MinimalRebuild="TRUE"
 				BasicRuntimeChecks="3"
@@ -70,8 +70,8 @@
 			CharacterSet="1">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="..\..\include;..\..\ext\ois\includes;..\..\ext\lua\src"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;HARE_LUA_EXPORTS"
+				AdditionalIncludeDirectories="..\..\include;..\..\ext\ois\include;..\..\ext\lua\src"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;LUA_BINDING_EXPORTS"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
@@ -208,6 +208,13 @@
 					Name="VCCustomBuildTool"
 					CommandLine="..\..\ext\swig\swig.exe -c++ -lua -outdir . -I.. &quot;$(InputPath)&quot;
 "
+					Outputs="$(InputName)_wrap.cxx"/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Release|Win32">
+				<Tool
+					Name="VCCustomBuildTool"
+					CommandLine="..\..\ext\swig\swig.exe -c++ -lua -outdir . -I.. &quot;$(InputPath)&quot;"
 					Outputs="$(InputName)_wrap.cxx"/>
 			</FileConfiguration>
 		</File>

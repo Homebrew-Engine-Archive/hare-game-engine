@@ -91,10 +91,10 @@ public:
 
 struct WindowParams
 {
-	bool bFullScreen;
+	bool fullScreen;
 	uint32 width;
 	uint32 height;
-	bool bZbuffer;
+	bool hasZbuffer;
 	String title;
 };
 

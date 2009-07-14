@@ -25,7 +25,7 @@ BEGIN_EVENT_TABLE(wxHareCanvas, wxWindow)
     EVT_ERASE_BACKGROUND(wxHareCanvas::onEraseBackground)
 END_EVENT_TABLE()
 
-wxHareCanvas::wxHareCanvas(wxWindow *parent, wxWindowID id, bool hasZBuffer, const wxPoint& pos,
+wxHareCanvas::wxHareCanvas(wxWindow *parent, wxWindowID id, bool hasZbuffer, const wxPoint& pos,
         const wxSize& size, long style, const wxString& name) : wxWindow()
 {
     renderWindow = NULL;
@@ -35,12 +35,15 @@ wxHareCanvas::wxHareCanvas(wxWindow *parent, wxWindowID id, bool hasZBuffer, con
     Create(parent, id, pos, size, style, name);
 
     WindowParams params;
-    params.hwnd = (WindowHandle)GetHWND();
-    params.bFullScreen = false;
+    params.fullScreen = false;
     params.width = size.GetWidth() > 0 ? size.GetWidth() : 800;
     params.height = size.GetHeight() > 0 ? size.GetHeight() : 600;
-    params.bZbuffer = hasZBuffer;
+    params.hasZbuffer = hasZbuffer;
     params.title = name.ToUTF8().data();
+
+    std::ostringstream wnd;
+    wnd << (size_t)GetHWND();
+    params.setCustomData("WINDOW", wnd.str());
 
     renderWindow = getHareApp()->createRenderWindow(params);
 }

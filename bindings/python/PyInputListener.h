@@ -160,7 +160,10 @@ public:
     {
         if (window)
         {
-            OIS::InputManager* inputManager = OIS::InputManager::createInputSystem((size_t)window->getWindowParams().hwnd);
+            size_t winHandle = 0;
+            if (!window->getCustomData("WINDOW", &winHandle))
+                return NULL;
+            OIS::InputManager* inputManager = OIS::InputManager::createInputSystem(winHandle);
 
             if (inputManager)
             {

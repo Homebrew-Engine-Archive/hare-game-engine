@@ -21,13 +21,7 @@ namespace hare
         Material::Ptr mtrl;
     };
 
-
-    struct class_info_hash
-    {
-        size_t operator()(const ClassInfo* p) const { return (size_t)p; }
-    };
-
-    typedef HashMap<const ClassInfo*, Theme*, class_info_hash> ThemeHashMap;
+    typedef HashMap<size_t, Theme*> ThemeHashMap;
 
     /** A set of theme representing a skin
     */

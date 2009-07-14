@@ -54,6 +54,7 @@
 					<Add library="core" />
 					<Add library="editor" />
 					<Add library="graphics" />
+					<Add library="gui" />
 					<Add library="wxScintilla" />
 					<Add library="wxPropGrid" />
 				</Linker>

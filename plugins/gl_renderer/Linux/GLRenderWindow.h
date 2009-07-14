@@ -6,7 +6,7 @@ class GLRenderWindow : public RenderWindow
 {
     friend class GLRenderSystem;
 public:
-    GLRenderWindow(bool bMainWindow);
+    GLRenderWindow(bool isMainWindow);
 
     virtual ~GLRenderWindow();
 
@@ -22,9 +22,16 @@ public:
 
     virtual void inactive();
 
+    virtual bool getCustomData(const String& key, void* data);
+
     Display* getDisplay()
     {
-        return (Display*)windowParams.hwnd.dpy;
+        return display;
+    }
+
+    Window getWindow()
+    {
+        return window;
     }
 
     ::Atom getAtomDeleteWindow()
@@ -44,6 +51,9 @@ private:
 
     int oldMode;
     ::Atom atomDeleteWindow;
+    Window window;
+    Display* display;
+    XVisualInfo* visualInfo;
 };
 
 void GLXProc(const XEvent &event, GLRenderWindow* win);

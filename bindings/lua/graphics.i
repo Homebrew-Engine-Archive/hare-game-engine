@@ -12,7 +12,7 @@ class Sprite : public Object
 public:
 	Sprite();
 	virtual ~Sprite();
-	
+
 	virtual void move(float dx, float dy);
 
 	virtual void moveTo(float x, float y);
@@ -20,7 +20,7 @@ public:
 	virtual void render() = 0;
 
 	virtual const PointF& getPosition();
-    
+
 	void setOrigoPos(float x, float y);
 
 	void moveOrigoPos(float dx, float dy);
@@ -50,7 +50,7 @@ public:
 	virtual void beginScene() = 0;
 	virtual void renderScene() = 0;
 	virtual void endScene() = 0;
-	
+
 private:
     virtual void _doRelease();
 
@@ -73,7 +73,7 @@ class SceneManager : public Object
 public:
 	SceneManager();
 	virtual ~SceneManager();
-	
+
 	int  addSprite(Sprite* sprite);
 
 	void removeSprite(Sprite* sprite);
@@ -90,13 +90,13 @@ public:
 
 };
 
-struct WindowParams
+class WindowParams
 {
-	bool bFullScreen;
-	uint32 width;
-	uint32 height;
-	bool bZbuffer;
-	String title;
+    uint32 width;
+    uint32 height;
+    String title;
+    bool fullScreen;
+    bool hasZbuffer;
 };
 
 class RenderWindow
@@ -104,13 +104,13 @@ class RenderWindow
 public:
     uint32 getWidth();
     uint32 getHeight();
-		
+
 	void setSceneManager(SceneManager* scene);
 
 	SceneManager* getSceneManager();
-	
+
 	bool getIsMainWnd();
-	
+
 	virtual void create(const WindowParams& params) = 0;
 
 	virtual void resize(uint32 w, uint32 h) = 0;
@@ -118,11 +118,11 @@ public:
 	virtual void swapBuffer() = 0;
 
 	virtual void destoryWindow() = 0;
-	
+
 	void moveCamera(float dx, float dy);
 
     void moveCameraTo(float x, float y);
-};	
+};
 
 class Texture
 {
@@ -141,7 +141,7 @@ public:
 };
 
 class StandardMtrl : public Material
-{	
+{
 };
 
 class TextureMtrl : public StandardMtrl
@@ -185,7 +185,7 @@ public:
 	RenderWindow* createRenderWindow(const WindowParams& params);
 
 	SceneManager* createSceneManager();
-	
+
 	Texture* createTexture();
 
 	void hareRun();
@@ -244,10 +244,10 @@ public:
 
 class ImageSprite : public Sprite
 {
-public:        
+public:
 	ImageSprite();
 	virtual ~ImageSprite();
-	
+
 	virtual void render();
 
 	void loadFromImage(const String& filename);

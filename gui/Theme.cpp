@@ -51,7 +51,7 @@ namespace hare
 
         return NULL;
     }
-    
+
     void drawThemeInternal(Material* mtrl, const RectUV& windowRect, const RectUV& rect, const RectUV& rectInner, bool drawTop)
     {
         RectF uvRect(0, 0, 0, 0);

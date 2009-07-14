@@ -44,7 +44,7 @@ void GLTexture::active()
 
 	if (bSupportFBO){
         glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, fbo);
-        GLRenderSystem::getSingletonPtr()->clear(GLRenderSystem::getSingletonPtr()->getCurRenderWindow()->getWindowParams().bZbuffer);
+        GLRenderSystem::getSingletonPtr()->clear(GLRenderSystem::getSingletonPtr()->getCurRenderWindow()->getWindowParams().hasZbuffer);
 	}else{
 		glPushAttrib(GL_COLOR_BUFFER_BIT | GL_PIXEL_MODE_BIT); // for GL_DRAW_BUFFER and GL_READ_BUFFER
         glDrawBuffer(GL_BACK);
@@ -62,7 +62,7 @@ void GLTexture::inactive()
 	GLRenderSystem::getSingletonPtr()->render();
 	//release bind
 	if (bSupportFBO){
-	    glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);	
+	    glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
 	}else{
 	    // copy the framebuffer pixels to a texture
         glBindTexture(GL_TEXTURE_2D, glTexture);
@@ -83,7 +83,7 @@ void GLTexture::upload(const Image& img, uint32 destX, uint32 destY)
 
 	int desWidth = std::min(img.getWidth(), width - destX);
 	int desHeight= std::min(img.getHeight(), height - destY);
-   
+
 
     glEnable(GL_TEXTURE_2D);
 
@@ -103,7 +103,7 @@ void GLTexture::upload(const Image& img, uint32 destX, uint32 destY)
     }
 
 
-    
+
 }
 
 void GLTexture::download(Image& img, const RectN& rc)
@@ -135,14 +135,14 @@ bool GLTexture::doCreate()
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
-        glTexImage2D(GL_TEXTURE_2D, 
+        glTexImage2D(GL_TEXTURE_2D,
             0,
-            GLTypeConverter::getGLInternalFormat(texPixelFormat), 
-            width, 
-            height, 
-            0, 
-            GLTypeConverter::toGLFormat(texPixelFormat), 
-            GL_UNSIGNED_BYTE, 
+            GLTypeConverter::getGLInternalFormat(texPixelFormat),
+            width,
+            height,
+            0,
+            GLTypeConverter::toGLFormat(texPixelFormat),
+            GL_UNSIGNED_BYTE,
             0);
 
 		//back buffer manager need bind old texture
@@ -172,7 +172,7 @@ bool GLTexture::doCreate()
     }else{
         Image img;
         assert(!fileName.empty());
-        if (img.loadFromFile(fileName))
+        if (!img.loadFromFile(fileName))
             return false;
 
         uint32 srcWidth = img.getWidth();
@@ -184,7 +184,7 @@ bool GLTexture::doCreate()
             PO2Width  = MathUtil::firstPO2From(srcWidth);
             PO2Height = MathUtil::firstPO2From(srcHeight);
             if (PO2Width == 0)
-                PO2Width = 1;	
+                PO2Width = 1;
 
             if (PO2Height == 0)
                 PO2Height = 1;
@@ -207,7 +207,7 @@ bool GLTexture::doCreate()
 
         uint8 *pSrcBuf  = (uint8*)img.getImageData();
 
-        //swap R and B 
+        //swap R and B
         if (img.getPixelFormat() == HPF_A8R8G8B8){
             HarePixelType<HPF_A8R8G8B8>* tmpData = (HarePixelType<HPF_A8R8G8B8>*)pSrcBuf;
             for (uint32 count = 0; count < img.getWidth() * img.getHeight(); ++count){
@@ -229,20 +229,20 @@ bool GLTexture::doCreate()
 
         glBindTexture(GL_TEXTURE_2D, glTexture);
 
-        glTexImage2D(GL_TEXTURE_2D, 
+        glTexImage2D(GL_TEXTURE_2D,
             0,
-            GLTypeConverter::getGLInternalFormat(texPixelFormat), 
-            width, 
-            height, 
-            0, 
-            GLTypeConverter::toGLFormat(texPixelFormat), 
-            GL_UNSIGNED_BYTE, 
+            GLTypeConverter::getGLInternalFormat(texPixelFormat),
+            width,
+            height,
+            0,
+            GLTypeConverter::toGLFormat(texPixelFormat),
+            GL_UNSIGNED_BYTE,
             (GLvoid*)pDestBuf);
 
 		//default filter
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-		
+
         //back buffer manager need bind old texture
 		glBindTexture(GL_TEXTURE_2D, (static_cast<GLRenderSystem*>(GLRenderSystem::getSingletonPtr()))->getCurTexture());
 

@@ -3,17 +3,17 @@
 //  Data:    05/23/2009
 //  Author:  littlesome (littlesome@live.cn)
 //-------------------------------------------------------------
-//  
+//
 //-------------------------------------------------------------
 //  This file is part of Hare2D Game Engine.
 //  Copyright (C) All Rights Reserved
 //***************************************************************
-// 
+//
 //***************************************************************
 #ifndef LUAINPUTLISTENER_H
 #define LUAINPUTLISTENER_H
 
-#include "OIS.h"
+#include "OIS/OIS.h"
 
 class LuaInputObject : public ReferenceCounted
 {
@@ -29,7 +29,7 @@ class LuaKeyListener : public LuaInputObject, public OIS::KeyListener
 {
     HARE_DECLARE_PTR(LuaKeyListener)
 public:
-    LuaKeyListener::LuaKeyListener()
+    LuaKeyListener()
     {
         pressed.L = 0; pressed.ref = 0;
         released.L = 0; released.ref = 0;
@@ -78,7 +78,7 @@ class LuaMouseListener : public LuaInputObject, public OIS::MouseListener
 {
     HARE_DECLARE_PTR(LuaMouseListener)
 public:
-    LuaMouseListener::LuaMouseListener()
+    LuaMouseListener()
     {
         moved.L = 0; moved.ref = 0;
         pressed.L = 0; pressed.ref = 0;
@@ -151,7 +151,10 @@ public:
     {
         if (window)
         {
-            OIS::InputManager* inputManager = OIS::InputManager::createInputSystem((size_t)window->getWindowParams().hwnd);
+            size_t winHandle = 0;
+            if (!window->getCustomData("WINDOW", &winHandle))
+                return NULL;
+            OIS::InputManager* inputManager = OIS::InputManager::createInputSystem(winHandle);
 
             if (inputManager)
             {
@@ -192,7 +195,7 @@ LuaInputManager* createLuaInputManager(RenderWindow* window)
 class Mouse : public LuaInputObject
 {
 public:
-    Mouse(LuaInputManager* im, OIS::Mouse* mouse) : inputManager(im), mouse(mouse) 
+    Mouse(LuaInputManager* im, OIS::Mouse* mouse) : inputManager(im), mouse(mouse)
     {
     }
 
@@ -232,7 +235,7 @@ protected:
 class Keyboard : public LuaInputObject
 {
 public:
-    Keyboard(LuaInputManager* im, OIS::Keyboard* keyboard) : inputManager(im), keyboard(keyboard) 
+    Keyboard(LuaInputManager* im, OIS::Keyboard* keyboard) : inputManager(im), keyboard(keyboard)
     {
     }
     virtual ~Keyboard()
@@ -269,7 +272,7 @@ protected:
 class JoyStick : public LuaInputObject
 {
 public:
-    JoyStick(LuaInputManager* im, OIS::JoyStick* joystick) : inputManager(im), joystick(joystick) 
+    JoyStick(LuaInputManager* im, OIS::JoyStick* joystick) : inputManager(im), joystick(joystick)
     {
     }
     virtual ~JoyStick()

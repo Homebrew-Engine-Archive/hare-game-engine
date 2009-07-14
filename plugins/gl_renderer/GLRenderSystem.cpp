@@ -57,9 +57,9 @@ void GLRenderSystem::render(RenderUnit* operation)
     if (!operation)
         return ;
 
-	bool bShaderParamsChange = false; 
-	bool bTextureStageChange = false; 
-	bool bRenderTextureChange= false; 
+	bool bShaderParamsChange = false;
+	bool bTextureStageChange = false;
+	bool bRenderTextureChange= false;
 	Matrix4 tmpTexMat;
 
 
@@ -104,8 +104,8 @@ void GLRenderSystem::render(RenderUnit* operation)
 		}
 	}else{
 		bRenderTextureChange = true;
-		curRenderTexture = 0;	
-		tmpTexMat = Matrix4::IDENTITY;	
+		curRenderTexture = 0;
+		tmpTexMat = Matrix4::IDENTITY;
         //»­ÏßÊÜShaderParamsÓ°Ïì
         ShaderParams tmpShaderParams;
         if (curShaderParams != tmpShaderParams){
@@ -122,7 +122,7 @@ void GLRenderSystem::render(RenderUnit* operation)
         render();
 
 		PrimType = GLTypeConverter::toGLPrimtiveType(operation->getOperationType());
-		
+
 		if (bRenderTextureChange){
 			if (curRenderTexture){
 				glEnable(GL_TEXTURE_2D);
@@ -182,12 +182,12 @@ void GLRenderSystem::setShaderParams(const ShaderParams& shaderParams)
 
 	RenderWindow* w = getCurRenderWindow();
 
-	if (w){	
-		if (w->getWindowParams().bZbuffer){
+	if (w){
+		if (w->getWindowParams().hasZbuffer){
 			if (shaderParams.bUseZ){
                 glEnable(GL_DEPTH_TEST);
 			}else{
-                glDisable(GL_DEPTH_TEST);			
+                glDisable(GL_DEPTH_TEST);
 			}
 		}
 	}
@@ -239,7 +239,7 @@ void GLRenderSystem::initalizeParam(bool bZBuffer)
 	if (bZBuffer){
 		glEnable(GL_DEPTH_TEST);
 		glDepthMask(GL_TRUE);
-		glDepthFunc(GL_LEQUAL);	
+		glDepthFunc(GL_LEQUAL);
 	}
     resetShaderTextureStage();
 }
@@ -262,10 +262,10 @@ void GLRenderSystem::setProjection(float l, float r, float b, float t)
 
     //NB: glOrtho funcation last tow args is used as negative
     //left right bottom top                                                 near far
-    glOrtho(l, r, b, t, -1.0, 1.0); 
+    glOrtho(l, r, b, t, -1.0, 1.0);
 
     glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity(); 
+    glLoadIdentity();
 
     glViewport (0, 0, (GLsizei)(r - l), (GLsizei)(b - t));
 }

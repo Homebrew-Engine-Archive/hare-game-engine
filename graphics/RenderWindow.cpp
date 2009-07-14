@@ -15,6 +15,25 @@
 
 namespace hare
 {
+    void WindowParams::setCustomData(const String& key, const String& val)
+    {
+        customData[key] = val;
+    }
+
+    String WindowParams::getCustomData(const String& key)
+    {
+        ParamList::iterator it = customData.find(key);
+        if (it != customData.end())
+            return it->second;
+        else
+            return StringUtil::EMPTY;
+    }
+
+    bool WindowParams::hasCustomData(const String& key)
+    {
+        return customData.find(key) != customData.end();
+    }
+
 	RenderWindow::RenderWindow()
 		:isMainWnd(false)
         ,isExternal(false)

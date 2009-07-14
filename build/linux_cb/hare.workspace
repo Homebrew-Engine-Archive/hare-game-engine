@@ -14,5 +14,6 @@
 		<Project filename="gl_renderer.cbp" />
 		<Project filename="lua_binding.cbp" />
 		<Project filename="gui.cbp" />
+		<Project filename="launcher.cbp" />
 	</Workspace>
 </CodeBlocks_workspace_file>

@@ -67,8 +67,6 @@
 		<Unit filename="../../include/graphics/Canvas.h" />
 		<Unit filename="../../include/graphics/Codec.h" />
 		<Unit filename="../../include/graphics/ComponentSprite.h" />
-		<Unit filename="../../include/graphics/D3DRenderTexture.h" />
-		<Unit filename="../../include/graphics/DataHolder.h" />
 		<Unit filename="../../include/graphics/DevILImageCodec.h" />
 		<Unit filename="../../include/graphics/Filters.h" />
 		<Unit filename="../../include/graphics/Font.h" />

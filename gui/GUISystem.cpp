@@ -10,7 +10,7 @@ namespace hare
         HARE_OBJ_F(themes, ThemePackage, propImport)
     }
 
-    GUISystem::GUISystem() : windowWithMouse(0), modalTarget(0), mousePos(0, 0), 
+    GUISystem::GUISystem() : windowWithMouse(0), modalTarget(0), mousePos(0, 0),
         clickTimeout(0.2f), dbclickTimeout(0.33f), dblclickSize(12, 12)
     {
     }
@@ -50,7 +50,9 @@ namespace hare
             uiEVT_MIDDLE_TCLICK,
         };
 
-        return fillMouseEvent(MouseEvent(types[button * MouseMAX + type]));
+        MouseEvent e(types[button * MouseMAX + type]);
+        fillMouseEvent(e);
+        return e;
     }
 
     bool GUISystem::notifyMousePosition(float posX, float posY)
@@ -128,13 +130,15 @@ namespace hare
 
             if (dest)
             {
-                upHandled = dest->processEvent(makeMouseEvent(button, MouseUp));
+                MouseEvent e = makeMouseEvent(button, MouseUp);
+                upHandled = dest->processEvent(e);
 
                 if (tkr.timer.elapsed() <= clickTimeout &&
-                    tkr.area.isPointIn(mousePos) && 
+                    tkr.area.isPointIn(mousePos) &&
                     tkr.target == dest)
                 {
-                    clickHandled = dest->processEvent(makeMouseEvent(button, MouseClick));
+                    MouseEvent e = makeMouseEvent(button, MouseClick);
+                    clickHandled = dest->processEvent(e);
                 }
             }
 
@@ -179,20 +183,24 @@ namespace hare
                 {
                     if (tkr.click == 1)
                     {
-                        handled = dest->processEvent(makeMouseEvent(button, MouseDown));
+                        MouseEvent e = makeMouseEvent(button, MouseDown);
+                        handled = dest->processEvent(e);
                     }
                     else if (tkr.click == 2)
                     {
-                        handled = dest->processEvent(makeMouseEvent(button, MouseDClick));
+                        MouseEvent e = makeMouseEvent(button, MouseDClick);
+                        handled = dest->processEvent(e);
                     }
                     else if (tkr.click == 3)
                     {
-                        handled = dest->processEvent(makeMouseEvent(button, MouseTClick));
+                        MouseEvent e = makeMouseEvent(button, MouseTClick);
+                        handled = dest->processEvent(e);
                     }
                 }
                 else
                 {
-                    handled = dest->processEvent(makeMouseEvent(button, MouseDown));
+                    MouseEvent e = makeMouseEvent(button, MouseDown);
+                    handled = dest->processEvent(e);
                 }
             }
 
@@ -237,7 +245,7 @@ namespace hare
 
         return false;
     }
-    
+
     bool GUISystem::notifyChar(uint32 cp)
     {
         if (root)

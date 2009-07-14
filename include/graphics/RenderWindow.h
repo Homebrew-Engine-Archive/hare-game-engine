@@ -18,41 +18,29 @@
 #include "RenderTarget.h"
 #include "SceneManager.h"
 
-#if HARE_PLATFORM == HARE_PLATFORM_WIN32
-typedef HWND WindowHandle;
-#elif HARE_PLATFORM == HARE_PLATFORM_LINUX
-typedef struct _WindowHandle{
-	void*   dpy;
-	void*   vi;
-	int     win;
-	_WindowHandle(int x)
-		:dpy(NULL)
-		,vi(NULL)
-		,win(0)
-	{
-	}
-} WindowHandle;
-#else
-typedef uint32 WindowHandle;
-#endif
-
 namespace hare
 {
-	struct GRAPHICS_API WindowParams
+    class GRAPHICS_API WindowParams
     {
-		WindowHandle hwnd;
-		bool bFullScreen;
-		uint32 width;
-		uint32 height;
-		bool bZbuffer;
-		String title;
-		WindowParams()
-			:hwnd(0)
-			,width(800)
-			,height(600)
-		{
-			title = "hare";
-		}
+    public:
+        uint32 width;
+        uint32 height;
+        String title;
+        bool fullScreen;
+        bool hasZbuffer;
+
+        void setCustomData(const String& key, const String& val);
+        String getCustomData(const String& key);
+        bool hasCustomData(const String& key);
+
+    protected:
+        typedef std::map<String, String> ParamList;
+
+        ParamList customData;
+
+    public:
+        WindowParams() : width(800), height(600), title("hare game engine"),
+            fullScreen(false), hasZbuffer(false) {}
 	};
 
 	class SceneManager;
@@ -68,6 +56,7 @@ namespace hare
 		{
 			return windowParams.width;
 		}
+
 		uint32 getHeight()
 		{
 			return windowParams.height;
@@ -80,6 +69,11 @@ namespace hare
 		virtual void swapBuffer() = 0;
 
 		virtual void destoryWindow() = 0;
+
+		virtual bool getCustomData(const String& key, void* data)
+		{
+            return false;
+        }
 
 		void setSceneManager(SceneManager* scene)
 		{

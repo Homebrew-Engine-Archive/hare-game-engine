@@ -5,7 +5,7 @@
 
 namespace hare
 {
-    /** Class for rendering one kind of control 
+    /** Class for rendering one kind of control
     */
     class UI_API Theme : public Object
     {
@@ -21,7 +21,13 @@ namespace hare
         Material::Ptr mtrl;
     };
 
-    typedef HashMap<const ClassInfo*, Theme*> ThemeHashMap;
+
+    struct class_info_hash
+    {
+        size_t operator()(const ClassInfo* p) const { return (size_t)p; }
+    };
+
+    typedef HashMap<const ClassInfo*, Theme*, class_info_hash> ThemeHashMap;
 
     /** A set of theme representing a skin
     */
@@ -42,7 +48,7 @@ namespace hare
         Theme::Array themes;
     };
 
-    void drawThemeInternal(Material* mtrl, const RectUV& windowRect, 
+    void drawThemeInternal(Material* mtrl, const RectUV& windowRect,
         const RectUV& rect, const RectUV& rectInner, bool drawTop = true);
 }
 

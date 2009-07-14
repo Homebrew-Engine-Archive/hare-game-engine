@@ -36,6 +36,35 @@ namespace hare
     static const int EMBEDDED_OBJECT     = -4;
     static const int INVALID_SELECTION   = -1000; 
 
+    class TransData
+    {
+    public:
+        typedef std::set<String> TransSet;
+        TransSet trans;
+
+        void push(const String& str) { trans.insert(str); }
+
+        ~TransData()
+        {
+            std::ofstream file("trans.cpp");
+            TransSet::iterator it = trans.begin();
+            for (; it != trans.end(); ++it)
+            {
+                file << StringUtil::format("_(\"%s\")\n", it->c_str());
+            }
+        }
+    };
+
+    void setHelpString(wxPGProperty* prop, Attribute* attr)
+    {
+        String helpStr = StringUtil::format("%s.%s:%s", attr->owner->getClassInfo()->className,
+            attr->name, attr->typeName ? attr->typeName : attr->classInfo->className);
+        static TransData transData;
+        transData.push(helpStr);
+        wxString transStr = wxGetTranslation(wxString::FromUTF8(helpStr.c_str()));
+        prop->SetHelpString(transStr);
+    }
+
     IMPLEMENT_DYNAMIC_CLASS(ObjectEnumProperty, wxEnumProperty)
 
     //////////////////////////////////////////////////////////////////////////
@@ -514,7 +543,7 @@ namespace hare
             prop = page->AppendIn(parent, new wxEnumProperty(wxString::FromUTF8(attr->name), wxPG_LABEL,
                 choices, (long)value));
         }
-        prop->SetHelpString(wxT("[enum]"));
+        setHelpString(prop, attr);
         prop->SetClientData(attr);
         return prop;
     }
@@ -536,7 +565,7 @@ namespace hare
             prop->SetAttribute(wxPG_ATTR_MIN, std::numeric_limits<T>::min());
             prop->SetAttribute(wxPG_ATTR_MAX, std::numeric_limits<T>::max());
             prop->SetClientData(attr);
-            prop->SetHelpString(wxString::Format(wxT("[%s]"), wxString::FromUTF8(attr->typeName).c_str()));
+            setHelpString(prop, attr);
         }
 
         if (attr->hasFlag(Object::propReadOnly))
@@ -562,7 +591,7 @@ namespace hare
                 wxString::FromUTF8(value->c_str())));
         }
         prop->SetClientData(attr);
-        prop->SetHelpString(wxT("[String]"));
+        setHelpString(prop, attr);
         if (attr->hasFlag(Object::propReadOnly))
             prop->SetFlag(wxPG_PROP_READONLY | wxPG_PROP_DISABLED);
     }
@@ -576,7 +605,7 @@ namespace hare
         prop = page->AppendIn(parent, new wxBoolProperty(wxString::FromUTF8(attr->name), wxPG_LABEL,
             *value));
         prop->SetClientData(attr);
-        prop->SetHelpString(wxT("[bool]"));
+        setHelpString(prop, attr);
         if (attr->hasFlag(Object::propReadOnly))
             prop->SetFlag(wxPG_PROP_READONLY | wxPG_PROP_DISABLED);
     }
@@ -588,7 +617,7 @@ namespace hare
         wxPGProperty* prop = page->AppendIn(parent, new wxFloatProperty(wxString::FromUTF8(attr->name), wxPG_LABEL,
             *value));
         prop->SetClientData(attr);
-        prop->SetHelpString(wxT("[float]"));
+        setHelpString(prop, attr);
         if (attr->hasFlag(Object::propReadOnly))
             prop->SetFlag(wxPG_PROP_READONLY | wxPG_PROP_DISABLED);
     }
@@ -600,7 +629,7 @@ namespace hare
         wxPGProperty* prop = page->AppendIn(parent, new wxFloatProperty(wxString::FromUTF8(attr->name), wxPG_LABEL,
             *value));
         prop->SetClientData(attr);
-        prop->SetHelpString(wxT("[double]"));
+        setHelpString(prop, attr);
         if (attr->hasFlag(Object::propReadOnly))
             prop->SetFlag(wxPG_PROP_READONLY | wxPG_PROP_DISABLED);
     }
@@ -626,14 +655,14 @@ namespace hare
             prop = page->AppendIn(parent, new RGBAColourProperty(wxString::FromUTF8(attr->name), wxPG_LABEL,
                 colour));
             prop->SetClientData(attr);
-            prop->SetHelpString(wxT("[Color]"));
+            setHelpString(prop, attr);
         }
         else
         {
             prop = page->AppendIn(parent, new wxUIntProperty(wxString::FromUTF8(attr->name), wxPG_LABEL,
                 *value));
             prop->SetClientData(attr);
-            prop->SetHelpString(wxT("[uint32]"));
+            setHelpString(prop, attr);
         }
         if (attr->hasFlag(Object::propReadOnly))
             prop->SetFlag(wxPG_PROP_READONLY | wxPG_PROP_DISABLED);
@@ -646,7 +675,7 @@ namespace hare
         wxPGProperty* prop = page->AppendIn(parent, new PointFProperty(wxString::FromUTF8(attr->name), wxPG_LABEL,
             *value));
         prop->SetClientData(attr);
-        prop->SetHelpString(wxT("[Point Float]"));
+        setHelpString(prop, attr);
         if (attr->hasFlag(Object::propReadOnly))
             prop->SetFlag(wxPG_PROP_READONLY | wxPG_PROP_DISABLED);
     }
@@ -658,7 +687,7 @@ namespace hare
         wxPGProperty* prop = page->AppendIn(parent, new SizeFProperty(wxString::FromUTF8(attr->name), wxPG_LABEL,
             *value));
         prop->SetClientData(attr);
-        prop->SetHelpString(wxT("[Size Float]"));
+        setHelpString(prop, attr);
         if (attr->hasFlag(Object::propReadOnly))
             prop->SetFlag(wxPG_PROP_READONLY | wxPG_PROP_DISABLED);
     }
@@ -670,7 +699,7 @@ namespace hare
         wxPGProperty* prop = page->AppendIn(parent, new RectFProperty(wxString::FromUTF8(attr->name), wxPG_LABEL,
             *value));
         prop->SetClientData(attr);
-        prop->SetHelpString(wxT("[Rect Float]"));
+        setHelpString(prop, attr);
         if (attr->hasFlag(Object::propReadOnly))
             prop->SetFlag(wxPG_PROP_READONLY | wxPG_PROP_DISABLED);
     }
@@ -762,8 +791,7 @@ namespace hare
             prop->currentSelection = selection;
         }
         
-        wxString className = wxString::FromUTF8(attr->classInfo->className);
-        prop->SetHelpString(className);
+        setHelpString(prop, attr);
         prop->SetClientData(attr);
 
         if (attr->hasFlag(Object::propReadOnly))

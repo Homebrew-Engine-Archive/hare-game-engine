@@ -14,33 +14,19 @@ public:
 	virtual ~Sprite();
 
 	virtual void move(float dx, float dy);
-
 	virtual void moveTo(float x, float y);
-
 	virtual void render() = 0;
-
 	virtual const PointF& getPosition();
-
 	void setOrigoPos(float x, float y);
-
 	void moveOrigoPos(float dx, float dy);
-
 	const PointF& getOrigoPos();
-
 	void setFaceX(bool b);
-
 	void setFaceY(bool b);
-
 	void setSpriteName(const String& name);
-
 	const String& getSpriteName();
-
 	void setColor(uint32 c);
-
 	uint32 getColor();
-
 	void setZ(float z);
-
 	float getZ();
 };
 
@@ -74,24 +60,19 @@ public:
 	SceneManager();
 	virtual ~SceneManager();
 
-	int  addSprite(Sprite* sprite);
-
+	int addSprite(Sprite* sprite);
 	void removeSprite(Sprite* sprite);
-
 	void removeAllSprite();
-
 	void setSceneListener(SceneListener* listener);
-
 	Sprite* getSpriteByName(const String& name);
-
 	Sprite* getSpriteByID(int id);
-
 	int getSpriteCount();
 
 };
 
 class WindowParams
 {
+public:
     uint32 width;
     uint32 height;
     String title;

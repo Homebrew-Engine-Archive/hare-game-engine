@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="launcher" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="launcher">
+				<Option output="../../lib/launcher" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../../lib/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Option parameters="-game sample" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-fexceptions" />
+			<Add directory="../../include" />
+		</Compiler>
+		<Linker>
+			<Add library="core" />
+			<Add library="graphics" />
+			<Add library="gui" />
+			<Add library="dl" />
+			<Add directory="../../lib" />
+		</Linker>
+		<Unit filename="../../launcher/main.cpp" />
+		<Extensions>
+			<code_completion />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

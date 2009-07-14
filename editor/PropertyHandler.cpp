@@ -476,6 +476,7 @@ namespace hare
         attr->owner->postEdited(attr);
         val = RectFToVariant(*oldData);
     }
+
     /*template <typename T>
     void doModifyMetaArray(Attribute* attr, wxVariant& val)
     {
@@ -1040,5 +1041,7 @@ namespace hare
             Attribute *attr = *it;
             bindAttribute(attr, page, parent);
         }
+
+        page->GetGrid()->CenterSplitter(true);
     }
 }

@@ -59,7 +59,7 @@ namespace hare
             idPropertyGridManager, wxDefaultPosition, wxDefaultSize, wxPG_BOLD_MODIFIED |
             wxPG_SPLITTER_AUTO_CENTER | wxPG_TOOLBAR | wxPG_DESCRIPTION);
 
-        propGridManager->SetExtraStyle(wxPG_EX_MODE_BUTTONS | wxPG_EX_UNFOCUS_ON_ENTER);
+        propGridManager->SetExtraStyle(wxPG_EX_MODE_BUTTONS | wxPG_EX_UNFOCUS_ON_ENTER | wxPG_EX_HELP_AS_TOOLTIPS);
         propGridManager->SetValidationFailureBehavior(wxPG_VFB_BEEP | wxPG_VFB_MARK_CELL | wxPG_VFB_SHOW_MESSAGE);
         propGridManager->GetGrid()->SetVerticalSpacing(2);
 

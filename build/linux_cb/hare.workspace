@@ -2,7 +2,7 @@
 <CodeBlocks_workspace_file>
 	<Workspace title="Workspace">
 		<Project filename="core.cbp" />
-		<Project filename="editor.cbp" active="1">
+		<Project filename="editor.cbp">
 			<Depends filename="core.cbp" />
 		</Project>
 		<Project filename="graphics.cbp">
@@ -14,6 +14,6 @@
 		<Project filename="gl_renderer.cbp" />
 		<Project filename="lua_binding.cbp" />
 		<Project filename="gui.cbp" />
-		<Project filename="launcher.cbp" />
+		<Project filename="launcher.cbp" active="1" />
 	</Workspace>
 </CodeBlocks_workspace_file>

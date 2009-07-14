@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="lua_binding" />
+		<Option pch_mode="2" />
+		<Option default_target="lua_launcher" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="lua_binding">
+				<Option output="../../lib/plugins/lua_binding_d" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../../lib" />
+				<Option type="3" />
+				<Option compiler="gcc" />
+				<Option parameters="-game sample" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-fexceptions" />
+			<Add option="-Wno-deprecated" />
+			<Add directory="../../include" />
+		</Compiler>
+		<Linker>
+			<Add library="lua" />
+			<Add library="core" />
+			<Add library="graphics" />
+			<Add library="dl" />
+			<Add library="gui" />
+			<Add library="OIS" />
+			<Add directory="../../lib" />
+		</Linker>
+		<Unit filename="../../bindings/lua/LuaDebugData.cpp" />
+		<Unit filename="../../bindings/lua/LuaDebugData.h" />
+		<Unit filename="../../bindings/lua/LuaDebugDefines.h" />
+		<Unit filename="../../bindings/lua/LuaDebuggee.cpp" />
+		<Unit filename="../../bindings/lua/LuaDebuggee.h" />
+		<Unit filename="../../bindings/lua/LuaEventHandler.h" />
+		<Unit filename="../../bindings/lua/LuaGameApp.cpp" />
+		<Unit filename="../../bindings/lua/LuaGameApp.h" />
+		<Unit filename="../../bindings/lua/LuaInputListener.h" />
+		<Unit filename="../../bindings/lua/LuaSceneListener.h" />
+		<Unit filename="../../bindings/lua/LuaScriptRunner.cpp" />
+		<Unit filename="../../bindings/lua/LuaScriptRunner.h" />
+		<Unit filename="../../bindings/lua/PCH.cpp" />
+		<Unit filename="../../bindings/lua/PCH.h" />
+		<Unit filename="../../bindings/lua/SocketHelper.h" />
+		<Unit filename="../../bindings/lua/core.i" />
+		<Unit filename="../../bindings/lua/graphics.i" />
+		<Unit filename="../../bindings/lua/gui.i" />
+		<Unit filename="../../bindings/lua/hare.i">
+			<Option compile="1" />
+			<Option weight="0" />
+			<Option compiler="gcc" use="1" buildCommand="swig -c++ -lua -outdir . -I.. $file" />
+		</Unit>
+		<Unit filename="../../bindings/lua/hare_wrap.cxx" />
+		<Unit filename="../../bindings/lua/psp_main.h" />
+		<Extensions>
+			<code_completion />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
